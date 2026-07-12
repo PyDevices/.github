@@ -12,7 +12,7 @@
 
 ---
 
-### What we build 👋
+### What we build
 
 PyDevices writes display, input, and graphics code once and runs it across
 **MicroPython**, **CircuitPython**, and **CPython** — from microcontrollers to
