@@ -1,0 +1,53 @@
+name: Bug report
+description: Something isn't working as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! This template is shared
+        across PyDevices repos — please still check the repo's own README
+        for project-specific troubleshooting first.
+
+  - type: input
+    id: repo-area
+    attributes:
+      label: Repo / area
+      description: Which repo (or part of a repo) is this about?
+      placeholder: e.g. pydisplay / src/lib/displaysys
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug, and what you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps or a minimal code snippet that reproduces the issue.
+      render: python
+    validations:
+      required: false
+
+  - type: input
+    id: runtime
+    attributes:
+      label: Runtime & version
+      description: MicroPython / CircuitPython / CPython, version, and board/platform if relevant.
+      placeholder: e.g. MicroPython 1.28 on ESP32-S3, or CPython 3.12 on Windows
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / traceback
+      render: shell
+    validations:
+      required: false
