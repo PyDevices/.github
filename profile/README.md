@@ -24,11 +24,11 @@ the desktop and the browser.
 - **[cmods](https://github.com/PyDevices/cmods)** — the workspace that builds and smoke-tests the whole native-module matrix together.
 - **[pydisplay_android](https://github.com/PyDevices/pydisplay_android)** — the Android APK path for pydisplay.
 
-### Get help
+### 💬 Get help
 
 Questions, ideas, and show-and-tell live in **[pydisplay Discussions](https://github.com/PyDevices/pydisplay/discussions)**.
 Found a bug? Open an issue on the relevant repo — see [CONTRIBUTING.md](https://github.com/PyDevices/.github/blob/main/CONTRIBUTING.md) for guidelines shared across our repos.
 
-### Where to start
+### 🚀 Where to start
 
 New to the stack? Start with **[pydisplay](https://github.com/PyDevices/pydisplay)** and its [documentation](https://pydisplay.readthedocs.io). Need LVGL widgets? Add **[lv_bindings](https://github.com/PyDevices/lv_bindings)** and the matching cmod for your runtime.
