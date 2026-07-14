@@ -8,6 +8,11 @@ On a developer laptop, repos usually live as siblings under a single parent
 (e.g. `~/gh/pydevices/`). The cloud VM mirrors that layout under
 `/home/ubuntu/gh/` using symlinks into `/agent/repos/`.
 
+**Automatic setup:** `.cursor/environment.json` in this repo runs
+`scripts/cloud-workspace-install.sh` on each cloud VM boot (idempotent).
+Use the **`pydevices-cloud-handoff`** skill (`/pydevices-cloud-handoff`) when
+handing work from Cursor desktop to Cloud Agents.
+
 ## Top-level layout
 
 ```
