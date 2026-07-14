@@ -11,11 +11,6 @@ so it can sync with the org clone without being a product/docs surface.
      Tag each item with the repo(s) it affects, e.g. `_(pydisplay)_` or
      `_(pydisplay, cmods)_`, since this file spans multiple sibling repos. -->
 
-### add_ons
-
-- [ ] Consolidate or merge `add_ons/` modules where possible (fewer top-level files) _(pydisplay)_
-- [ ] Input helpers — `touch_keypad` / `joystick_keypad` / `keypins` — possibly merge into `eventsys` _(pydisplay)_
-
 ### LVGL
 
 - [ ] Combine `display_driver.py` + `lv_utils.py` → `lv_runtime.py` _(pydisplay)_
