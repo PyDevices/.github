@@ -98,9 +98,9 @@ ln -s ../lv_bindings/lvgl lv_cpython_mod/lvgl
 3. **Do not commit** the `lv_cpython_mod/lvgl` symlink as a substitute for the
    submodule gitlink; it is a local workspace convenience. CI still records
    `lvgl` as a submodule in that repo.
-4. MP/CP builds read `lv_bindings/lvgl` only; they never use a top-level
-   `cmods/lvgl` sibling (that optional clone from `clone_profile.sh` is not
-   required here).
+4. MP/CP builds read `lv_bindings/lvgl` only. `clone_profile.sh` initializes
+   that submodule via the `bindings` / `mp` profiles — it does not clone a
+   separate `cmods/lvgl` tree.
 
 ## Symlink safety
 
