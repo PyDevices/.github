@@ -14,6 +14,7 @@ so it can sync with the org clone without being a product/docs surface.
 ### add_ons
 
 - [ ] Consolidate or merge `add_ons/` modules where possible (fewer top-level files) _(pydisplay)_
+- [ ] Input helpers — `touch_keypad` / `joystick_keypad` / `keypins` — possibly merge into `eventsys` _(pydisplay)_
 
 ### LVGL
 
