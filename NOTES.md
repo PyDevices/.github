@@ -16,7 +16,6 @@ so it can sync with the org clone without being a product/docs surface.
 - [ ] Combine `display_driver.py` + `lv_utils.py` → `lv_runtime.py` _(pydisplay)_
 - [ ] `lv_runtime.py` — support multiple LVGL displays _(pydisplay)_
 - [ ] Ship `lv_runtime.py` with `lv_cpython_mod`, `lv_micropython_cmod`, and `lv_circuitpython_mod` _(pydisplay, cmods)_
-- [ ] Rename `eventsys.events.TOUCH` → `POINTER` (breaking; match LVGL `INDEV_TYPE.POINTER` naming) _(pydisplay)_
 
 ### displaysys & desktop
 
@@ -37,7 +36,7 @@ Remaining open drafts need hardware validation; `#6` also needs rebase before me
 
 ### Examples & demos
 
-- [ ] Audit all examples: for each, note what it demonstrates and how it helps users and/or the matrix test kit; decide keep, consolidate, or delete. Many were small development probes (e.g. scrolling/rotation for touch→screen coords) that may have limited value now that those bugs are fixed; others (e.g. `font_simpletest*.py`) overlap but show different methods with different speed/resource/transparency tradeoffs — keep distinct approaches where that teaching value matters. Large surface area, but a structured pass should be relatively quick _(pydisplay)_
+- [ ] Act on examples audit (2026-07-13): delete/archive remaining legacy tft_* ports (hello, tiny_hello, fonts, feathers, alien, tiny_toasters, …); consolidate font/scroll/bmp565/widgets/palettes/apollo items done _(pydisplay)_
 - [ ] Consider adding **Pyodide** alongside MicroPython for the pyscript examples (today they use MicroPython only) _(pydisplay)_
 
 ### Platforms & hardware
