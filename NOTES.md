@@ -16,7 +16,6 @@ so it can sync with the org clone without being a product/docs surface.
 - [ ] Combine `display_driver.py` + `lv_utils.py` → `lv_runtime.py` _(pydisplay)_
 - [ ] `lv_runtime.py` — support multiple LVGL displays _(pydisplay)_
 - [ ] Ship `lv_runtime.py` with `lv_cpython_mod`, `lv_micropython_cmod`, and `lv_circuitpython_mod` _(pydisplay, cmods)_
-- [x] Wire pydisplay `pyodide.html` to `micropip.install` the `lv_cpython_mod` `pyemscripten_2026_0` wheel (Pages `wheels/` or local serve) for LVGL demos _(pydisplay, lv_cpython_mod)_
 
 ### displaysys & desktop
 
@@ -51,7 +50,6 @@ Remaining open drafts need hardware validation; `#6` also needs rebase before me
 ### multimer
 
 - [ ] **multimer soft timers on librt** — reentrancy/`sleep_ms` for signal backends is improved, but on Linux CPython `hard=False` still runs callbacks in the RT signal handler: main-thread `schedule()` invokes immediately (`_schedule.py`), so soft ≈ hard for librt. `Runtime` ticks still use `hard=False`. Decide: (a) true soft — queue from signal context and drain outside the handler, or (b) document that soft only defers when delivery isn’t already on main. Test any change on librt + LVGL. _(pydisplay)_
-- [ ] Rename multimer `signal_delivered` → `uses_signals` or `uses_main_thread` (and matching `_signal_delivered` internals) so the name describes a backend capability, not “a signal was delivered” _(pydisplay)_
 
 ### MCU optimization
 
