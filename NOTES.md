@@ -16,6 +16,7 @@ so it can sync with the org clone without being a product/docs surface.
 - [ ] Combine `display_driver.py` + `lv_utils.py` → `lv_runtime.py` _(pydisplay)_
 - [ ] `lv_runtime.py` — support multiple LVGL displays _(pydisplay)_
 - [ ] Ship `lv_runtime.py` with `lv_cpython_mod`, `lv_micropython_cmod`, and `lv_circuitpython_mod` _(pydisplay, cmods)_
+- [x] Wire pydisplay `pyodide.html` to `micropip.install` the `lv_cpython_mod` `pyemscripten_2026_0` wheel (Pages `wheels/` or local serve) for LVGL demos _(pydisplay, lv_cpython_mod)_
 
 ### displaysys & desktop
 
@@ -26,6 +27,7 @@ so it can sync with the org clone without being a product/docs surface.
 
 - [ ] Remove `pydisplay-bundle` everywhere — **first:** confirm all subpackages are on TestPyPI and [PyDevices/micropython-lib](https://github.com/PyDevices/micropython-lib); then drop bundle manifest, `packages/pydisplay-bundle.json`, Wokwi bundle, publish script bundle path, install manifests _(pydisplay, micropython-lib)_
 - [ ] Make all PyDevices repo automations that publish to TestPyPI or micropython-lib also attach those artifacts as GitHub release assets per tag — see `pydisplay/.cursor/testpypi-publish-audit.md` (gap: none do today) _(pydisplay, cmods — usdl2, graphics, lv_cpython_mod, lv_bindings)_
+- [ ] **`lv_cpython_mod` tag publish (do first):** add `build_pyodide_wheel.sh` job + `gh release create` attaching cibuildwheel + `pyemscripten_2026_0` wheels (and optionally refresh Pages `wheels/` from that release) — don’t bolt Pyodide onto TestPyPI-only; then generalize release assets to the other repos above _(lv_cpython_mod, then pydisplay/cmods siblings)_
 
 ### Open PRs
 
@@ -33,10 +35,6 @@ so it can sync with the org clone without being a product/docs surface.
 - [ ] **`displayif#6`** — active successor; draft, **CONFLICTING**, hardware test plan unchecked (Teensy 4.1, SAMD51, mimxrt1062). Triage comment left 2026-07-12 _(cmods — displayif)_
 
 Remaining open drafts need hardware validation; `#6` also needs rebase before merge.
-
-### Examples & demos
-
-- [ ] Consider adding **Pyodide** alongside MicroPython for the pyscript examples (today they use MicroPython only) _(pydisplay)_
 
 ### Platforms & hardware
 
