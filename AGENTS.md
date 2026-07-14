@@ -59,8 +59,9 @@ git clone --depth 1 --filter=blob:none --branch <tag> --single-branch \
   https://github.com/adafruit/circuitpython.git circuitpython
 ```
 
-Deepen later with `git fetch --unshallow` and the submodule steps in
-`cmods/scripts/clone_profile.sh` (`mp` / `cp` profiles).
+Deepen later with `git fetch --unshallow` and port-specific submodule
+steps (e.g. `git -C micropython submodule update --init --recursive`,
+`make -C circuitpython fetch-all-submodules` before a CP unix build).
 
 ## LVGL — one copy on disk
 
@@ -98,9 +99,8 @@ ln -s ../lv_bindings/lvgl lv_cpython_mod/lvgl
 3. **Do not commit** the `lv_cpython_mod/lvgl` symlink as a substitute for the
    submodule gitlink; it is a local workspace convenience. CI still records
    `lvgl` as a submodule in that repo.
-4. MP/CP builds read `lv_bindings/lvgl` only. `clone_profile.sh` initializes
-   that submodule via the `bindings` / `mp` profiles — it does not clone a
-   separate `cmods/lvgl` tree.
+4. MP/CP builds read `lv_bindings/lvgl` only. Initialize it with
+   `git -C lv_bindings submodule update --init --depth 1 lvgl` (see above).
 
 ## Symlink safety
 
@@ -114,5 +114,3 @@ When removing paths under `pydevices/` or `cmods/`, delete **symlinks only**
   build matrix (`build_all.sh`, `build_target.sh`, `build_mp.sh`)
 - [lv_bindings PUBLISHING.md](https://github.com/PyDevices/lv_bindings/blob/main/PUBLISHING.md) —
   binding regeneration and `lv_cpython_mod` release dispatch
-- [cmods/scripts/clone_profile.sh](https://github.com/PyDevices/cmods/blob/main/scripts/clone_profile.sh) —
-  profile-based cloning on a full dev machine
