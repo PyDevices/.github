@@ -36,7 +36,6 @@ Remaining open drafts need hardware validation; `#6` also needs rebase before me
 
 ### Examples & demos
 
-- [ ] Act on examples audit (2026-07-13): delete/archive remaining legacy tft_* ports (hello, tiny_hello, fonts, feathers, alien, tiny_toasters, …); consolidate font/scroll/bmp565/widgets/palettes/apollo items done _(pydisplay)_
 - [ ] Consider adding **Pyodide** alongside MicroPython for the pyscript examples (today they use MicroPython only) _(pydisplay)_
 
 ### Platforms & hardware
