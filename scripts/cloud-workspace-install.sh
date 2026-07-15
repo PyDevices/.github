@@ -64,6 +64,7 @@ shallow_clone_if_missing() {
 link_pydevices cmods "$REPOS/cmods"
 link_pydevices dotgithub "$REPOS/.github"
 link_pydevices PyDevices.github.io "$REPOS/PyDevices.github.io"
+link_pydevices pdwidgets "$REPOS/pdwidgets"
 link_pydevices pydisplay "$REPOS/pydisplay"
 link_pydevices pydisplay_android "$REPOS/pydisplay_android"
 
