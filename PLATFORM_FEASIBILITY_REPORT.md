@@ -40,6 +40,7 @@ PyDevices’ stated goal is to run **pydisplay everywhere Python runs with a usa
 | Android TV / Fire OS | Medium–High | **Pursue** | Phone Android treated as stable. Why-comments on new edits. |
 | LG webOS / Samsung Tizen (web) | Low–Medium | **Pursue** (web only) | PyScript TV examples + remote/key bridge; **no native SDL**. Why-comments on new edits. |
 | iOS / iPadOS via PyScript | Low–Medium | **Docs note only** | Position Mobile Safari / `PSDisplay` in platform docs; no dedicated smoke campaign. |
+| Progressive Web Apps (PyScript) | N/A (ships today) | **Docs only** | Major pydisplay feature — document **where PWAs run** (browser×OS×install UX) in platform docs; how-to already in `guides/pyscript-pwa.md`. |
 | Native iOS / iPadOS app | Low–Medium | **Ruled out** | Foreseeable roadmap: Apple path is PyScript-in-Safari (docs note) only. |
 | Apple watchOS | Very Low | **Ruled out** | Entirely. |
 | FreeRTOS / new MCU boards | Medium (via MP) | **Not a platform track** | Normal `displayif` + board_config product work. |
