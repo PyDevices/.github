@@ -30,7 +30,7 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 | Bucket | Targets |
 |--------|---------|
 | **Pursue now** (parallel OK) | Linux KMS; Android TV / Fire OS; webOS / Tizen (PyScript only) |
-| **Docs only** | iOS / iPadOS via PyScript (platform docs note; no dedicated smoke) |
+| **Docs only** | PWA (installable PyScript — **where they run**); iOS / iPadOS via PyScript |
 | **Not a platform track** | FreeRTOS board expansion; Zephyr |
 | **Ruled out** | Native iOS; watchOS; Switch / Vita / PS; native webOS / Tizen |
 
@@ -94,9 +94,33 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 
 ## Docs only
 
+### Progressive Web Apps (PWA) — major pydisplay feature
+
+**Goal:** Treat installable / offline PyScript apps as a **first-class** platform story, documented as clearly as MCU / desktop / Android APK — especially **where** a pydisplay PWA actually runs.
+
+Today the how-to lives in `pydisplay/docs/guides/pyscript-pwa.md` (manifest, service worker, COI, GitHub Pages). What is still thin: elevating PWAs in **platform** docs and spelling out the host matrix (browser × OS × install UX).
+
+**First steps:**
+
+- Expand `pydisplay/docs/platforms/` so the portability matrix and PyScript notes call out **installable PWA** alongside in-browser demos (link the existing guide; do not bury it as a gallery-only tip).
+- Document a clear **where PWAs run** matrix, including at least:
+  - Desktop Chromium (Chrome / Edge) — install prompt / standalone window
+  - Android Chrome — install / home-screen; contrast with native `pydisplay_android` APK
+  - iOS / iPadOS Safari — Share → Add to Home Screen (no `beforeinstallprompt`)
+  - Chromebook and other desktop Linux browsers as relevant
+  - Relation to TV **web** path (webOS / Tizen Chromium browsers — browser or installable web app, not native SDL)
+- Clarify standalone vs tab behavior, offline/cache expectations, and install UX differences per host.
+- Keep implementation detail in the PWA how-to; **platform docs own “where it runs.”**
+
+**Touchpoints:** `pydisplay` (`docs/platforms/`, `docs/guides/pyscript-pwa.md`, optionally `platforms/index.md` matrix wording). Cross-link from Android TV / webOS / iOS docs-only notes so PWA is not reinvented per track.
+
+**Not in this workstream:** new PWA runtime features or native shells — documentation and positioning only.
+
+---
+
 ### iOS / iPadOS via PyScript
 
-- Add a short note in `pydisplay` platform docs: Apple mobile = Mobile Safari + `PSDisplay` / PyScript gallery.
+- Add a short note in `pydisplay` platform docs: Apple mobile = Mobile Safari + `PSDisplay` / PyScript gallery (browser and/or home-screen PWA — see PWA workstream above).
 - **No** dedicated iPhone/iPad smoke campaign as part of this roadmap.
 - Does **not** reopen native iOS packaging.
 
