@@ -299,7 +299,7 @@ Any new platform likely needs coordinated updates across:
 | Bucket | Targets |
 |--------|---------|
 | **Pursue now** (parallel OK) | Linux KMS (SDL first); Android TV / Fire OS; webOS / Tizen via PyScript |
-| **Docs only** | iOS / iPadOS PyScript note in platform docs |
+| **Docs only** | PWA where-they-run platform docs; iOS / iPadOS PyScript note |
 | **Not a platform track** | FreeRTOS board expansion; Zephyr |
 | **Ruled out** | Native iOS; watchOS; Switch / Vita / PS; native webOS/Tizen |
 
