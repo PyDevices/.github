@@ -1,5 +1,5 @@
 {
-  "install": "bash scripts/cloud-workspace-install.sh",
+  "install": "bash scripts/cloud-workspace-install.sh && bash scripts/cloud-python-deps.sh",
   "start": "true",
   "repositoryDependencies": [
     "github.com/PyDevices/.github",

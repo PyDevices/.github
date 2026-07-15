@@ -9,7 +9,14 @@ On a developer laptop, repos usually live as siblings under a single parent
 `/home/ubuntu/gh/` using symlinks into `/agent/repos/`.
 
 **Automatic setup:** `.cursor/environment.json` in this repo runs
-`scripts/cloud-workspace-install.sh` on each cloud VM boot (idempotent).
+`scripts/cloud-workspace-install.sh` then `scripts/cloud-python-deps.sh` on each
+cloud VM boot (both idempotent). `cloud-workspace-install.sh` builds the symlink
+layout + shallow upstream clones; `cloud-python-deps.sh` creates the repo-root
+`.venv` for the runnable pure-Python products (`pydisplay` dev tooling +
+`pygame-ce` + `lvgl-cpython`; `ruff` for `palettes`/`pdwidgets`) and drops a
+`pydevices_siblings.pth` into pydisplay's `.venv` so examples import the sibling
+`palettes`/`pdwidgets` sources. System prerequisites (`python3-venv`,
+`libsdl2-dev`) come from the VM snapshot, not these scripts.
 Use the **`pydevices-cloud-handoff`** skill (`/pydevices-cloud-handoff`) when
 handing work from Cursor desktop to Cloud Agents.
 
