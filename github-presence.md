@@ -56,7 +56,9 @@ Every product and module repo below ships a GitHub Pages site sharing the same
 chrome (dark-default theme, light toggle in the header, PyDevices brand linking
 to the org root) from
 [PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io)'s
-`assets/css/site.css`.
+`assets/css/site.css`. Product heroes use per-repo marks under
+`assets/img/products/*.svg` (same icons as the org landing cards); the header
+keeps the shared org logo.
 
 | Repo | Role | Pages site |
 |---|---|---|
