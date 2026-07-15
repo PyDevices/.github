@@ -60,6 +60,7 @@ Every repo below ships a GitHub Pages site sharing the same chrome
 | Repo | Role | Pages site |
 |---|---|---|
 | [pydisplay](https://github.com/PyDevices/pydisplay) | Core pure-Python display/input/graphics library | [pydevices.github.io/pydisplay](https://pydevices.github.io/pydisplay/) (+ [PyScript demos](https://pydevices.github.io/pydisplay/pyscript/)) |
+| [palettes](https://github.com/PyDevices/palettes) | Color palette toolkit for pydisplay | [pydevices.github.io/palettes](https://pydevices.github.io/palettes/) |
 | [pdwidgets](https://github.com/PyDevices/pdwidgets) | Cross-platform widget toolkit for pydisplay | [pydevices.github.io/pdwidgets](https://pydevices.github.io/pdwidgets/) |
 | [lv_bindings](https://github.com/PyDevices/lv_bindings) | LVGL C→binding generator (source of truth for the native cmods) | [pydevices.github.io/lv_bindings](https://pydevices.github.io/lv_bindings/) |
 | [cmods](https://github.com/PyDevices/cmods) | Workspace that builds/smoke-tests the native-module matrix together | [pydevices.github.io/cmods](https://pydevices.github.io/cmods/) |

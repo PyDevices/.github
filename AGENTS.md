@@ -21,6 +21,7 @@ handing work from Cursor desktop to Cloud Agents.
     ├── cmods              -> /agent/repos/cmods
     ├── dotgithub          -> /agent/repos/.github   (this repo)
     ├── PyDevices.github.io -> /agent/repos/PyDevices.github.io
+    ├── palettes            -> /agent/repos/palettes
     ├── pdwidgets           -> /agent/repos/pdwidgets
     ├── pydisplay          -> /agent/repos/pydisplay
     └── pydisplay_android  -> /agent/repos/pydisplay_android
