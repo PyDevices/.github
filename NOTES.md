@@ -26,7 +26,7 @@ so it can sync with the org clone without being a product/docs surface.
 
 ### Publishing & packaging
 
-- [ ] Remove `pydisplay-bundle` everywhere — **done for micropython-lib/MIP index** (stale trees pruned; publish no longer regenerates the bundle). Remaining: drop `packages/pydisplay-bundle.json`, Wokwi bundle, and installer/docs that still use the GitHub composite manifest *(pydisplay)*
+- [x] Remove `pydisplay-bundle` everywhere — micropython-lib/MIP pruned; `packages/pydisplay-bundle.json` removed; Wokwi uses `sim/wokwi/mcu-lib.json`; installer/docs install core packages individually *(pydisplay, micropython-lib)*
 - [ ] Make all PyDevices repo automations that publish to TestPyPI or micropython-lib also attach those artifacts as GitHub release assets per tag — see `pydisplay/.cursor/testpypi-publish-audit.md` (gap: none do today) *(pydisplay, cmods — usdl2, graphics, lv_cpython_mod, lv_bindings)*
 - [ ] `lv_cpython_mod` **tag publish (do first):** add `build_pyodide_wheel.sh` job + `gh release create` attaching cibuildwheel + `pyemscripten_2026_0` wheels (and optionally refresh Pages `wheels/` from that release) — don’t bolt Pyodide onto TestPyPI-only; then generalize release assets to the other repos above *(lv_cpython_mod, then pydisplay/cmods siblings)*
 - [x] Move `pdwidgets` into its own repo and add automation to publish to TestPyPI without any examples *(pydisplay → new repo)*
