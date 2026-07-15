@@ -52,8 +52,9 @@ the answer from scratch.
 
 ## Repos & Pages sites
 
-Every repo below ships a GitHub Pages site sharing the same chrome
-(dark-default theme, light toggle in the header) from
+Every product and module repo below ships a GitHub Pages site sharing the same
+chrome (dark-default theme, light toggle in the header, PyDevices brand linking
+to the org root) from
 [PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io)'s
 `assets/css/site.css`.
 
