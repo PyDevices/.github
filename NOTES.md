@@ -45,6 +45,8 @@ Remaining open drafts need hardware validation; `#6` also needs rebase before me
 - [ ] Get `pydisplay_android` working on desktop emulator *(pydisplay_android)*
 - [ ] Build MicroPython with LVGL, `graphics`, `displayif`, etc. for `board_configs/fbdisplay/esp32-p4-wifi6-touch-lcd-4b` *(pydisplay, cmods)*
 - [ ] Reorganize `board_configs` if it makes sense *(pydisplay)*
+- [ ] PyScript PWA opening in new app with recent pushes — regression *(pydisplay)*
+
 
 
 
