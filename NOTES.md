@@ -7,6 +7,11 @@ so it can sync with the org clone without being a product/docs surface.
 
 ## Todo
 
+- [x] `car_cluster` fuel gauge — remove the percentage value label (keep E/F caps + title) *(pydisplay)*
+- [x] `car_cluster` speed screen — odometer `"%.1f mi"` (no `"ODO "` prefix); white digital digits; DIG/GAUGE / gear / odo layout from design session *(pydisplay)*
+- [x] `car_cluster` engine screen — `"Oil pres."` / `"Hours"`; drop `"ENGINE LOAD"` section label (keep bar) *(pydisplay)*
+- [x] `car_cluster` lights screen — even row spacing from design session *(pydisplay)*
+
 
 
 ### LVGL
