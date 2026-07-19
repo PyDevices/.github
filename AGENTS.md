@@ -10,13 +10,25 @@ On a developer laptop, repos usually live as siblings under a single parent
 
 **Automatic setup:** `.cursor/environment.json` in this repo runs
 `scripts/cloud-workspace-install.sh` then `scripts/cloud-python-deps.sh` on each
-cloud VM boot (both idempotent). `cloud-workspace-install.sh` builds the symlink
-layout + shallow upstream clones; `cloud-python-deps.sh` creates the repo-root
-`.venv` for the runnable pure-Python products (`pydisplay` dev tooling +
-`pygame-ce` + `lvgl-cpython`; `ruff` for `palettes`/`pdwidgets`) and drops a
-`pydevices_siblings.pth` into pydisplay's `.venv` so examples import the sibling
-`palettes`/`pdwidgets` sources. System prerequisites (`python3-venv`,
-`libsdl2-dev`) come from the VM snapshot, not these scripts.
+cloud VM boot (both idempotent). After a successful install, agents should start
+real work immediately — no separate “workspace configuration” chat.
+
+`cloud-workspace-install.sh`:
+- Creates `/agent/repos` when missing and shallow-clones any absent PyDevices
+  siblings (Cursor’s `repositoryDependencies` expands GitHub token scope; it
+  does not always materialize those checkouts).
+- Builds `~/gh/pydevices/` symlinks, shallow-clones MicroPython/CircuitPython,
+  inits `lv_bindings/lvgl`, and replaces an empty `lv_cpython_mod/lvgl`
+  placeholder with the canonical symlink.
+- Exits non-zero if required repos or LVGL are still missing.
+
+`cloud-python-deps.sh`:
+- Installs `python3-venv` / `libsdl2-dev` via apt when the VM snapshot omits
+  them, recreates broken `.venv` leftovers, then installs pydisplay
+  (`requirements-dev.txt` + `pygame-ce` + `lvgl-cpython`), `ruff` for
+  `palettes`/`pdwidgets`, and a `pydevices_siblings.pth` so examples import
+  sibling sources.
+
 Use the **`pydevices-cloud-handoff`** skill (`/pydevices-cloud-handoff`) when
 handing work from Cursor desktop to Cloud Agents.
 
