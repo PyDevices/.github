@@ -14,23 +14,30 @@ description: >-
 1. **Commit or stash** local changes on branches the cloud agent should continue.
 2. In the **Agents** input, choose **Run on → Cloud** (or **Move to Cloud** on an
    existing session).
-3. Select the saved environment **Pydevices Cloud Workspace** (or the team
-   equivalent with all PyDevices repos).
-4. Prefer starting from **`PyDevices/.github`** or **`PyDevices/cmods`** so
-   `.cursor/environment.json` runs `scripts/cloud-workspace-install.sh` on boot.
-5. Add a short line to the task prompt:
+3. Prefer starting from **`PyDevices/.github`** so `.cursor/environment.json`
+   runs the boot install scripts. A saved multi-repo environment (e.g.
+   **Pydevices Cloud Workspace**) is nice-to-have for faster boots / token
+   scope, but not required — the install scripts clone missing siblings.
+4. State the actual task directly (build target, bug, PR scope, which files to
+   open). Do **not** open a chat whose only job is “setup workspace” — boot
+   install should already have produced `~/gh/pydevices/`.
+
+   Optional one-liner if the agent is unfamiliar with the layout:
 
    ```
    Follow PyDevices/.github AGENTS.md for the gh/pydevices workspace layout.
    ```
 
-6. Then state the actual task (build target, bug, PR scope, etc.).
-
 ## What the cloud agent gets
 
-- Repos cloned under `/agent/repos/` by the saved environment.
-- On install: `~/gh/pydevices/` symlinks and `cmods/` interior (see
-  `scripts/cloud-workspace-install.sh`).
+- On install (`scripts/cloud-workspace-install.sh` +
+  `scripts/cloud-python-deps.sh`):
+  - Sibling repos under `/agent/repos/` (cloned if Cursor did not materialize
+    them; `repositoryDependencies` mainly expands GitHub token scope).
+  - `~/gh/pydevices/` symlinks and `cmods/` interior (MP/CP shallow clones,
+    LVGL submodule + `lv_cpython_mod/lvgl` symlink).
+  - Python venvs for `pydisplay` / `palettes` / `pdwidgets` (apt-installs
+    `python3-venv` + `libsdl2-dev` when the snapshot lacks them).
 - Layout rules in repo root **`AGENTS.md`** (this repository).
 
 ## What is not handed off
@@ -45,10 +52,10 @@ description: >-
 
 ## If layout looks wrong on the VM
 
-Re-run manually from any PyDevices repo checkout:
+Re-run both scripts from this repo’s checkout (idempotent):
 
 ```bash
-bash scripts/cloud-workspace-install.sh
+bash scripts/cloud-workspace-install.sh && bash scripts/cloud-python-deps.sh
 ```
 
 Or read `AGENTS.md` in this repo for the full tree and LVGL symlink rules.
