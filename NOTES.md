@@ -87,6 +87,12 @@ Remaining open drafts need hardware validation; `#6` also needs rebase before me
 
 
 
+### mpftp
+
+- [ ] Remove non-public symbols from `lib/path.py` *(mpftp)*
+
+
+
 ### Tooling & ecosystem
 
 - [ ] Remove redundant and consolidate overlapping tools under `tools/`; remove any unnecessary tools that are no longer needed or used *(pydisplay)*
