@@ -36,6 +36,7 @@ so it can sync with the org clone without being a product/docs surface.
 - [ ] Make all PyDevices repo automations that publish to TestPyPI or micropython-lib also attach those artifacts as GitHub release assets per tag — see `pydisplay/.cursor/testpypi-publish-audit.md` (gap: none do today) *(pydisplay, cmods — usdl2, graphics, lv_cpython_mod, lv_bindings)*
 - [ ] `lv_cpython_mod` **tag publish (do first):** add `build_pyodide_wheel.sh` job + `gh release create` attaching cibuildwheel + `pyemscripten_2026_0` wheels (and optionally refresh Pages `wheels/` from that release) — don’t bolt Pyodide onto TestPyPI-only; then generalize release assets to the other repos above *(lv_cpython_mod, then pydisplay/cmods siblings)*
 - [x] Move `pdwidgets` into its own repo and add automation to publish to TestPyPI without any examples *(pydisplay → new repo)*
+- [ ] Generate `.pyi` files for all shipped packages *(pydisplay)*
 
 
 
@@ -75,7 +76,14 @@ Remaining open drafts need hardware validation; `#6` also needs rebase before me
 (Multimer is out of scope for this work.)
 
 - [ ] Optimize `lib/graphics` first, then `graphics_cmod`, for microcontrollers — memory, storage, and speed.  Floating point?  *(pydisplay, cmods — graphics)*
+- [ ] Verify `graphics-cmod` and `src/lib/graphics` parity using an MCU emulator *(cmods — graphics, pydisplay)*
 - [ ] Same MCU optimization pass for `eventsys` and `displaysys` (consecutively or concurrently with graphics) *(pydisplay)*
+
+
+
+### pdwidgets
+
+- [ ] Agent discovery of pdwidgets interface: no `pd.Widget`-level `radius`/`text` kwarg and no `.remove()`/`.clear()` convenience — use `remove_child` (loop for full clear) and `.visible`/`.hide()`. Callbacks are always `(data_or_sender, event)`. *(pdwidgets)*
 
 
 
