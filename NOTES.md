@@ -53,6 +53,7 @@ Remaining open drafts need hardware validation; `#6` also needs rebase before me
 - [ ] Build MicroPython with LVGL, `graphics`, `displayif`, etc. for `board_configs/fbdisplay/esp32-p4-wifi6-touch-lcd-4b` *(pydisplay, cmods)*
 - [ ] Reorganize `board_configs` if it makes sense *(pydisplay)*
 - [x] PyScript PWA opening in new app with recent pushes — regression *(pydisplay)*
+- [x] T-Embed / T-HMI busdisplay bring-up: native spibus/i80bus packages, MADCTL, XPT2046 touch, displayif SPI fixes, `fill_rect` RAMWR *(pydisplay, cmods — displayif)*
 
 
 
