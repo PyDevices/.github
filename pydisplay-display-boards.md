@@ -4,8 +4,10 @@ Bring-up notes for **pydisplay `board_config`s** — panel resolution, touch,
 interface module, and quirks — for boards exercised in the July 2026 DotClock /
 `mipidsi` / busdisplay (`spibus` / `i80bus`) + LVGL (`lv_test_timer`) campaign.
 
-Paths are under pydisplay `board_configs/fbdisplay/<name>/` unless a
-`busdisplay/…` path is given.
+Paths are under
+[`micropython-hardware`](https://github.com/PyDevices/micropython-hardware)
+`board_configs/fbdisplay/<name>/` unless a `busdisplay/…` path is given.
+Device roles (eager / lazy): [device-matrix.md](device-matrix.md).
 Native drivers live in pydevices **displayif** (`displayif.DotClockFramebuffer`
 or `mipidsi`). Soft-reset / scanout lessons:
 [displayif `SOFT_RESET_AND_BRINGUP.md`](https://github.com/PyDevices/displayif/blob/main/SOFT_RESET_AND_BRINGUP.md).
