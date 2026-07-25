@@ -16,7 +16,7 @@ the answer from scratch.
 | Read the org's public-facing "about us" | [PyDevices/.github profile README](https://github.com/PyDevices/.github/blob/main/profile/README.md) (rendered on [github.com/PyDevices](https://github.com/PyDevices)) |
 | Read pydisplay's full documentation | [pydisplay.readthedocs.io](https://pydisplay.readthedocs.io) |
 | Try the library without installing anything | [PyScript browser demos](https://pydevices.github.io/pydisplay/pyscript/) |
-| See which campaign boards expose which device roles | [micropython-hardware device matrix](https://pydevices.github.io/micropython-hardware/) ([source](https://github.com/PyDevices/micropython-hardware/blob/main/device-matrix.md)) |
+| Hardware board/driver docs (configs, contract, drivers, matrix) | [micropython-hardware Pages](https://pydevices.github.io/micropython-hardware/) ([docs/](https://github.com/PyDevices/micropython-hardware/tree/main/docs)) |
 
 ## Getting help: Discussions vs. Issues
 
