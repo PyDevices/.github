@@ -76,7 +76,7 @@ keeps the shared org logo.
 | [lv_cpython_mod](https://github.com/PyDevices/lv_cpython_mod) | Native CPython LVGL extension (`import lvgl`) | [pydevices.github.io/lv_cpython_mod](https://pydevices.github.io/lv_cpython_mod/) |
 | [pydisplay_android](https://github.com/PyDevices/pydisplay_android) | Android APK path for pydisplay | [pydevices.github.io/pydisplay_android](https://pydevices.github.io/pydisplay_android/) |
 | [PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io) | Org landing + shared chrome | [pydevices.github.io](https://pydevices.github.io/) |
-| [.github](https://github.com/PyDevices/.github) | This repo — org profile README, issue templates, CONTRIBUTING.md, github-presence.md, NOTES.md, Detect inventories | *(no Pages site — org metadata only)* |
+| [.github](https://github.com/PyDevices/.github) | This repo — org profile README, issue templates, CONTRIBUTING.md, github-presence.md, NOTES.md | *(no Pages site — org metadata only)* |
 | [micropython-lib](https://github.com/PyDevices/micropython-lib) | Fork carrying PyDevices' micropython-lib packages for `mip install` | *(no dedicated marketing site — it's a package index fork, not a product)* |
 | [micropython-hardware](https://github.com/PyDevices/micropython-hardware) | Board configs + hardware drivers (display/touch/bus/…) extracted from pydisplay | [pydevices.github.io/micropython-hardware](https://pydevices.github.io/micropython-hardware/) |
 
