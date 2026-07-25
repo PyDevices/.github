@@ -19,6 +19,7 @@ so it can sync with the org clone without being a product/docs surface.
 - [ ] Combine `display_driver.py` + `lv_utils.py` → `lv_runtime.py` *(pydisplay)*
 - [ ] `lv_runtime.py` — support multiple LVGL displays *(pydisplay)*
 - [ ] Ship `lv_runtime.py` with `lv_cpython_mod`, `lv_micropython_cmod`, and `lv_circuitpython_mod` *(pydisplay, cmods)*
+- [x] Facilitate gestures in LVGL (multi-touch indev; stop requiring board_config multi→single `touch_read` rewrites) *(pydisplay)*
 
 
 
