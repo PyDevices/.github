@@ -77,6 +77,7 @@ keeps the shared org logo.
 | [PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io) | Org landing + shared chrome | [pydevices.github.io](https://pydevices.github.io/) |
 | [.github](https://github.com/PyDevices/.github) | This repo — org profile README, issue templates, CONTRIBUTING.md, github-presence.md, NOTES.md | *(no Pages site — org metadata only)* |
 | [micropython-lib](https://github.com/PyDevices/micropython-lib) | Fork carrying PyDevices' micropython-lib packages for `mip install` | *(no dedicated marketing site — it's a package index fork, not a product)* |
+| [micropython-hardware](https://github.com/PyDevices/micropython-hardware) | Board configs + hardware drivers (display/touch/bus/…) extracted from pydisplay | *(no dedicated Pages site yet — install via `mip` / clone)* |
 
 ## Licensing
 
