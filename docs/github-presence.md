@@ -63,12 +63,11 @@ app (**all repositories** — installation
 [149173814](https://github.com/organizations/PyDevices/settings/installations/149173814)).
 
 With the GitHub App, RTD receives push/PR events directly — no per-repo webhook
-is required. New projects should be imported from the RTD dashboard after the
-app is installed. Existing projects that still show a legacy
-`readthedocs.org/api/v2/webhook/...` hook under GitHub **Settings → Webhooks**
-should be moved via
-[Migrate to GitHub App](https://app.readthedocs.org/accounts/migrate-to-github-app/),
-then those webhooks removed.
+is required. The docs repos (**pydisplay**, **pygraphics**, **palettes**,
+**pdwidgets**) use this app; legacy `api/v2/webhook/...` hooks are gone. New
+projects: import from the RTD dashboard (repo list comes from the app). If an
+older project still needs migrating:
+[Migrate to GitHub App](https://app.readthedocs.org/accounts/migrate-to-github-app/).
 
 Build config in each docs repo is `.readthedocs.yaml` + `mkdocs.yml` (no secrets).
 
