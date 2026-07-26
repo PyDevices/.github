@@ -23,6 +23,7 @@ the desktop and the browser.
 - **Native cmods** — [displayif](https://github.com/PyDevices/displayif), [graphics](https://github.com/PyDevices/graphics), [usdl2](https://github.com/PyDevices/usdl2), [lv_micropython_cmod](https://github.com/PyDevices/lv_micropython_cmod), [lv_circuitpython_mod](https://github.com/PyDevices/lv_circuitpython_mod), and [lv_cpython_mod](https://github.com/PyDevices/lv_cpython_mod) — the C modules that give pydisplay real hardware speed and an LVGL widget toolkit.
 - **[cmods](https://github.com/PyDevices/cmods)** — the workspace that builds and smoke-tests the whole native-module matrix together.
 - **[pydisplay_android](https://github.com/PyDevices/pydisplay_android)** — the Android APK path for pydisplay.
+- **[mpftp](https://github.com/PyDevices/mpftp)** — VS Code / Cursor board tools (REPL, file transfer, firmware). State under `~/.mpftp/`.
 
 ### 💬 Get help
 

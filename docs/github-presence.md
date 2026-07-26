@@ -17,6 +17,7 @@ the answer from scratch.
 | Read pydisplay's full documentation | [pydisplay.readthedocs.io](https://pydisplay.readthedocs.io) |
 | Try the library without installing anything | [PyScript browser demos](https://pydevices.github.io/pydisplay/pyscript/) |
 | Hardware board/driver docs (configs, contract, drivers, matrix) | [micropython-hardware Pages](https://pydevices.github.io/micropython-hardware/) ([docs/](https://github.com/PyDevices/micropython-hardware/tree/main/docs)) |
+| Talk to a board from VS Code / Cursor (REPL, files, firmware) | [mpftp](https://github.com/PyDevices/mpftp) ([Pages](https://pydevices.github.io/mpftp/); agent state under `~/.mpftp/`) |
 
 ## Getting help: Discussions vs. Issues
 
@@ -79,6 +80,7 @@ keeps the shared org logo.
 | [.github](https://github.com/PyDevices/.github) | This repo — org profile README, issue templates, CONTRIBUTING.md, `docs/github-presence.md`, `docs/repo-layout.md`, `docs/NOTES.md` | *(no Pages site — org metadata only)* |
 | [micropython-lib](https://github.com/PyDevices/micropython-lib) | Fork carrying PyDevices' micropython-lib packages for `mip install` | *(no dedicated marketing site — it's a package index fork, not a product)* |
 | [micropython-hardware](https://github.com/PyDevices/micropython-hardware) | Board configs + hardware drivers (display/touch/bus/…) extracted from pydisplay | [pydevices.github.io/micropython-hardware](https://pydevices.github.io/micropython-hardware/) |
+| [mpftp](https://github.com/PyDevices/mpftp) | VS Code / Cursor board tools (REPL, file transfer, mip/circup, MicroPython firmware) | [pydevices.github.io/mpftp](https://pydevices.github.io/mpftp/) |
 
 ## Licensing
 
