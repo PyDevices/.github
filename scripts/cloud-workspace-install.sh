@@ -207,7 +207,7 @@ verify_ready() {
             missing=1
         fi
     done
-    if [[ ! -e "$REPOS/displayif/HANDOFF.md" && ! -e "$REPOS/displayif/handoff.md" ]]; then
+    if [[ ! -e "$REPOS/displayif/docs/HANDOFF.md" ]]; then
         log "ERROR: displayif handoff doc missing under $REPOS/displayif"
         missing=1
     fi
