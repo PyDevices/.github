@@ -49,6 +49,10 @@ description: >-
 
 - Cloud agent works on a branch; review the PR or check out the branch locally.
 - **Move to Local** may require an existing local agent for the same repo.
+- **Sibling PRs:** the Cursor integration token often cannot open PRs outside
+  the primary `.github` repo. Agents should use env secret
+  **`PYDEVICES_GH_TOKEN`** (`export GH_TOKEN="$PYDEVICES_GH_TOKEN"` then
+  `gh pr create -R PyDevices/<repo> …`). See root **`AGENTS.md`** § GitHub auth.
 
 ## If layout looks wrong on the VM
 

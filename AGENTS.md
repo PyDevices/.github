@@ -37,13 +37,14 @@ handing work from Cursor desktop to Cloud Agents.
 ```
 /home/ubuntu/gh/
 └── pydevices/
-    ├── cmods              -> /agent/repos/cmods
-    ├── dotgithub          -> /agent/repos/.github   (this repo)
-    ├── PyDevices.github.io -> /agent/repos/PyDevices.github.io
-    ├── palettes            -> /agent/repos/palettes
-    ├── pdwidgets           -> /agent/repos/pdwidgets
-    ├── pydisplay          -> /agent/repos/pydisplay
-    └── pydisplay_android  -> /agent/repos/pydisplay_android
+    ├── cmods                 -> /agent/repos/cmods
+    ├── dotgithub             -> /agent/repos/.github   (this repo)
+    ├── micropython-hardware  -> /agent/repos/micropython-hardware
+    ├── PyDevices.github.io   -> /agent/repos/PyDevices.github.io
+    ├── palettes              -> /agent/repos/palettes
+    ├── pdwidgets             -> /agent/repos/pdwidgets
+    ├── pydisplay             -> /agent/repos/pydisplay
+    └── pydisplay_android     -> /agent/repos/pydisplay_android
 ```
 
 **Not cloned locally:** `micropython-lib` — GitHub Actions owns sync and
@@ -133,6 +134,28 @@ ln -s ../lv_bindings/lvgl lv_cpython_mod/lvgl
 When removing paths under `pydevices/` or `cmods/`, delete **symlinks only**
 (`rm path` on the link), never `rm -rf` through a symlink into
 `/agent/repos/*` unless the intent is to destroy an owned repo.
+
+## GitHub auth — opening PRs on sibling repos
+
+Cloud Agents started from **`PyDevices/.github`** get a Cursor integration
+token that can **push** branches into `/agent/repos/*` checkouts, but that
+token often **cannot** `createPullRequest` on sibling repos (GraphQL
+`Resource not accessible by integration`). `ManagePullRequest` is also bound
+to the agent’s primary repo (`.github`), so it will not open PRs on
+`graphics`, `pydisplay`, etc.
+
+**Use the workspace secret `PYDEVICES_GH_TOKEN`** (org/admin PAT, injected into
+the environment) when creating or updating PRs on any PyDevices sibling:
+
+```bash
+export GH_TOKEN="$PYDEVICES_GH_TOKEN"
+gh pr create -R PyDevices/<repo> --base main --head <branch> --title "…" --body "…"
+# or: gh pr edit … / gh pr ready …
+```
+
+Confirm access first if needed: `gh api repos/PyDevices/<repo> --jq .permissions`
+should show `"push": true` (and usually `"admin": true`) under that token.
+Do **not** rely on the default `gh` login (`cursor` / `ghs_…`) for sibling PRs.
 
 ## Related docs
 
