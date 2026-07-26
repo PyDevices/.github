@@ -162,5 +162,5 @@ Do **not** rely on the default `gh` login (`cursor` / `ghs_…`) for sibling PRs
 
 - [cmods AGENTS.md](https://github.com/PyDevices/cmods/blob/main/AGENTS.md) —
   build matrix (`build_all.sh`, `build_target.sh`, `build_mp.sh`)
-- [lv_bindings PUBLISHING.md](https://github.com/PyDevices/lv_bindings/blob/main/PUBLISHING.md) —
+- [lv_bindings PUBLISHING.md](https://github.com/PyDevices/lv_bindings/blob/main/docs/PUBLISHING.md) —
   binding regeneration and `lv_cpython_mod` release dispatch

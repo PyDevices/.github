@@ -4,7 +4,7 @@
 **Triage:** 2026-07-15 — org decisions recorded below (pursue / docs-only / not-a-track / ruled out)  
 **Scope:** Feasibility of extending PyDevices / PyDisplay to additional display targets beyond the current portability matrix.  
 **Author:** PyDevices Cloud Agent (based on review of all owned repositories under `/home/ubuntu/gh/pydevices` and `/agent/repos`).  
-**Location:** [PyDevices/.github](https://github.com/PyDevices/.github) (`PLATFORM_FEASIBILITY_REPORT.md`). Actionable workstreams: [`PLATFORM_ROADMAP.md`](PLATFORM_ROADMAP.md).
+**Location:** [PyDevices/.github](https://github.com/PyDevices/.github) (`docs/PLATFORM_FEASIBILITY_REPORT.md`). Actionable workstreams: [`PLATFORM_ROADMAP.md`](PLATFORM_ROADMAP.md).
 
 ---
 

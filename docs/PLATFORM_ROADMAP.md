@@ -153,6 +153,6 @@ Do **not** start from this roadmap:
 | Doc | Role |
 |-----|------|
 | [`PLATFORM_FEASIBILITY_REPORT.md`](PLATFORM_FEASIBILITY_REPORT.md) | Analysis + org decisions |
-| [`NOTES.md`](NOTES.md) | Brad’s personal todo (not this roadmap) |
+| [`NOTES.md`](NOTES.md) | Brad's personal todo (not this roadmap) |
 | [`AGENTS.md`](AGENTS.md) | Cloud workspace layout |
 | `pydisplay` platform docs | User-facing install/portability matrix |
