@@ -43,10 +43,9 @@ the answer from scratch.
   not in a wiki page.
 - **Projects** are disabled org-wide (org boards and per-repo Projects). Public
   work tracking is Issues + Discussions; there is no org kanban.
-- **GitHub Packages** is not used. Installables go to TestPyPI / PyPI (CPython),
-  [micropython-lib](https://github.com/PyDevices/micropython-lib) via `mip`
-  (MicroPython), and GitHub Release assets — not GHCR or other GitHub package
-  registries.
+- **GitHub Packages** is not used. Installables go to TestPyPI / PyPI (CPython)
+  and [micropython-lib](https://github.com/PyDevices/micropython-lib) via `mip`
+  (MicroPython) — not GHCR or other GitHub package registries.
 
 ## Org profile
 

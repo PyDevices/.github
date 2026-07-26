@@ -17,10 +17,6 @@ so it can sync with the org clone without being a product/docs surface.
 - [ ] **CircuitPython** `SDLDisplay` **forced software renderer** — `sdldisplay.py` downgrades accelerated GL on CP only (`SetRenderTarget` / `glFramebufferTexture2DEXT` fails on rotated render targets). On the same host MP unix uses SDL2 too; investigate whether this is a real CP/usdl2-binding difference or an outdated workaround — goal: HW-accelerated SDL on CP unix matching MP, or document the actual root cause *(pydisplay, cmods)*
 - [ ] Emulate ILI9341-style top-down (vertical) hardware scrolling in desktop `displaysys` software backends (SDL/PG/PS/JN) when `rotation` = 90 or 270 — hardware VSCRDEF/VSCSAD always scrolls top-to-bottom in the panel's native orientation, so at those rotations it should visually appear as side-to-side scrolling; software backends currently don't replicate that rotation-dependent axis flip *(pydisplay)*
 
-### Publishing & packaging
-
-- [ ] Make all PyDevices repo automations that publish to TestPyPI or micropython-lib also attach those artifacts as GitHub release assets per tag — pilot `lv_cpython_mod` first (cibuildwheel + Pyodide already go to TestPyPI only). See `pydisplay/.cursor/testpypi-publish-audit.md` *(pydisplay, cmods — usdl2, graphics, lv_cpython_mod, lv_bindings)*
-
 ### Frozen & standalone apps
 
 - [ ] Frozen self-installer for MicroPython (Unix + `micropython.exe`) — see [`docs/frozen-self-installer-notes.md`](frozen-self-installer-notes.md) *(pydisplay, micropython-lib)*
