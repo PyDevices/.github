@@ -4,9 +4,10 @@
 # PyDevices.github.io. Source of truth lives in this repo under site/; the
 # special-named repo is a publish target.
 #
-# Secret: MICROPYTHON_LIB_DEPLOY_TOKEN (org PAT, visibility=all) must have
-# contents:write on PyDevices/PyDevices.github.io (same token used for
-# micropython-lib pushes from sibling publish workflows).
+# Secret: ORG_SITE_DEPLOY_TOKEN — PAT with contents:write on
+# PyDevices/PyDevices.github.io (repo secret on PyDevices/.github).
+# Do not reuse MICROPYTHON_LIB_DEPLOY_TOKEN; that PAT is scoped to
+# micropython-lib and gets 403 on the apex repo.
 name: Deploy org site
 
 on:
@@ -34,7 +35,7 @@ jobs:
       - name: Publish site/ to PyDevices.github.io
         uses: peaceiris/actions-gh-pages@v4
         with:
-          personal_token: ${{ secrets.MICROPYTHON_LIB_DEPLOY_TOKEN }}
+          personal_token: ${{ secrets.ORG_SITE_DEPLOY_TOKEN }}
           external_repository: PyDevices/PyDevices.github.io
           publish_branch: main
           publish_dir: ./site

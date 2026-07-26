@@ -66,6 +66,8 @@ to [PyDevices/PyDevices.github.io](https://github.com/PyDevices/PyDevices.github
 because GitHub only maps `https://pydevices.github.io/` to a repository with
 that exact name. The publish repo is not a second source of truth — do not
 edit it by hand, and do not delete it (apex + shared chrome URLs would break).
+Deploy uses repo secret `ORG_SITE_DEPLOY_TOKEN` (PAT with `contents:write` on
+the publish repo).
 
 | Repo | Role | Pages site |
 |---|---|---|
