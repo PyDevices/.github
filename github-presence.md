@@ -55,11 +55,17 @@ the answer from scratch.
 
 Every product and module repo below ships a GitHub Pages site sharing the same
 chrome (dark-default theme, light toggle in the header, PyDevices brand linking
-to the org root) from
-[PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io)'s
-`assets/css/site.css`. Product heroes use per-repo marks under
-`assets/img/products/*.svg` (same icons as the org landing cards); the header
-keeps the shared org logo.
+to the org root) from [`site/assets/css/site.css`](site/assets/css/site.css)
+in this repo (served at
+`https://pydevices.github.io/assets/css/site.css`). Product heroes use
+per-product marks under `site/assets/img/products/*.svg` (same icons as the
+org landing cards); the header keeps the shared org logo.
+
+**Org apex publishing:** edit [`site/`](site/) here. Actions deploys that tree
+to [PyDevices/PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io)
+because GitHub only maps `https://pydevices.github.io/` to a repository with
+that exact name. The publish repo is not a second source of truth — do not
+edit it by hand, and do not delete it (apex + shared chrome URLs would break).
 
 | Repo | Role | Pages site |
 |---|---|---|
@@ -75,8 +81,8 @@ keeps the shared org logo.
 | [lv_circuitpython_mod](https://github.com/PyDevices/lv_circuitpython_mod) | CircuitPython integration for LVGL | [pydevices.github.io/lv_circuitpython_mod](https://pydevices.github.io/lv_circuitpython_mod/) |
 | [lv_cpython_mod](https://github.com/PyDevices/lv_cpython_mod) | Native CPython LVGL extension (`import lvgl`) | [pydevices.github.io/lv_cpython_mod](https://pydevices.github.io/lv_cpython_mod/) |
 | [pydisplay_android](https://github.com/PyDevices/pydisplay_android) | Android APK path for pydisplay | [pydevices.github.io/pydisplay_android](https://pydevices.github.io/pydisplay_android/) |
-| [PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io) | Org landing + shared chrome | [pydevices.github.io](https://pydevices.github.io/) |
-| [.github](https://github.com/PyDevices/.github) | This repo — org profile README, issue templates, CONTRIBUTING.md, github-presence.md, NOTES.md | *(no Pages site — org metadata only)* |
+| [.github](https://github.com/PyDevices/.github) | Org profile, community health, **org landing + shared chrome source** (`site/`) | [pydevices.github.io](https://pydevices.github.io/) (via deploy to publish repo) |
+| [PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io) | Publish-only target for the org apex (do not edit) | [pydevices.github.io](https://pydevices.github.io/) |
 | [micropython-lib](https://github.com/PyDevices/micropython-lib) | Fork carrying PyDevices' micropython-lib packages for `mip install` | *(no dedicated marketing site — it's a package index fork, not a product)* |
 | [micropython-hardware](https://github.com/PyDevices/micropython-hardware) | Board configs + hardware drivers (display/touch/bus/…) extracted from pydisplay | [pydevices.github.io/micropython-hardware](https://pydevices.github.io/micropython-hardware/) |
 
