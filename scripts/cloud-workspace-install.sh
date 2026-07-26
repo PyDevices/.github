@@ -207,8 +207,8 @@ verify_ready() {
             missing=1
         fi
     done
-    if [[ ! -e "$REPOS/displayif/docs/HANDOFF.md" ]]; then
-        log "ERROR: displayif handoff doc missing under $REPOS/displayif"
+    if [[ ! -e "$REPOS/displayif/docs/PORT_MATRIX.md" ]]; then
+        log "ERROR: displayif port matrix doc missing under $REPOS/displayif"
         missing=1
     fi
     if [[ ! -d "$PD/cmods/micropython/.git" ]]; then
