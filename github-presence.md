@@ -69,7 +69,7 @@ keeps the shared org logo.
 | [lv_bindings](https://github.com/PyDevices/lv_bindings) | LVGL C→binding generator (source of truth for the native cmods) | [pydevices.github.io/lv_bindings](https://pydevices.github.io/lv_bindings/) |
 | [cmods](https://github.com/PyDevices/cmods) | Workspace that builds/smoke-tests the native-module matrix together | [pydevices.github.io/cmods](https://pydevices.github.io/cmods/) |
 | [displayif](https://github.com/PyDevices/displayif) | Native display bus/framebuffer modules | [pydevices.github.io/displayif](https://pydevices.github.io/displayif/) |
-| [graphics](https://github.com/PyDevices/graphics) | Native FrameBuffer/Area module | [pydevices.github.io/graphics](https://pydevices.github.io/graphics/) |
+| [graphics](https://github.com/PyDevices/graphics) | Native (`graphics-cmod`) + pure-Python (`graphics-py`) FrameBuffer/Area | [pydevices.github.io/graphics](https://pydevices.github.io/graphics/) |
 | [usdl2](https://github.com/PyDevices/usdl2) | Native SDL2 subset for pydisplay's desktop backend | [pydevices.github.io/usdl2](https://pydevices.github.io/usdl2/) |
 | [lv_micropython_cmod](https://github.com/PyDevices/lv_micropython_cmod) | MicroPython user C module glue for LVGL | [pydevices.github.io/lv_micropython_cmod](https://pydevices.github.io/lv_micropython_cmod/) |
 | [lv_circuitpython_mod](https://github.com/PyDevices/lv_circuitpython_mod) | CircuitPython integration for LVGL | [pydevices.github.io/lv_circuitpython_mod](https://pydevices.github.io/lv_circuitpython_mod/) |
