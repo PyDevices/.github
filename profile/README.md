@@ -19,8 +19,10 @@ PyDevices writes display, input, and graphics code once and runs it across
 the desktop and the browser.
 
 - **[pydisplay](https://github.com/PyDevices/pydisplay)** — pure-Python display, input, and event drivers. The foundation of the stack. Try it live in the [browser demos](https://pydevices.github.io/pydisplay/pyscript/) or read the [docs](https://pydisplay.readthedocs.io).
+- **[palettes](https://github.com/PyDevices/palettes)** / **[pdwidgets](https://github.com/PyDevices/pdwidgets)** — color toolkit and lightweight widgets for pydisplay.
+- **[micropython-hardware](https://github.com/PyDevices/micropython-hardware)** — board configs and hardware drivers for MicroPython and CircuitPython.
 - **[lv_bindings](https://github.com/PyDevices/lv_bindings)** — generates native [LVGL](https://lvgl.io/) bindings for MicroPython, CircuitPython, and CPython from one source of truth.
-- **Native cmods** — [displayif](https://github.com/PyDevices/displayif), [graphics](https://github.com/PyDevices/graphics), [usdl2](https://github.com/PyDevices/usdl2), [lv_micropython_cmod](https://github.com/PyDevices/lv_micropython_cmod), [lv_circuitpython_mod](https://github.com/PyDevices/lv_circuitpython_mod), and [lv_cpython_mod](https://github.com/PyDevices/lv_cpython_mod) — the C modules that give pydisplay real hardware speed and an LVGL widget toolkit.
+- **Native modules** — [displayif](https://github.com/PyDevices/displayif), [graphics](https://github.com/PyDevices/graphics) (also pure-Python `pydisplay-graphics`), [usdl2](https://github.com/PyDevices/usdl2) (also pure-Python `usdl2-py`), [lv_micropython_cmod](https://github.com/PyDevices/lv_micropython_cmod), [lv_circuitpython_mod](https://github.com/PyDevices/lv_circuitpython_mod), and [lv_cpython_mod](https://github.com/PyDevices/lv_cpython_mod).
 - **[cmods](https://github.com/PyDevices/cmods)** — the workspace that builds and smoke-tests the whole native-module matrix together.
 - **[pydisplay_android](https://github.com/PyDevices/pydisplay_android)** — the Android APK path for pydisplay.
 - **[mpftp](https://github.com/PyDevices/mpftp)** — VS Code / Cursor board tools (REPL, file transfer, firmware). State under `~/.mpftp/`.
