@@ -23,7 +23,7 @@ so it can sync with the org clone without being a product/docs surface.
 
 ### Frozen & standalone apps
 
-- [ ] Frozen self-installer for MicroPython (Unix + `micropython.exe`) — see `pydisplay/.cursor/frozen-self-installer-notes.md` *(pydisplay, micropython-lib)*
+- [ ] Frozen self-installer for MicroPython (Unix + `micropython.exe`) — see [`docs/frozen-self-installer-notes.md`](frozen-self-installer-notes.md) *(pydisplay, micropython-lib)*
 - [ ] Develop apps and freeze them into standalone executables — start with `spotapi_remote` in the spotapi repo *(spotapi — external, not a cloned sibling)*
   - Research packaging alternatives: **Electron** (JS shell + web UI) and **PyInstaller** (CPython frozen binary) vs MicroPython frozen executables; pick what fits each app
 
