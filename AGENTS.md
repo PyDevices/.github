@@ -2,7 +2,8 @@
 
 Instructions for AI agents and humans working in the **PyDevices cloud
 workspace** (Cursor Cloud Agent VM). This complements
-[CONTRIBUTING.md](CONTRIBUTING.md) and [github-presence.md](github-presence.md).
+[CONTRIBUTING.md](CONTRIBUTING.md), [docs/github-presence.md](docs/github-presence.md),
+and the shared directory convention in [docs/repo-layout.md](docs/repo-layout.md).
 
 On a developer laptop, repos usually live as siblings under a single parent
 (e.g. `~/gh/pydevices/`). The cloud VM mirrors that layout under

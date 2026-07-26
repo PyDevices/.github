@@ -7,6 +7,9 @@ instructions — read that first.
 
 ## Where things live
 
+Repo directory and root-file layout (`src/`, `lib/`, `tests/`,
+`requirements-dev.txt`, …): see [`docs/repo-layout.md`](docs/repo-layout.md).
+
 - **[pydisplay](https://github.com/PyDevices/pydisplay)** — the core display/input/graphics library (pure Python).
 - **[lv_bindings](https://github.com/PyDevices/lv_bindings)** — the LVGL binding generator; source of truth for the native LVGL cmods.
 - **Native cmods** — [displayif](https://github.com/PyDevices/displayif), [graphics](https://github.com/PyDevices/graphics), [usdl2](https://github.com/PyDevices/usdl2), [lv_micropython_cmod](https://github.com/PyDevices/lv_micropython_cmod), [lv_circuitpython_mod](https://github.com/PyDevices/lv_circuitpython_mod), [lv_cpython_mod](https://github.com/PyDevices/lv_cpython_mod).
