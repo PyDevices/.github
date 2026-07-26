@@ -16,6 +16,8 @@ the answer from scratch.
 | Read the org's public-facing "about us" | [PyDevices/.github profile README](https://github.com/PyDevices/.github/blob/main/profile/README.md) (rendered on [github.com/PyDevices](https://github.com/PyDevices)) |
 | Read pydisplay's full documentation | [pydisplay.readthedocs.io](https://pydisplay.readthedocs.io) |
 | Read pygraphics documentation | [pygraphics.readthedocs.io](https://pygraphics.readthedocs.io) |
+| Read palettes / pdwidgets docs | [palettes.readthedocs.io](https://palettes.readthedocs.io), [pdwidgets.readthedocs.io](https://pdwidgets.readthedocs.io) |
+| Manage Read the Docs ↔ GitHub (org app) | [Read the Docs Community GitHub App](https://github.com/organizations/PyDevices/settings/installations/149173814) (all repos); migrate legacy projects at [RTD migrate-to-github-app](https://app.readthedocs.org/accounts/migrate-to-github-app/) |
 | Try the library without installing anything | [PyScript browser demos](https://pydevices.github.io/pydisplay/pyscript/) |
 | Hardware board/driver docs (configs, contract, drivers, matrix) | [micropython-hardware Pages](https://pydevices.github.io/micropython-hardware/) ([docs/](https://github.com/PyDevices/micropython-hardware/tree/main/docs)) |
 | Talk to a board from VS Code / Cursor (REPL, files, firmware) | [mpftp](https://github.com/PyDevices/mpftp) ([Pages](https://pydevices.github.io/mpftp/); agent state under `~/.mpftp/`) |
@@ -51,6 +53,24 @@ the answer from scratch.
 ## Org profile
 
 - **About / description / website**: set on the org (`https://pydevices.github.io/`).
+
+## Read the Docs
+
+MkDocs sites for **pydisplay**, **pygraphics**, **palettes**, and **pdwidgets**
+publish to `*.readthedocs.io`. GitHub integration uses the org-installed
+[Read the Docs Community](https://github.com/apps/read-the-docs-community)
+app (**all repositories** — installation
+[149173814](https://github.com/organizations/PyDevices/settings/installations/149173814)).
+
+With the GitHub App, RTD receives push/PR events directly — no per-repo webhook
+is required. New projects should be imported from the RTD dashboard after the
+app is installed. Existing projects that still show a legacy
+`readthedocs.org/api/v2/webhook/...` hook under GitHub **Settings → Webhooks**
+should be moved via
+[Migrate to GitHub App](https://app.readthedocs.org/accounts/migrate-to-github-app/),
+then those webhooks removed.
+
+Build config in each docs repo is `.readthedocs.yaml` + `mkdocs.yml` (no secrets).
 
 ## Repos & Pages sites
 
