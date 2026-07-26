@@ -96,7 +96,7 @@ if bin="$(ensure_venv pydisplay)"; then
     sp="$("$bin/python" -c 'import site; print(site.getsitepackages()[0])' 2>/dev/null)"
     if [[ -n "${sp:-}" ]]; then
         printf '%s\n%s\n%s\n%s\n' \
-            "$REPOS/palettes/lib" "$REPOS/pdwidgets/lib" "$REPOS/graphics/lib" \
+            "$REPOS/palettes/lib" "$REPOS/pdwidgets/lib" "$REPOS/pygraphics/lib" \
             "$REPOS/usdl2/lib" \
             > "$sp/pydevices_siblings.pth"
         log "wrote $sp/pydevices_siblings.pth"

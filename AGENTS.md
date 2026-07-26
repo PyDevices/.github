@@ -63,7 +63,7 @@ cmods/
 ├── micropython/           shallow clone @ latest stable tag (e.g. v1.28.0)
 ├── circuitpython/       shallow clone @ latest stable tag (e.g. 10.2.1)
 ├── displayif            -> /agent/repos/displayif
-├── graphics             -> /agent/repos/graphics
+├── pygraphics           -> /agent/repos/pygraphics
 ├── lv_bindings          -> /agent/repos/lv_bindings
 ├── lv_circuitpython_mod -> /agent/repos/lv_circuitpython_mod
 ├── lv_cpython_mod       -> /agent/repos/lv_cpython_mod
@@ -144,7 +144,7 @@ token that can **push** branches into `/agent/repos/*` checkouts, but that
 token often **cannot** `createPullRequest` on sibling repos (GraphQL
 `Resource not accessible by integration`). `ManagePullRequest` is also bound
 to the agent’s primary repo (`.github`), so it will not open PRs on
-`graphics`, `pydisplay`, etc.
+`pygraphics`, `pydisplay`, etc.
 
 **Use the workspace secret `PYDEVICES_GH_TOKEN`** (org/admin PAT, injected into
 the environment) when creating or updating PRs on any PyDevices sibling:

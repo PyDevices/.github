@@ -14,8 +14,8 @@ PyDevices’ stated goal is to run **pydisplay everywhere Python runs with a usa
 
 | Layer | Repos | Role |
 |-------|-------|------|
-| Application API | `pydisplay` (`displaysys`, `eventsys`, `graphics`, `multimer`) | Portable RGB565 display contract, unified input events, timers |
-| Hardware acceleration | `displayif`, `graphics`, `usdl2` | Native C modules for bus/framebuffer interfaces, drawing, SDL2 subset |
+| Application API | `pydisplay` (`displaysys`, `eventsys`, `pygraphics`, `multimer`) | Portable RGB565 display contract, unified input events, timers |
+| Hardware acceleration | `displayif`, `pygraphics`, `usdl2` | Native C modules for bus/framebuffer interfaces, drawing, SDL2 subset |
 | GUI toolkit (optional) | `lv_bindings` + `lv_*_mod` | LVGL bindings for all three Python runtimes |
 | Packaging | `pydisplay_android`, TestPyPI wheels, MIP/`installer.py` | APK path and prebuilt packages |
 | Build workspace | `cmods` | Optional multi-usermod MicroPython build orchestration |
@@ -57,7 +57,7 @@ PyDevices’ stated goal is to run **pydisplay everywhere Python runs with a usa
 
 This report is based on:
 
-1. README, platform docs, and source review across **all owned repos**: `pydisplay`, `pydisplay_android`, `displayif`, `graphics`, `usdl2`, `cmods`, `lv_bindings`, `lv_micropython_cmod`, `lv_circuitpython_mod`, `lv_cpython_mod`, `PyDevices.github.io`, `.github`.
+1. README, platform docs, and source review across **all owned repos**: `pydisplay`, `pydisplay_android`, `displayif`, `pygraphics`, `usdl2`, `cmods`, `lv_bindings`, `lv_micropython_cmod`, `lv_circuitpython_mod`, `lv_cpython_mod`, `PyDevices.github.io`, `.github`.
 2. Mapping each target to existing **display backend contracts**, **runtime availability** (MicroPython / CircuitPython / CPython), and **packaging** paths already in the ecosystem.
 3. External platform constraints (store policies, official language runtimes, input modalities) where the codebase has no prior work.
 4. **2026-07-15 triage** with Brad — decisions in the summary table above supersede earlier “recommended priority” wording elsewhere in this doc.
@@ -119,7 +119,7 @@ Embedded Linux kiosks (Raspberry Pi without desktop, industrial HMI, digital sig
 | Approach | Reuses existing code | Pros | Cons |
 |----------|---------------------|------|------|
 | **A. SDL `kmsdrm` video driver** | `SDLDisplay`, `usdl2`, `eventsys`, `multimer._sdl2` | Smallest diff; same Python API | Needs SDL2 with KMS; input via `evdev`/SDL; dependency on SDL behavior |
-| **B. New `LinuxFBDisplay` (fbdev mmap)** | `DisplayDriver` contract, `graphics` | No X11/Wayland; true bare metal feel | New C extension or ctypes; rotation/format quirks; deprecated on many distros |
+| **B. New `LinuxFBDisplay` (fbdev mmap)** | `DisplayDriver` contract, `pygraphics` | No X11/Wayland; true bare metal feel | New C extension or ctypes; rotation/format quirks; deprecated on many distros |
 | **C. New `DRMDisplay` (libdrm/GBM)** | Same | Modern, zero-copy potential with `displayif`-style thinking | Most engineering; buffer management; mode-setting |
 | **D. LVGL linux fbdev/drm driver + flush shim** | `lv_cpython_mod` / `lv_micropython_cmod` | LVGL already has drivers | Bypasses pydisplay `show()` path unless integrated as backend |
 
@@ -309,7 +309,7 @@ Cloud agents: pick any **Pursue now** stream; do **not** reopen ruled-out target
 
 ## Conclusion
 
-PyDevices is **well architected for portability**: the `DisplayDriver` RGB565 contract, `board_config` wiring pattern, and split between pure Python (`pydisplay`) and native acceleration (`displayif`, `graphics`, `usdl2`) make **incremental platform additions** possible without rewriting application code.
+PyDevices is **well architected for portability**: the `DisplayDriver` RGB565 contract, `board_config` wiring pattern, and split between pure Python (`pydisplay`) and native acceleration (`displayif`, `pygraphics`, `usdl2`) make **incremental platform additions** possible without rewriting application code.
 
 **Org focus (2026-07-15):**
 

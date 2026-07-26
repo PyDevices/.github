@@ -69,7 +69,7 @@ landing cards use compact inline icons. Header brand stays on the shared org log
 | [lv_bindings](https://github.com/PyDevices/lv_bindings) | LVGL C→binding generator (source of truth for the native cmods) | [pydevices.github.io/lv_bindings](https://pydevices.github.io/lv_bindings/) |
 | [cmods](https://github.com/PyDevices/cmods) | Workspace that builds/smoke-tests the native-module matrix together | [pydevices.github.io/cmods](https://pydevices.github.io/cmods/) |
 | [displayif](https://github.com/PyDevices/displayif) | Native display bus/framebuffer modules | [pydevices.github.io/displayif](https://pydevices.github.io/displayif/) |
-| [graphics](https://github.com/PyDevices/graphics) | Native (`graphics-cmod`) + pure-Python (`pydisplay-graphics`) FrameBuffer/Area | [pydevices.github.io/graphics](https://pydevices.github.io/graphics/) |
+| [pygraphics](https://github.com/PyDevices/pygraphics) | Native (`pygraphics-cmod`) + pure-Python (`pygraphics`) FrameBuffer/Area | [pydevices.github.io/pygraphics](https://pydevices.github.io/pygraphics/) |
 | [usdl2](https://github.com/PyDevices/usdl2) | Native (`usdl2`) + pure-Python (`usdl2-py`) SDL2 subset for pydisplay's desktop backend | [pydevices.github.io/usdl2](https://pydevices.github.io/usdl2/) |
 | [lv_micropython_cmod](https://github.com/PyDevices/lv_micropython_cmod) | MicroPython user C module glue for LVGL | [pydevices.github.io/lv_micropython_cmod](https://pydevices.github.io/lv_micropython_cmod/) |
 | [lv_circuitpython_mod](https://github.com/PyDevices/lv_circuitpython_mod) | CircuitPython integration for LVGL | [pydevices.github.io/lv_circuitpython_mod](https://pydevices.github.io/lv_circuitpython_mod/) |
@@ -87,7 +87,7 @@ All owned repos are **MIT**, using GitHub's standard single-author template
 (so it's correctly detected as MIT rather than `NOASSERTION`/`Other`). A
 handful of files in **pydisplay** that still carry code from other authors
 (`src/add_ons/tft_text.py`, `tft_write.py`, `tft_bitmap.py`, and the
-`polygon()` function in `src/lib/graphics/_shapes.py`, tracing back through
+`polygon()` function in `lib/pygraphics/_shapes.py`, tracing back through
 Russ Hughes' st7789_mpy driver to Ivan Belokobylskiy's st7789py_mpy) keep
 their own self-contained MIT header with that attribution — those in-file
 notices govern those specific files/functions; the root `LICENSE` governs
