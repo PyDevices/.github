@@ -27,6 +27,7 @@ SIBLINGS=(
     pdwidgets
     pydisplay
     pydisplay_android
+    PyDevices.github.io
     usdl2
 )
 
@@ -233,6 +234,7 @@ clone_missing_siblings || die "one or more sibling clones failed"
 
 link_pydevices cmods "$REPOS/cmods"
 link_pydevices dotgithub "$REPOS/.github"
+link_pydevices PyDevices.github.io "$REPOS/PyDevices.github.io"
 link_pydevices micropython-hardware "$REPOS/micropython-hardware"
 link_pydevices palettes "$REPOS/palettes"
 link_pydevices pdwidgets "$REPOS/pdwidgets"

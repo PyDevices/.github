@@ -40,18 +40,16 @@ handing work from Cursor desktop to Cloud Agents.
     ├── cmods                 -> /agent/repos/cmods
     ├── dotgithub             -> /agent/repos/.github   (this repo)
     ├── micropython-hardware  -> /agent/repos/micropython-hardware
+    ├── PyDevices.github.io   -> /agent/repos/PyDevices.github.io
     ├── palettes              -> /agent/repos/palettes
     ├── pdwidgets             -> /agent/repos/pdwidgets
     ├── pydisplay             -> /agent/repos/pydisplay
     └── pydisplay_android     -> /agent/repos/pydisplay_android
 ```
 
-**Not cloned locally:**
-- `micropython-lib` — GitHub Actions owns sync and release there.
-- `PyDevices.github.io` — publish-only apex Pages target; edit
-  [`site/`](site/) in this repo instead (Actions deploys it).
-
-Agents should not add either to this workspace unless explicitly asked.
+**Not cloned locally:** `micropython-lib` — GitHub Actions owns sync and
+release there; agents should not add it to this workspace unless explicitly
+asked.
 
 ## `cmods` workspace interior
 
