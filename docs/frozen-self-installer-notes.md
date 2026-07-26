@@ -7,7 +7,7 @@ touches pydisplay + micropython-lib (+ desktop MicroPython freeze).
 
 - [ ] Warn users where downloads come from: PyDevices micropython-lib MIP index (`https://PyDevices.github.io/micropython-lib/mip/PyDevices`), not the [official MicroPython micropython-lib](https://github.com/micropython/micropython-lib) package index — **maintainer-published**, not an endorsed upstream source (show URL on first run / in GUI)
 - [ ] Freeze a small bootstrap module into desktop MicroPython builds so `from <xyz> import <clever_install_fn>` works out of the box
-- [ ] Install or refresh all 3 core modules (`displaysys`, `eventsys`, `graphics`, `multimer`) via `mip` / `lib_install`-style fetch (skip re-download when up to date?)
+- [ ] Install or refresh all 3 core modules (`displaysys`, `eventsys`, `pygraphics`, `multimer`) via `mip` / `lib_install`-style fetch (skip re-download when up to date?)
 - [ ] Post-install GUI (TBD: terminal menu vs minimal on-display UI): download more files, system/platform info, `lv_test_timer_*`-style sanity checks, link to `spotapi_remote` / spotapi
 - [ ] Flesh out scope, module name, and UX (name the import, entry points, error handling offline)
 
@@ -20,7 +20,7 @@ from <xyz> import <clever_install_fn>  # name TBD
 <clever_install_fn>()  # fetch or refresh core libs, then optional GUI
 ```
 
-**What gets installed first:** The four `src/lib` packages only — `displaysys`, `eventsys`, `graphics`, `multimer`. Add-ons, examples, and board configs stay optional later steps.
+**What gets installed first:** The four `src/lib` packages only — `displaysys`, `eventsys`, `pygraphics`, `multimer`. Add-ons, examples, and board configs stay optional later steps.
 
 **Source of truth:** Maintainer-published packages from the PyDevices micropython-lib fork, published via pydisplay [`scripts/publish_sync_packages.sh`](https://github.com/PyDevices/pydisplay/blob/main/scripts/publish_sync_packages.sh) → MIP index at `https://PyDevices.github.io/micropython-lib/mip/PyDevices`. Same channel as [`installer.py`](https://github.com/PyDevices/pydisplay/blob/main/installer.py) `lib_install()` ([installation/mip-micropython-lib.md](https://pydisplay.readthedocs.io/en/latest/installation/mip-micropython-lib.html) on RTD describes the index; this installer should **warn explicitly** that it is not the official MicroPython micropython-lib registry).
 

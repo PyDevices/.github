@@ -17,7 +17,7 @@ ORG="${PYDEVICES_GITHUB_ORG:-PyDevices}"
 SIBLINGS=(
     cmods
     displayif
-    graphics
+    pygraphics
     lv_bindings
     lv_circuitpython_mod
     lv_cpython_mod
@@ -202,7 +202,7 @@ ensure_lv_cpython_lvgl_symlink() {
 
 verify_ready() {
     local name missing=0
-    for name in cmods displayif graphics lv_bindings pydisplay palettes pdwidgets; do
+    for name in cmods displayif pygraphics lv_bindings pydisplay palettes pdwidgets; do
         if [[ ! -d "$REPOS/$name/.git" && ! -L "$REPOS/$name" ]]; then
             log "ERROR: required repo missing: $REPOS/$name"
             missing=1
@@ -246,7 +246,7 @@ link_pydevices pydisplay_android "$REPOS/pydisplay_android"
 # cmods must exist before interior sibling links
 [[ -d "$PD/cmods" ]] || die "cmods missing after link step ($PD/cmods)"
 
-for s in displayif graphics lv_bindings lv_circuitpython_mod lv_cpython_mod \
+for s in displayif pygraphics lv_bindings lv_circuitpython_mod lv_cpython_mod \
     lv_micropython_cmod usdl2; do
     [[ -d "$REPOS/$s" || -L "$REPOS/$s" ]] && link_cmods_sibling "$s"
 done
