@@ -10,7 +10,6 @@ so it can sync with the org clone without being a product/docs surface.
 ### LVGL
 
 - [ ] `display_driver.py` — support multiple LVGL displays *(pydisplay)*
-- [ ] Ship `display_driver.py` with `lv_cpython_mod`, `lv_micropython_cmod`, and `lv_circuitpython_mod` *(pydisplay, cmods)*
 
 ### displaysys & desktop
 
@@ -35,11 +34,6 @@ so it can sync with the org clone without being a product/docs surface.
 - [ ] Verify `pygraphics-cmod` and `src/lib/pygraphics` parity using an MCU emulator *(cmods — pygraphics, pydisplay)*
 - [ ] Same MCU optimization pass for `eventsys` and `displaysys` (consecutively or concurrently with pygraphics) *(pydisplay)*
 
-### pdwidgets
-
-- [ ] Agent discovery of pdwidgets interface: no `pd.Widget`-level `radius`/`text` kwarg and no `.remove()`/`.clear()` convenience — use `remove_child` (loop for full clear) and `.visible`/`.hide()`. Callbacks are always `(data_or_sender, event)`. *(pdwidgets)*
-
 ### Tooling & ecosystem
 
 - [ ] Remove redundant and consolidate overlapping tools under `tools/`; remove any unnecessary tools that are no longer needed or used *(pydisplay)*
-- [ ] Fork [figma2lvgl](https://github.com/khiyamiftikhar/figma2lvgl) and add option to output Python *(new repo — not yet created)*
