@@ -22,10 +22,6 @@ so it can sync with the org clone without being a product/docs surface.
 - [ ] Develop apps and freeze them into standalone executables — start with `spotapi_remote` in the spotapi repo *(spotapi — external, not a cloned sibling)*
   - Research packaging alternatives: **Electron** (JS shell + web UI) and **PyInstaller** (CPython frozen binary) vs MicroPython frozen executables; pick what fits each app
 
-### multimer
-
-- [ ] **multimer soft timers on librt** — on CPython + librt, soft (`hard=False`) still ≈ hard for *when* the callback runs: the backend delivers on the main thread, and `schedule()` invokes immediately there (soft coalesce/gap still apply; worker-thread backends still defer). `Runtime` ticks use `hard=False`. Decide: (a) true soft — queue from the signal handler and drain outside it, or (b) document that soft only defers when delivery isn’t already on main. Test any change on librt + LVGL. *(pydisplay)*
-
 ### MCU optimization
 
 (Multimer is out of scope for this work.)
