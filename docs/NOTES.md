@@ -31,7 +31,6 @@ so it can sync with the org clone without being a product/docs surface.
 (Multimer is out of scope for this work.)
 
 - [ ] Optimize `lib/pygraphics` first, then `pygraphics-cmod`, for microcontrollers — memory, storage, and speed.  Floating point?  *(pydisplay, cmods — pygraphics)*
-- [ ] Verify `pygraphics-cmod` and `src/lib/pygraphics` parity using an MCU emulator *(cmods — pygraphics, pydisplay)*
 - [ ] Same MCU optimization pass for `eventsys` and `displaysys` (consecutively or concurrently with pygraphics) *(pydisplay)*
 
 ### Tooling & ecosystem
