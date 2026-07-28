@@ -14,20 +14,12 @@ so it can sync with the org clone without being a product/docs surface.
 ### displaysys & desktop
 
 - [ ] **CircuitPython** `SDLDisplay` **forced software renderer** — `sdldisplay.py` downgrades accelerated GL on CP only (`SetRenderTarget` / `glFramebufferTexture2DEXT` fails on rotated render targets). On the same host MP unix uses SDL2 too; investigate whether this is a real CP/usdl2-binding difference or an outdated workaround — goal: HW-accelerated SDL on CP unix matching MP, or document the actual root cause *(pydisplay, cmods)*
-- [ ] Emulate ILI9341-style top-down (vertical) hardware scrolling in desktop `displaysys` software backends (SDL/PG/PS/JN) when `rotation` = 90 or 270 — hardware VSCRDEF/VSCSAD always scrolls top-to-bottom in the panel's native orientation, so at those rotations it should visually appear as side-to-side scrolling; software backends currently don't replicate that rotation-dependent axis flip *(pydisplay)*
 
 ### Frozen & standalone apps
 
 - [ ] Frozen self-installer for MicroPython (Unix + `micropython.exe`) — see [`docs/frozen-self-installer-notes.md`](frozen-self-installer-notes.md) *(pydisplay, micropython-lib)*
 - [ ] Develop apps and freeze them into standalone executables — start with `spotapi_remote` in the spotapi repo *(spotapi — external, not a cloned sibling)*
   - Research packaging alternatives: **Electron** (JS shell + web UI) and **PyInstaller** (CPython frozen binary) vs MicroPython frozen executables; pick what fits each app
-
-### MCU optimization
-
-(Multimer is out of scope for this work.)
-
-- [ ] Optimize `lib/pygraphics` first, then `pygraphics-cmod`, for microcontrollers — memory, storage, and speed.  Floating point?  *(pydisplay, cmods — pygraphics)*
-- [ ] Same MCU optimization pass for `eventsys` and `displaysys` (consecutively or concurrently with pygraphics) *(pydisplay)*
 
 ### Tooling & ecosystem
 
