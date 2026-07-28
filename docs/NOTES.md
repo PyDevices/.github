@@ -7,10 +7,6 @@ so it can sync with the org clone without being a product/docs surface.
 
 ## Todo
 
-### LVGL
-
-- [ ] `display_driver.py` — support multiple LVGL displays *(pydisplay)*
-
 ### Frozen & standalone apps
 
 - [ ] Frozen self-installer for MicroPython (Unix + `micropython.exe`) — see [`docs/frozen-self-installer-notes.md`](frozen-self-installer-notes.md) *(pydisplay, micropython-lib)*
