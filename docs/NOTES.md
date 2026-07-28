@@ -11,10 +11,6 @@ so it can sync with the org clone without being a product/docs surface.
 
 - [ ] `display_driver.py` — support multiple LVGL displays *(pydisplay)*
 
-### displaysys & desktop
-
-- [ ] **CircuitPython** `SDLDisplay` **forced software renderer** — `sdldisplay.py` downgrades accelerated GL on CP only (`SetRenderTarget` / `glFramebufferTexture2DEXT` fails on rotated render targets). On the same host MP unix uses SDL2 too; investigate whether this is a real CP/usdl2-binding difference or an outdated workaround — goal: HW-accelerated SDL on CP unix matching MP, or document the actual root cause *(pydisplay, cmods)*
-
 ### Frozen & standalone apps
 
 - [ ] Frozen self-installer for MicroPython (Unix + `micropython.exe`) — see [`docs/frozen-self-installer-notes.md`](frozen-self-installer-notes.md) *(pydisplay, micropython-lib)*
