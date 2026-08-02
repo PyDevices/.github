@@ -106,7 +106,7 @@ landing cards use compact inline icons. Header brand stays on the shared org log
 All owned repos are **MIT**, using GitHub's standard single-author template
 (so it's correctly detected as MIT rather than `NOASSERTION`/`Other`). A
 handful of files in **pydisplay** that still carry code from other authors
-(`src/add_ons/tft_text.py`, `tft_write.py`, `tft_bitmap.py`, and the
+(`src/utils/tft_text.py`, `tft_write.py`, `tft_bitmap.py`, and the
 `polygon()` function in `lib/pygraphics/_shapes.py`, tracing back through
 Russ Hughes' st7789_mpy driver to Ivan Belokobylskiy's st7789py_mpy) keep
 their own self-contained MIT header with that attribution — those in-file
