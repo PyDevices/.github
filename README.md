@@ -16,3 +16,8 @@ Board / Detect inventory docs live in
 ([Pages](https://pydevices.github.io/micropython-hardware/)).
 
 Website: <https://pydevices.github.io/>
+
+This repo is the org-level glue for community health files, issue templates, and
+shared docs. It does not publish a product Pages site of its own; the product
+repos publish their own Pages content, while this repo provides the shared org
+profile and documentation references.
