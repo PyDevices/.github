@@ -15,3 +15,4 @@ so it can sync with the org clone without being a product/docs surface.
 - [ ] Create a feature-accurate Minesweeper game modeled after Windows Minesweeper _(pydisplay)_
 - [ ] Create a joystick emulator to run on an MCU and appear as a joystick over USB _(micropython-hardware)_
 - [ ] Create a dino game to feature in the HTML of the gallery index. Fixed-height display that scales to page width; stay 1×1 (hidden) until a Dino button is pressed, equivalent to Run on `micropython.html` / `pyodide.html` _(pydisplay)_
+- [ ] Verify that FINGERMOTION isn't needed _(pydisplay)_
