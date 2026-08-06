@@ -10,9 +10,10 @@ On a developer laptop, repos usually live as siblings under a single parent
 `/home/ubuntu/gh/` using symlinks into `/agent/repos/`.
 
 **Automatic setup:** `.cursor/environment.json` in this repo runs
-`scripts/cloud-workspace-install.sh` then `scripts/cloud-python-deps.sh` on each
-cloud VM boot (both idempotent). After a successful install, agents should start
-real work immediately — no separate “workspace configuration” chat.
+`scripts/cloud-workspace-install.sh`, `scripts/cloud-python-deps.sh`, and
+`scripts/cloud-pydisplay-dev-env.sh` on each cloud VM boot (all idempotent).
+After a successful install, agents should start real work immediately — no
+separate “workspace configuration” chat.
 
 `cloud-workspace-install.sh`:
 - Creates `/agent/repos` when missing and shallow-clones any absent PyDevices
@@ -29,6 +30,16 @@ real work immediately — no separate “workspace configuration” chat.
   (`requirements-dev.txt` + `pygame-ce` + `lvgl-cpython`), `ruff` for
   `palettes`/`pdwidgets`, and a `pydevices_siblings.pth` so examples import
   sibling sources.
+
+`cloud-pydisplay-dev-env.sh`:
+- Installs pydisplay `requirements.txt` (TestPyPI runtime stack for CPython).
+- `mip.install`s desktop `board_config`, `palettes`, and `pdwidgets` into
+  `~/.micropython/lib` (`target="lib"`, `mpy=False`; see
+  micropython-hardware `docs/install-workflows.md`).
+- Appends a `pydisplay-env.sh` hook to `~/.bashrc` exporting `PATH`
+  (`pydisplay/bin`), `PYTHONPATH=.:lib:utils`, and
+  `MICROPYPATH=.:.frozen:lib:utils:~/.micropython/lib:/usr/lib/micropython`
+  (pydisplay README §3.2.1). Run examples from `pydisplay/src/`.
 
 Use the **`pydevices-cloud-handoff`** skill (`/pydevices-cloud-handoff`) when
 handing work from Cursor desktop to Cloud Agents.
