@@ -77,7 +77,11 @@ Every product and module repo below ships a GitHub Pages site sharing the same
 chrome (dark-default theme, light toggle in the header, PyDevices brand linking
 to the org root) from
 [PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io)'s
-`assets/css/site.css`. The shared org site is the exception: [PyDevices/.github](https://github.com/PyDevices/.github)
+`assets/css/site.css` and `assets/js/site-chrome.js`. Pages mount empty
+`#pydevices-site-header` / `#pydevices-site-footer` elements; the script injects
+identical markup (nav: Gallery, PyDisplay, DisplayIF, Drivers, GitHub) and
+`theme-toggle.js` binds `#theme-toggle`. The shared org site is the exception:
+[PyDevices/.github](https://github.com/PyDevices/.github)
 provides org metadata and docs, but it does not publish a product Pages site of
 its own. Per-repo Pages heroes use marks under `assets/img/products/*.svg` (or
 the repo's own `web/img/product.svg`); the org landing cards use compact inline
