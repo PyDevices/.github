@@ -57,7 +57,7 @@ ensure_micropython_bin() {
     if command -v micropython >/dev/null 2>&1; then
         return 0
     fi
-    die "micropython not on PATH (expected ${PYDISPLAY_ROOT}/bin/micropython; run cmods build_pydisplay_runtimes.sh?)"
+    die "micropython not on PATH (expected ${PYDISPLAY_ROOT}/bin/micropython)"
 }
 
 mip_install_micropython_lib() {

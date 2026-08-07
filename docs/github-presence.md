@@ -89,7 +89,7 @@ icons. Header brand stays on the shared org logo.
 | [palettes](https://github.com/PyDevices/palettes) | Color palette toolkit for pydisplay | [pydevices.github.io/palettes](https://pydevices.github.io/palettes/) |
 | [pdwidgets](https://github.com/PyDevices/pdwidgets) | Cross-platform widget toolkit for pydisplay | [pydevices.github.io/pdwidgets](https://pydevices.github.io/pdwidgets/) |
 | [lv_bindings](https://github.com/PyDevices/lv_bindings) | LVGL C→binding generator (source of truth for the native cmods) | [pydevices.github.io/lv_bindings](https://pydevices.github.io/lv_bindings/) |
-| [cmods](https://github.com/PyDevices/cmods) | Workspace that builds/smoke-tests the native-module matrix together | [pydevices.github.io/cmods](https://pydevices.github.io/cmods/) |
+| [cmods](https://github.com/PyDevices/cmods) | Optional workspace for multi-usermod MicroPython/CircuitPython builds | *(no Pages site — org landing card links to the repo)* |
 | [displayif](https://github.com/PyDevices/displayif) | Native display bus/framebuffer modules | [pydevices.github.io/displayif](https://pydevices.github.io/displayif/) |
 | [pygraphics](https://github.com/PyDevices/pygraphics) | Native (`pygraphics-cmod`) + pure-Python (`pygraphics`) FrameBuffer/Area; docs on [RTD](https://pygraphics.readthedocs.io) | [pydevices.github.io/pygraphics](https://pydevices.github.io/pygraphics/) |
 | [usdl2](https://github.com/PyDevices/usdl2) | Native (`usdl2`) + pure-Python (`usdl2-py`) SDL2 subset for pydisplay's desktop backend | [pydevices.github.io/usdl2](https://pydevices.github.io/usdl2/) |
