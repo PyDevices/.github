@@ -30,7 +30,7 @@ PyDevices’ stated goal is to run **pydisplay everywhere Python runs with a usa
 | `PGDisplay` | CPython desktop (PyGame CE) |
 | `PSDisplay` | PyScript browser canvas |
 | `JNDisplay` | Jupyter Notebook |
-| `PixelDisplay` / `EPaperDisplay` | NeoPixel grids, e-paper |
+| `PixelDisplay` | NeoPixel grids |
 
 ### Org decisions (2026-07-15)
 
