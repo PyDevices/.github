@@ -15,7 +15,7 @@ PyDevices’ stated goal is to run **pydisplay everywhere Python runs with a usa
 | Layer | Repos | Role |
 |-------|-------|------|
 | Application API | `pydisplay` (`displaysys`, `eventsys`, `pygraphics`, `multimer`) | Portable RGB565 display contract, unified input events, timers |
-| Hardware acceleration | `displayif`, `pygraphics`, `usdl2` | Native C modules for bus/framebuffer interfaces, drawing, SDL2 subset |
+| Hardware acceleration | `displayif`, `pygraphics`, SDL2 (`usdl2` via desktop board / Android wheels) | Native C modules for bus/framebuffer interfaces and drawing; SDL2 for desktop/Android |
 | GUI toolkit (optional) | `lv_bindings` + `lv_*_mod` | LVGL bindings for all three Python runtimes |
 | Packaging | `pydisplay_android`, TestPyPI wheels, MIP/`installer.py` | APK path and prebuilt packages |
 | Build workspace | `cmods` | Optional multi-usermod MicroPython build orchestration |
@@ -57,7 +57,7 @@ PyDevices’ stated goal is to run **pydisplay everywhere Python runs with a usa
 
 This report is based on:
 
-1. README, platform docs, and source review across **all owned repos**: `pydisplay`, `pydisplay_android`, `displayif`, `pygraphics`, `usdl2`, `cmods`, `lv_bindings`, `lv_micropython_cmod`, `lv_circuitpython_mod`, `lv_cpython_mod`, `PyDevices.github.io`, `.github`.
+1. README, platform docs, and source review across **all owned repos**: `pydisplay`, `pydisplay_android`, `displayif`, `pygraphics`, `micropython-hardware`, `cmods`, `lv_bindings`, `lv_micropython_cmod`, `lv_circuitpython_mod`, `lv_cpython_mod`, `PyDevices.github.io`, `.github`.
 2. Mapping each target to existing **display backend contracts**, **runtime availability** (MicroPython / CircuitPython / CPython), and **packaging** paths already in the ecosystem.
 3. External platform constraints (store policies, official language runtimes, input modalities) where the codebase has no prior work.
 4. **2026-07-15 triage** with Brad — decisions in the summary table above supersede earlier “recommended priority” wording elsewhere in this doc.
@@ -79,7 +79,7 @@ This report is based on:
 
 | Sub-target | Python runtime | Display path | Blockers |
 |------------|----------------|--------------|----------|
-| **iOS / iPadOS (native app)** | CPython possible via [BeeWare Briefcase](https://beeware.org/), [Kivy-ios](https://github.com/kivy/kivy-ios), or custom Xcode embedding; not in PyDevices today | `usdl2` / SDL2 *can* target iOS, but PyDevices has no iOS build recipes, signing, or App Store pipeline | Apple code-signing; App Store review; no JIT on iOS (affects some Python builds); SDL main-loop integration; touch-safe `multimer` backend |
+| **iOS / iPadOS (native app)** | CPython possible via [BeeWare Briefcase](https://beeware.org/), [Kivy-ios](https://github.com/kivy/kivy-ios), or custom Xcode embedding; not in PyDevices today | SDL2 *can* target iOS, but PyDevices has no iOS build recipes, signing, or App Store pipeline | Apple code-signing; App Store review; no JIT on iOS (affects some Python builds); SDL main-loop integration; touch-safe `multimer` backend |
 | **iOS / iPadOS (web)** | PyScript / WASM asyncio | `PSDisplay` canvas | Offline/PWA limits; no full filesystem; performance vs native |
 | **watchOS** | No practical CPython/MP | N/A | Screen ~200×200; no SDL; watchOS app model incompatible with pydisplay’s event loop assumptions |
 
@@ -87,7 +87,7 @@ This report is based on:
 
 **Why not High:** PyDevices has invested in Android CPython (`pydisplay_android` + TestPyPI `usdl2` Android wheels). iOS would require a **parallel packaging track** (Xcode, CocoaPods/SDL, Apple Developer Program) with no shared p4a infrastructure.
 
-**Effort estimate (native iOS):** Large — new repo, CI on macOS runners, SDL iOS glue, touch + safe-area input in `eventsys`, App Store compliance. **6+ subsystem touchpoints** (`usdl2`, `displaysys`, `multimer`, `eventsys`, packaging, LVGL wheels).
+**Effort estimate (native iOS):** Large — new repo, CI on macOS runners, SDL iOS glue, touch + safe-area input in `eventsys`, App Store compliance. **6+ subsystem touchpoints** (`SDLDisplay` / SDL packaging, `displaysys`, `multimer`, `eventsys`, packaging, LVGL wheels).
 
 ### Org decision
 
@@ -106,7 +106,7 @@ This report is based on:
 - **Linux desktop** is supported via `SDLDisplay` / `PGDisplay` under X11 or Wayland (`pydisplay/docs/platforms/cpython-desktop.md`).
 - **`FBDisplay` is MCU-oriented** — wraps RAM buffers flushed to panels via `displayif` or CircuitPython `framebufferio`, not `/dev/fb*`.
 - **LVGL** (in `lv_bindings`) includes optional `LV_USE_LINUX_FBDEV` and `LV_USE_LINUX_DRM` drivers, but PyDevices’ `lv_cpython_mod/lv_conf.h` sets `LV_USE_OS` to `LV_OS_NONE` and does **not** enable Linux fbdev/DRM for pydisplay’s presentation path.
-- **`usdl2`** exposes a pydisplay-sized SDL2 subset; SDL2 on Linux can use `SDL_VIDEODRIVER=kmsdrm` on many embedded boards **without a window manager**, but this is untested/documented in PyDevices.
+- Desktop and Android SDL paths use a pydisplay-sized SDL2 subset (`import usdl2`); SDL2 on Linux can use `SDL_VIDEODRIVER=kmsdrm` on many embedded boards **without a window manager**, but this is untested/documented in PyDevices.
 
 ### Technical assessment
 
@@ -260,7 +260,7 @@ Do **not** pursue on the org roadmap. Cloud agents must not open console/homebre
 
 ### Feasibility: **Low–Medium** (web-only), **Very Low** (native Python)
 
-**Why not native:** Neither platform offers a **CPython or MicroPython** story comparable to Android’s p4a. Building `usdl2` for webOS/Tizen native apps would mean **platform-specific C++ app shells**—outside PyDevices’ Python-first packaging model.
+**Why not native:** Neither platform offers a **CPython or MicroPython** story comparable to Android’s p4a. Building native SDL for webOS/Tizen apps would mean **platform-specific C++ app shells**—outside PyDevices’ Python-first packaging model.
 
 **Adopted approach (web only):**
 
@@ -283,7 +283,7 @@ Any new platform likely needs coordinated updates across:
 | Component | Repo | Notes |
 |-----------|------|-------|
 | Display backend | `pydisplay` `displaysys/` | New class or SDL driver env |
-| Native glue | `usdl2`, `displayif`, or new repo | mmap fbdev, DRM, or platform SDL |
+| Native glue | `displayif`, desktop/Android SDL packaging, or new repo | mmap fbdev, DRM, or platform SDL |
 | Input normalization | `pydisplay` `eventsys/` | evdev, TV remote, gamepad |
 | Timers | `pydisplay` `multimer/` | Must not block UI thread (see Android `_sdl2` precedent) |
 | Board config | `pydisplay/board_configs/` | Per-target wiring |
@@ -309,7 +309,7 @@ Cloud agents: pick any **Pursue now** stream; do **not** reopen ruled-out target
 
 ## Conclusion
 
-PyDevices is **well architected for portability**: the `DisplayDriver` RGB565 contract, `board_config` wiring pattern, and split between pure Python (`pydisplay`) and native acceleration (`displayif`, `pygraphics`, `usdl2`) make **incremental platform additions** possible without rewriting application code.
+PyDevices is **well architected for portability**: the `DisplayDriver` RGB565 contract, `board_config` wiring pattern, and split between pure Python (`pydisplay`) and native acceleration (`displayif`, `pygraphics`, and SDL2 via desktop board / Android wheels) make **incremental platform additions** possible without rewriting application code.
 
 **Org focus (2026-07-15):**
 
@@ -332,8 +332,7 @@ Paths relative to the `pydevices/` parent (this file lives in `.github`):
 | Platform matrix | `../pydisplay/docs/platforms/index.md` |
 | Android platform notes | `../pydisplay/docs/platforms/android.md` |
 | Display backend internals | `../pydisplay/docs/concepts/display-backends.md` |
-| pydisplay_android README | `../pydisplay_android/README.md` |
+| pydisplay_android README (incl. TestPyPI SDL / `usdl2` Android wheels) | `../pydisplay_android/README.md` |
 | displayif module map | `../displayif/README.md` |
-| usdl2 scope & Android wheels | `../usdl2/README.md` |
 | Org overview | [`profile/README.md`](profile/README.md) |
 | Platform roadmap (workstreams) | [`PLATFORM_ROADMAP.md`](PLATFORM_ROADMAP.md) |

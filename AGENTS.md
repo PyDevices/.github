@@ -78,8 +78,7 @@ cmods/
 ├── lv_bindings          -> /agent/repos/lv_bindings
 ├── lv_circuitpython_mod -> /agent/repos/lv_circuitpython_mod
 ├── lv_cpython_mod       -> /agent/repos/lv_cpython_mod
-├── lv_micropython_cmod  -> /agent/repos/lv_micropython_cmod
-└── usdl2                -> /agent/repos/usdl2
+└── lv_micropython_cmod  -> /agent/repos/lv_micropython_cmod
 ```
 
 Upstream trees (`micropython/`, `circuitpython/`) are **read-only clones** in

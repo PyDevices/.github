@@ -126,10 +126,6 @@ Native display bus and framebuffer implementations for MicroPython.
 
 Graphics primitives and framebuffer support with both native and pure-Python implementations.
 
-## usdl2
-
-SDL2 integration layer used as a desktop backend for pydisplay.
-
 ## lv\_cpython\_mod
 
 Native LVGL extension module for CPython.

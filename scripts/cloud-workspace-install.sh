@@ -29,7 +29,6 @@ SIBLINGS=(
     pydisplay
     pydisplay_android
     PyDevices.github.io
-    usdl2
 )
 
 log() { printf 'cloud-workspace-install: %s\n' "$*"; }
@@ -247,7 +246,7 @@ link_pydevices pydisplay_android "$REPOS/pydisplay_android"
 [[ -d "$PD/cmods" ]] || die "cmods missing after link step ($PD/cmods)"
 
 for s in displayif pygraphics lv_bindings lv_circuitpython_mod lv_cpython_mod \
-    lv_micropython_cmod usdl2; do
+    lv_micropython_cmod; do
     [[ -d "$REPOS/$s" || -L "$REPOS/$s" ]] && link_cmods_sibling "$s"
 done
 

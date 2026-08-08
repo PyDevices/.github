@@ -16,7 +16,6 @@
     "github.com/PyDevices/pdwidgets",
     "github.com/PyDevices/pydisplay",
     "github.com/PyDevices/pydisplay_android",
-    "github.com/PyDevices/PyDevices.github.io",
-    "github.com/PyDevices/usdl2"
+    "github.com/PyDevices/PyDevices.github.io"
   ]
 }

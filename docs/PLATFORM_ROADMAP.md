@@ -52,7 +52,7 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 
 - Native fbdev mmap or DRM/GBM path (`displayif` or new module) behind a DisplayDriver-compatible wrapper — do **not** start this until Phase 0 is tried.
 
-**Touchpoints:** `pydisplay` (`displaysys`, `board_configs`, docs), `usdl2` only if linkage/env quirks require it.
+**Touchpoints:** `pydisplay` (`displaysys`, `board_configs`, docs), `micropython-hardware` / `pydisplay-desktop` only if SDL linkage/env quirks require it.
 
 **Why-comments:** required on every KMS-enabling edit.
 
@@ -70,7 +70,7 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 - Document in `pydisplay/docs/platforms/android.md` (§ Android TV / Fire OS).
 - Optional: Android TV emulator smoke under `pydisplay_android/scripts/`.
 
-**Touchpoints:** `pydisplay_android`, `pydisplay` (`eventsys`, `board_configs`, docs), `usdl2` only if TV input/SDL gaps appear.
+**Touchpoints:** `pydisplay_android`, `pydisplay` (`eventsys`, `board_configs`, docs); TestPyPI `usdl2` Android wheels only if TV input/SDL gaps appear.
 
 **Why-comments:** required on every new edit for this track.
 
@@ -144,7 +144,7 @@ Do **not** start from this roadmap:
 - Native iOS / iPadOS app (`pydisplay_ios`, BeeWare/Kivy packaging, macOS CI for App Store)
 - watchOS
 - Nintendo Switch, PlayStation Vita, PS4/PS5 (org roadmap)
-- Native webOS / Tizen Python or `usdl2` on those OS shells (web path only — see pursue #3)
+- Native webOS / Tizen Python or `SDLDisplay` on those OS shells (web path only — see pursue #3)
 
 ---
 
