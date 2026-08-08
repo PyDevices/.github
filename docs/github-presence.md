@@ -95,7 +95,7 @@ icons. Header brand stays on the shared org logo.
 | [lv_bindings](https://github.com/PyDevices/lv_bindings) | LVGL C→binding generator (source of truth for the native cmods) | [pydevices.github.io/lv_bindings](https://pydevices.github.io/lv_bindings/) |
 | [cmods](https://github.com/PyDevices/cmods) | Optional workspace for multi-usermod MicroPython/CircuitPython builds | *(no Pages site — org landing card links to the repo)* |
 | [displayif](https://github.com/PyDevices/displayif) | Native display bus/framebuffer modules | [pydevices.github.io/displayif](https://pydevices.github.io/displayif/) |
-| [pygraphics](https://github.com/PyDevices/pygraphics) | Native (`pygraphics-cmod`) + pure-Python (`pygraphics`) FrameBuffer/Area; docs on [RTD](https://pygraphics.readthedocs.io) | [pydevices.github.io/pygraphics](https://pydevices.github.io/pygraphics/) |
+| [pygraphics](https://github.com/PyDevices/pygraphics) | Native + pure-Python FrameBuffer/Area (`import pygraphics`); docs on [RTD](https://pygraphics.readthedocs.io) | [pydevices.github.io/pygraphics](https://pydevices.github.io/pygraphics/) |
 | [lv_micropython_cmod](https://github.com/PyDevices/lv_micropython_cmod) | MicroPython user C module glue for LVGL | [pydevices.github.io/lv_micropython_cmod](https://pydevices.github.io/lv_micropython_cmod/) |
 | [lv_circuitpython_mod](https://github.com/PyDevices/lv_circuitpython_mod) | CircuitPython integration for LVGL | [pydevices.github.io/lv_circuitpython_mod](https://pydevices.github.io/lv_circuitpython_mod/) |
 | [lv_cpython_mod](https://github.com/PyDevices/lv_cpython_mod) | Native CPython LVGL extension (`import lvgl`) | [pydevices.github.io/lv_cpython_mod](https://pydevices.github.io/lv_cpython_mod/) |
