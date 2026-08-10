@@ -65,18 +65,12 @@ mip_install_micropython_lib() {
     log "mip install desktop board_config, palettes, pdwidgets -> ${MPY_LIB}/lib"
     (
         cd "${MPY_LIB}" || exit 1
+        INDEX="https://PyDevices.github.io/micropython-lib/mip/PyDevices"
+        micropython -m mip install --no-mpy -t lib -i "$INDEX" \
+            github:PyDevices/micropython-hardware/board_configs/desktop \
+            palettes \
+            pdwidgets
         micropython <<'PY'
-import mip
-
-INDEX = "https://PyDevices.github.io/micropython-lib/mip/PyDevices"
-packages = (
-    "github:PyDevices/micropython-hardware/board_configs/desktop",
-    "palettes",
-    "pdwidgets",
-)
-for name in packages:
-    mip.install(name, index=INDEX, target="lib", mpy=False)
-
 import board_config
 import board_devices
 import palettes

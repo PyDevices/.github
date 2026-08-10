@@ -33,8 +33,9 @@ separate “workspace configuration” chat.
 
 `cloud-pydisplay-dev-env.sh`:
 - Installs pydisplay `requirements.txt` (TestPyPI runtime stack for CPython).
-- `mip.install`s desktop `board_config`, `palettes`, and `pdwidgets` into
-  `~/.micropython/lib` (`target="lib"`, `mpy=False`; see
+- `micropython -m mip install`s desktop `board_config`, `palettes`, and `pdwidgets` into
+  `~/.micropython/lib` (`--no-mpy -t lib -i` PyDevices index for CP-shared source
+  installs; omit `--no-mpy` for MicroPython-only `.mpy` — see
   micropython-hardware `docs/install-workflows.md`).
 - Appends a `pydisplay-env.sh` hook to `~/.bashrc` exporting `PATH`
   (`pydisplay/bin`), `PYTHONPATH=.:lib:utils`, and
