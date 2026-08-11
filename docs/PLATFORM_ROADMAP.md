@@ -52,7 +52,7 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 
 - Native fbdev mmap or DRM/GBM path (`displayif` or new module) behind a DisplayDriver-compatible wrapper — do **not** start this until Phase 0 is tried.
 
-**Touchpoints:** `pydisplay` (`displaysys`, `board_configs`, docs), `micropython-hardware` / `pydisplay-desktop` only if SDL linkage/env quirks require it.
+**Touchpoints:** `pydisplay` (`displaydev`, `board_configs`, docs), `micropython-hardware` / `pydisplay-desktop` only if SDL linkage/env quirks require it.
 
 **Why-comments:** required on every KMS-enabling edit.
 
@@ -86,7 +86,7 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 - JS key / remote bridge notes for webOS / Tizen key codes (why-comment bridge hooks).
 - Short platform doc note: webOS/Tizen = browser/PyScript only.
 
-**Touchpoints:** `pydisplay` (`web/pyscript`, `displaysys`/`eventsys` only if keys need normalization, docs).
+**Touchpoints:** `pydisplay` (`web/pyscript`, `displaydev`/`eventsys` only if keys need normalization, docs).
 
 **Why-comments:** required on every new edit for this track.
 

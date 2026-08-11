@@ -14,13 +14,13 @@ PyDevices’ stated goal is to run **pydisplay everywhere Python runs with a usa
 
 | Layer | Repos | Role |
 |-------|-------|------|
-| Application API | `pydisplay` (`displaysys`, `eventsys`, `pygraphics`, `multimer`) | Portable RGB565 display contract, unified input events, timers |
+| Application API | `pydisplay` (`displaydev`, `eventsys`, `pygraphics`, `multimer`) | Portable RGB565 display contract, unified input events, timers |
 | Hardware acceleration | `displayif`, `pygraphics`, SDL2 (`usdl2` via desktop board / Android wheels) | Native C modules for bus/framebuffer interfaces and drawing; SDL2 for desktop/Android |
 | GUI toolkit (optional) | `lv_bindings` + `lv_*_mod` | LVGL bindings for all three Python runtimes |
 | Packaging | `pydisplay_android`, TestPyPI wheels, MIP/`installer.py` | APK path and prebuilt packages |
 | Build workspace | `cmods` | Optional multi-usermod MicroPython build orchestration |
 
-**Display backends today** (`pydisplay/src/lib/displaysys/`):
+**Display backends today** (`pydisplay/src/lib/displaydev/`):
 
 | Backend | Typical target |
 |---------|----------------|
@@ -87,7 +87,7 @@ This report is based on:
 
 **Why not High:** PyDevices has invested in Android CPython (`pydisplay_android` + TestPyPI `usdl2` Android wheels). iOS would require a **parallel packaging track** (Xcode, CocoaPods/SDL, Apple Developer Program) with no shared p4a infrastructure.
 
-**Effort estimate (native iOS):** Large — new repo, CI on macOS runners, SDL iOS glue, touch + safe-area input in `eventsys`, App Store compliance. **6+ subsystem touchpoints** (`SDLDisplay` / SDL packaging, `displaysys`, `multimer`, `eventsys`, packaging, LVGL wheels).
+**Effort estimate (native iOS):** Large — new repo, CI on macOS runners, SDL iOS glue, touch + safe-area input in `eventsys`, App Store compliance. **6+ subsystem touchpoints** (`SDLDisplay` / SDL packaging, `displaydev`, `multimer`, `eventsys`, packaging, LVGL wheels).
 
 ### Org decision
 
@@ -282,7 +282,7 @@ Any new platform likely needs coordinated updates across:
 
 | Component | Repo | Notes |
 |-----------|------|-------|
-| Display backend | `pydisplay` `displaysys/` | New class or SDL driver env |
+| Display backend | `pydisplay` `displaydev/` | New class or SDL driver env |
 | Native glue | `displayif`, desktop/Android SDL packaging, or new repo | mmap fbdev, DRM, or platform SDL |
 | Input normalization | `pydisplay` `eventsys/` | evdev, TV remote, gamepad |
 | Timers | `pydisplay` `multimer/` | Must not block UI thread (see Android `_sdl2` precedent) |

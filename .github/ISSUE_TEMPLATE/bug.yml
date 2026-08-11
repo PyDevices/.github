@@ -14,7 +14,7 @@ body:
     attributes:
       label: Repo / area
       description: Which repo (or part of a repo) is this about?
-      placeholder: e.g. pydisplay / src/lib/displaysys
+      placeholder: e.g. pydisplay / src/lib/displaydev
     validations:
       required: true
 
