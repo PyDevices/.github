@@ -2,18 +2,18 @@
 
 **Triage date:** 2026-07-15  
 **Repo:** [PyDevices/.github](https://github.com/PyDevices/.github)  
-**Source analysis:** [`PLATFORM_FEASIBILITY_REPORT.md`](PLATFORM_FEASIBILITY_REPORT.md)
+**Source analysis:** [`platform-feasibility-report.md`](platform-feasibility-report.md)
 
 This is the **cloud-agent workstream** doc. Decisions live in the feasibility report; this file lists what to implement and what not to reopen.
 
-Follow [AGENTS.md](AGENTS.md) for the `~/gh/pydevices` workspace layout when running as a Cloud Agent.
+Follow [AGENTS.md](../AGENTS.md) for the `~/gh/pydevices` workspace layout when running as a Cloud Agent.
 
 ---
 
 ## How to use this doc (cloud agents)
 
 1. Pick **one** pursue workstream below (tracks may run in parallel across agents/sessions).
-2. Read the matching section in [`PLATFORM_FEASIBILITY_REPORT.md`](PLATFORM_FEASIBILITY_REPORT.md).
+2. Read the matching section in [`platform-feasibility-report.md`](platform-feasibility-report.md).
 3. Implement with the **why-comment** rule on every non-obvious edit for that track.
 4. Do **not** start work listed under [Out of scope](#out-of-scope) or [Not a platform track](#not-a-platform-track).
 
@@ -152,7 +152,7 @@ Do **not** start from this roadmap:
 
 | Doc | Role |
 |-----|------|
-| [`PLATFORM_FEASIBILITY_REPORT.md`](PLATFORM_FEASIBILITY_REPORT.md) | Analysis + org decisions |
-| [`NOTES.md`](NOTES.md) | Brad's personal todo (not this roadmap) |
-| [`AGENTS.md`](AGENTS.md) | Cloud workspace layout |
+| [`platform-feasibility-report.md`](platform-feasibility-report.md) | Analysis + org decisions |
+| [`notes.md`](notes.md) | Brad's personal todo (not this roadmap) |
+| [`AGENTS.md`](../AGENTS.md) | Cloud workspace layout |
 | `pydevices-examples` platform docs | User-facing install/portability matrix |

@@ -176,5 +176,5 @@ Do **not** rely on the default `gh` login (`cursor` / `ghs_…`) for sibling PRs
 
 - [cmods AGENTS.md](https://github.com/PyDevices/cmods/blob/main/AGENTS.md) —
   workspace build scripts
-- [lvgl-bindings PUBLISHING.md](https://github.com/PyDevices/lvgl-bindings/blob/main/docs/PUBLISHING.md) —
+- [lvgl-bindings publishing.md](https://github.com/PyDevices/lvgl-bindings/blob/main/docs/publishing.md) —
   binding regeneration and `lvgl-python` release dispatch

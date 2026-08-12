@@ -34,6 +34,23 @@ Long-form notes and guides belong under `docs/`.
 | Pip requirements | `requirements.txt`, `requirements-dev.txt` | Yes (see below) |
 | Long-form docs | design notes, build guides, handoffs, publishing write-ups | No — use `docs/` |
 
+### Markdown naming
+
+- Reserve all-caps Markdown names for conventional repository and community
+  control files such as `README.md`, `AGENTS.md`, `CONTRIBUTING.md`,
+  `SECURITY.md`, `CHANGELOG.md`, and `RELEASE_NOTES.md`.
+- Name narrative and topic documents under `docs/` with lowercase kebab-case,
+  for example `publishing.md`, `build-and-flash.md`, and
+  `soft-reset-and-bring-up.md`.
+- Keep generated fixtures and upstream or vendored filenames unchanged when
+  renaming would create needless divergence from their source project. This
+  includes MicroPython's `CODEOFCONDUCT.md`, SENML's `senml_*.md` pages, and
+  vendored LVGL translations.
+- Put a document in the repository that owns its subject: product architecture,
+  package behavior, and driver contracts belong with `pydevices`; application
+  tutorials and gallery integration belong with `pydevices-examples`; package-
+  specific API documentation belongs with that package.
+
 ### `requirements.txt` vs `requirements-dev.txt`
 
 A plain root `requirements.txt` means **runtime deps needed to run this repo’s

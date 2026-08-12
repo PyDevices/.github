@@ -208,7 +208,7 @@ verify_ready() {
             missing=1
         fi
     done
-    if [[ ! -e "$REPOS/displayif/docs/PORT_MATRIX.md" ]]; then
+    if [[ ! -e "$REPOS/displayif/docs/port-matrix.md" ]]; then
         log "ERROR: displayif port matrix doc missing under $REPOS/displayif"
         missing=1
     fi

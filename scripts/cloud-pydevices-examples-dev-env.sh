@@ -72,7 +72,7 @@ mip_install_micropython_lib() {
             pdwidgets
         micropython <<'PY'
 import board_config
-import board_devices
+import board_peripherals
 import palettes
 import pdwidgets
 print("board_config:", board_config.__file__)

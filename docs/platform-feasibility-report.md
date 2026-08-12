@@ -4,7 +4,7 @@
 **Triage:** 2026-07-15 — org decisions recorded below (pursue / docs-only / not-a-track / ruled out)  
 **Scope:** Feasibility of extending PyDevices to additional display targets beyond the current portability matrix.
 **Author:** PyDevices Cloud Agent (based on review of all owned repositories under `/home/ubuntu/gh/pydevices` and `/agent/repos`).  
-**Location:** [PyDevices/.github](https://github.com/PyDevices/.github) (`docs/PLATFORM_FEASIBILITY_REPORT.md`). Actionable workstreams: [`PLATFORM_ROADMAP.md`](PLATFORM_ROADMAP.md).
+**Location:** [PyDevices/.github](https://github.com/PyDevices/.github) (`docs/platform-feasibility-report.md`). Actionable workstreams: [`platform-roadmap.md`](platform-roadmap.md).
 
 ---
 
@@ -20,7 +20,7 @@ PyDevices’ stated goal is to run **pydevices-examples everywhere Python runs w
 | Packaging | `pydevices-android-template`, TestPyPI wheels, MIP/`installer.py` | APK path and prebuilt packages |
 | Build workspace | `cmods` | Optional multi-usermod MicroPython build orchestration |
 
-**Display backends today** (`pydevices/drivers/display/displaydev/`):
+**Display backends today** (`pydevices/lib/displaydev/`):
 
 | Backend | Typical target |
 |---------|----------------|
@@ -303,7 +303,7 @@ Any new platform likely needs coordinated updates across:
 | **Not a platform track** | FreeRTOS board expansion; Zephyr |
 | **Ruled out** | Native iOS; watchOS; Switch / Vita / PS; native webOS/Tizen |
 
-Cloud agents: pick any **Pursue now** stream; do **not** reopen ruled-out targets from this report. Prefer [`PLATFORM_ROADMAP.md`](PLATFORM_ROADMAP.md) for concrete first steps.
+Cloud agents: pick any **Pursue now** stream; do **not** reopen ruled-out targets from this report. Prefer [`platform-roadmap.md`](platform-roadmap.md) for concrete first steps.
 
 ---
 
@@ -331,8 +331,8 @@ Paths relative to the `pydevices/` parent (this file lives in `.github`):
 | PyDevices README & portability table | `../pydevices-examples/README.md` |
 | Platform matrix | `../pydevices-examples/docs/platforms/index.md` |
 | Android platform notes | `../pydevices-examples/docs/platforms/android.md` |
-| Display backend internals | `../pydevices-examples/docs/concepts/display-backends.md` |
+| Display backend internals | `../pydevices/docs/displaydev-internals.md` |
 | pydevices-android-template README (incl. TestPyPI SDL / `usdl2` Android wheels) | `../pydevices-android-template/README.md` |
 | displayif module map | `../displayif/README.md` |
-| Org overview | [`profile/README.md`](profile/README.md) |
-| Platform roadmap (workstreams) | [`PLATFORM_ROADMAP.md`](PLATFORM_ROADMAP.md) |
+| Org overview | [`profile/README.md`](../profile/README.md) |
+| Platform roadmap (workstreams) | [`platform-roadmap.md`](platform-roadmap.md) |
