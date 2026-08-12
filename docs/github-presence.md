@@ -24,7 +24,7 @@ the answer from scratch.
 
 ## Getting help: Discussions vs. Issues
 
-- **Discussions** are enabled only on **pydisplay** and **lv_bindings** (the
+- **Discussions** are enabled only on **pydisplay** and **lvgl-bindings** (the
   two repos most likely to get open-ended questions). Everything else routes
   through pydisplay Discussions — see the org's pinned "get help" pointer.
 - **Issues** are enabled on every owned repo (bug reports / feature requests).
@@ -92,13 +92,13 @@ icons. Header brand stays on the shared org logo.
 | [pydisplay](https://github.com/PyDevices/pydisplay) | Core pure-Python display/input/graphics library | [pydevices.github.io/pydisplay](https://pydevices.github.io/pydisplay/) (+ [PyScript demos](https://pydevices.github.io/pydisplay/pyscript/)) |
 | [palettes](https://github.com/PyDevices/palettes) | Color palette toolkit for pydisplay | [pydevices.github.io/palettes](https://pydevices.github.io/palettes/) |
 | [pdwidgets](https://github.com/PyDevices/pdwidgets) | Cross-platform widget toolkit for pydisplay | [pydevices.github.io/pdwidgets](https://pydevices.github.io/pdwidgets/) |
-| [lv_bindings](https://github.com/PyDevices/lv_bindings) | LVGL C→binding generator (source of truth for the native cmods) | [pydevices.github.io/lv_bindings](https://pydevices.github.io/lv_bindings/) |
+| [lvgl-bindings](https://github.com/PyDevices/lvgl-bindings) | LVGL C→binding generator (source of truth for the native cmods) | [pydevices.github.io/lvgl-bindings](https://pydevices.github.io/lvgl-bindings/) |
 | [cmods](https://github.com/PyDevices/cmods) | Optional workspace for multi-usermod MicroPython/CircuitPython builds | *(no Pages site — org landing card links to the repo)* |
 | [displayif](https://github.com/PyDevices/displayif) | Native display bus/framebuffer modules | [pydevices.github.io/displayif](https://pydevices.github.io/displayif/) |
 | [pygraphics](https://github.com/PyDevices/pygraphics) | Native + pure-Python FrameBuffer/Area (`import pygraphics`); docs on [RTD](https://pygraphics.readthedocs.io) | [pydevices.github.io/pygraphics](https://pydevices.github.io/pygraphics/) |
-| [lv_micropython_cmod](https://github.com/PyDevices/lv_micropython_cmod) | MicroPython user C module glue for LVGL | [pydevices.github.io/lv_micropython_cmod](https://pydevices.github.io/lv_micropython_cmod/) |
-| [lv_circuitpython_mod](https://github.com/PyDevices/lv_circuitpython_mod) | CircuitPython integration for LVGL | [pydevices.github.io/lv_circuitpython_mod](https://pydevices.github.io/lv_circuitpython_mod/) |
-| [lv_cpython_mod](https://github.com/PyDevices/lv_cpython_mod) | Native CPython LVGL extension (`import lvgl`) | [pydevices.github.io/lv_cpython_mod](https://pydevices.github.io/lv_cpython_mod/) |
+| [lvgl-micropython](https://github.com/PyDevices/lvgl-micropython) | MicroPython user C module glue for LVGL | [pydevices.github.io/lvgl-micropython](https://pydevices.github.io/lvgl-micropython/) |
+| [lvgl-circuitpython](https://github.com/PyDevices/lvgl-circuitpython) | CircuitPython integration for LVGL | [pydevices.github.io/lvgl-circuitpython](https://pydevices.github.io/lvgl-circuitpython/) |
+| [lvgl-python](https://github.com/PyDevices/lvgl-python) | Native CPython LVGL extension (`import lvgl`) | [pydevices.github.io/lvgl-python](https://pydevices.github.io/lvgl-python/) |
 | [pydisplay_android](https://github.com/PyDevices/pydisplay_android) | Android APK path for pydisplay | [pydevices.github.io/pydisplay_android](https://pydevices.github.io/pydisplay_android/) |
 | [PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io) | Org landing + shared chrome | [pydevices.github.io](https://pydevices.github.io/) |
 | [.github](https://github.com/PyDevices/.github) | This repo — org profile README, issue templates, CONTRIBUTING.md, `docs/github-presence.md`, `docs/repo-layout.md`, `docs/NOTES.md` | *(no Pages site — org metadata only)* |

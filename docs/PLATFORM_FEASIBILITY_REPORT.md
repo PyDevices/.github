@@ -16,7 +16,7 @@ PyDevices’ stated goal is to run **pydisplay everywhere Python runs with a usa
 |-------|-------|------|
 | Application API | `pydisplay` (`displaydev`, `eventsys`, `pygraphics`, `multimer`) | Portable RGB565 display contract, unified input events, timers |
 | Hardware acceleration | `displayif`, `pygraphics`, SDL2 (`usdl2` via desktop board / Android wheels) | Native C modules for bus/framebuffer interfaces and drawing; SDL2 for desktop/Android |
-| GUI toolkit (optional) | `lv_bindings` + `lv_*_mod` | LVGL bindings for all three Python runtimes |
+| GUI toolkit (optional) | `lvgl-bindings` + `lv_*_mod` | LVGL bindings for all three Python runtimes |
 | Packaging | `pydisplay_android`, TestPyPI wheels, MIP/`installer.py` | APK path and prebuilt packages |
 | Build workspace | `cmods` | Optional multi-usermod MicroPython build orchestration |
 
@@ -57,7 +57,7 @@ PyDevices’ stated goal is to run **pydisplay everywhere Python runs with a usa
 
 This report is based on:
 
-1. README, platform docs, and source review across **all owned repos**: `pydisplay`, `pydisplay_android`, `displayif`, `pygraphics`, `micropython-hardware`, `cmods`, `lv_bindings`, `lv_micropython_cmod`, `lv_circuitpython_mod`, `lv_cpython_mod`, `PyDevices.github.io`, `.github`.
+1. README, platform docs, and source review across **all owned repos**: `pydisplay`, `pydisplay_android`, `displayif`, `pygraphics`, `micropython-hardware`, `cmods`, `lvgl-bindings`, `lvgl-micropython`, `lvgl-circuitpython`, `lvgl-python`, `PyDevices.github.io`, `.github`.
 2. Mapping each target to existing **display backend contracts**, **runtime availability** (MicroPython / CircuitPython / CPython), and **packaging** paths already in the ecosystem.
 3. External platform constraints (store policies, official language runtimes, input modalities) where the codebase has no prior work.
 4. **2026-07-15 triage** with Brad — decisions in the summary table above supersede earlier “recommended priority” wording elsewhere in this doc.
@@ -105,7 +105,7 @@ This report is based on:
 
 - **Linux desktop** is supported via `SDLDisplay` / `PGDisplay` under X11 or Wayland (`pydisplay/docs/platforms/cpython-desktop.md`).
 - **`FBDisplay` is MCU-oriented** — wraps RAM buffers flushed to panels via `displayif` or CircuitPython `framebufferio`, not `/dev/fb*`.
-- **LVGL** (in `lv_bindings`) includes optional `LV_USE_LINUX_FBDEV` and `LV_USE_LINUX_DRM` drivers, but PyDevices’ `lv_cpython_mod/lv_conf.h` sets `LV_USE_OS` to `LV_OS_NONE` and does **not** enable Linux fbdev/DRM for pydisplay’s presentation path.
+- **LVGL** (in `lvgl-bindings`) includes optional `LV_USE_LINUX_FBDEV` and `LV_USE_LINUX_DRM` drivers, but PyDevices’ `lvgl-python/lv_conf.h` sets `LV_USE_OS` to `LV_OS_NONE` and does **not** enable Linux fbdev/DRM for pydisplay’s presentation path.
 - Desktop and Android SDL paths use a pydisplay-sized SDL2 subset (`import usdl2`); SDL2 on Linux can use `SDL_VIDEODRIVER=kmsdrm` on many embedded boards **without a window manager**, but this is untested/documented in PyDevices.
 
 ### Technical assessment
@@ -121,7 +121,7 @@ Embedded Linux kiosks (Raspberry Pi without desktop, industrial HMI, digital sig
 | **A. SDL `kmsdrm` video driver** | `SDLDisplay`, `usdl2`, `eventsys`, `multimer._sdl2` | Smallest diff; same Python API | Needs SDL2 with KMS; input via `evdev`/SDL; dependency on SDL behavior |
 | **B. New `LinuxFBDisplay` (fbdev mmap)** | `DisplayDriver` contract, `pygraphics` | No X11/Wayland; true bare metal feel | New C extension or ctypes; rotation/format quirks; deprecated on many distros |
 | **C. New `DRMDisplay` (libdrm/GBM)** | Same | Modern, zero-copy potential with `displayif`-style thinking | Most engineering; buffer management; mode-setting |
-| **D. LVGL linux fbdev/drm driver + flush shim** | `lv_cpython_mod` / `lv_micropython_cmod` | LVGL already has drivers | Bypasses pydisplay `show()` path unless integrated as backend |
+| **D. LVGL linux fbdev/drm driver + flush shim** | `lvgl-python` / `lvgl-micropython` | LVGL already has drivers | Bypasses pydisplay `show()` path unless integrated as backend |
 
 ### Feasibility: **Medium–High**
 
@@ -149,7 +149,7 @@ Embedded Linux kiosks (Raspberry Pi without desktop, industrial HMI, digital sig
 
 - **FreeRTOS** already underpins many **MicroPython MCU ports** (ESP32, STM32, RP2040, etc.) where pydisplay runs today via `BusDisplay` / `FBDisplay` + `displayif`.
 - **No Zephyr-specific** board configs, `displayif` ports, or documentation.
-- **LVGL** vendored in `lv_bindings` includes OS abstraction for FreeRTOS/CMSIS-RTOS2, but pydisplay’s Python layer does not select an RTOS backend—it runs **on top of** the MP/CP runtime’s scheduler.
+- **LVGL** vendored in `lvgl-bindings` includes OS abstraction for FreeRTOS/CMSIS-RTOS2, but pydisplay’s Python layer does not select an RTOS backend—it runs **on top of** the MP/CP runtime’s scheduler.
 - **CircuitPython** does not target Zephyr in the PyDevices matrix.
 
 ### Technical assessment
@@ -288,7 +288,7 @@ Any new platform likely needs coordinated updates across:
 | Timers | `pydisplay` `multimer/` | Must not block UI thread (see Android `_sdl2` precedent) |
 | Board config | `pydisplay/board_configs/` | Per-target wiring |
 | Packaging | `pydisplay_android`, static web | p4a / TV intent; no native iOS packaging track |
-| LVGL (optional) | `lv_cpython_mod`, etc. | Separate display flush integration |
+| LVGL (optional) | `lvgl-python`, etc. | Separate display flush integration |
 | Docs / CI | `pydisplay/docs/platforms/` | Headless smoke tests are hard for bare KMS |
 | Why-comments | All pursue tracks | Document *why* KMS / Android TV / webOS–Tizen edits exist |
 

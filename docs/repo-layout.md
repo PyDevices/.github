@@ -56,9 +56,9 @@ Examples:
 
 | Repo | File | Why |
 |------|------|-----|
-| [lv_bindings](https://github.com/PyDevices/lv_bindings) | `requirements.txt` | Generator runtime (`pycparser`) |
+| [lvgl-bindings](https://github.com/PyDevices/lvgl-bindings) | `requirements.txt` | Generator runtime (`pycparser`) |
 | [pydisplay](https://github.com/PyDevices/pydisplay) | `requirements-dev.txt` | Playwright, pytest, Jupyter, ruff, … — not product runtime |
-| [lv_cpython_mod](https://github.com/PyDevices/lv_cpython_mod) | `requirements-dev.txt` | Local editable build / wheel tooling; users install `lvgl-cpython` |
+| [lvgl-python](https://github.com/PyDevices/lvgl-python) | `requirements-dev.txt` | Local editable build / wheel tooling; users install `pydevices-lvgl` |
 | [pydisplay_android](https://github.com/PyDevices/pydisplay_android) | `requirements-dev.txt` | Host buildozer/Cython for APK builds — not packaged into the APK |
 
 ## Exceptions

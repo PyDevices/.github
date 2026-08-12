@@ -20,14 +20,14 @@ separate “workspace configuration” chat.
   siblings (Cursor’s `repositoryDependencies` expands GitHub token scope; it
   does not always materialize those checkouts).
 - Builds `~/gh/pydevices/` symlinks, shallow-clones MicroPython/CircuitPython,
-  inits `lv_bindings/lvgl`, and replaces an empty `lv_cpython_mod/lvgl`
+  inits `lvgl-bindings/lvgl`, and replaces an empty `lvgl-python/lvgl`
   placeholder with the canonical symlink.
 - Exits non-zero if required repos or LVGL are still missing.
 
 `cloud-python-deps.sh`:
 - Installs `python3-venv` / `libsdl2-dev` via apt when the VM snapshot omits
   them, recreates broken `.venv` leftovers, then installs pydisplay
-  (`requirements-dev.txt` + `pygame-ce` + `lvgl-cpython`), `ruff` for
+  (`requirements-dev.txt` + `pygame-ce` + `pydevices-lvgl`), `ruff` for
   `palettes`/`pdwidgets`, and a `pydevices_siblings.pth` so examples import
   sibling sources.
 
@@ -76,10 +76,10 @@ cmods/
 ├── circuitpython/       shallow clone @ latest stable tag (e.g. 10.2.1)
 ├── displayif            -> /agent/repos/displayif
 ├── pygraphics           -> /agent/repos/pygraphics
-├── lv_bindings          -> /agent/repos/lv_bindings
-├── lv_circuitpython_mod -> /agent/repos/lv_circuitpython_mod
-├── lv_cpython_mod       -> /agent/repos/lv_cpython_mod
-└── lv_micropython_cmod  -> /agent/repos/lv_micropython_cmod
+├── lvgl-bindings          -> /agent/repos/lvgl-bindings
+├── lvgl-circuitpython -> /agent/repos/lvgl-circuitpython
+├── lvgl-python       -> /agent/repos/lvgl-python
+└── lvgl-micropython  -> /agent/repos/lvgl-micropython
 ```
 
 Upstream trees (`micropython/`, `circuitpython/`) are **read-only clones** in
@@ -109,38 +109,38 @@ LVGL must be available in two places for different consumers:
 
 | Path | Role |
 |------|------|
-| `lv_bindings/lvgl` | Binding generator (`regenerate_*.sh`); MicroPython & CircuitPython builds (`micropython.mk`, `circuitpython.mk`) |
-| `lv_cpython_mod/lvgl` | CPython extension sources (`setup.py` / TestPyPI wheels) |
+| `lvgl-bindings/lvgl` | Binding generator (`regenerate_*.sh`); MicroPython & CircuitPython builds (`micropython.mk`, `circuitpython.mk`) |
+| `lvgl-python/lvgl` | CPython extension sources (`setup.py` / TestPyPI wheels) |
 
 **Do not maintain two separate LVGL checkouts.** Use one real tree and a
 symlink:
 
 ```
-lv_bindings/lvgl/              ← canonical (git submodule; pin lives here)
-lv_cpython_mod/lvgl  ->  ../lv_bindings/lvgl
+lvgl-bindings/lvgl/              ← canonical (git submodule; pin lives here)
+lvgl-python/lvgl  ->  ../lvgl-bindings/lvgl
 ```
 
 Initialize the canonical copy once:
 
 ```bash
 cd /home/ubuntu/gh/pydevices/cmods
-git -C lv_bindings submodule update --init --depth 1 lvgl
-rm -rf lv_cpython_mod/lvgl          # only if empty placeholder
-ln -s ../lv_bindings/lvgl lv_cpython_mod/lvgl
+git -C lvgl-bindings submodule update --init --depth 1 lvgl
+rm -rf lvgl-python/lvgl          # only if empty placeholder
+ln -s ../lvgl-bindings/lvgl lvgl-python/lvgl
 ```
 
 ### LVGL reminders for agents
 
-1. **Bump the pin in `lv_bindings` only** — `lv_cpython_mod/lvgl` follows via
+1. **Bump the pin in `lvgl-bindings` only** — `lvgl-python/lvgl` follows via
    the symlink.
-2. **Do not run** `git submodule update --init lvgl` inside `lv_cpython_mod`
+2. **Do not run** `git submodule update --init lvgl` inside `lvgl-python`
    after symlinking — Git would replace the symlink with a second submodule
    checkout.
-3. **Do not commit** the `lv_cpython_mod/lvgl` symlink as a substitute for the
+3. **Do not commit** the `lvgl-python/lvgl` symlink as a substitute for the
    submodule gitlink; it is a local workspace convenience. CI still records
    `lvgl` as a submodule in that repo.
-4. MP/CP builds read `lv_bindings/lvgl` only. Initialize it with
-   `git -C lv_bindings submodule update --init --depth 1 lvgl` (see above).
+4. MP/CP builds read `lvgl-bindings/lvgl` only. Initialize it with
+   `git -C lvgl-bindings submodule update --init --depth 1 lvgl` (see above).
 
 ## Symlink safety
 
@@ -174,5 +174,5 @@ Do **not** rely on the default `gh` login (`cursor` / `ghs_…`) for sibling PRs
 
 - [cmods AGENTS.md](https://github.com/PyDevices/cmods/blob/main/AGENTS.md) —
   workspace build scripts
-- [lv_bindings PUBLISHING.md](https://github.com/PyDevices/lv_bindings/blob/main/docs/PUBLISHING.md) —
-  binding regeneration and `lv_cpython_mod` release dispatch
+- [lvgl-bindings PUBLISHING.md](https://github.com/PyDevices/lvgl-bindings/blob/main/docs/PUBLISHING.md) —
+  binding regeneration and `lvgl-python` release dispatch

@@ -15,7 +15,7 @@ body:
     attributes:
       label: Repo / area
       description: Which repo (or part of a repo) is this about?
-      placeholder: e.g. lv_bindings / regenerate_lvpy.sh
+      placeholder: e.g. lvgl-bindings / regenerate_lvpy.sh
     validations:
       required: true
 

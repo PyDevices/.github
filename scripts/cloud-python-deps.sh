@@ -6,12 +6,12 @@
 #
 #   - installs system packages needed for venv + pygame-ce when missing
 #   - creates the repo-root `.venv` for runnable pure-Python products
-#   - pydisplay  (flagship)  -> requirements-dev.txt + pygame-ce + lvgl-cpython
+#   - pydisplay  (flagship)  -> requirements-dev.txt + pygame-ce + pydevices-lvgl
 #   - palettes   pdwidgets   -> ruff
 #
 # Safe to run on every cloud VM boot (environment.json install). See AGENTS.md.
 # Intentionally does NOT `set -e`: a single optional install (e.g. TestPyPI
-# lvgl-cpython) must never abort VM startup for the whole team. Required
+# pydevices-lvgl) must never abort VM startup for the whole team. Required
 # failures (no ensurepip after apt) still exit non-zero at the end.
 set -uo pipefail
 
@@ -89,8 +89,8 @@ if bin="$(ensure_venv pydisplay)"; then
     # LVGL examples/timer kits need it. Best-effort so TestPyPI outages don't
     # break startup.
     "$bin/pip" install -q -i https://test.pypi.org/simple/ \
-        --extra-index-url https://pypi.org/simple/ lvgl-cpython || \
-        log "warn: lvgl-cpython (TestPyPI) install skipped; LVGL examples unavailable"
+        --extra-index-url https://pypi.org/simple/ pydevices-lvgl || \
+        log "warn: pydevices-lvgl (TestPyPI) install skipped; LVGL examples unavailable"
     # Put the source-only sibling packages on pydisplay's venv path so examples
     # that `import palettes` / `import pdwidgets` resolve in the example matrix.
     sp="$("$bin/python" -c 'import site; print(site.getsitepackages()[0])' 2>/dev/null)"

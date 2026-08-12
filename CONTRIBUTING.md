@@ -14,8 +14,8 @@ Repo directory and root-file layout (`src/`, `lib/`, `tests/`,
 - **[palettes](https://github.com/PyDevices/palettes)** / **[pdwidgets](https://github.com/PyDevices/pdwidgets)** — color toolkit and lightweight widgets for pydisplay.
 - **[micropython-hardware](https://github.com/PyDevices/micropython-hardware)** — board configs and hardware drivers (display/touch/bus/…).
 - **[mpftp](https://github.com/PyDevices/mpftp)** — VS Code / Cursor board tools (REPL, file transfer, firmware).
-- **[lv_bindings](https://github.com/PyDevices/lv_bindings)** — the LVGL binding generator; source of truth for the native LVGL cmods.
-- **Native modules** — [displayif](https://github.com/PyDevices/displayif), [pygraphics](https://github.com/PyDevices/pygraphics) (also pure-Python `pygraphics`), [lv_micropython_cmod](https://github.com/PyDevices/lv_micropython_cmod), [lv_circuitpython_mod](https://github.com/PyDevices/lv_circuitpython_mod), [lv_cpython_mod](https://github.com/PyDevices/lv_cpython_mod).
+- **[lvgl-bindings](https://github.com/PyDevices/lvgl-bindings)** — the LVGL binding generator; source of truth for the native LVGL cmods.
+- **Native modules** — [displayif](https://github.com/PyDevices/displayif), [pygraphics](https://github.com/PyDevices/pygraphics) (also pure-Python `pygraphics`), [lvgl-micropython](https://github.com/PyDevices/lvgl-micropython), [lvgl-circuitpython](https://github.com/PyDevices/lvgl-circuitpython), [lvgl-python](https://github.com/PyDevices/lvgl-python).
 - **[cmods](https://github.com/PyDevices/cmods)** — workspace wrapper that builds/smoke-tests the native cmods together.
 - **[pydisplay_android](https://github.com/PyDevices/pydisplay_android)** — Android packaging (python-for-android/buildozer).
 
@@ -42,9 +42,9 @@ instead of opening an issue.
 
 ## Regenerating LVGL bindings
 
-If your change touches `lv_bindings/binding/`, `lv_conf.h`, or the `lvgl`
+If your change touches `lvgl-bindings/binding/`, `lv_conf.h`, or the `lvgl`
 submodule, regenerate and commit the affected `generated/*.c` files — see
-[lv_bindings' README](https://github.com/PyDevices/lv_bindings#generate-bindings)
+[lvgl-bindings' README](https://github.com/PyDevices/lvgl-bindings#generate-bindings)
 for the exact commands. Don't hand-edit generated files.
 
 ## Doc style: emoji

@@ -18,10 +18,10 @@ SIBLINGS=(
     cmods
     displayif
     pygraphics
-    lv_bindings
-    lv_circuitpython_mod
-    lv_cpython_mod
-    lv_micropython_cmod
+    lvgl-bindings
+    lvgl-circuitpython
+    lvgl-python
+    lvgl-micropython
     micropython-hardware
     mpftp
     palettes
@@ -179,29 +179,29 @@ is_empty_lvgl_placeholder() {
 }
 
 ensure_lv_cpython_lvgl_symlink() {
-    local lvcp_lvgl="$PD/cmods/lv_cpython_mod/lvgl"
-    [[ -d "$PD/cmods/lv_cpython_mod" ]] || return 0
+    local lvcp_lvgl="$PD/cmods/lvgl-python/lvgl"
+    [[ -d "$PD/cmods/lvgl-python" ]] || return 0
 
     if [[ -L "$lvcp_lvgl" ]]; then
         return 0
     fi
     if is_empty_lvgl_placeholder "$lvcp_lvgl"; then
-        log "replace empty $lvcp_lvgl with symlink -> ../lv_bindings/lvgl"
+        log "replace empty $lvcp_lvgl with symlink -> ../lvgl-bindings/lvgl"
         rm -rf "$lvcp_lvgl"
-        ln -s ../lv_bindings/lvgl "$lvcp_lvgl"
+        ln -s ../lvgl-bindings/lvgl "$lvcp_lvgl"
         return 0
     fi
     if [[ -e "$lvcp_lvgl" ]]; then
         log "skip $lvcp_lvgl (exists, not a symlink — remove manually to relink)"
         return 0
     fi
-    log "link $lvcp_lvgl -> ../lv_bindings/lvgl"
-    ln -s ../lv_bindings/lvgl "$lvcp_lvgl"
+    log "link $lvcp_lvgl -> ../lvgl-bindings/lvgl"
+    ln -s ../lvgl-bindings/lvgl "$lvcp_lvgl"
 }
 
 verify_ready() {
     local name missing=0
-    for name in cmods displayif pygraphics lv_bindings pydisplay palettes pdwidgets; do
+    for name in cmods displayif pygraphics lvgl-bindings pydisplay palettes pdwidgets; do
         if [[ ! -d "$REPOS/$name/.git" && ! -L "$REPOS/$name" ]]; then
             log "ERROR: required repo missing: $REPOS/$name"
             missing=1
@@ -215,12 +215,12 @@ verify_ready() {
         log "ERROR: cmods/micropython shallow clone missing"
         missing=1
     fi
-    if [[ ! -e "$PD/cmods/lv_bindings/lvgl/src" && ! -e "$REPOS/lv_bindings/lvgl/src" ]]; then
-        log "ERROR: lv_bindings/lvgl submodule not initialized"
+    if [[ ! -e "$PD/cmods/lvgl-bindings/lvgl/src" && ! -e "$REPOS/lvgl-bindings/lvgl/src" ]]; then
+        log "ERROR: lvgl-bindings/lvgl submodule not initialized"
         missing=1
     fi
-    if [[ ! -L "$PD/cmods/lv_cpython_mod/lvgl" ]]; then
-        log "ERROR: lv_cpython_mod/lvgl is not a symlink to lv_bindings/lvgl"
+    if [[ ! -L "$PD/cmods/lvgl-python/lvgl" ]]; then
+        log "ERROR: lvgl-python/lvgl is not a symlink to lvgl-bindings/lvgl"
         missing=1
     fi
     return "$missing"
@@ -245,8 +245,8 @@ link_pydevices pydisplay_android "$REPOS/pydisplay_android"
 # cmods must exist before interior sibling links
 [[ -d "$PD/cmods" ]] || die "cmods missing after link step ($PD/cmods)"
 
-for s in displayif pygraphics lv_bindings lv_circuitpython_mod lv_cpython_mod \
-    lv_micropython_cmod; do
+for s in displayif pygraphics lvgl-bindings lvgl-circuitpython lvgl-python \
+    lvgl-micropython; do
     [[ -d "$REPOS/$s" || -L "$REPOS/$s" ]] && link_cmods_sibling "$s"
 done
 
@@ -255,9 +255,9 @@ CP_TAG="${PYDEVICES_CP_TAG:-10.2.1}"
 shallow_clone_if_missing micropython https://github.com/micropython/micropython.git "$MP_TAG"
 shallow_clone_if_missing circuitpython https://github.com/adafruit/circuitpython.git "$CP_TAG"
 
-if [[ -d "$PD/cmods/lv_bindings/.git" ]]; then
-    log "init lv_bindings/lvgl submodule"
-    git -C "$PD/cmods/lv_bindings" submodule update --init --depth 1 lvgl
+if [[ -d "$PD/cmods/lvgl-bindings/.git" ]]; then
+    log "init lvgl-bindings/lvgl submodule"
+    git -C "$PD/cmods/lvgl-bindings" submodule update --init --depth 1 lvgl
 fi
 
 ensure_lv_cpython_lvgl_symlink
