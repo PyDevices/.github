@@ -3,10 +3,10 @@
 #
 # Complements cloud-workspace-install.sh and cloud-python-deps.sh:
 #   - pip install pydevices-examples requirements.txt (TestPyPI runtime stack for CPython)
-#   - mip install desktop board_config, palettes, pdwidgets into ~/.micropython/lib
+#   - mip install desktop board_config, eventsys, palettes, pdwidgets into ~/.micropython/lib
 #   - ensure shell env (PATH, PYTHONPATH, MICROPYPATH) via pydevices-examples-env.sh + bashrc hook
 #
-# Run from pydevices-examples/src/ after sourcing pydevices-examples-env.sh (or open a new shell).
+# Run from pydevices-examples/lib/ after sourcing pydevices-examples-env.sh (or open a new shell).
 # See pydevices docs/install-workflows.md (CircuitPython-compatible mip, mpy=False).
 #
 # Safe to re-run. Intentionally does not `set -e` on optional TestPyPI steps.
@@ -62,20 +62,24 @@ ensure_micropython_bin() {
 
 mip_install_micropython_lib() {
     mkdir -p "${MPY_LIB}/lib"
-    log "mip install desktop board_config, palettes, pdwidgets -> ${MPY_LIB}/lib"
+    log "mip install desktop board_config, eventsys, palettes, pdwidgets -> ${MPY_LIB}/lib"
     (
         cd "${MPY_LIB}" || exit 1
         INDEX="https://PyDevices.github.io/micropython-lib/mip/PyDevices"
         micropython -m mip install --no-mpy -t lib -i "$INDEX" \
             github:PyDevices/pydevices/board_configs/desktop \
+            eventsys \
             palettes \
             pdwidgets
         micropython <<'PY'
 import board_config
 import board_peripherals
+import eventsys
 import palettes
 import pdwidgets
 print("board_config:", board_config.__file__)
+print("eventsys:", eventsys.__file__)
+print("from_board_config:", hasattr(eventsys.Runtime, "from_board_config"))
 print("palettes:", palettes.__file__)
 print("pdwidgets:", pdwidgets.__file__)
 PY
@@ -94,7 +98,7 @@ install_bashrc_hook() {
     cat >>"$BASHRC" <<EOF
 
 ${BASHRC_BEGIN}
-# Added by cloud-pydevices-examples-dev-env.sh — run examples from pydevices-examples/src/
+# Added by cloud-pydevices-examples-dev-env.sh — run examples from pydevices-examples/lib/
 if [[ -f "${ENV_FILE}" ]]; then
     # shellcheck source=/dev/null
     source "${ENV_FILE}"
@@ -108,4 +112,4 @@ ensure_micropython_bin
 mip_install_micropython_lib
 install_bashrc_hook
 
-log "done — cd ${EXAMPLES}/src and run micropython/circuitpython/python examples"
+log "done — cd ${EXAMPLES}/lib and run micropython/circuitpython/python examples"

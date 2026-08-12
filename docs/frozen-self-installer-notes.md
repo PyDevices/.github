@@ -44,7 +44,7 @@ from <xyz> import <clever_install_fn>  # name TBD
 
 - [pydevices-examples `installer.py`](https://github.com/PyDevices/pydevices-examples/blob/main/installer.py) — `lib_install()` vs `repo_install()` split
 - [pydevices-examples `scripts/publish_sync_packages.sh`](https://github.com/PyDevices/pydevices-examples/blob/main/scripts/publish_sync_packages.sh) — what actually lands on the MIP index
-- Desktop `board_config` in [pydevices-examples `src/lib/board_config.py`](https://github.com/PyDevices/pydevices-examples/blob/main/src/lib/board_config.py) — likely still needed after core install
+- Desktop `board_config` in [pydevices `board_configs/desktop/board_config.py`](https://github.com/PyDevices/pydevices/blob/main/board_configs/desktop/board_config.py) — likely still needed after core install
 
 **Open questions:**
 

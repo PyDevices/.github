@@ -1,11 +1,11 @@
-# pydevices-examples path environment — source before running from pydevices-examples/src/.
+# pydevices-examples path environment — source before running from pydevices-examples/lib/.
 # Values match pydevices-examples README.md §3.2.1 and docs/utils.md (character-for-character).
 #
-#   cd pydevices-examples/src
+#   cd pydevices-examples/lib
 #   source ~/gh/pydevices/dotgithub/scripts/pydevices-examples-env.sh   # or this repo's path
 
 _pydevices_examples_env_root() {
-    if [[ -n "${PYDEVICES_EXAMPLES_ROOT:-}" && -d "${PYDEVICES_EXAMPLES_ROOT}/src" ]]; then
+    if [[ -n "${PYDEVICES_EXAMPLES_ROOT:-}" && -d "${PYDEVICES_EXAMPLES_ROOT}/lib" ]]; then
         printf '%s' "$PYDEVICES_EXAMPLES_ROOT"
         return 0
     fi
@@ -14,7 +14,7 @@ _pydevices_examples_env_root() {
     for candidate in \
         "$repos/pydevices-examples" \
         "${HOME}/gh/pydevices/pydevices-examples"; do
-        if [[ -d "$candidate/src" ]]; then
+        if [[ -d "$candidate/lib" ]]; then
             printf '%s' "$candidate"
             return 0
         fi

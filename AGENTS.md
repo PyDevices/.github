@@ -40,8 +40,8 @@ separate “workspace configuration” chat.
   pydevices `docs/install-workflows.md`).
 - Appends a `pydevices-examples-env.sh` hook to `~/.bashrc` exporting `PATH`
   (`pydevices-examples/bin`) plus `PYTHONPATH` / `MICROPYPATH` entries for
-  `pydevices-examples/src/utils` and the canonical `pydevices` product paths.
-  Run examples from `pydevices-examples/src/`.
+  `pydevices-examples/lib/utils` and the canonical `pydevices` product paths.
+  Run examples from `pydevices-examples/lib/`.
 
 Use the **`pydevices-cloud-handoff`** skill (`/pydevices-cloud-handoff`) when
 handing work from Cursor desktop to Cloud Agents.
