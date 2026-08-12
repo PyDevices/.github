@@ -89,7 +89,7 @@ icons. Header brand stays on the shared org logo.
 
 | Repo | Role | Pages site |
 |---|---|---|
-| [pydisplay](https://github.com/PyDevices/pydisplay) | Core pure-Python display/input/graphics library | [pydevices.github.io/pydisplay](https://pydevices.github.io/pydisplay/) (+ [PyScript demos](https://pydevices.github.io/pydisplay/pyscript/)) |
+| [pydisplay](https://github.com/PyDevices/pydisplay) | Examples, tutorials, and PyScript showcase for the PyDevices product stack | [pydevices.github.io/pydisplay](https://pydevices.github.io/pydisplay/) (+ [PyScript demos](https://pydevices.github.io/pydisplay/pyscript/)) |
 | [palettes](https://github.com/PyDevices/palettes) | Color palette toolkit for pydisplay | [pydevices.github.io/palettes](https://pydevices.github.io/palettes/) |
 | [pdwidgets](https://github.com/PyDevices/pdwidgets) | Cross-platform widget toolkit for pydisplay | [pydevices.github.io/pdwidgets](https://pydevices.github.io/pdwidgets/) |
 | [lvgl-bindings](https://github.com/PyDevices/lvgl-bindings) | LVGL C→binding generator (source of truth for the native cmods) | [pydevices.github.io/lvgl-bindings](https://pydevices.github.io/lvgl-bindings/) |
@@ -103,7 +103,7 @@ icons. Header brand stays on the shared org logo.
 | [PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io) | Org landing + shared chrome | [pydevices.github.io](https://pydevices.github.io/) |
 | [.github](https://github.com/PyDevices/.github) | This repo — org profile README, issue templates, CONTRIBUTING.md, `docs/github-presence.md`, `docs/repo-layout.md`, `docs/NOTES.md` | *(no Pages site — org metadata only)* |
 | [micropython-lib](https://github.com/PyDevices/micropython-lib) | Fork carrying PyDevices' micropython-lib packages for `mip install` | *(no dedicated marketing site — it's a package index fork, not a product)* |
-| [micropython-hardware](https://github.com/PyDevices/micropython-hardware) | Board configs + hardware drivers (display/touch/bus/…) extracted from pydisplay | [pydevices.github.io/micropython-hardware](https://pydevices.github.io/micropython-hardware/) |
+| [micropython-hardware](https://github.com/PyDevices/micropython-hardware) | Canonical reusable product: cross-runtime libraries, board configs, and hardware drivers published for pip and MIP | [pydevices.github.io/micropython-hardware](https://pydevices.github.io/micropython-hardware/) |
 | [mpftp](https://github.com/PyDevices/mpftp) | VS Code / Cursor board tools (REPL, file transfer, mip/circup, MicroPython firmware) | [pydevices.github.io/mpftp](https://pydevices.github.io/mpftp/) |
 
 ## Licensing

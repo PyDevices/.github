@@ -28,5 +28,12 @@ if ! PYDISPLAY_ROOT="$(_pydisplay_env_root)"; then
 fi
 
 export PATH="${PYDISPLAY_ROOT}/bin:${PATH}"
-export PYTHONPATH=.:lib:utils
-export MICROPYPATH=.:.frozen:lib:utils:~/.micropython/lib:/usr/lib/micropython
+PYDEVICES_HARDWARE_ROOT="$(cd "${PYDISPLAY_ROOT}/../micropython-hardware" 2>/dev/null && pwd || true)"
+if [[ -n "$PYDEVICES_HARDWARE_ROOT" ]]; then
+    export PYTHONPATH=".:utils:${PYDEVICES_HARDWARE_ROOT}/drivers/display:${PYDEVICES_HARDWARE_ROOT}/lib:${PYDEVICES_HARDWARE_ROOT}/utils"
+    export MICROPYPATH=".:.frozen:utils:${PYDEVICES_HARDWARE_ROOT}/drivers/display:${PYDEVICES_HARDWARE_ROOT}/lib:${PYDEVICES_HARDWARE_ROOT}/utils:~/.micropython/lib:/usr/lib/micropython"
+else
+    export PYTHONPATH=.:utils
+    export MICROPYPATH=.:.frozen:utils:~/.micropython/lib:/usr/lib/micropython
+fi
+unset PYDEVICES_HARDWARE_ROOT

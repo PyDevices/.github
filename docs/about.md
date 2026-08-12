@@ -16,7 +16,7 @@ The project's goal is to let developers build display-driven applications that c
 
 PyDevices describes its stack as:
 
-1. **pydisplay** (foundation)
+1. **micropython-hardware** (reusable product packages and drivers)
 2. Optional graphics/color layers
 3. Widget toolkits
 4. Full LVGL integration when needed
@@ -27,28 +27,25 @@ This allows developers to start with lightweight Python display drivers and prog
 
 # Key Repositories
 
-## 1\. pydisplay
+## 1\. micropython-hardware
 
-**Purpose:** Core display, input, and event framework.
+**Purpose:** Canonical product source and release repository.
 
-Provides pure-Python display drivers and serves as the foundation for the entire ecosystem across MicroPython, CircuitPython, and CPython.
+Provides cross-runtime `displaydev`, `audiodev`, optional `eventsys`, timers,
+board configurations, and hardware drivers through prefixed TestPyPI
+distributions and unprefixed MIP packages.
 
 **Best for:** Embedded displays, touchscreens, desktop display backends.
 
 \---
 
-## 2\. micropython-hardware
+## 2\. pydisplay
 
-**Purpose:** Hardware support package.
+**Purpose:** Examples, documentation, and PyScript showcase.
 
-Contains:
-
-* Board configurations
-* Display drivers
-* Touch drivers
-* Hardware documentation
-
-Designed for MicroPython and CircuitPython environments.
+Shows the product in action across MicroPython, CircuitPython, CPython,
+desktop, browser, and notebooks. It owns application examples and utilities,
+not reusable product libraries.
 
 \---
 
@@ -126,15 +123,15 @@ Native display bus and framebuffer implementations for MicroPython.
 
 Graphics primitives and framebuffer support with both native and pure-Python implementations.
 
-## lv\_cpython\_mod
+## lvgl-python
 
 Native LVGL extension module for CPython.
 
-## lv\_micropython\_cmod
+## lvgl-micropython
 
 LVGL integration and user module support for MicroPython.
 
-## lv\_circuitpython\_mod
+## lvgl-circuitpython
 
 LVGL integration for CircuitPython builds.
 
@@ -178,4 +175,3 @@ It combines:
 * Browser/PWA deployment
 
 into a cohesive cross-platform ecosystem.
-

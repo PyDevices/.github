@@ -20,7 +20,7 @@ PyDevices’ stated goal is to run **pydisplay everywhere Python runs with a usa
 | Packaging | `pydisplay_android`, TestPyPI wheels, MIP/`installer.py` | APK path and prebuilt packages |
 | Build workspace | `cmods` | Optional multi-usermod MicroPython build orchestration |
 
-**Display backends today** (`pydisplay/src/lib/displaydev/`):
+**Display backends today** (`micropython-hardware/drivers/display/displaydev/`):
 
 | Backend | Typical target |
 |---------|----------------|

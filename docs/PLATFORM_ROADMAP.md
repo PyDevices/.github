@@ -52,7 +52,7 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 
 - Native fbdev mmap or DRM/GBM path (`displayif` or new module) behind a DisplayDriver-compatible wrapper — do **not** start this until Phase 0 is tried.
 
-**Touchpoints:** `pydisplay` (`displaydev`, `board_configs`, docs), `micropython-hardware` / `pydisplay-desktop` only if SDL linkage/env quirks require it.
+**Touchpoints:** `pydisplay` (`displaydev`, `board_configs`, docs), `micropython-hardware` / `pydevices-desktop` only if SDL linkage/env quirks require it.
 
 **Why-comments:** required on every KMS-enabling edit.
 

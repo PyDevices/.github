@@ -201,7 +201,7 @@ ensure_lv_cpython_lvgl_symlink() {
 
 verify_ready() {
     local name missing=0
-    for name in cmods displayif pygraphics lvgl-bindings pydisplay palettes pdwidgets; do
+    for name in cmods displayif pygraphics lvgl-bindings micropython-hardware pydisplay palettes pdwidgets; do
         if [[ ! -d "$REPOS/$name/.git" && ! -L "$REPOS/$name" ]]; then
             log "ERROR: required repo missing: $REPOS/$name"
             missing=1

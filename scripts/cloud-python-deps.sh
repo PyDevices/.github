@@ -91,11 +91,14 @@ if bin="$(ensure_venv pydisplay)"; then
     "$bin/pip" install -q -i https://test.pypi.org/simple/ \
         --extra-index-url https://pypi.org/simple/ pydevices-lvgl || \
         log "warn: pydevices-lvgl (TestPyPI) install skipped; LVGL examples unavailable"
-    # Put the source-only sibling packages on pydisplay's venv path so examples
-    # that `import palettes` / `import pdwidgets` resolve in the example matrix.
+    # Put canonical product and source-only sibling packages on pydisplay's
+    # venv path so the matrix tests the current multi-repo sources.
     sp="$("$bin/python" -c 'import site; print(site.getsitepackages()[0])' 2>/dev/null)"
     if [[ -n "${sp:-}" ]]; then
-        printf '%s\n%s\n%s\n' \
+        printf '%s\n%s\n%s\n%s\n%s\n%s\n' \
+            "$REPOS/micropython-hardware/drivers/display" \
+            "$REPOS/micropython-hardware/lib" \
+            "$REPOS/micropython-hardware/utils" \
             "$REPOS/palettes/lib" "$REPOS/pdwidgets/lib" "$REPOS/pygraphics/lib" \
             > "$sp/pydevices_siblings.pth"
         log "wrote $sp/pydevices_siblings.pth"

@@ -29,7 +29,8 @@ separate “workspace configuration” chat.
   them, recreates broken `.venv` leftovers, then installs pydisplay
   (`requirements-dev.txt` + `pygame-ce` + `pydevices-lvgl`), `ruff` for
   `palettes`/`pdwidgets`, and a `pydevices_siblings.pth` so examples import
-  sibling sources.
+  canonical product sources from `micropython-hardware` plus the sibling
+  `palettes`, `pdwidgets`, and `pygraphics` sources.
 
 `cloud-pydisplay-dev-env.sh`:
 - Installs pydisplay `requirements.txt` (TestPyPI runtime stack for CPython).
@@ -38,9 +39,9 @@ separate “workspace configuration” chat.
   installs; omit `--no-mpy` for MicroPython-only `.mpy` — see
   micropython-hardware `docs/install-workflows.md`).
 - Appends a `pydisplay-env.sh` hook to `~/.bashrc` exporting `PATH`
-  (`pydisplay/bin`), `PYTHONPATH=.:lib:utils`, and
-  `MICROPYPATH=.:.frozen:lib:utils:~/.micropython/lib:/usr/lib/micropython`
-  (pydisplay README §3.2.1). Run examples from `pydisplay/src/`.
+  (`pydisplay/bin`) plus `PYTHONPATH` / `MICROPYPATH` entries for
+  `pydisplay/src/utils` and the canonical `micropython-hardware` product paths.
+  Run examples from `pydisplay/src/`.
 
 Use the **`pydevices-cloud-handoff`** skill (`/pydevices-cloud-handoff`) when
 handing work from Cursor desktop to Cloud Agents.
