@@ -1,7 +1,7 @@
 # Frozen self-installer notes
 
 Private design scratchpad (not for RTD). Org-level notes; implementation
-touches pydisplay + micropython-lib (+ desktop MicroPython freeze).
+touches pydevices-examples + micropython-lib (+ desktop MicroPython freeze).
 
 ## Todo
 
@@ -22,7 +22,7 @@ from <xyz> import <clever_install_fn>  # name TBD
 
 **What gets installed first:** The four `src/lib` packages only — `displaydev`, `eventsys`, `pygraphics`, `multimer`. Add-ons, examples, and board configs stay optional later steps.
 
-**Source of truth:** Maintainer-published packages from the PyDevices micropython-lib fork, published via pydisplay [`scripts/publish_sync_packages.sh`](https://github.com/PyDevices/pydisplay/blob/main/scripts/publish_sync_packages.sh) → MIP index at `https://PyDevices.github.io/micropython-lib/mip/PyDevices`. Same channel as [`installer.py`](https://github.com/PyDevices/pydisplay/blob/main/installer.py) `lib_install()` ([installation/mip-micropython-lib.md](https://pydisplay.readthedocs.io/en/latest/installation/mip-micropython-lib.html) on RTD describes the index; this installer should **warn explicitly** that it is not the official MicroPython micropython-lib registry).
+**Source of truth:** Maintainer-published packages from the PyDevices micropython-lib fork, published via pydevices-examples [`scripts/publish_sync_packages.sh`](https://github.com/PyDevices/pydevices-examples/blob/main/scripts/publish_sync_packages.sh) → MIP index at `https://PyDevices.github.io/micropython-lib/mip/PyDevices`. Same channel as [`installer.py`](https://github.com/PyDevices/pydevices-examples/blob/main/installer.py) `lib_install()` ([installation/mip-micropython-lib.md](https://github.com/PyDevices/pydevices-examples/blob/main/docs/installation/mip-micropython-lib.md) describes the index; this installer should **warn explicitly** that it is not the official MicroPython micropython-lib registry).
 
 **Suggested first-run warning (UI copy):**
 
@@ -42,13 +42,13 @@ from <xyz> import <clever_install_fn>  # name TBD
 
 **Existing code to reuse / align with:**
 
-- [pydisplay `installer.py`](https://github.com/PyDevices/pydisplay/blob/main/installer.py) — `lib_install()` vs `repo_install()` split
-- [pydisplay `scripts/publish_sync_packages.sh`](https://github.com/PyDevices/pydisplay/blob/main/scripts/publish_sync_packages.sh) — what actually lands on the MIP index
-- Desktop `board_config` in [pydisplay `src/lib/board_config.py`](https://github.com/PyDevices/pydisplay/blob/main/src/lib/board_config.py) — likely still needed after core install
+- [pydevices-examples `installer.py`](https://github.com/PyDevices/pydevices-examples/blob/main/installer.py) — `lib_install()` vs `repo_install()` split
+- [pydevices-examples `scripts/publish_sync_packages.sh`](https://github.com/PyDevices/pydevices-examples/blob/main/scripts/publish_sync_packages.sh) — what actually lands on the MIP index
+- Desktop `board_config` in [pydevices-examples `src/lib/board_config.py`](https://github.com/PyDevices/pydevices-examples/blob/main/src/lib/board_config.py) — likely still needed after core install
 
 **Open questions:**
 
-- Frozen module lives in pydisplay repo vs MicroPython port tree?
+- Frozen module lives in pydevices-examples repo vs MicroPython port tree?
 - Idempotent refresh: version manifest, etag, or always pull?
 - GUI toolkit on desktop MCU port: `pdwidgets`, plain print menu, or SDL text UI?
 - Relationship to future TestPyPI / pip path for CPython Jupyter (separate track)

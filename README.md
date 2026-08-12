@@ -12,8 +12,8 @@ Org-wide community health files and profile for [PyDevices](https://github.com/P
 - [`docs/PLATFORM_ROADMAP.md`](docs/PLATFORM_ROADMAP.md) — cloud-agent workstreams for platform expansion (parallel pursue tracks, why-comment rule, out-of-scope list).
 
 Board / Detect inventory docs live in
-[micropython-hardware/docs](https://github.com/PyDevices/micropython-hardware/tree/main/docs)
-([Pages](https://pydevices.github.io/micropython-hardware/)).
+[pydevices/docs](https://github.com/PyDevices/pydevices/tree/main/docs)
+([Pages](https://pydevices.github.io/pydevices/)).
 
 Website: <https://pydevices.github.io/>
 

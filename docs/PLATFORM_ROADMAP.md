@@ -40,19 +40,19 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 
 ### 1. Linux KMS / bare framebuffer (no WM)
 
-**Goal:** Validated pydisplay on embedded Linux without X11/Wayland, reusing `SDLDisplay` first.
+**Goal:** Validated pydevices-examples on embedded Linux without X11/Wayland, reusing `SDLDisplay` first.
 
 **Phase 0 (do first):**
 
 - Document and validate `SDL_VIDEODRIVER=kmsdrm` with existing `SDLDisplay` + `usdl2` on a Pi/SBC (or equivalent) without a desktop.
-- Validate the canonical `micropython-hardware/board_configs/desktop/` config under KMS; add a specialized host config there only if environment selection is insufficient.
-- Platform doc notes in `pydisplay/docs/platforms/` (desktop/Linux path vs KMS).
+- Validate the canonical `pydevices/board_configs/desktop/` config under KMS; add a specialized host config there only if environment selection is insufficient.
+- Platform doc notes in `pydevices-examples/docs/platforms/` (desktop/Linux path vs KMS).
 
 **Later (only if SDL KMS is insufficient):**
 
 - Native fbdev mmap or DRM/GBM path (`displayif` or new module) behind a DisplayDriver-compatible wrapper — do **not** start this until Phase 0 is tried.
 
-**Touchpoints:** `micropython-hardware` (`displaydev`, desktop config, `pydevices-desktop`) and `pydisplay` (examples/docs).
+**Touchpoints:** `pydevices` (`displaydev`, desktop config, `pydevices-desktop`) and `pydevices-examples` (examples/docs).
 
 **Why-comments:** required on every KMS-enabling edit.
 
@@ -64,13 +64,13 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 
 **First steps:**
 
-- TV / leanback launcher intent category in `pydisplay_android` packaging (`buildozer.spec` / p4a as needed).
+- TV / leanback launcher intent category in `pydevices-android-template` packaging (`buildozer.spec` / p4a as needed).
 - Android TV host settings (fullscreen assumptions, 10-foot scale hints); extend the canonical desktop config only if needed.
-- Map D-pad / enter / back through the neutral PyDevices input contracts in `micropython-hardware` (why-comment each mapping).
-- Document in `pydisplay/docs/platforms/android.md` (§ Android TV / Fire OS).
-- Optional: Android TV emulator smoke under `pydisplay_android/scripts/`.
+- Map D-pad / enter / back through the neutral PyDevices input contracts in `pydevices` (why-comment each mapping).
+- Document in `pydevices-examples/docs/platforms/android.md` (§ Android TV / Fire OS).
+- Optional: Android TV emulator smoke under `pydevices-android-template/scripts/`.
 
-**Touchpoints:** `pydisplay_android`, `micropython-hardware` (portable input/config packages), and `pydisplay` (examples/docs); TestPyPI `pydevices-desktop` changes only if TV input/SDL gaps appear.
+**Touchpoints:** `pydevices-android-template`, `pydevices` (portable input/config packages), and `pydevices-examples` (examples/docs); TestPyPI `pydevices-desktop` changes only if TV input/SDL gaps appear.
 
 **Why-comments:** required on every new edit for this track.
 
@@ -82,11 +82,11 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 
 **First steps:**
 
-- PyScript TV-oriented examples under `pydisplay/web/pyscript/` (e.g. `tv/`): large fonts, remote-friendly layout.
+- PyScript TV-oriented examples under `pydevices-examples/web/pyscript/` (e.g. `tv/`): large fonts, remote-friendly layout.
 - JS key / remote bridge notes for webOS / Tizen key codes (why-comment bridge hooks).
 - Short platform doc note: webOS/Tizen = browser/PyScript only.
 
-**Touchpoints:** `pydisplay` (`web/pyscript`, examples/docs) and `micropython-hardware` only if portable key normalization must change.
+**Touchpoints:** `pydevices-examples` (`web/pyscript`, examples/docs) and `pydevices` only if portable key normalization must change.
 
 **Why-comments:** required on every new edit for this track.
 
@@ -94,25 +94,25 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 
 ## Docs only
 
-### Progressive Web Apps (PWA) — major pydisplay feature
+### Progressive Web Apps (PWA) — major pydevices-examples feature
 
-**Goal:** Treat installable / offline PyScript apps as a **first-class** platform story, documented as clearly as MCU / desktop / Android APK — especially **where** a pydisplay PWA actually runs.
+**Goal:** Treat installable / offline PyScript apps as a **first-class** platform story, documented as clearly as MCU / desktop / Android APK — especially **where** a pydevices-examples PWA actually runs.
 
-Today the how-to lives in `pydisplay/docs/guides/pyscript-pwa.md` (manifest, service worker, COI, GitHub Pages). What is still thin: elevating PWAs in **platform** docs and spelling out the host matrix (browser × OS × install UX).
+Today the how-to lives in `pydevices-examples/docs/guides/pyscript-pwa.md` (manifest, service worker, COI, GitHub Pages). What is still thin: elevating PWAs in **platform** docs and spelling out the host matrix (browser × OS × install UX).
 
 **First steps:**
 
-- Expand `pydisplay/docs/platforms/` so the portability matrix and PyScript notes call out **installable PWA** alongside in-browser demos (link the existing guide; do not bury it as a gallery-only tip).
+- Expand `pydevices-examples/docs/platforms/` so the portability matrix and PyScript notes call out **installable PWA** alongside in-browser demos (link the existing guide; do not bury it as a gallery-only tip).
 - Document a clear **where PWAs run** matrix, including at least:
   - Desktop Chromium (Chrome / Edge) — install prompt / standalone window
-  - Android Chrome — install / home-screen; contrast with native `pydisplay_android` APK
+  - Android Chrome — install / home-screen; contrast with native `pydevices-android-template` APK
   - iOS / iPadOS Safari — Share → Add to Home Screen (no `beforeinstallprompt`)
   - Chromebook and other desktop Linux browsers as relevant
   - Relation to TV **web** path (webOS / Tizen Chromium browsers — browser or installable web app, not native SDL)
 - Clarify standalone vs tab behavior, offline/cache expectations, and install UX differences per host.
 - Keep implementation detail in the PWA how-to; **platform docs own “where it runs.”**
 
-**Touchpoints:** `pydisplay` (`docs/platforms/`, `docs/guides/pyscript-pwa.md`, optionally `platforms/index.md` matrix wording). Cross-link from Android TV / webOS / iOS docs-only notes so PWA is not reinvented per track.
+**Touchpoints:** `pydevices-examples` (`docs/platforms/`, `docs/guides/pyscript-pwa.md`, optionally `platforms/index.md` matrix wording). Cross-link from Android TV / webOS / iOS docs-only notes so PWA is not reinvented per track.
 
 **Not in this workstream:** new PWA runtime features or native shells — documentation and positioning only.
 
@@ -120,7 +120,7 @@ Today the how-to lives in `pydisplay/docs/guides/pyscript-pwa.md` (manifest, ser
 
 ### iOS / iPadOS via PyScript
 
-- Add a short note in `pydisplay` platform docs: Apple mobile = Mobile Safari + `PSDisplay` / PyScript gallery (browser and/or home-screen PWA — see PWA workstream above).
+- Add a short note in `pydevices-examples` platform docs: Apple mobile = Mobile Safari + `PSDisplay` / PyScript gallery (browser and/or home-screen PWA — see PWA workstream above).
 - **No** dedicated iPhone/iPad smoke campaign as part of this roadmap.
 - Does **not** reopen native iOS packaging.
 
@@ -141,7 +141,7 @@ These are ordinary product / board enablement — not streams to open from this 
 
 Do **not** start from this roadmap:
 
-- Native iOS / iPadOS app (`pydisplay_ios`, BeeWare/Kivy packaging, macOS CI for App Store)
+- Native iOS / iPadOS app (`pydevices-ios`, BeeWare/Kivy packaging, macOS CI for App Store)
 - watchOS
 - Nintendo Switch, PlayStation Vita, PS4/PS5 (org roadmap)
 - Native webOS / Tizen Python or `SDLDisplay` on those OS shells (web path only — see pursue #3)
@@ -155,4 +155,4 @@ Do **not** start from this roadmap:
 | [`PLATFORM_FEASIBILITY_REPORT.md`](PLATFORM_FEASIBILITY_REPORT.md) | Analysis + org decisions |
 | [`NOTES.md`](NOTES.md) | Brad's personal todo (not this roadmap) |
 | [`AGENTS.md`](AGENTS.md) | Cloud workspace layout |
-| `pydisplay` platform docs | User-facing install/portability matrix |
+| `pydevices-examples` platform docs | User-facing install/portability matrix |

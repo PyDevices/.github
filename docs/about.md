@@ -16,7 +16,7 @@ The project's goal is to let developers build display-driven applications that c
 
 PyDevices describes its stack as:
 
-1. **micropython-hardware** (reusable product packages and drivers)
+1. **pydevices** (reusable product packages and drivers)
 2. Optional graphics/color layers
 3. Widget toolkits
 4. Full LVGL integration when needed
@@ -27,7 +27,7 @@ This allows developers to start with lightweight Python display drivers and prog
 
 # Key Repositories
 
-## 1\. micropython-hardware
+## 1\. pydevices
 
 **Purpose:** Canonical product source and release repository.
 
@@ -39,7 +39,7 @@ distributions and unprefixed MIP packages.
 
 \---
 
-## 2\. pydisplay
+## 2\. pydevices-examples
 
 **Purpose:** Examples, documentation, and PyScript showcase.
 
@@ -139,7 +139,7 @@ LVGL integration for CircuitPython builds.
 
 # Android and Web Efforts
 
-## pydisplay\_android
+## pydevices-examples\_android
 
 Provides:
 

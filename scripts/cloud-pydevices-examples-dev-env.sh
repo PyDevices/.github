@@ -1,63 +1,63 @@
 #!/usr/bin/env bash
-# Idempotent pydisplay desktop dev environment for the PyDevices cloud workspace.
+# Idempotent pydevices-examples desktop dev environment for the PyDevices cloud workspace.
 #
 # Complements cloud-workspace-install.sh and cloud-python-deps.sh:
-#   - pip install pydisplay requirements.txt (TestPyPI runtime stack for CPython)
+#   - pip install pydevices-examples requirements.txt (TestPyPI runtime stack for CPython)
 #   - mip install desktop board_config, palettes, pdwidgets into ~/.micropython/lib
-#   - ensure shell env (PATH, PYTHONPATH, MICROPYPATH) via pydisplay-env.sh + bashrc hook
+#   - ensure shell env (PATH, PYTHONPATH, MICROPYPATH) via pydevices-examples-env.sh + bashrc hook
 #
-# Run from pydisplay/src/ after sourcing pydisplay-env.sh (or open a new shell).
-# See micropython-hardware docs/install-workflows.md (CircuitPython-compatible mip, mpy=False).
+# Run from pydevices-examples/src/ after sourcing pydevices-examples-env.sh (or open a new shell).
+# See pydevices docs/install-workflows.md (CircuitPython-compatible mip, mpy=False).
 #
 # Safe to re-run. Intentionally does not `set -e` on optional TestPyPI steps.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPOS="${PYDEVICES_REPOS_ROOT:-/agent/repos}"
-PYDISPLAY="${PYDISPLAY_ROOT:-$REPOS/pydisplay}"
+EXAMPLES="${PYDEVICES_EXAMPLES_ROOT:-$REPOS/pydevices-examples}"
 MIP_INDEX="https://PyDevices.github.io/micropython-lib/mip/PyDevices"
 MPY_LIB="${HOME}/.micropython"
 BASHRC="${HOME}/.bashrc"
-ENV_FILE="${SCRIPT_DIR}/pydisplay-env.sh"
-BASHRC_BEGIN="# >>> pydevices pydisplay dev env >>>"
-BASHRC_END="# <<< pydevices pydisplay dev env <<<"
+ENV_FILE="${SCRIPT_DIR}/pydevices-examples-env.sh"
+BASHRC_BEGIN="# >>> pydevices pydevices-examples dev env >>>"
+BASHRC_END="# <<< pydevices pydevices-examples dev env <<<"
 
-log() { printf 'cloud-pydisplay-dev-env: %s\n' "$*"; }
+log() { printf 'cloud-pydevices-examples-dev-env: %s\n' "$*"; }
 
 die() {
     log "ERROR: $*"
     exit 1
 }
 
-# shellcheck source=pydisplay-env.sh
+# shellcheck source=pydevices-examples-env.sh
 source "${ENV_FILE}" || die "cannot source ${ENV_FILE}"
 
-ensure_pydisplay_venv() {
-    if [[ ! -d "$PYDISPLAY" ]]; then
-        die "pydisplay not found at $PYDISPLAY"
+ensure_pydevices_examples_venv() {
+    if [[ ! -d "$EXAMPLES" ]]; then
+        die "pydevices-examples not found at $EXAMPLES"
     fi
-    local vpy="$PYDISPLAY/.venv/bin/python"
-    local vpip="$PYDISPLAY/.venv/bin/pip"
+    local vpy="$EXAMPLES/.venv/bin/python"
+    local vpip="$EXAMPLES/.venv/bin/pip"
     if [[ ! -x "$vpy" ]]; then
-        log "create venv: $PYDISPLAY/.venv"
-        python3 -m venv "$PYDISPLAY/.venv" || die "venv creation failed"
+        log "create venv: $EXAMPLES/.venv"
+        python3 -m venv "$EXAMPLES/.venv" || die "venv creation failed"
     fi
     if ! "$vpy" -c "import pip" 2>/dev/null; then
-        log "recreate broken venv: $PYDISPLAY/.venv"
-        rm -rf "$PYDISPLAY/.venv"
-        python3 -m venv "$PYDISPLAY/.venv" || die "venv recreation failed"
+        log "recreate broken venv: $EXAMPLES/.venv"
+        rm -rf "$EXAMPLES/.venv"
+        python3 -m venv "$EXAMPLES/.venv" || die "venv recreation failed"
     fi
     "$vpip" install -q --upgrade pip || true
-    log "pip install -r $PYDISPLAY/requirements.txt"
-    "$vpip" install -q -r "$PYDISPLAY/requirements.txt" || \
-        log "warn: pydisplay requirements.txt install failed"
+    log "pip install -r $EXAMPLES/requirements.txt"
+    "$vpip" install -q -r "$EXAMPLES/requirements.txt" || \
+        log "warn: pydevices-examples requirements.txt install failed"
 }
 
 ensure_micropython_bin() {
     if command -v micropython >/dev/null 2>&1; then
         return 0
     fi
-    die "micropython not on PATH (expected ${PYDISPLAY_ROOT}/bin/micropython)"
+    die "micropython not on PATH (expected ${PYDEVICES_EXAMPLES_ROOT}/bin/micropython)"
 }
 
 mip_install_micropython_lib() {
@@ -67,7 +67,7 @@ mip_install_micropython_lib() {
         cd "${MPY_LIB}" || exit 1
         INDEX="https://PyDevices.github.io/micropython-lib/mip/PyDevices"
         micropython -m mip install --no-mpy -t lib -i "$INDEX" \
-            github:PyDevices/micropython-hardware/board_configs/desktop \
+            github:PyDevices/pydevices/board_configs/desktop \
             palettes \
             pdwidgets
         micropython <<'PY'
@@ -90,11 +90,11 @@ install_bashrc_hook() {
         log "bashrc hook already present"
         return 0
     fi
-    log "append pydisplay env hook to $BASHRC"
+    log "append pydevices-examples env hook to $BASHRC"
     cat >>"$BASHRC" <<EOF
 
 ${BASHRC_BEGIN}
-# Added by cloud-pydisplay-dev-env.sh — run examples from pydisplay/src/
+# Added by cloud-pydevices-examples-dev-env.sh — run examples from pydevices-examples/src/
 if [[ -f "${ENV_FILE}" ]]; then
     # shellcheck source=/dev/null
     source "${ENV_FILE}"
@@ -103,9 +103,9 @@ ${BASHRC_END}
 EOF
 }
 
-ensure_pydisplay_venv
+ensure_pydevices_examples_venv
 ensure_micropython_bin
 mip_install_micropython_lib
 install_bashrc_hook
 
-log "done — cd ${PYDISPLAY}/src and run micropython/circuitpython/python examples"
+log "done — cd ${EXAMPLES}/src and run micropython/circuitpython/python examples"

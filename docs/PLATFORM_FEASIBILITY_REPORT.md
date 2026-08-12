@@ -1,8 +1,8 @@
-# PyDisplay Platform Feasibility Report
+# PyDevices Platform Feasibility Report
 
 **Date:** 2026-07-14 (analysis)  
 **Triage:** 2026-07-15 — org decisions recorded below (pursue / docs-only / not-a-track / ruled out)  
-**Scope:** Feasibility of extending PyDevices / PyDisplay to additional display targets beyond the current portability matrix.  
+**Scope:** Feasibility of extending PyDevices to additional display targets beyond the current portability matrix.
 **Author:** PyDevices Cloud Agent (based on review of all owned repositories under `/home/ubuntu/gh/pydevices` and `/agent/repos`).  
 **Location:** [PyDevices/.github](https://github.com/PyDevices/.github) (`docs/PLATFORM_FEASIBILITY_REPORT.md`). Actionable workstreams: [`PLATFORM_ROADMAP.md`](PLATFORM_ROADMAP.md).
 
@@ -10,17 +10,17 @@
 
 ## Executive summary
 
-PyDevices’ stated goal is to run **pydisplay everywhere Python runs with a usable display**. Today that is largely true for **MicroPython**, **CircuitPython**, and **CPython** across microcontrollers, Unix/Linux, Windows, the browser (PyScript/Wokwi), Jupyter, and **Android** (CPython via python-for-android). The stack is deliberately layered:
+PyDevices’ stated goal is to run **pydevices-examples everywhere Python runs with a usable display**. Today that is largely true for **MicroPython**, **CircuitPython**, and **CPython** across microcontrollers, Unix/Linux, Windows, the browser (PyScript/Wokwi), Jupyter, and **Android** (CPython via python-for-android). The stack is deliberately layered:
 
 | Layer | Repos | Role |
 |-------|-------|------|
-| Product API | `micropython-hardware` (`displaydev`, optional `eventsys`, `multimer`) plus `pygraphics` | Portable RGB565 display contract, unified input events, timers |
+| Product API | `pydevices` (`displaydev`, optional `eventsys`, `multimer`) plus `pygraphics` | Portable RGB565 display contract, unified input events, timers |
 | Hardware acceleration | `displayif`, `pygraphics`, SDL2 (`usdl2` via desktop board / Android wheels) | Native C modules for bus/framebuffer interfaces and drawing; SDL2 for desktop/Android |
 | GUI toolkit (optional) | `lvgl-bindings` + `lv_*_mod` | LVGL bindings for all three Python runtimes |
-| Packaging | `pydisplay_android`, TestPyPI wheels, MIP/`installer.py` | APK path and prebuilt packages |
+| Packaging | `pydevices-android-template`, TestPyPI wheels, MIP/`installer.py` | APK path and prebuilt packages |
 | Build workspace | `cmods` | Optional multi-usermod MicroPython build orchestration |
 
-**Display backends today** (`micropython-hardware/drivers/display/displaydev/`):
+**Display backends today** (`pydevices/drivers/display/displaydev/`):
 
 | Backend | Typical target |
 |---------|----------------|
@@ -40,7 +40,7 @@ PyDevices’ stated goal is to run **pydisplay everywhere Python runs with a usa
 | Android TV / Fire OS | Medium–High | **Pursue** | Phone Android treated as stable. Why-comments on new edits. |
 | LG webOS / Samsung Tizen (web) | Low–Medium | **Pursue** (web only) | PyScript TV examples + remote/key bridge; **no native SDL**. Why-comments on new edits. |
 | iOS / iPadOS via PyScript | Low–Medium | **Docs note only** | Position Mobile Safari / `PSDisplay` in platform docs; no dedicated smoke campaign. |
-| Progressive Web Apps (PyScript) | N/A (ships today) | **Docs only** | Major pydisplay feature — document **where PWAs run** (browser×OS×install UX) in platform docs; how-to already in `guides/pyscript-pwa.md`. |
+| Progressive Web Apps (PyScript) | N/A (ships today) | **Docs only** | Major pydevices-examples feature — document **where PWAs run** (browser×OS×install UX) in platform docs; how-to already in `guides/pyscript-pwa.md`. |
 | Native iOS / iPadOS app | Low–Medium | **Ruled out** | Foreseeable roadmap: Apple path is PyScript-in-Safari (docs note) only. |
 | Apple watchOS | Very Low | **Ruled out** | Entirely. |
 | FreeRTOS / new MCU boards | Medium (via MP) | **Not a platform track** | Normal `displayif` + board_config product work. |
@@ -57,12 +57,12 @@ PyDevices’ stated goal is to run **pydisplay everywhere Python runs with a usa
 
 This report is based on:
 
-1. README, platform docs, and source review across **all owned repos**: `pydisplay`, `pydisplay_android`, `displayif`, `pygraphics`, `micropython-hardware`, `cmods`, `lvgl-bindings`, `lvgl-micropython`, `lvgl-circuitpython`, `lvgl-python`, `PyDevices.github.io`, `.github`.
+1. README, platform docs, and source review across **all owned repos**: `pydevices-examples`, `pydevices-android-template`, `displayif`, `pygraphics`, `pydevices`, `cmods`, `lvgl-bindings`, `lvgl-micropython`, `lvgl-circuitpython`, `lvgl-python`, `PyDevices.github.io`, `.github`.
 2. Mapping each target to existing **display backend contracts**, **runtime availability** (MicroPython / CircuitPython / CPython), and **packaging** paths already in the ecosystem.
 3. External platform constraints (store policies, official language runtimes, input modalities) where the codebase has no prior work.
 4. **2026-07-15 triage** with Brad — decisions in the summary table above supersede earlier “recommended priority” wording elsewhere in this doc.
 
-**Important naming note:** PyDisplay’s `FBDisplay` wraps **device-local scanout buffers** (CircuitPython `framebufferio`, MicroPython `displayif` RGB/MIPI modules). It is **not** a Linux kernel framebuffer (`/dev/fb0`) driver. Linux desktop targets today use **SDL2** (`SDLDisplay` + `usdl2`) or **PyGame** (`PGDisplay`), which require a display server or SDL’s platform layer—not bare fbdev/KMS directly.
+**Important naming note:** PyDevices’s `FBDisplay` wraps **device-local scanout buffers** (CircuitPython `framebufferio`, MicroPython `displayif` RGB/MIPI modules). It is **not** a Linux kernel framebuffer (`/dev/fb0`) driver. Linux desktop targets today use **SDL2** (`SDLDisplay` + `usdl2`) or **PyGame** (`PGDisplay`), which require a display server or SDL’s platform layer—not bare fbdev/KMS directly.
 
 ---
 
@@ -70,10 +70,10 @@ This report is based on:
 
 ### Current state in PyDevices
 
-- **No iOS, iPadOS, or watchOS references** in pydisplay or sibling repos.
+- **No iOS, iPadOS, or watchOS references** in pydevices-examples or sibling repos.
 - **No MicroPython or CircuitPython port** for Apple mobile OSes.
-- **CPython on iOS** is not supported by `pydisplay_android` (python-for-android targets Android only).
-- Closest existing capability: **[PyScript](https://pydevices.github.io/pydisplay/pyscript/)** (`PSDisplay`) runs in **Mobile Safari** with no App Store packaging—usable display, but not a native app.
+- **CPython on iOS** is not supported by `pydevices-android-template` (python-for-android targets Android only).
+- Closest existing capability: **[PyScript](https://pydevices.github.io/pydevices-examples/pyscript/)** (`PSDisplay`) runs in **Mobile Safari** with no App Store packaging—usable display, but not a native app.
 
 ### Technical assessment
 
@@ -81,11 +81,11 @@ This report is based on:
 |------------|----------------|--------------|----------|
 | **iOS / iPadOS (native app)** | CPython possible via [BeeWare Briefcase](https://beeware.org/), [Kivy-ios](https://github.com/kivy/kivy-ios), or custom Xcode embedding; not in PyDevices today | SDL2 *can* target iOS, but PyDevices has no iOS build recipes, signing, or App Store pipeline | Apple code-signing; App Store review; no JIT on iOS (affects some Python builds); SDL main-loop integration; touch-safe `multimer` backend |
 | **iOS / iPadOS (web)** | PyScript / WASM asyncio | `PSDisplay` canvas | Offline/PWA limits; no full filesystem; performance vs native |
-| **watchOS** | No practical CPython/MP | N/A | Screen ~200×200; no SDL; watchOS app model incompatible with pydisplay’s event loop assumptions |
+| **watchOS** | No practical CPython/MP | N/A | Screen ~200×200; no SDL; watchOS app model incompatible with pydevices-examples’s event loop assumptions |
 
 ### Feasibility: **Low–Medium** (iOS/iPadOS), **Very Low** (watchOS)
 
-**Why not High:** PyDevices has invested in Android CPython (`pydisplay_android` + TestPyPI `usdl2` Android wheels). iOS would require a **parallel packaging track** (Xcode, CocoaPods/SDL, Apple Developer Program) with no shared p4a infrastructure.
+**Why not High:** PyDevices has invested in Android CPython (`pydevices-android-template` + TestPyPI `usdl2` Android wheels). iOS would require a **parallel packaging track** (Xcode, CocoaPods/SDL, Apple Developer Program) with no shared p4a infrastructure.
 
 **Effort estimate (native iOS):** Large — new repo, CI on macOS runners, SDL iOS glue, touch + safe-area input in `eventsys`, App Store compliance. **6+ subsystem touchpoints** (`SDLDisplay` / SDL packaging, `displaydev`, `multimer`, `eventsys`, packaging, LVGL wheels).
 
@@ -94,7 +94,7 @@ This report is based on:
 | Sub-target | Decision |
 |------------|----------|
 | **iOS / iPadOS (PyScript / Mobile Safari)** | **Docs note only** — mention in platform docs as the Apple mobile path; no dedicated smoke campaign. |
-| **iOS / iPadOS (native app)** | **Ruled out** for the foreseeable roadmap. Do not start `pydisplay_ios` / macOS CI from this work. |
+| **iOS / iPadOS (native app)** | **Ruled out** for the foreseeable roadmap. Do not start `pydevices-ios` / macOS CI from this work. |
 | **watchOS** | **Ruled out** entirely. |
 
 ---
@@ -103,10 +103,10 @@ This report is based on:
 
 ### Current state in PyDevices
 
-- **Linux desktop** is supported via `SDLDisplay` / `PGDisplay` under X11 or Wayland (`pydisplay/docs/platforms/cpython-desktop.md`).
+- **Linux desktop** is supported via `SDLDisplay` / `PGDisplay` under X11 or Wayland (`pydevices-examples/docs/platforms/cpython-desktop.md`).
 - **`FBDisplay` is MCU-oriented** — wraps RAM buffers flushed to panels via `displayif` or CircuitPython `framebufferio`, not `/dev/fb*`.
-- **LVGL** (in `lvgl-bindings`) includes optional `LV_USE_LINUX_FBDEV` and `LV_USE_LINUX_DRM` drivers, but PyDevices’ `lvgl-python/lv_conf.h` sets `LV_USE_OS` to `LV_OS_NONE` and does **not** enable Linux fbdev/DRM for pydisplay’s presentation path.
-- Desktop and Android SDL paths use a pydisplay-sized SDL2 subset (`import usdl2`); SDL2 on Linux can use `SDL_VIDEODRIVER=kmsdrm` on many embedded boards **without a window manager**, but this is untested/documented in PyDevices.
+- **LVGL** (in `lvgl-bindings`) includes optional `LV_USE_LINUX_FBDEV` and `LV_USE_LINUX_DRM` drivers, but PyDevices’ `lvgl-python/lv_conf.h` sets `LV_USE_OS` to `LV_OS_NONE` and does **not** enable Linux fbdev/DRM for pydevices-examples’s presentation path.
+- Desktop and Android SDL paths use a pydevices-examples-sized SDL2 subset (`import usdl2`); SDL2 on Linux can use `SDL_VIDEODRIVER=kmsdrm` on many embedded boards **without a window manager**, but this is untested/documented in PyDevices.
 
 ### Technical assessment
 
@@ -121,7 +121,7 @@ Embedded Linux kiosks (Raspberry Pi without desktop, industrial HMI, digital sig
 | **A. SDL `kmsdrm` video driver** | `SDLDisplay`, `usdl2`, `eventsys`, `multimer._sdl2` | Smallest diff; same Python API | Needs SDL2 with KMS; input via `evdev`/SDL; dependency on SDL behavior |
 | **B. New `LinuxFBDisplay` (fbdev mmap)** | `DisplayDriver` contract, `pygraphics` | No X11/Wayland; true bare metal feel | New C extension or ctypes; rotation/format quirks; deprecated on many distros |
 | **C. New `DRMDisplay` (libdrm/GBM)** | Same | Modern, zero-copy potential with `displayif`-style thinking | Most engineering; buffer management; mode-setting |
-| **D. LVGL linux fbdev/drm driver + flush shim** | `lvgl-python` / `lvgl-micropython` | LVGL already has drivers | Bypasses pydisplay `show()` path unless integrated as backend |
+| **D. LVGL linux fbdev/drm driver + flush shim** | `lvgl-python` / `lvgl-micropython` | LVGL already has drivers | Bypasses pydevices-examples `show()` path unless integrated as backend |
 
 ### Feasibility: **Medium–High**
 
@@ -147,19 +147,19 @@ Embedded Linux kiosks (Raspberry Pi without desktop, industrial HMI, digital sig
 
 ### Current state in PyDevices
 
-- **FreeRTOS** already underpins many **MicroPython MCU ports** (ESP32, STM32, RP2040, etc.) where pydisplay runs today via `BusDisplay` / `FBDisplay` + `displayif`.
+- **FreeRTOS** already underpins many **MicroPython MCU ports** (ESP32, STM32, RP2040, etc.) where pydevices-examples runs today via `BusDisplay` / `FBDisplay` + `displayif`.
 - **No Zephyr-specific** board configs, `displayif` ports, or documentation.
-- **LVGL** vendored in `lvgl-bindings` includes OS abstraction for FreeRTOS/CMSIS-RTOS2, but pydisplay’s Python layer does not select an RTOS backend—it runs **on top of** the MP/CP runtime’s scheduler.
+- **LVGL** vendored in `lvgl-bindings` includes OS abstraction for FreeRTOS/CMSIS-RTOS2, but pydevices-examples’s Python layer does not select an RTOS backend—it runs **on top of** the MP/CP runtime’s scheduler.
 - **CircuitPython** does not target Zephyr in the PyDevices matrix.
 
 ### Technical assessment
 
-| RTOS | Python availability | PyDisplay fit |
+| RTOS | Python availability | PyDevices fit |
 |------|---------------------|---------------|
 | **FreeRTOS (via MP on ESP32, etc.)** | MicroPython ports exist | **Already supported** where display hardware has board configs + `displayif` modules |
 | **FreeRTOS (no Python)** | None | **Not feasible** without porting MicroPython or another embedded Python |
-| **Zephyr** | [MicroPython Zephyr port](https://docs.zephyrproject.org/) exists but is niche vs ESP32/RP2 | Would need Zephyr `displayif` port (SPI/RGB drivers), frozen PyDevices packages, and a Zephyr-specific `board_config` in `micropython-hardware` |
-| **Zephyr + LVGL** | LVGL has Zephyr integration in upstream LVGL; PyDevices LVGL bindings are separate | Possible long-term via MP+LVGL, not pydisplay pure-Python alone |
+| **Zephyr** | [MicroPython Zephyr port](https://docs.zephyrproject.org/) exists but is niche vs ESP32/RP2 | Would need Zephyr `displayif` port (SPI/RGB drivers), frozen PyDevices packages, and a Zephyr-specific `board_config` in `pydevices` |
+| **Zephyr + LVGL** | LVGL has Zephyr integration in upstream LVGL; PyDevices LVGL bindings are separate | Possible long-term via MP+LVGL, not pydevices-examples pure-Python alone |
 
 ### Feasibility
 
@@ -208,7 +208,7 @@ Do **not** pursue on the org roadmap. Cloud agents must not open console/homebre
 
 ### Current state in PyDevices
 
-- **`pydisplay_android`** provides a **proven CPython + SDL2** path (`SDLDisplay`, `usdl2`, TestPyPI wheels).
+- **`pydevices-android-template`** provides a **proven CPython + SDL2** path (`SDLDisplay`, `usdl2`, TestPyPI wheels).
 - Android TV and **Fire OS** (Amazon’s Android fork) run standard Android APKs with adjustments for **leanback launcher**, **D-pad/remote input**, and often **no touchscreen**.
 - **Phone Android is treated as stable** (2026-07-15 triage) — TV work need not wait on phone packaging.
 
@@ -218,7 +218,7 @@ Do **not** pursue on the org roadmap. Cloud agents must not open console/homebre
 |---------|--------|-------------|
 | Display (SDL fullscreen) | `board_config.py` already uses `SDL_WINDOW_FULLSCREEN_DESKTOP` on Android | Verify on TV emulator (1080p/4K, overscan) |
 | Input | `eventsys` maps touch to mouse-like events; key events exist | Map `KEYCODE_DPAD_*`, `KEYCODE_ENTER`, back button; optional leanback focus model |
-| Packaging | `buildozer.spec` + p4a recipes | TV launcher intent category; possibly separate `pydisplay_android_tv` template |
+| Packaging | `buildozer.spec` + p4a recipes | TV launcher intent category; possibly separate `pydevices-android-template_tv` template |
 | Fire OS | Sideload APKs; no Google Play required | Test on Fire Stick; Amazon may restrict some native libs—SDL historically OK |
 | MicroPython on TV | N/A | CPython only (same as phone Android) |
 
@@ -228,9 +228,9 @@ Do **not** pursue on the org roadmap. Cloud agents must not open console/homebre
 
 **Suggested first steps:**
 
-1. Add **Android TV emulator** smoke test to `pydisplay_android/scripts/`.
+1. Add **Android TV emulator** smoke test to `pydevices-android-template/scripts/`.
 2. Ship **`board_config_tv.py`** variant (focus on key/gamepad events, 10-foot UI scale).
-3. Document in `pydisplay/docs/platforms/android.md` § Android TV / Fire OS.
+3. Document in `pydevices-examples/docs/platforms/android.md` § Android TV / Fire OS.
 4. Optional: PyWidgets / LVGL **focus navigation** for D-pad (larger widget effort).
 
 **Risks:** Store policies (Play Store vs sideload); Fire OS version fragmentation; performance on low-end sticks.
@@ -251,7 +251,7 @@ Do **not** pursue on the org roadmap. Cloud agents must not open console/homebre
 
 ### Technical assessment
 
-| Platform | Native Python | Practical UI stack | PyDisplay path |
+| Platform | Native Python | Practical UI stack | PyDevices path |
 |----------|---------------|-------------------|----------------|
 | **LG webOS** | Not supported for consumer apps | Enact/JS, HTML5 web apps | Package PyScript static bundle; host on device browser or webOS web app manifest |
 | **Samsung Tizen** | Tizen .NET/C++; HTML5 for TV apps | Tizen Web CLI | Same—hosted PyScript or WASM Python; no `SDLDisplay` |
@@ -282,14 +282,14 @@ Any new platform likely needs coordinated updates across:
 
 | Component | Repo | Notes |
 |-----------|------|-------|
-| Display backend | `micropython-hardware` `displaydev/` | New class or SDL driver env |
+| Display backend | `pydevices` `displaydev/` | New class or SDL driver env |
 | Native glue | `displayif`, desktop/Android SDL packaging, or new repo | mmap fbdev, DRM, or platform SDL |
-| Input normalization | `micropython-hardware` neutral input / optional `eventsys` | evdev, TV remote, gamepad |
-| Timers | `micropython-hardware` `multimer/` | Must not block UI thread (see Android SDL precedent) |
-| Board config | `micropython-hardware/board_configs/` | Per-target wiring |
-| Packaging | `pydisplay_android`, static web | p4a / TV intent; no native iOS packaging track |
+| Input normalization | `pydevices` neutral input / optional `eventsys` | evdev, TV remote, gamepad |
+| Timers | `pydevices` `multimer/` | Must not block UI thread (see Android SDL precedent) |
+| Board config | `pydevices/board_configs/` | Per-target wiring |
+| Packaging | `pydevices-android-template`, static web | p4a / TV intent; no native iOS packaging track |
 | LVGL (optional) | `lvgl-python`, etc. | Separate display flush integration |
-| Docs / CI | `pydisplay/docs/platforms/` | Headless smoke tests are hard for bare KMS |
+| Docs / CI | `pydevices-examples/docs/platforms/` | Headless smoke tests are hard for bare KMS |
 | Why-comments | All pursue tracks | Document *why* KMS / Android TV / webOS–Tizen edits exist |
 
 ---
@@ -309,7 +309,7 @@ Cloud agents: pick any **Pursue now** stream; do **not** reopen ruled-out target
 
 ## Conclusion
 
-PyDevices is **well architected for portability**: the `DisplayDriver` RGB565 contract, `board_config` wiring pattern, and split between pure Python (`pydisplay`) and native acceleration (`displayif`, `pygraphics`, and SDL2 via desktop board / Android wheels) make **incremental platform additions** possible without rewriting application code.
+PyDevices is **well architected for portability**: the `DisplayDriver` RGB565 contract, `board_config` wiring pattern, and split between pure Python (`pydevices-examples`) and native acceleration (`displayif`, `pygraphics`, and SDL2 via desktop board / Android wheels) make **incremental platform additions** possible without rewriting application code.
 
 **Org focus (2026-07-15):**
 
@@ -328,11 +328,11 @@ Paths relative to the `pydevices/` parent (this file lives in `.github`):
 
 | Document | Path |
 |----------|------|
-| PyDisplay README & portability table | `../pydisplay/README.md` |
-| Platform matrix | `../pydisplay/docs/platforms/index.md` |
-| Android platform notes | `../pydisplay/docs/platforms/android.md` |
-| Display backend internals | `../pydisplay/docs/concepts/display-backends.md` |
-| pydisplay_android README (incl. TestPyPI SDL / `usdl2` Android wheels) | `../pydisplay_android/README.md` |
+| PyDevices README & portability table | `../pydevices-examples/README.md` |
+| Platform matrix | `../pydevices-examples/docs/platforms/index.md` |
+| Android platform notes | `../pydevices-examples/docs/platforms/android.md` |
+| Display backend internals | `../pydevices-examples/docs/concepts/display-backends.md` |
+| pydevices-android-template README (incl. TestPyPI SDL / `usdl2` Android wheels) | `../pydevices-android-template/README.md` |
 | displayif module map | `../displayif/README.md` |
 | Org overview | [`profile/README.md`](profile/README.md) |
 | Platform roadmap (workstreams) | [`PLATFORM_ROADMAP.md`](PLATFORM_ROADMAP.md) |

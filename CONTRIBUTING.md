@@ -10,17 +10,18 @@ instructions — read that first.
 Repo directory and root-file layout (`src/`, `lib/`, `tests/`,
 `requirements-dev.txt`, …): see [`docs/repo-layout.md`](docs/repo-layout.md).
 
-- **[pydisplay](https://github.com/PyDevices/pydisplay)** — the core display/input/graphics library (pure Python).
-- **[palettes](https://github.com/PyDevices/palettes)** / **[pdwidgets](https://github.com/PyDevices/pdwidgets)** — color toolkit and lightweight widgets for pydisplay.
-- **[micropython-hardware](https://github.com/PyDevices/micropython-hardware)** — board configs and hardware drivers (display/touch/bus/…).
+- **[pydevices-examples](https://github.com/PyDevices/pydevices-examples)** — the core display/input/graphics library (pure Python).
+- **[palettes](https://github.com/PyDevices/palettes)** / **[pdwidgets](https://github.com/PyDevices/pdwidgets)** — color toolkit and lightweight widgets for PyDevices.
+- **[pydevices](https://github.com/PyDevices/pydevices)** — board configs and hardware drivers (display/touch/bus/…).
 - **[mpftp](https://github.com/PyDevices/mpftp)** — VS Code / Cursor board tools (REPL, file transfer, firmware).
 - **[lvgl-bindings](https://github.com/PyDevices/lvgl-bindings)** — the LVGL binding generator; source of truth for the native LVGL cmods.
 - **Native modules** — [displayif](https://github.com/PyDevices/displayif), [pygraphics](https://github.com/PyDevices/pygraphics) (also pure-Python `pygraphics`), [lvgl-micropython](https://github.com/PyDevices/lvgl-micropython), [lvgl-circuitpython](https://github.com/PyDevices/lvgl-circuitpython), [lvgl-python](https://github.com/PyDevices/lvgl-python).
 - **[cmods](https://github.com/PyDevices/cmods)** — workspace wrapper that builds/smoke-tests the native cmods together.
-- **[pydisplay_android](https://github.com/PyDevices/pydisplay_android)** — Android packaging (python-for-android/buildozer).
+- **[pydevices-android-template](https://github.com/PyDevices/pydevices-android-template)** — Android packaging (python-for-android/buildozer).
+- **[pydevices-pyscript-template](https://github.com/PyDevices/pydevices-pyscript-template)** — installable PyScript/PWA application starter.
 
 If you're not sure which repo an issue or PR belongs to, open it on
-[pydisplay](https://github.com/PyDevices/pydisplay/issues) — we'll help route it.
+[pydevices-examples](https://github.com/PyDevices/pydevices-examples/issues) — we'll help route it.
 
 ## 🐛 Reporting bugs / requesting features
 
@@ -29,7 +30,7 @@ Use the issue templates on the relevant repo. Include the runtime
 applicable — most bugs here are runtime- or hardware-specific.
 
 For open-ended questions, ideas, or show-and-tell, use
-[pydisplay Discussions](https://github.com/PyDevices/pydisplay/discussions)
+[pydevices-examples Discussions](https://github.com/PyDevices/pydevices-examples/discussions)
 instead of opening an issue.
 
 ## Pull requests

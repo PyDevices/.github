@@ -7,7 +7,7 @@ body:
       value: |
         Thanks for the suggestion! For open-ended questions or discussion,
         consider starting a thread in
-        [pydisplay Discussions](https://github.com/PyDevices/pydisplay/discussions)
+        [pydevices-examples Discussions](https://github.com/PyDevices/pydevices-examples/discussions)
         instead.
 
   - type: input

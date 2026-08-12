@@ -14,7 +14,7 @@ body:
     attributes:
       label: Repo / area
       description: Which repo (or part of a repo) is this about?
-      placeholder: e.g. micropython-hardware / displaydev, or pydisplay / examples
+      placeholder: e.g. pydevices / displaydev, or pydevices-examples / examples
     validations:
       required: true
 

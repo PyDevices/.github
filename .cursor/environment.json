@@ -1,5 +1,5 @@
 {
-  "install": "bash scripts/cloud-workspace-install.sh && bash scripts/cloud-python-deps.sh && bash scripts/cloud-pydisplay-dev-env.sh",
+  "install": "bash scripts/cloud-workspace-install.sh && bash scripts/cloud-python-deps.sh && bash scripts/cloud-pydevices-examples-dev-env.sh",
   "start": "true",
   "repositoryDependencies": [
     "github.com/PyDevices/.github",
@@ -10,12 +10,13 @@
     "github.com/PyDevices/lvgl-circuitpython",
     "github.com/PyDevices/lvgl-python",
     "github.com/PyDevices/lvgl-micropython",
-    "github.com/PyDevices/micropython-hardware",
+    "github.com/PyDevices/pydevices",
     "github.com/PyDevices/mpftp",
     "github.com/PyDevices/palettes",
     "github.com/PyDevices/pdwidgets",
-    "github.com/PyDevices/pydisplay",
-    "github.com/PyDevices/pydisplay_android",
+    "github.com/PyDevices/pydevices-examples",
+    "github.com/PyDevices/pydevices-android-template",
+    "github.com/PyDevices/pydevices-pyscript-template",
     "github.com/PyDevices/PyDevices.github.io"
   ]
 }

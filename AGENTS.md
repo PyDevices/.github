@@ -11,7 +11,7 @@ On a developer laptop, repos usually live as siblings under a single parent
 
 **Automatic setup:** `.cursor/environment.json` in this repo runs
 `scripts/cloud-workspace-install.sh`, `scripts/cloud-python-deps.sh`, and
-`scripts/cloud-pydisplay-dev-env.sh` on each cloud VM boot (all idempotent).
+`scripts/cloud-pydevices-examples-dev-env.sh` on each cloud VM boot (all idempotent).
 After a successful install, agents should start real work immediately — no
 separate “workspace configuration” chat.
 
@@ -26,22 +26,22 @@ separate “workspace configuration” chat.
 
 `cloud-python-deps.sh`:
 - Installs `python3-venv` / `libsdl2-dev` via apt when the VM snapshot omits
-  them, recreates broken `.venv` leftovers, then installs pydisplay
+  them, recreates broken `.venv` leftovers, then installs pydevices-examples
   (`requirements-dev.txt` + `pygame-ce` + `pydevices-lvgl`), `ruff` for
   `palettes`/`pdwidgets`, and a `pydevices_siblings.pth` so examples import
-  canonical product sources from `micropython-hardware` plus the sibling
+  canonical product sources from `pydevices` plus the sibling
   `palettes`, `pdwidgets`, and `pygraphics` sources.
 
-`cloud-pydisplay-dev-env.sh`:
-- Installs pydisplay `requirements.txt` (TestPyPI runtime stack for CPython).
+`cloud-pydevices-examples-dev-env.sh`:
+- Installs pydevices-examples `requirements.txt` (TestPyPI runtime stack for CPython).
 - `micropython -m mip install`s desktop `board_config`, `palettes`, and `pdwidgets` into
   `~/.micropython/lib` (`--no-mpy -t lib -i` PyDevices index for CP-shared source
   installs; omit `--no-mpy` for MicroPython-only `.mpy` — see
-  micropython-hardware `docs/install-workflows.md`).
-- Appends a `pydisplay-env.sh` hook to `~/.bashrc` exporting `PATH`
-  (`pydisplay/bin`) plus `PYTHONPATH` / `MICROPYPATH` entries for
-  `pydisplay/src/utils` and the canonical `micropython-hardware` product paths.
-  Run examples from `pydisplay/src/`.
+  pydevices `docs/install-workflows.md`).
+- Appends a `pydevices-examples-env.sh` hook to `~/.bashrc` exporting `PATH`
+  (`pydevices-examples/bin`) plus `PYTHONPATH` / `MICROPYPATH` entries for
+  `pydevices-examples/src/utils` and the canonical `pydevices` product paths.
+  Run examples from `pydevices-examples/src/`.
 
 Use the **`pydevices-cloud-handoff`** skill (`/pydevices-cloud-handoff`) when
 handing work from Cursor desktop to Cloud Agents.
@@ -53,13 +53,14 @@ handing work from Cursor desktop to Cloud Agents.
 └── pydevices/
     ├── cmods                 -> /agent/repos/cmods
     ├── dotgithub             -> /agent/repos/.github   (this repo)
-    ├── micropython-hardware  -> /agent/repos/micropython-hardware
+    ├── pydevices  -> /agent/repos/pydevices
     ├── mpftp                 -> /agent/repos/mpftp
     ├── PyDevices.github.io   -> /agent/repos/PyDevices.github.io
     ├── palettes              -> /agent/repos/palettes
     ├── pdwidgets             -> /agent/repos/pdwidgets
-    ├── pydisplay             -> /agent/repos/pydisplay
-    └── pydisplay_android     -> /agent/repos/pydisplay_android
+    ├── pydevices-examples             -> /agent/repos/pydevices-examples
+    ├── pydevices-android-template     -> /agent/repos/pydevices-android-template
+    └── pydevices-pyscript-template    -> /agent/repos/pydevices-pyscript-template
 ```
 
 **Not cloned locally:** `micropython-lib` — GitHub Actions owns sync and
@@ -156,7 +157,7 @@ token that can **push** branches into `/agent/repos/*` checkouts, but that
 token often **cannot** `createPullRequest` on sibling repos (GraphQL
 `Resource not accessible by integration`). `ManagePullRequest` is also bound
 to the agent’s primary repo (`.github`), so it will not open PRs on
-`pygraphics`, `pydisplay`, etc.
+`pygraphics`, `pydevices-examples`, etc.
 
 **Use the workspace secret `PYDEVICES_GH_TOKEN`** (org/admin PAT, injected into
 the environment) when creating or updating PRs on any PyDevices sibling:

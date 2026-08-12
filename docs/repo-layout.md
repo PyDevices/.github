@@ -57,14 +57,16 @@ Examples:
 | Repo | File | Why |
 |------|------|-----|
 | [lvgl-bindings](https://github.com/PyDevices/lvgl-bindings) | `requirements.txt` | Generator runtime (`pycparser`) |
-| [pydisplay](https://github.com/PyDevices/pydisplay) | `requirements-dev.txt` | Playwright, pytest, Jupyter, ruff, … — not product runtime |
+| [pydevices-examples](https://github.com/PyDevices/pydevices-examples) | `requirements-dev.txt` | Playwright, pytest, Jupyter, ruff, … — not product runtime |
 | [lvgl-python](https://github.com/PyDevices/lvgl-python) | `requirements-dev.txt` | Local editable build / wheel tooling; users install `pydevices-lvgl` |
-| [pydisplay_android](https://github.com/PyDevices/pydisplay_android) | `requirements-dev.txt` | Host buildozer/Cython for APK builds — not packaged into the APK |
+| [pydevices-android-template](https://github.com/PyDevices/pydevices-android-template) | `requirements-dev.txt` | Host buildozer/Cython for APK builds — not packaged into the APK |
+| [pydevices-pyscript-template](https://github.com/PyDevices/pydevices-pyscript-template) | none | Static app template; PyScript runtime is vendored only for Pages deployment |
 
 ## Exceptions
 
-1. **[pydisplay](https://github.com/PyDevices/pydisplay)** — example applications and gallery utilities live under `src/`. Shareable packages belong in their owning product repos, not a top-level `lib/` here.
-2. **[micropython-hardware](https://github.com/PyDevices/micropython-hardware)** — canonical product repo: portable packages under `lib/`, board configs under `board_configs/`, hardware drivers under `drivers/`, and MIP manifests under `packages/`.
+1. **[pydevices-examples](https://github.com/PyDevices/pydevices-examples)** — example applications and gallery utilities live under `src/`. Shareable packages belong in their owning product repos, not a top-level `lib/` here.
+2. **[pydevices](https://github.com/PyDevices/pydevices)** — canonical product repo: portable packages under `lib/`, board configs under `board_configs/`, hardware drivers under `drivers/`, and MIP manifests under `packages/`.
+3. **Application templates** — `pydevices-android-template` and `pydevices-pyscript-template` are replaceable host shells, not product package trees.
 
 ## Notes
 

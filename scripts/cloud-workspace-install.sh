@@ -22,12 +22,13 @@ SIBLINGS=(
     lvgl-circuitpython
     lvgl-python
     lvgl-micropython
-    micropython-hardware
+    pydevices
     mpftp
     palettes
     pdwidgets
-    pydisplay
-    pydisplay_android
+    pydevices-examples
+    pydevices-android-template
+    pydevices-pyscript-template
     PyDevices.github.io
 )
 
@@ -201,7 +202,7 @@ ensure_lv_cpython_lvgl_symlink() {
 
 verify_ready() {
     local name missing=0
-    for name in cmods displayif pygraphics lvgl-bindings micropython-hardware pydisplay palettes pdwidgets; do
+    for name in cmods displayif pygraphics lvgl-bindings pydevices pydevices-examples palettes pdwidgets; do
         if [[ ! -d "$REPOS/$name/.git" && ! -L "$REPOS/$name" ]]; then
             log "ERROR: required repo missing: $REPOS/$name"
             missing=1
@@ -235,12 +236,12 @@ clone_missing_siblings || die "one or more sibling clones failed"
 link_pydevices cmods "$REPOS/cmods"
 link_pydevices dotgithub "$REPOS/.github"
 link_pydevices PyDevices.github.io "$REPOS/PyDevices.github.io"
-link_pydevices micropython-hardware "$REPOS/micropython-hardware"
+link_pydevices pydevices "$REPOS/pydevices"
 link_pydevices mpftp "$REPOS/mpftp"
 link_pydevices palettes "$REPOS/palettes"
 link_pydevices pdwidgets "$REPOS/pdwidgets"
-link_pydevices pydisplay "$REPOS/pydisplay"
-link_pydevices pydisplay_android "$REPOS/pydisplay_android"
+link_pydevices pydevices-examples "$REPOS/pydevices-examples"
+link_pydevices pydevices-android-template "$REPOS/pydevices-android-template"
 
 # cmods must exist before interior sibling links
 [[ -d "$PD/cmods" ]] || die "cmods missing after link step ($PD/cmods)"

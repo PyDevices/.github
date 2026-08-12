@@ -6,7 +6,7 @@
 #
 #   - installs system packages needed for venv + pygame-ce when missing
 #   - creates the repo-root `.venv` for runnable pure-Python products
-#   - pydisplay  (flagship)  -> requirements-dev.txt + pygame-ce + pydevices-lvgl
+#   - pydevices-examples  (flagship)  -> requirements-dev.txt + pygame-ce + pydevices-lvgl
 #   - palettes   pdwidgets   -> ruff
 #
 # Safe to run on every cloud VM boot (environment.json install). See AGENTS.md.
@@ -78,10 +78,10 @@ if ! python3 -c "import ensurepip" 2>/dev/null; then
     exit 1
 fi
 
-# --- pydisplay: flagship dev tooling + desktop backend + LVGL binding ---------
-if bin="$(ensure_venv pydisplay)"; then
-    "$bin/pip" install -q -r "$REPOS/pydisplay/requirements-dev.txt" || \
-        log "warn: pydisplay requirements-dev install failed"
+# --- pydevices-examples: flagship dev tooling + desktop backend + LVGL binding ---------
+if bin="$(ensure_venv pydevices-examples)"; then
+    "$bin/pip" install -q -r "$REPOS/pydevices-examples/requirements-dev.txt" || \
+        log "warn: pydevices-examples requirements-dev install failed"
     # pygame-ce is the desktop fallback backend / Windows default (PGDisplay);
     # deliberately not in requirements-dev.txt (SDL2 is the documented primary).
     "$bin/pip" install -q pygame-ce || log "warn: pygame-ce install failed"
@@ -91,20 +91,20 @@ if bin="$(ensure_venv pydisplay)"; then
     "$bin/pip" install -q -i https://test.pypi.org/simple/ \
         --extra-index-url https://pypi.org/simple/ pydevices-lvgl || \
         log "warn: pydevices-lvgl (TestPyPI) install skipped; LVGL examples unavailable"
-    # Put canonical product and source-only sibling packages on pydisplay's
+    # Put canonical product and source-only sibling packages on pydevices-examples's
     # venv path so the matrix tests the current multi-repo sources.
     sp="$("$bin/python" -c 'import site; print(site.getsitepackages()[0])' 2>/dev/null)"
     if [[ -n "${sp:-}" ]]; then
         printf '%s\n%s\n%s\n%s\n%s\n%s\n' \
-            "$REPOS/micropython-hardware/drivers/display" \
-            "$REPOS/micropython-hardware/lib" \
-            "$REPOS/micropython-hardware/utils" \
+            "$REPOS/pydevices/drivers/display" \
+            "$REPOS/pydevices/lib" \
+            "$REPOS/pydevices/utils" \
             "$REPOS/palettes/lib" "$REPOS/pdwidgets/lib" "$REPOS/pygraphics/lib" \
             > "$sp/pydevices_siblings.pth"
         log "wrote $sp/pydevices_siblings.pth"
     fi
 else
-    log "ERROR: pydisplay venv unavailable"
+    log "ERROR: pydevices-examples venv unavailable"
     exit 1
 fi
 
