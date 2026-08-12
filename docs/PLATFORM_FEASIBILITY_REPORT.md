@@ -14,7 +14,7 @@ PyDevices’ stated goal is to run **pydisplay everywhere Python runs with a usa
 
 | Layer | Repos | Role |
 |-------|-------|------|
-| Application API | `pydisplay` (`displaydev`, `eventsys`, `pygraphics`, `multimer`) | Portable RGB565 display contract, unified input events, timers |
+| Product API | `micropython-hardware` (`displaydev`, optional `eventsys`, `multimer`) plus `pygraphics` | Portable RGB565 display contract, unified input events, timers |
 | Hardware acceleration | `displayif`, `pygraphics`, SDL2 (`usdl2` via desktop board / Android wheels) | Native C modules for bus/framebuffer interfaces and drawing; SDL2 for desktop/Android |
 | GUI toolkit (optional) | `lvgl-bindings` + `lv_*_mod` | LVGL bindings for all three Python runtimes |
 | Packaging | `pydisplay_android`, TestPyPI wheels, MIP/`installer.py` | APK path and prebuilt packages |
@@ -158,7 +158,7 @@ Embedded Linux kiosks (Raspberry Pi without desktop, industrial HMI, digital sig
 |------|---------------------|---------------|
 | **FreeRTOS (via MP on ESP32, etc.)** | MicroPython ports exist | **Already supported** where display hardware has board configs + `displayif` modules |
 | **FreeRTOS (no Python)** | None | **Not feasible** without porting MicroPython or another embedded Python |
-| **Zephyr** | [MicroPython Zephyr port](https://docs.zephyrproject.org/) exists but is niche vs ESP32/RP2 | Would need Zephyr `displayif` port (SPI/RGB drivers), frozen `pydisplay` manifest, Zephyr-specific `board_config` |
+| **Zephyr** | [MicroPython Zephyr port](https://docs.zephyrproject.org/) exists but is niche vs ESP32/RP2 | Would need Zephyr `displayif` port (SPI/RGB drivers), frozen PyDevices packages, and a Zephyr-specific `board_config` in `micropython-hardware` |
 | **Zephyr + LVGL** | LVGL has Zephyr integration in upstream LVGL; PyDevices LVGL bindings are separate | Possible long-term via MP+LVGL, not pydisplay pure-Python alone |
 
 ### Feasibility
@@ -282,11 +282,11 @@ Any new platform likely needs coordinated updates across:
 
 | Component | Repo | Notes |
 |-----------|------|-------|
-| Display backend | `pydisplay` `displaydev/` | New class or SDL driver env |
+| Display backend | `micropython-hardware` `displaydev/` | New class or SDL driver env |
 | Native glue | `displayif`, desktop/Android SDL packaging, or new repo | mmap fbdev, DRM, or platform SDL |
-| Input normalization | `pydisplay` `eventsys/` | evdev, TV remote, gamepad |
-| Timers | `pydisplay` `multimer/` | Must not block UI thread (see Android `_sdl2` precedent) |
-| Board config | `pydisplay/board_configs/` | Per-target wiring |
+| Input normalization | `micropython-hardware` neutral input / optional `eventsys` | evdev, TV remote, gamepad |
+| Timers | `micropython-hardware` `multimer/` | Must not block UI thread (see Android SDL precedent) |
+| Board config | `micropython-hardware/board_configs/` | Per-target wiring |
 | Packaging | `pydisplay_android`, static web | p4a / TV intent; no native iOS packaging track |
 | LVGL (optional) | `lvgl-python`, etc. | Separate display flush integration |
 | Docs / CI | `pydisplay/docs/platforms/` | Headless smoke tests are hard for bare KMS |

@@ -63,8 +63,8 @@ Examples:
 
 ## Exceptions
 
-1. **[pydisplay](https://github.com/PyDevices/pydisplay)** — product source lives under `src/` (including `src/lib/…` packages). Do **not** use a top-level `lib/`.
-2. **[micropython-hardware](https://github.com/PyDevices/micropython-hardware)** — board configs, drivers, and MIP manifests only. No `lib/` (users install the board_config and related files they need).
+1. **[pydisplay](https://github.com/PyDevices/pydisplay)** — example applications and gallery utilities live under `src/`. Shareable packages belong in their owning product repos, not a top-level `lib/` here.
+2. **[micropython-hardware](https://github.com/PyDevices/micropython-hardware)** — canonical product repo: portable packages under `lib/`, board configs under `board_configs/`, hardware drivers under `drivers/`, and MIP manifests under `packages/`.
 
 ## Notes
 

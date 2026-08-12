@@ -45,14 +45,14 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 **Phase 0 (do first):**
 
 - Document and validate `SDL_VIDEODRIVER=kmsdrm` with existing `SDLDisplay` + `usdl2` on a Pi/SBC (or equivalent) without a desktop.
-- Add example board config under `pydisplay/board_configs/sdldisplay/` (e.g. `linux_kms/`).
+- Validate the canonical `micropython-hardware/board_configs/desktop/` config under KMS; add a specialized host config there only if environment selection is insufficient.
 - Platform doc notes in `pydisplay/docs/platforms/` (desktop/Linux path vs KMS).
 
 **Later (only if SDL KMS is insufficient):**
 
 - Native fbdev mmap or DRM/GBM path (`displayif` or new module) behind a DisplayDriver-compatible wrapper — do **not** start this until Phase 0 is tried.
 
-**Touchpoints:** `pydisplay` (`displaydev`, `board_configs`, docs), `micropython-hardware` / `pydevices-desktop` only if SDL linkage/env quirks require it.
+**Touchpoints:** `micropython-hardware` (`displaydev`, desktop config, `pydevices-desktop`) and `pydisplay` (examples/docs).
 
 **Why-comments:** required on every KMS-enabling edit.
 
@@ -65,12 +65,12 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 **First steps:**
 
 - TV / leanback launcher intent category in `pydisplay_android` packaging (`buildozer.spec` / p4a as needed).
-- `board_config` TV variant (fullscreen assumptions, 10-foot scale hints).
-- Map D-pad / enter / back into `pydisplay` `eventsys` (why-comment each mapping).
+- Android TV host settings (fullscreen assumptions, 10-foot scale hints); extend the canonical desktop config only if needed.
+- Map D-pad / enter / back through the neutral PyDevices input contracts in `micropython-hardware` (why-comment each mapping).
 - Document in `pydisplay/docs/platforms/android.md` (§ Android TV / Fire OS).
 - Optional: Android TV emulator smoke under `pydisplay_android/scripts/`.
 
-**Touchpoints:** `pydisplay_android`, `pydisplay` (`eventsys`, `board_configs`, docs); TestPyPI `usdl2` Android wheels only if TV input/SDL gaps appear.
+**Touchpoints:** `pydisplay_android`, `micropython-hardware` (portable input/config packages), and `pydisplay` (examples/docs); TestPyPI `pydevices-desktop` changes only if TV input/SDL gaps appear.
 
 **Why-comments:** required on every new edit for this track.
 
@@ -86,7 +86,7 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 - JS key / remote bridge notes for webOS / Tizen key codes (why-comment bridge hooks).
 - Short platform doc note: webOS/Tizen = browser/PyScript only.
 
-**Touchpoints:** `pydisplay` (`web/pyscript`, `displaydev`/`eventsys` only if keys need normalization, docs).
+**Touchpoints:** `pydisplay` (`web/pyscript`, examples/docs) and `micropython-hardware` only if portable key normalization must change.
 
 **Why-comments:** required on every new edit for this track.
 
