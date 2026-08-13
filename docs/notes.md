@@ -19,5 +19,9 @@ so it can sync with the org clone without being a product/docs surface.
 - [ ] After merging `multimer-selection`: fix Linux piano / `utils/audio.py` growing latency under glissando (notes start a bit late, then delay lengthens until the queue backs up badly). Windows PE was fine; all three Linux desktop runtimes showed it. Likely the wall-clock look-ahead / catch-up pump interacting with main-thread redraw — not introduced by multimer-selection (`audio.py` unchanged since `145f4475`). Context tasks: `164d87be-1a25-46a2-a2c6-fc4f4a81742a` and `768842b6-88cc-4584-99f0-b28fe4ef08e4`. _(pydevices-examples)_
 - [ ] Hinch GUI trio (`nano` / `micro` / `touch_gui_simpletest`) and `widgets_locker_kiosk` still out of the example matrix — revisit and get them green (or keep parked with a clear reason). _(pydevices-examples)_
 - [ ] Enable Mermaid rendering on RTD sites — ` ```mermaid ` blocks currently show as plain text, not diagrams. At least: pydevices-examples, pdwidgets, palettes, pygraphics. _(pydevices-examples, pdwidgets, palettes, pygraphics)_
-- [ ] Make `board_configs/sdldisplay/linux_kms` easier to find — today it’s only a one-line row in `docs/board-configs.md` (full write-up lives in pydevices-examples `cpython-desktop.md`); surface it better in pydevices docs so Pi/SBC KMS users don’t miss it. _(pydevices, pydevices-examples)_
 - [ ] Publish more / all of pydevices to micropython-lib. _(pydevices, micropython-lib)_
+- [ ] Make timer selection pattern match the established pattern in `displaydev` and `audiodev` for consistency. _(pydevices, multimer)_
+- [ ] Create a patch in `cmods` to enable FFI on `micropython.exe` so it can use `uwin32.py` / hardware timers. _(cmods, multimer)_
+- [ ] Add PyScript live examples in `palettes` and `pdwidgets`. _(palettes, pdwidgets, pydevices-examples)_
+
+

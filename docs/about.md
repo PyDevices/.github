@@ -27,15 +27,15 @@ This allows developers to start with lightweight Python display drivers and prog
 
 # Key Repositories
 
-## 1\. pydevices
+## 1. pydevices
 
-**Purpose:** Canonical product source and release repository.
+**Purpose:** Flagship core product, hardware driver suite, and PyDevices Board Contract owner.
 
 Provides cross-runtime `displaydev`, `audiodev`, optional `eventsys`, timers,
-board configurations, and hardware drivers through prefixed TestPyPI
+board configurations (`board_config.py`), lazy peripherals (`boarddev`), and hardware drivers through prefixed TestPyPI
 distributions and unprefixed MIP packages.
 
-**Best for:** Embedded displays, touchscreens, desktop display backends.
+**Best for:** Core hardware integration, board configurations, embedded display/audio drivers, and cross-platform desktop/browser display backends.
 
 \---
 
@@ -105,13 +105,22 @@ Generates bindings from the LVGL C API for:
 
 \---
 
-## 7\. cmods
+## 7. cmods
 
 **Purpose:** Native module build workspace.
 
 Contains build and integration infrastructure for native LVGL-related modules.
 
-\---
+---
+
+## 8. micropython-lib
+
+**Purpose:** PyDevices MIP distribution fork & package index generator.
+
+Aggregates PyDevices packages and drives the automated publication of the PyDevices custom MIP package index (`https://PyDevices.github.io/micropython-lib/mip/PyDevices`), generating both precompiled `.mpy` and source `.py` distributions for MicroPython.
+
+---
+
 
 # Native / Performance-Focused Repositories
 
