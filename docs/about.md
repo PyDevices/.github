@@ -29,7 +29,7 @@ This allows developers to start with lightweight Python display drivers and prog
 
 ## 1. pydevices
 
-**Purpose:** Flagship core product, hardware driver suite, and PyDevices Board Contract owner.
+**Purpose:** Core product library, hardware driver suite, and PyDevices Board Contract owner.
 
 Provides cross-runtime `displaydev`, `audiodev`, optional `eventsys`, timers,
 board configurations (`board_config.py`), lazy peripherals (`boarddev`), and hardware drivers through prefixed TestPyPI

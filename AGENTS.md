@@ -152,25 +152,11 @@ When removing paths under `pydevices/` or `cmods/`, delete **symlinks only**
 
 ## GitHub auth — opening PRs on sibling repos
 
-Cloud Agents started from **`PyDevices/.github`** get a Cursor integration
-token that can **push** branches into `/agent/repos/*` checkouts, but that
-token often **cannot** `createPullRequest` on sibling repos (GraphQL
-`Resource not accessible by integration`). `ManagePullRequest` is also bound
-to the agent’s primary repo (`.github`), so it will not open PRs on
-`pygraphics`, `pydevices-examples`, etc.
-
-**Use the workspace secret `PYDEVICES_GH_TOKEN`** (org/admin PAT, injected into
-the environment) when creating or updating PRs on any PyDevices sibling:
+Cloud Agents started from **`PyDevices/.github`** get an integration credential that can **push** branches into `/agent/repos/*` checkouts. When creating PRs on sibling repositories, use `gh pr create` with standard `GH_TOKEN` environment authentication:
 
 ```bash
-export GH_TOKEN="$PYDEVICES_GH_TOKEN"
 gh pr create -R PyDevices/<repo> --base main --head <branch> --title "…" --body "…"
-# or: gh pr edit … / gh pr ready …
 ```
-
-Confirm access first if needed: `gh api repos/PyDevices/<repo> --jq .permissions`
-should show `"push": true` (and usually `"admin": true`) under that token.
-Do **not** rely on the default `gh` login (`cursor` / `ghs_…`) for sibling PRs.
 
 ## Related docs
 

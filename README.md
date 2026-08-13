@@ -3,6 +3,7 @@
 Org-wide community health files and profile for [PyDevices](https://github.com/PyDevices):
 
 - [`profile/README.md`](profile/README.md) — the org profile page shown on [github.com/PyDevices](https://github.com/PyDevices).
+- [`docs/organization-architecture.md`](docs/organization-architecture.md) — functional tiering architecture, repository sitemap, and search paths (`MICROPYPATH` & `PYTHONPATH`).
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — shared contributing guide, used as the default for repos without their own.
 - [`docs/repo-layout.md`](docs/repo-layout.md) — shared directory and root-file convention (`src` / `lib` / `tests` / `tools` / `requirements-dev.txt`, …).
 - [`.github/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/) — default bug report / feature request templates, used as the fallback for repos without their own.
