@@ -20,8 +20,8 @@ so it can sync with the org clone without being a product/docs surface.
 - [ ] Hinch GUI trio (`nano` / `micro` / `touch_gui_simpletest`) and `widgets_locker_kiosk` still out of the example matrix — revisit and get them green (or keep parked with a clear reason). _(pydevices-examples)_
 - [ ] Enable Mermaid rendering on RTD sites — ` ```mermaid ` blocks currently show as plain text, not diagrams. At least: pydevices-examples, pdwidgets, palettes, pygraphics. _(pydevices-examples, pdwidgets, palettes, pygraphics)_
 - [ ] Publish more / all of pydevices to micropython-lib. _(pydevices, micropython-lib)_
-- [ ] Make timer selection pattern match the established pattern in `displaydev` and `audiodev` for consistency. _(pydevices, multimer)_
-- [ ] Create a patch in `cmods` to enable FFI on `micropython.exe` so it can use `uwin32.py` / hardware timers. _(cmods, multimer)_
+- [x] Create a patch in `cmods` to enable FFI on `micropython.exe` so it can use `uwin32.py` / hardware timers. _(cmods, multimer)_
+- [ ] Off-heap buffer via FFI: Use Win32 VirtualAlloc or C malloc if you ever want the framebuffer to live outside the GC heap entirely (similar to SDL). _(pydevices, displaydev)_
 - [ ] Add PyScript live examples in `palettes` and `pdwidgets`. _(palettes, pdwidgets, pydevices-examples)_
 
 
