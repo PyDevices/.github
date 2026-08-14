@@ -291,6 +291,21 @@ def main():
 
         with open(site_html_path, 'w', encoding='utf-8') as f:
             f.write(content)
+
+        if repo_name == 'PyDevices.github.io':
+            root_index = os.path.join(repo_dir, 'index.html')
+            root_nojekyll = os.path.join(repo_dir, '.nojekyll')
+            root_img = os.path.join(repo_dir, 'img')
+            root_vendor = os.path.join(repo_dir, 'vendor')
+            with open(root_index, 'w', encoding='utf-8') as f:
+                f.write(content)
+            with open(root_nojekyll, 'w', encoding='utf-8') as f:
+                f.write('')
+            os.makedirs(root_img, exist_ok=True)
+            os.makedirs(root_vendor, exist_ok=True)
+            shutil.copytree(os.path.join(repo_dir, '.site/img'), root_img, dirs_exist_ok=True)
+            shutil.copytree(os.path.join(repo_dir, '.site/vendor'), root_vendor, dirs_exist_ok=True)
+
         updated_sites += 1
         print(f"[OK] Generated & Updated {repo_name} (.site/index.html)")
 
