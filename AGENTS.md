@@ -158,6 +158,14 @@ Cloud Agents started from **`PyDevices/.github`** get an integration credential 
 gh pr create -R PyDevices/<repo> --base main --head <branch> --title "…" --body "…"
 ```
 
+## Multi-Repository Command Iteration
+
+When running shell commands across workspace repositories, **ALWAYS** use `./list_pydevices_repos.sh` located at the workspace root (`~/gh/pydevices/list_pydevices_repos.sh`) to stream owned repository paths cleanly and safely:
+
+```bash
+timeout 10s bash -c "./list_pydevices_repos.sh | while read repo; do echo \"\$(basename \$repo): \$(git -C \"\$repo\" status -s)\"; done"
+```
+
 ## Related docs
 
 - [cmods AGENTS.md](https://github.com/PyDevices/cmods/blob/main/AGENTS.md) —
