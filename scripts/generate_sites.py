@@ -184,9 +184,10 @@ def build_portal_grids_html(db):
     return html
 
 def sync_assets(repo_name):
-    # Zero-exception chrome asset sync: dotgithub/assets -> repo/.site/vendor/pydevices-chrome
-    vendor_dir = os.path.join(BASE_DIR, repo_name, '.site/vendor/pydevices-chrome')
-    img_dir = os.path.join(BASE_DIR, repo_name, '.site/img')
+    # Zero-exception chrome asset sync: dotgithub/assets -> repo/vendor/pydevices-chrome (or .site/vendor for sub-repos)
+    site_prefix = '' if repo_name == 'PyDevices.github.io' else '.site'
+    vendor_dir = os.path.join(BASE_DIR, repo_name, site_prefix, 'vendor/pydevices-chrome')
+    img_dir = os.path.join(BASE_DIR, repo_name, site_prefix, 'img')
     os.makedirs(vendor_dir, exist_ok=True)
     os.makedirs(img_dir, exist_ok=True)
 
@@ -201,7 +202,7 @@ def sync_assets(repo_name):
     if os.path.exists(src_tree): shutil.copy2(src_tree, os.path.join(vendor_dir, 'tree-nav.js'))
     if os.path.exists(src_theme): shutil.copy2(src_theme, os.path.join(vendor_dir, 'theme-toggle.js'))
     
-    # Auto-sync master logo.svg to .site/img/logo.svg
+    # Auto-sync master logo.svg to img/logo.svg
     if os.path.exists(src_logo): shutil.copy2(src_logo, os.path.join(img_dir, 'logo.svg'))
 
 def update_head_tags(content, repo_name, data):
@@ -239,7 +240,13 @@ def main():
 
         sync_assets(repo_name)
 
-        site_html_path = os.path.join(repo_dir, '.site/landing/index.html') if repo_name == 'pydevices-examples' else os.path.join(repo_dir, '.site/index.html')
+        if repo_name == 'PyDevices.github.io':
+            site_html_path = os.path.join(repo_dir, 'index.html')
+        elif repo_name == 'pydevices-examples':
+            site_html_path = os.path.join(repo_dir, '.site/landing/index.html')
+        else:
+            site_html_path = os.path.join(repo_dir, '.site/index.html')
+
         if not os.path.exists(site_html_path):
             print(f"[SKIP] HTML file missing: {site_html_path}")
             continue
@@ -290,22 +297,8 @@ def main():
         with open(site_html_path, 'w', encoding='utf-8') as f:
             f.write(content)
 
-        if repo_name == 'PyDevices.github.io':
-            root_index = os.path.join(repo_dir, 'index.html')
-            root_nojekyll = os.path.join(repo_dir, '.nojekyll')
-            root_img = os.path.join(repo_dir, 'img')
-            root_vendor = os.path.join(repo_dir, 'vendor')
-            with open(root_index, 'w', encoding='utf-8') as f:
-                f.write(content)
-            with open(root_nojekyll, 'w', encoding='utf-8') as f:
-                f.write('')
-            os.makedirs(root_img, exist_ok=True)
-            os.makedirs(root_vendor, exist_ok=True)
-            shutil.copytree(os.path.join(repo_dir, '.site/img'), root_img, dirs_exist_ok=True)
-            shutil.copytree(os.path.join(repo_dir, '.site/vendor'), root_vendor, dirs_exist_ok=True)
-
         updated_sites += 1
-        print(f"[OK] Generated & Updated {repo_name} (.site/index.html)")
+        print(f"[OK] Generated & Updated {repo_name} ({os.path.relpath(site_html_path, repo_dir)})")
 
     print(f"=== Complete! Processed {len(db)} repos ({updated_sites} modified) ===")
 
