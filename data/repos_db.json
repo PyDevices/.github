@@ -167,15 +167,15 @@
       { "label": "pydevices Core", "href": "https://pydevices.github.io/pydevices/", "tier_color": true }
     ]
   },
-  "micropython-lib": {
+  "mip": {
     "tier": 5,
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
-    "eyebrow": "micropython-lib",
-    "headline": "micropython-lib — PyDevices MIP package index & distribution.",
+    "eyebrow": "mip",
+    "headline": "mip — PyDevices MIP package index & distribution.",
     "description": "Single source of truth (SoT) for precompiled MicroPython .mpy bytecode packages and pure-Python library distributions across the PyDevices ecosystem.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/micropython-lib", "primary": true },
+      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/mip", "primary": true },
       { "label": "cmods Workspace", "href": "https://pydevices.github.io/cmods/", "tier_color": true },
       { "label": "mpftp Workbench", "href": "https://pydevices.github.io/mpftp/", "tier_color": true },
       { "label": "pydevices Core", "href": "https://pydevices.github.io/pydevices/", "tier_color": true }
@@ -220,7 +220,7 @@
       { "label": "GitHub Org", "href": "https://github.com/PyDevices", "primary": true },
       { "label": "Get Started", "href": "https://pydevices.github.io/pydevices/", "tier_color": true },
       { "label": "PyScript Demos", "href": "https://pydevices.github.io/pydevices-examples/pyscript/", "tier_color": true },
-      { "label": "MIP Index", "href": "https://PyDevices.github.io/micropython-lib/", "tier_color": true }
+      { "label": "MIP Index", "href": "https://pydevices.github.io/mip/", "tier_color": true }
     ]
   }
 }
