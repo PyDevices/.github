@@ -273,6 +273,22 @@ def main():
             if marker_p_grids.search(content):
                 content = marker_p_grids.sub(p_grids, content)
 
+        # Cleanup duplicate hero sections outside the marker & normalize broken asset paths
+        content = content.replace('src="assets/img/logo.svg"', 'src="img/logo.svg"')
+        content = content.replace('href="https://pydevices.github.io/assets/img/logo.svg"', 'href="img/logo.svg"')
+        content = content.replace('src="assets/js/site-chrome.js"', 'src="./vendor/pydevices-chrome/site-chrome.js"')
+        content = content.replace('src="assets/js/theme-toggle.js"', 'src="./vendor/pydevices-chrome/theme-toggle.js"')
+        content = content.replace('src="assets/js/tree-nav.js"', 'src="./vendor/pydevices-chrome/tree-nav.js"')
+        rel_prefix = "../" if repo_name == "pydevices-examples" else "./"
+        content = content.replace('src="https://pydevices.github.io/assets/js/site-chrome.js"', f'src="{rel_prefix}vendor/pydevices-chrome/site-chrome.js"')
+        content = content.replace('src="https://pydevices.github.io/assets/js/theme-toggle.js"', f'src="{rel_prefix}vendor/pydevices-chrome/theme-toggle.js"')
+        content = re.sub(r'src=["\']https://pydevices\.github\.io/assets/img/products/[^"\']+["\']', 'src="img/logo.svg"', content)
+
+        if '<!-- PYDEVICES-ABOVE-THE-FOLD: END -->' in content:
+            parts = content.split('<!-- PYDEVICES-ABOVE-THE-FOLD: END -->', 1)
+            parts[1] = re.sub(r'<section\s+class=["\']hero\s+wrap["\']>.*?</section>', '', parts[1], flags=re.DOTALL | re.IGNORECASE)
+            content = parts[0] + '<!-- PYDEVICES-ABOVE-THE-FOLD: END -->' + parts[1]
+
         with open(site_html_path, 'w', encoding='utf-8') as f:
             f.write(content)
         updated_sites += 1
