@@ -4,7 +4,7 @@ import os
 import re
 import shutil
 
-BASE_DIR = '/home/brad/gh/pydevices'
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 DOTGITHUB_DIR = os.path.join(BASE_DIR, 'dotgithub')
 DB_PATH = os.path.join(DOTGITHUB_DIR, 'data/repos_db.json')
 ASSETS_DIR = os.path.join(DOTGITHUB_DIR, 'assets')
@@ -66,6 +66,7 @@ def build_head_tags_html(repo_name, data):
         f'  <!-- PYDEVICES-HEAD-TAGS: START -->\n'
         f'  <title>{display_title}</title>\n'
         f'  <meta name="description" content="{description}">\n'
+        f'  <link rel="icon" type="image/svg+xml" href="img/logo.svg">\n'
         f'  <!-- PYDEVICES-HEAD-TAGS: END -->'
     )
     return html
@@ -183,18 +184,25 @@ def build_portal_grids_html(db):
     return html
 
 def sync_assets(repo_name):
+    # Zero-exception chrome asset sync: dotgithub/assets -> repo/.site/vendor/pydevices-chrome
     vendor_dir = os.path.join(BASE_DIR, repo_name, '.site/vendor/pydevices-chrome')
+    img_dir = os.path.join(BASE_DIR, repo_name, '.site/img')
     os.makedirs(vendor_dir, exist_ok=True)
+    os.makedirs(img_dir, exist_ok=True)
 
     src_css = os.path.join(ASSETS_DIR, 'css/site.css')
     src_chrome = os.path.join(ASSETS_DIR, 'js/site-chrome.js')
     src_tree = os.path.join(ASSETS_DIR, 'js/tree-nav.js')
     src_theme = os.path.join(ASSETS_DIR, 'js/theme-toggle.js')
+    src_logo = os.path.join(ASSETS_DIR, 'img/logo.svg')
 
     if os.path.exists(src_css): shutil.copy2(src_css, os.path.join(vendor_dir, 'site.css'))
     if os.path.exists(src_chrome): shutil.copy2(src_chrome, os.path.join(vendor_dir, 'site-chrome.js'))
     if os.path.exists(src_tree): shutil.copy2(src_tree, os.path.join(vendor_dir, 'tree-nav.js'))
     if os.path.exists(src_theme): shutil.copy2(src_theme, os.path.join(vendor_dir, 'theme-toggle.js'))
+    
+    # Auto-sync master logo.svg to .site/img/logo.svg
+    if os.path.exists(src_logo): shutil.copy2(src_logo, os.path.join(img_dir, 'logo.svg'))
 
 def update_head_tags(content, repo_name, data):
     new_head = build_head_tags_html(repo_name, data)
@@ -209,6 +217,7 @@ def update_head_tags(content, repo_name, data):
     if head_match:
         c = re.sub(r'<title>.*?</title>', '', content, flags=re.IGNORECASE)
         c = re.sub(r'<meta\s+name="description"\s+content="[^"]*">', '', c, flags=re.IGNORECASE)
+        c = re.sub(r'<link\s+rel="icon"[^>]*>', '', c, flags=re.IGNORECASE)
         head_match2 = re.search(r'<head[^>]*>', c, re.IGNORECASE)
         if head_match2:
             return c[:head_match2.end()] + '\n' + new_head + c[head_match2.end():]
@@ -268,12 +277,6 @@ def main():
             f.write(content)
         updated_sites += 1
         print(f"[OK] Generated & Updated {repo_name} (.site/index.html)")
-
-    # Ensure PyDevices.github.io/index.html is synced with PyDevices.github.io/.site/index.html
-    root_portal = os.path.join(BASE_DIR, 'PyDevices.github.io/index.html')
-    site_portal = os.path.join(BASE_DIR, 'PyDevices.github.io/.site/index.html')
-    if os.path.exists(site_portal):
-        shutil.copy2(site_portal, root_portal)
 
     print(f"=== Complete! Processed {len(db)} repos ({updated_sites} modified) ===")
 

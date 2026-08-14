@@ -10,9 +10,9 @@ instructions — read that first.
 Repo directory and root-file layout (`src/`, `lib/`, `tests/`,
 `requirements-dev.txt`, …): see [`docs/repo-layout.md`](docs/repo-layout.md).
 
-- **[pydevices-examples](https://github.com/PyDevices/pydevices-examples)** — the core display/input/graphics library (pure Python).
-- **[palettes](https://github.com/PyDevices/palettes)** / **[pdwidgets](https://github.com/PyDevices/pdwidgets)** — color toolkit and lightweight widgets for PyDevices.
-- **[pydevices](https://github.com/PyDevices/pydevices)** — board configs and hardware drivers (display/touch/bus/…).
+- **[pydevices](https://github.com/PyDevices/pydevices)** — core display, touch, and hardware abstraction layer (HAL) library.
+- **[pydevices-examples](https://github.com/PyDevices/pydevices-examples)** — showcase apps, PyScript runner, and reference gallery.
+- **[palettes](https://github.com/PyDevices/palettes)** / **[pdwidgets](https://github.com/PyDevices/pdwidgets)** — color engine and lightweight UI widgets.
 - **[mpftp](https://github.com/PyDevices/mpftp)** — VS Code / Cursor board tools (REPL, file transfer, firmware).
 - **[lvgl-bindings](https://github.com/PyDevices/lvgl-bindings)** — the LVGL binding generator; source of truth for the native LVGL cmods.
 - **Native modules** — [displayif](https://github.com/PyDevices/displayif), [pygraphics](https://github.com/PyDevices/pygraphics) (also pure-Python `pygraphics`), [lvgl-micropython](https://github.com/PyDevices/lvgl-micropython), [lvgl-circuitpython](https://github.com/PyDevices/lvgl-circuitpython), [lvgl-python](https://github.com/PyDevices/lvgl-python).
