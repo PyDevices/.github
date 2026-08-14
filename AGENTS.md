@@ -166,6 +166,10 @@ When running shell commands across workspace repositories, **ALWAYS** use `./lis
 timeout 10s bash -c "./list_pydevices_repos.sh | while read repo; do echo \"\$(basename \$repo): \$(git -C \"\$repo\" status -s)\"; done"
 ```
 
+## Known Environment Bugs
+
+- **Checkpoints swallowing tool responses**: If an agent issues a tool call exactly as a context checkpoint fires, the response can be silently lost, causing the agent to appear hung. If this happens, ask the agent to "try again". Tracked upstream at [google-antigravity/antigravity-cli#793](https://github.com/google-antigravity/antigravity-cli/issues/793).
+
 ## Related docs
 
 - [cmods AGENTS.md](https://github.com/PyDevices/cmods/blob/main/AGENTS.md) —
