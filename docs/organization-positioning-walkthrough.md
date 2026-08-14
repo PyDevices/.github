@@ -31,7 +31,7 @@ All documentation, positioning alignments, zero-dependency highlights, path conf
 ### Optional Tooling & Publishing
 * **`cmods`**: Positioned as an optional usermod compilation workspace helper; updated `build_runtimes.sh` to publish compiled binaries directly to sibling `pydevices/bin/`.
 * **`mpftp`**: Positioned as an optional VS Code/Cursor in-editor serial REPL, dual-pane FTP file transfer, and firmware flashing tool replacing Thonny.
-* **`micropython-lib`**: Refactored `README.md` to introduce its role as the PyDevices MIP Package Index serving `.mpy` bytecode and `.py` source at `https://PyDevices.github.io/micropython-lib/mip/PyDevices`.
+* **`micropython-lib`**: Refactored `README.md` to introduce its role as the PyDevices MIP Package Index serving `.mpy` bytecode and `.py` source at `https://PyDevices.github.io/mip`.
 * **`path.py`**: Refactored `path.py` in `pydevices-examples` and `pydevices-android-template` to be a portable, idempotent `sys.path` resolver using `os.getenv` without `AttributeError` or missing attribute failures across MicroPython, CircuitPython, and CPython.
 
 ---

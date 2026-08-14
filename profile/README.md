@@ -24,7 +24,7 @@ the desktop and the browser.
 - **[lvgl-bindings](https://github.com/PyDevices/lvgl-bindings)** — generates native [LVGL](https://lvgl.io/) bindings for MicroPython, CircuitPython, and CPython from one source of truth.
 - **Native modules** — [displayif](https://github.com/PyDevices/displayif), [pygraphics](https://github.com/PyDevices/pygraphics) (also pure-Python `pygraphics`), [lvgl-micropython](https://github.com/PyDevices/lvgl-micropython), [lvgl-circuitpython](https://github.com/PyDevices/lvgl-circuitpython), and [lvgl-python](https://github.com/PyDevices/lvgl-python).
 - **[cmods](https://github.com/PyDevices/cmods)** — the workspace that builds and smoke-tests the whole native-module matrix together.
-- **[micropython-lib](https://github.com/PyDevices/micropython-lib)** — the PyDevices MIP distribution fork, serving precompiled `.mpy` and `.py` packages at the [PyDevices MIP Index](https://PyDevices.github.io/micropython-lib/mip/PyDevices).
+- **[micropython-lib](https://github.com/PyDevices/micropython-lib)** — the PyDevices MIP distribution fork, serving precompiled `.mpy` and `.py` packages at the [PyDevices MIP Index](https://PyDevices.github.io/mip).
 - **[mpftp](https://github.com/PyDevices/mpftp)** — in-editor workbench extension for VS Code and compatible derivatives (such as Google Antigravity IDE, Cursor, VSCodium) providing serial REPL, file transfer, and firmware flashing. State under `~/.mpftp/`.
 
 

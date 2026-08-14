@@ -117,7 +117,7 @@ Contains build and integration infrastructure for native LVGL-related modules.
 
 **Purpose:** PyDevices MIP distribution fork & package index generator.
 
-Aggregates PyDevices packages and drives the automated publication of the PyDevices custom MIP package index (`https://PyDevices.github.io/micropython-lib/mip/PyDevices`), generating both precompiled `.mpy` and source `.py` distributions for MicroPython.
+Aggregates PyDevices packages and drives the automated publication of the PyDevices custom MIP package index (`https://PyDevices.github.io/mip`), generating both precompiled `.mpy` and source `.py` distributions for MicroPython.
 
 ---
 

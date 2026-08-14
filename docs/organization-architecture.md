@@ -46,7 +46,7 @@ The 17 repositories in the PyDevices organization are structured into clear func
 * **[`pdwidgets`](https://github.com/PyDevices/pdwidgets)**: Pure-Python UI widget toolkit (`Button`, `Label`, `Screen`, `List`) built on `pygraphics` and `palettes`, requiring zero C compilation.
 
 ### Tier 3: Packaging & Index Infrastructure
-* **[`micropython-lib`](https://github.com/PyDevices/micropython-lib)**: PyDevices distribution index serving precompiled `.mpy` bytecode and `.py` source packages via MIP at `https://PyDevices.github.io/micropython-lib/mip/PyDevices`.
+* **[`micropython-lib`](https://github.com/PyDevices/micropython-lib)**: PyDevices distribution index serving precompiled `.mpy` bytecode and `.py` source packages via MIP at `https://PyDevices.github.io/mip`.
 
 ### Tier 4: LVGL Native C Stack
 * **[`lvgl-bindings`](https://github.com/PyDevices/lvgl-bindings)**: Core binding generator and shared `display_driver.py` coordinator.

@@ -123,7 +123,7 @@ optional application runtime and event-adapter layer.
   than a development source.
 - Published coordinated product release `v0.1.0` from `pydevices`.
 - Published the live MIP index at
-  `https://pydevices.github.io/micropython-lib/mip/PyDevices`.
+  `https://PyDevices.github.io/mip`.
 
 ### Gallery, templates, and organization presence
 
