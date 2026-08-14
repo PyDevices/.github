@@ -60,16 +60,13 @@ def get_tag_label(repo_name):
     return tags.get(repo_name, repo_name)
 
 def build_head_tags_html(repo_name, data):
-    display_title = f"PyDevices - {repo_name}"
-    description = data.get('description', '')
-    html = (
+    return (
         f'  <!-- PYDEVICES-HEAD-TAGS: START -->\n'
-        f'  <title>{display_title}</title>\n'
-        f'  <meta name="description" content="{description}">\n'
+        f'  <title>PyDevices - {repo_name}</title>\n'
+        f'  <meta name="description" content="{data.get("description", "")}">\n'
         f'  <link rel="icon" type="image/svg+xml" href="img/logo.svg">\n'
         f'  <!-- PYDEVICES-HEAD-TAGS: END -->'
     )
-    return html
 
 def build_above_the_fold_html(repo_name, data):
     theme_color = data.get('theme_color', 'var(--tier-5-steel)')
@@ -80,11 +77,8 @@ def build_above_the_fold_html(repo_name, data):
 
     button_html_list = []
     for btn in data.get('buttons', []):
-        label = btn['label']
-        href = btn['href']
-        is_primary = btn.get('primary', False)
-        
-        if is_primary:
+        label, href = btn['label'], btn['href']
+        if btn.get('primary', False):
             b_html = (
                 f'      <a class="btn primary" style="background: #24292e; color: #fff; border-color: #24292e;" href="{href}">\n'
                 f'        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5 4.6 4.6 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.6 1.7 5.5 2 5.5 2a4.6 4.6 0 0 0-.1 3.5A5 5 0 0 0 4 9c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg>\n'
@@ -97,7 +91,7 @@ def build_above_the_fold_html(repo_name, data):
 
     buttons_joined = '\n'.join(button_html_list)
 
-    html = (
+    return (
         f'  <!-- PYDEVICES-ABOVE-THE-FOLD: START -->\n'
         f'  <div id="pydevices-site-header"></div>\n\n'
         f'  <!-- Hero Banner -->\n'
@@ -116,7 +110,6 @@ def build_above_the_fold_html(repo_name, data):
         f'  </section>\n'
         f'  <!-- PYDEVICES-ABOVE-THE-FOLD: END -->'
     )
-    return html
 
 def build_portal_grids_html(db):
     tier_meta = {
@@ -129,40 +122,30 @@ def build_portal_grids_html(db):
 
     tier_repos = {1: [], 2: [], 3: [], 4: [], 5: []}
     for repo_name, data in db.items():
-        if repo_name == 'PyDevices.github.io':
-            continue
-        tier = data.get('tier', 5)
-        tier_repos[tier].append((repo_name, data))
+        if repo_name != 'PyDevices.github.io':
+            tier_repos[data.get('tier', 5)].append((repo_name, data))
 
     sections_html = []
     for tier in sorted(tier_repos.keys()):
         title, hint = tier_meta[tier]
         cards_html = []
         for repo_name, data in tier_repos[tier]:
-            card_class = f'card-tier-{tier}'
-            tag_class = f'tag-tier-{tier}'
-            tag_label = get_tag_label(repo_name)
-            icon_svg = get_card_icon(repo_name)
-            desc = data.get('description', '')
-            url = f'https://pydevices.github.io/{repo_name}/'
-
-            c_html = (
-                f'      <a class="card {card_class}" href="{url}">\n'
+            cards_html.append(
+                f'      <a class="card card-tier-{tier}" href="https://pydevices.github.io/{repo_name}/">\n'
                 f'        <div class="card-top">\n'
-                f'          <span class="icon">{icon_svg}</span>\n'
-                f'          <span class="tag {tag_class}">{tag_label}</span>\n'
+                f'          <span class="icon">{get_card_icon(repo_name)}</span>\n'
+                f'          <span class="tag tag-tier-{tier}">{get_tag_label(repo_name)}</span>\n'
                 f'        </div>\n'
                 f'        <h3>{repo_name}</h3>\n'
-                f'        <p>{desc}</p>\n'
+                f'        <p>{data.get("description", "")}</p>\n'
                 f'        <span class="go">Visit site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>\n'
                 f'      </a>'
             )
-            cards_html.append(c_html)
 
         cards_joined = '\n\n'.join(cards_html)
         sec_style = ' style="margin-top: 40px;"' if tier > 1 else ''
 
-        sec_html = (
+        sections_html.append(
             f'    <!-- Tier {tier} Section -->\n'
             f'    <div class="section-head"{sec_style}>\n'
             f'      <h2>{title}</h2>\n'
@@ -172,57 +155,39 @@ def build_portal_grids_html(db):
             f'{cards_joined}\n'
             f'    </div>'
         )
-        sections_html.append(sec_html)
 
-    grids_joined = '\n\n'.join(sections_html)
-
-    html = (
+    return (
         f'  <!-- PYDEVICES-PORTAL-GRIDS: START -->\n'
-        f'{grids_joined}\n'
+        f'{"\n\n".join(sections_html)}\n'
         f'  <!-- PYDEVICES-PORTAL-GRIDS: END -->'
     )
-    return html
 
 def sync_assets(repo_name):
-    # Zero-exception chrome asset sync: dotgithub/assets -> repo/vendor/pydevices-chrome (or .site/vendor for sub-repos)
     site_prefix = '' if repo_name == 'PyDevices.github.io' else '.site'
     vendor_dir = os.path.join(BASE_DIR, repo_name, site_prefix, 'vendor/pydevices-chrome')
     img_dir = os.path.join(BASE_DIR, repo_name, site_prefix, 'img')
     os.makedirs(vendor_dir, exist_ok=True)
     os.makedirs(img_dir, exist_ok=True)
 
-    src_css = os.path.join(ASSETS_DIR, 'css/site.css')
-    src_chrome = os.path.join(ASSETS_DIR, 'js/site-chrome.js')
-    src_tree = os.path.join(ASSETS_DIR, 'js/tree-nav.js')
-    src_theme = os.path.join(ASSETS_DIR, 'js/theme-toggle.js')
+    for fname in ('site.css', 'site-chrome.js', 'tree-nav.js', 'theme-toggle.js'):
+        src = os.path.join(ASSETS_DIR, 'js' if fname.endswith('.js') else 'css', fname)
+        if os.path.exists(src):
+            shutil.copy2(src, os.path.join(vendor_dir, fname))
+    
     src_logo = os.path.join(ASSETS_DIR, 'img/logo.svg')
+    if os.path.exists(src_logo):
+        shutil.copy2(src_logo, os.path.join(img_dir, 'logo.svg'))
 
-    if os.path.exists(src_css): shutil.copy2(src_css, os.path.join(vendor_dir, 'site.css'))
-    if os.path.exists(src_chrome): shutil.copy2(src_chrome, os.path.join(vendor_dir, 'site-chrome.js'))
-    if os.path.exists(src_tree): shutil.copy2(src_tree, os.path.join(vendor_dir, 'tree-nav.js'))
-    if os.path.exists(src_theme): shutil.copy2(src_theme, os.path.join(vendor_dir, 'theme-toggle.js'))
-    
-    # Auto-sync master logo.svg to img/logo.svg
-    if os.path.exists(src_logo): shutil.copy2(src_logo, os.path.join(img_dir, 'logo.svg'))
-
-def update_head_tags(content, repo_name, data):
-    new_head = build_head_tags_html(repo_name, data)
-    head_pattern = re.compile(
-        r'<!-- PYDEVICES-HEAD-TAGS: START -->.*?<!-- PYDEVICES-HEAD-TAGS: END -->',
-        re.DOTALL
-    )
-    if head_pattern.search(content):
-        return head_pattern.sub(new_head, content)
-    
-    head_match = re.search(r'<head[^>]*>', content, re.IGNORECASE)
-    if head_match:
-        c = re.sub(r'<title>.*?</title>', '', content, flags=re.IGNORECASE)
-        c = re.sub(r'<meta\s+name="description"\s+content="[^"]*">', '', c, flags=re.IGNORECASE)
-        c = re.sub(r'<link\s+rel="icon"[^>]*>', '', c, flags=re.IGNORECASE)
-        head_match2 = re.search(r'<head[^>]*>', c, re.IGNORECASE)
-        if head_match2:
-            return c[:head_match2.end()] + '\n' + new_head + c[head_match2.end():]
+def update_html_section(content, marker_start, marker_end, new_html):
+    pattern = re.compile(re.escape(marker_start) + r'.*?' + re.escape(marker_end), re.DOTALL)
+    if pattern.search(content):
+        return pattern.sub(new_html, content)
     return content
+
+def get_site_html_path(repo_dir, repo_name):
+    if repo_name == 'PyDevices.github.io':
+        return os.path.join(repo_dir, 'index.html')
+    return os.path.join(repo_dir, '.site/index.html')
 
 def main():
     print("=== Pure Harmonized PyDevices Site Generator (.github) ===")
@@ -240,13 +205,7 @@ def main():
 
         sync_assets(repo_name)
 
-        if repo_name == 'PyDevices.github.io':
-            site_html_path = os.path.join(repo_dir, 'index.html')
-        elif repo_name == 'pydevices-examples':
-            site_html_path = os.path.join(repo_dir, '.site/landing/index.html')
-        else:
-            site_html_path = os.path.join(repo_dir, '.site/index.html')
-
+        site_html_path = get_site_html_path(repo_dir, repo_name)
         if not os.path.exists(site_html_path):
             print(f"[SKIP] HTML file missing: {site_html_path}")
             continue
@@ -254,46 +213,18 @@ def main():
         with open(site_html_path, 'r', encoding='utf-8') as f:
             content = f.read()
 
-        content = update_head_tags(content, repo_name, data)
+        # Update section markers cleanly
+        content = update_html_section(content, '<!-- PYDEVICES-HEAD-TAGS: START -->', '<!-- PYDEVICES-HEAD-TAGS: END -->', build_head_tags_html(repo_name, data))
+        content = update_html_section(content, '<!-- PYDEVICES-ABOVE-THE-FOLD: START -->', '<!-- PYDEVICES-ABOVE-THE-FOLD: END -->', build_above_the_fold_html(repo_name, data))
 
-        new_above = build_above_the_fold_html(repo_name, data)
-        marker_pattern = re.compile(
-            r'<!-- PYDEVICES-ABOVE-THE-FOLD: START -->.*?<!-- PYDEVICES-ABOVE-THE-FOLD: END -->',
-            re.DOTALL
-        )
-
-        if marker_pattern.search(content):
-            content = marker_pattern.sub(new_above, content)
-        else:
-            body_match = re.search(r'<body[^>]*>', content, re.IGNORECASE)
-            if body_match:
-                insert_pos = body_match.end()
-                content = content[:insert_pos] + '\n' + new_above + content[insert_pos:]
-
-        # One Exception: Org Portal Grid Generation for PyDevices.github.io
         if repo_name == 'PyDevices.github.io':
-            p_grids = build_portal_grids_html(db)
-            marker_p_grids = re.compile(
-                r'<!-- PYDEVICES-PORTAL-GRIDS: START -->.*?<!-- PYDEVICES-PORTAL-GRIDS: END -->',
-                re.DOTALL
-            )
-            if marker_p_grids.search(content):
-                content = marker_p_grids.sub(p_grids, content)
+            content = update_html_section(content, '<!-- PYDEVICES-PORTAL-GRIDS: START -->', '<!-- PYDEVICES-PORTAL-GRIDS: END -->', build_portal_grids_html(db))
 
-        # Cleanup duplicate hero sections outside the marker & normalize broken asset paths
-        content = content.replace('src="assets/img/logo.svg"', 'src="img/logo.svg"')
-        content = content.replace('href="https://pydevices.github.io/assets/img/logo.svg"', 'href="img/logo.svg"')
-        content = content.replace('src="assets/js/site-chrome.js"', 'src="./vendor/pydevices-chrome/site-chrome.js"')
-        content = content.replace('src="assets/js/theme-toggle.js"', 'src="./vendor/pydevices-chrome/theme-toggle.js"')
-        content = content.replace('src="assets/js/tree-nav.js"', 'src="./vendor/pydevices-chrome/tree-nav.js"')
-        rel_prefix = "../" if repo_name == "pydevices-examples" else "./"
-        content = content.replace('src="https://pydevices.github.io/assets/js/site-chrome.js"', f'src="{rel_prefix}vendor/pydevices-chrome/site-chrome.js"')
-        content = content.replace('src="https://pydevices.github.io/assets/js/theme-toggle.js"', f'src="{rel_prefix}vendor/pydevices-chrome/theme-toggle.js"')
-        content = re.sub(r'src=["\']https://pydevices\.github\.io/assets/img/products/[^"\']+["\']', 'src="img/logo.svg"', content)
-
+        # Remove duplicate hero section outside marker if present
         if '<!-- PYDEVICES-ABOVE-THE-FOLD: END -->' in content:
             parts = content.split('<!-- PYDEVICES-ABOVE-THE-FOLD: END -->', 1)
             parts[1] = re.sub(r'<section\s+class=["\']hero\s+wrap["\']>.*?</section>', '', parts[1], flags=re.DOTALL | re.IGNORECASE)
+
         with open(site_html_path, 'w', encoding='utf-8') as f:
             f.write(content)
 
