@@ -31,7 +31,7 @@ All documentation, positioning alignments, zero-dependency highlights, path conf
 ### Optional Tooling & Publishing
 * **`cmods`**: Positioned as an optional usermod compilation workspace helper; updated `build_runtimes.sh` to publish compiled binaries directly to sibling `pydevices/bin/`.
 * **`mpftp`**: Positioned as an optional VS Code/Cursor in-editor serial REPL, dual-pane FTP file transfer, and firmware flashing tool replacing Thonny.
-* **`micropython-lib`**: Refactored `README.md` to introduce its role as the PyDevices MIP Package Index serving `.mpy` bytecode and `.py` source at `https://PyDevices.github.io/mip`.
+* **`mip`**: Refactored `README.md` to introduce its role as the PyDevices MIP Package Index serving `.mpy` bytecode and `.py` source at `https://PyDevices.github.io/mip`.
 * **`path.py`**: Refactored `path.py` in `pydevices-examples` and `pydevices-android-template` to be a portable, idempotent `sys.path` resolver using `os.getenv` without `AttributeError` or missing attribute failures across MicroPython, CircuitPython, and CPython.
 
 ---
@@ -46,7 +46,7 @@ All 11 target repositories have been verified clean and pushed upstream:
 | `pygraphics` | **CLEAN** | Extended 2D graphics engine (0-dependency, `FrameBuffer` attributes, `Draw` class, `Area` returns, 24-bit `RGB888` for NeoPixels/DotStars, custom fonts, image I/O). |
 | `palettes` | **CLEAN** | Zero-dependency pure-Python color toolkit with visual swatch previews. |
 | `pdwidgets` | **CLEAN** | Zero-dependency pure-Python lightweight UI widget toolkit. |
-| `micropython-lib` | **CLEAN** | PyDevices MIP Package Index serving precompiled `.mpy` bytecode & `.py` source. |
+| `mip` | **CLEAN** | PyDevices MIP Package Index serving precompiled `.mpy` bytecode & `.py` source. |
 | `displayif` | **CLEAN** | Accelerated C display interface bus modules for MicroPython (SPI, I80, RGB, DSI). |
 | `cmods` | **CLEAN** | Optional usermod compilation workspace. Publishes built runtimes to `pydevices/bin/`. |
 | `mpftp` | **CLEAN** | Optional VS Code/Cursor in-editor serial REPL, dual-pane FTP file transfer, and flasher. |

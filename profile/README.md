@@ -7,7 +7,7 @@ Welcome to **PyDevices** — a unified pure-Python hardware abstraction engine, 
 ## 🏛️ Ecosystem Structure
 
 - **Org Landing Portal**: [PyDevices.github.io](https://pydevices.github.io/)
-- **MIP Package Index**: [PyDevices MIP Index](https://pydevices.github.io/micropython-lib/)
+- **MIP Package Index**: [PyDevices MIP Index](https://pydevices.github.io/mip/)
 - **Centralized Assets & Scripts**: [.github (*dotgithub*)](https://github.com/PyDevices/.github)
 
 ---
@@ -35,6 +35,6 @@ Welcome to **PyDevices** — a unified pure-Python hardware abstraction engine, 
    - [`pydevices-android-template`](https://github.com/PyDevices/pydevices-android-template): Android APK host template.
 
 5. **Tier 5: Developer Tools & Infrastructure**
-   - [`micropython-lib`](https://github.com/PyDevices/micropython-lib): MIP package index.
+   - [`mip`](https://github.com/PyDevices/mip): MIP package index.
    - [`cmods`](https://github.com/PyDevices/cmods): Multi-usermod C build workspace.
    - [`mpftp`](https://github.com/PyDevices/mpftp): Serial & FTP REPL transfer workbench.

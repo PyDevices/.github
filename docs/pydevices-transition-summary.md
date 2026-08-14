@@ -32,7 +32,7 @@ optional application runtime and event-adapter layer.
 | `pydevices-android-template` | Reusable Android application template |
 | `pydevices-pyscript-template` | Reusable installable/offline PyScript PWA template |
 | `PyDevices.github.io` | Lightweight organization portal |
-| `micropython-lib` | Generated PyDevices MIP mirror and package index |
+| `mip` | Generated PyDevices MIP mirror and package index |
 | `lvgl-bindings` | Canonical LVGL binding generator and shared Python bridge |
 | `lvgl-micropython` | MicroPython LVGL integration and builds |
 | `lvgl-circuitpython` | CircuitPython LVGL integration and builds |
@@ -119,7 +119,7 @@ optional application runtime and event-adapter layer.
 - Applied the `pydevices-*` TestPyPI naming rule to companion packages,
   including `pygraphics`, `palettes`, `pdwidgets`, and LVGL.
 - Kept imports and MIP names unprefixed.
-- Reset and regenerated the `micropython-lib` fork as an output mirror rather
+- Reset and regenerated the `mip` fork as an output mirror rather
   than a development source.
 - Published coordinated product release `v0.1.0` from `pydevices`.
 - Published the live MIP index at

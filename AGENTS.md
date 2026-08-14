@@ -63,7 +63,7 @@ handing work from Cursor desktop to Cloud Agents.
     └── pydevices-pyscript-template    -> /agent/repos/pydevices-pyscript-template
 ```
 
-**Not cloned locally:** `micropython-lib` — GitHub Actions owns sync and
+**Not cloned locally:** `mip` — GitHub Actions owns sync and
 release there; agents should not add it to this workspace unless explicitly
 asked.
 

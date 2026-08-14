@@ -91,4 +91,4 @@ Examples:
 - Do not put non-unit developer tests in `tests/` — those belong in `tools/`.
 - Root build glue may stay at the repo root when discovery requires it
   (e.g. `micropython.mk`, `setup.py`, `apply_*.sh` entry points).
-- Meta / workspace repos (this `.github` org repo, `PyDevices.github.io`, `cmods`, `micropython-lib`) are not package trees; they follow their own roles and need not mirror every directory above.
+- Meta / workspace repos (this `.github` org repo, `PyDevices.github.io`, `cmods`, `mip`) are not package trees; they follow their own roles and need not mirror every directory above.

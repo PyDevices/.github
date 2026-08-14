@@ -10,4 +10,4 @@ Welcome to PyDevices! Here are the best ways to get help and ask questions acros
 ## 📚 Live Documentation & Specs
 
 - **Organization Landing Portal**: [PyDevices.github.io](https://pydevices.github.io/)
-- **MIP Package Index**: [PyDevices MIP Index](https://pydevices.github.io/micropython-lib/)
+- **MIP Package Index**: [PyDevices MIP Index](https://pydevices.github.io/mip/)

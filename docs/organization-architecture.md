@@ -46,7 +46,7 @@ The 17 repositories in the PyDevices organization are structured into clear func
 * **[`pdwidgets`](https://github.com/PyDevices/pdwidgets)**: Pure-Python UI widget toolkit (`Button`, `Label`, `Screen`, `List`) built on `pygraphics` and `palettes`, requiring zero C compilation.
 
 ### Tier 3: Packaging & Index Infrastructure
-* **[`micropython-lib`](https://github.com/PyDevices/micropython-lib)**: PyDevices distribution index serving precompiled `.mpy` bytecode and `.py` source packages via MIP at `https://PyDevices.github.io/mip`.
+* **[`mip`](https://github.com/PyDevices/mip)**: PyDevices distribution index serving precompiled `.mpy` bytecode and `.py` source packages via MIP at `https://PyDevices.github.io/mip`.
 
 ### Tier 4: LVGL Native C Stack
 * **[`lvgl-bindings`](https://github.com/PyDevices/lvgl-bindings)**: Core binding generator and shared `display_driver.py` coordinator.
@@ -86,4 +86,4 @@ This path configuration mirrors the default search path on both hosted Unix/Wind
 
 ## 4. Non-Intrusive Workflow Guarantee
 
-All workflow helpers (`cmods`, `mpftp`, `micropython-lib` custom MIP index) are **100% optional**. Experienced developers retain complete freedom to use traditional `make USER_C_MODULES=...`, stock `mpremote`, `circup`, or standalone IDEs without modifying their habits.
+All workflow helpers (`cmods`, `mpftp`, `mip` custom MIP index) are **100% optional**. Experienced developers retain complete freedom to use traditional `make USER_C_MODULES=...`, stock `mpremote`, `circup`, or standalone IDEs without modifying their habits.

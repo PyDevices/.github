@@ -5,7 +5,7 @@ touches pydevices-examples + micropython-lib (+ desktop MicroPython freeze).
 
 ## Todo
 
-- [ ] Warn users where downloads come from: PyDevices micropython-lib MIP index (`https://PyDevices.github.io/mip`), not the [official MicroPython micropython-lib](https://github.com/micropython/micropython-lib) package index — **maintainer-published**, not an endorsed upstream source (show URL on first run / in GUI)
+- [ ] Warn users where downloads come from: PyDevices mip MIP index (`https://PyDevices.github.io/mip`), not the [official MicroPython micropython-lib](https://github.com/micropython/micropython-lib) package index — **maintainer-published**, not an endorsed upstream source (show URL on first run / in GUI)
 - [ ] Freeze a small bootstrap module into desktop MicroPython builds so `from <xyz> import <clever_install_fn>` works out of the box
 - [ ] Install or refresh all 3 core modules (`displaydev`, `eventsys`, `pygraphics`, `multimer`) via `mip` / `lib_install`-style fetch (skip re-download when up to date?)
 - [ ] Post-install GUI (TBD: terminal menu vs minimal on-display UI): download more files, system/platform info, `lv_test_timer_*`-style sanity checks, link to `spotapi_remote` / spotapi
@@ -22,11 +22,11 @@ from <xyz> import <clever_install_fn>  # name TBD
 
 **What gets installed first:** The four `src/lib` packages only — `displaydev`, `eventsys`, `pygraphics`, `multimer`. Add-ons, examples, and board configs stay optional later steps.
 
-**Source of truth:** Maintainer-published packages from the PyDevices micropython-lib fork, published via pydevices-examples [`scripts/publish_sync_packages.sh`](https://github.com/PyDevices/pydevices-examples/blob/main/scripts/publish_sync_packages.sh) → MIP index at `https://PyDevices.github.io/mip`. Same channel as [`installer.py`](https://github.com/PyDevices/pydevices-examples/blob/main/installer.py) `lib_install()` ([installation/mip-micropython-lib.md](https://github.com/PyDevices/pydevices-examples/blob/main/docs/installation/mip-micropython-lib.md) describes the index; this installer should **warn explicitly** that it is not the official MicroPython micropython-lib registry).
+**Source of truth:** Maintainer-published packages from the PyDevices mip fork, published via pydevices-examples [`scripts/publish_sync_packages.sh`](https://github.com/PyDevices/pydevices-examples/blob/main/scripts/publish_sync_packages.sh) → MIP index at `https://PyDevices.github.io/mip`. Same channel as [`installer.py`](https://github.com/PyDevices/pydevices-examples/blob/main/installer.py) `lib_install()` ([installation/mip-micropython-lib.md](https://github.com/PyDevices/pydevices-examples/blob/main/docs/installation/mip-micropython-lib.md) describes the index; this installer should **warn explicitly** that it is not the official MicroPython micropython-lib registry).
 
 **Suggested first-run warning (UI copy):**
 
-> Installing from PyDevices micropython-lib (maintainer-published community index).  
+> Installing from PyDevices mip (maintainer-published community index).  
 > Not the official MicroPython package registry.  
 > Index: `https://PyDevices.github.io/mip`
 

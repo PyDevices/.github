@@ -47,7 +47,7 @@ the answer from scratch.
 - **Projects** are disabled org-wide (org boards and per-repo Projects). Public
   work tracking is Issues + Discussions; there is no org kanban.
 - **GitHub Packages** is not used. Installables go to TestPyPI / PyPI (CPython)
-  and [micropython-lib](https://github.com/PyDevices/micropython-lib) via `mip`
+  and [micropython-lib](https://github.com/PyDevices/mip) via `mip`
   (MicroPython) — not GHCR or other GitHub package registries.
 
 ## Org profile
@@ -103,7 +103,7 @@ icons. Header brand stays on the shared org logo.
 | [pydevices-pyscript-template](https://github.com/PyDevices/pydevices-pyscript-template) | Minimal installable PyScript/PWA application template | [pydevices.github.io/pydevices-pyscript-template](https://pydevices.github.io/pydevices-pyscript-template/) |
 | [PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io) | Org landing + shared chrome | [pydevices.github.io](https://pydevices.github.io/) |
 | [.github](https://github.com/PyDevices/.github) | This repo — org profile README, issue templates, CONTRIBUTING.md, `docs/github-presence.md`, `docs/repo-layout.md`, `docs/notes.md` | *(no Pages site — org metadata only)* |
-| [micropython-lib](https://github.com/PyDevices/micropython-lib) | Fork carrying PyDevices' micropython-lib packages for `mip install` | *(no dedicated marketing site — it's a package index fork, not a product)* |
+| [micropython-lib](https://github.com/PyDevices/mip) | Fork carrying PyDevices' micropython-lib packages for `mip install` | *(no dedicated marketing site — it's a package index fork, not a product)* |
 | [pydevices](https://github.com/PyDevices/pydevices) | Canonical reusable product: cross-runtime libraries, board configs, and hardware drivers published for pip and MIP | [pydevices.github.io/pydevices](https://pydevices.github.io/pydevices/) |
 | [mpftp](https://github.com/PyDevices/mpftp) | VS Code / Cursor board tools (REPL, file transfer, mip/circup, MicroPython firmware) | [pydevices.github.io/mpftp](https://pydevices.github.io/mpftp/) |
 
