@@ -17,8 +17,9 @@ call reusable workflows in this repository through the stable
 | `reusable-synchronize-mip-package.yml` | Synchronize one source release, validate the complete latest-only index, create one source commit, and stage the Pages artifact |
 | `reusable-validate-pyscript-filesystem-toml.yml` | Reject stale generated PyScript filesystem mappings |
 
-The final TestPyPI OIDC upload remains in each source repository because
-TestPyPI Trusted Publisher identity includes that repository and workflow.
+The final TestPyPI upload remains in each source repository and currently uses
+the existing `TESTPYPI_API_TOKEN`. Token authentication remains in place while
+the PyDevices TestPyPI organization request is pending.
 
 ## Shared scripts
 
