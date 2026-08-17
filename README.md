@@ -11,6 +11,7 @@ Org-wide community health files and profile for [PyDevices](https://github.com/P
 - [`docs/notes.md`](docs/notes.md) — Brad's personal working notes / todo list (not contributor-facing).
 - [`docs/platform-feasibility-report.md`](docs/platform-feasibility-report.md) — platform feasibility analysis + org triage decisions (pursue / docs-only / out).
 - [`docs/platform-roadmap.md`](docs/platform-roadmap.md) — cloud-agent workstreams for platform expansion (parallel pursue tracks, why-comment rule, out-of-scope list).
+- [`docs/publishing-automation.md`](docs/publishing-automation.md) — shared release workflows, discovery rules, and the centralized MIP queue.
 
 Board / Detect inventory docs live in
 [pydevices/docs](https://github.com/PyDevices/pydevices/tree/main/docs)

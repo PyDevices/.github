@@ -1,0 +1,210 @@
+#!/usr/bin/env python3
+"""Synchronize a single-source PyDevices package into the MIP repository."""
+
+from __future__ import annotations
+
+import argparse
+import shutil
+from dataclasses import dataclass
+from pathlib import Path
+
+
+@dataclass(frozen=True)
+class Profile:
+    package: str
+    description: str
+    pypi_name: str | None
+    requirements: tuple[tuple[str, str], ...] = ()
+
+
+PROFILES = {
+    "palettes": Profile(
+        package="palettes",
+        description="Color palette toolkit for PyDevices (wheel, cube, material_design)",
+        pypi_name="pydevices-palettes",
+    ),
+    "pdwidgets": Profile(
+        package="pdwidgets",
+        description="Cross-platform widget toolkit for PyDevices",
+        pypi_name="pydevices-pdwidgets",
+        requirements=(
+            ("eventsys", "pydevices-eventsys"),
+            ("pygraphics", "pydevices-pygraphics"),
+            ("multimer", "pydevices-multimer"),
+            ("palettes", "pydevices-palettes"),
+        ),
+    ),
+    "pygraphics": Profile(
+        package="pygraphics",
+        description=(
+            "Pure-Python pygraphics for MicroPython/CircuitPython/CPython "
+            "(FrameBuffer, Draw, fonts); import as pygraphics"
+        ),
+        pypi_name=None,
+    ),
+}
+
+PROFILE_REPOSITORIES = {
+    "palettes": "PyDevices/palettes",
+    "pdwidgets": "PyDevices/pdwidgets",
+    "pygraphics": "PyDevices/pygraphics",
+    "pydevices": "PyDevices/pydevices",
+}
+
+PYDEVICES_REQUIREMENTS = {
+    "displaydev": ("events", "keys"),
+    "eventsys": ("events", "keys", "multimer"),
+}
+PYDEVICES_DESKTOP_FILES = {
+    "board_configs/desktop/board_config.py": "board_config.py",
+    "board_configs/desktop/board_peripherals.py": "board_peripherals.py",
+    "drivers/boarddev.py": "boarddev.py",
+}
+
+
+def ignore_debris(_directory: str, names: list[str]) -> set[str]:
+    ignored = {"__pycache__", "build", "dist"}
+    return {
+        name
+        for name in names
+        if name.startswith(".") or name in ignored or name.endswith((".pyc", ".pyo"))
+    }
+
+
+def render_manifest(profile: Profile, version: str) -> str:
+    lines = [
+        "metadata(",
+        f'    description={profile.description!r},',
+        f'    version="{version}",',
+        '    author="Brad Barnett <contact@pydevices.com>",',
+        '    license="MIT",',
+    ]
+    if profile.pypi_name:
+        lines.append(f'    pypi_publish="{profile.pypi_name}",')
+    lines.append(")")
+    for mip_name, pypi_name in profile.requirements:
+        lines.append(f'require("{mip_name}", pypi="{pypi_name}")')
+    lines.append(f'package("{profile.package}")')
+    lines.append("")
+    return "\n".join(lines)
+
+
+def publishable(path: Path) -> bool:
+    return (
+        not path.name.startswith(".")
+        and path.name not in {"__pycache__", "README.md", "build", "dist"}
+        and path.suffix not in {".pyc", ".pyo"}
+        and (path.is_dir() or path.suffix == ".py")
+    )
+
+
+def copy_component(source: Path, destination: Path) -> None:
+    if source.is_dir():
+        shutil.copytree(source, destination, ignore=ignore_debris)
+    else:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, destination)
+
+
+def render_pydevices_manifest(name: str, version: str, requirements: tuple[str, ...], payload: str | None) -> str:
+    pypi_name = name if name in {"pydevices", "pydevices-desktop"} else f"pydevices-{name}"
+    lines = [
+        "metadata(",
+        f'    description="PyDevices {name}",',
+        f'    version="{version}",',
+        '    author="Brad Barnett <contact@pydevices.com>",',
+        '    license="MIT",',
+        f'    pypi_publish="{pypi_name}",',
+        ")",
+    ]
+    lines.extend(f'require("{requirement}")' for requirement in requirements)
+    if payload:
+        lines.append(payload)
+    lines.append("")
+    return "\n".join(lines)
+
+
+def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> None:
+    destination_root = mip_root / "micropython" / "pydevices"
+    if destination_root.parent != mip_root / "micropython":
+        raise SystemExit(f"refusing unexpected MIP destination: {destination_root}")
+    if destination_root.exists():
+        shutil.rmtree(destination_root)
+    destination_root.mkdir(parents=True)
+
+    leaf_names: list[str] = []
+    for source in sorted(filter(publishable, (source_root / "lib").iterdir()), key=lambda path: path.name):
+        name = source.stem if source.is_file() else source.name
+        leaf_names.append(name)
+        destination = destination_root / name
+        destination.mkdir()
+        copy_component(source, destination / source.name)
+        payload = f'module("{source.name}")' if source.is_file() else f'package("{name}")'
+        (destination / "manifest.py").write_text(
+            render_pydevices_manifest(name, version, PYDEVICES_REQUIREMENTS.get(name, ()), payload),
+            encoding="utf-8",
+        )
+
+    if len(leaf_names) != len(set(leaf_names)):
+        raise SystemExit("lib/ contains colliding module and package names")
+
+    meta = destination_root / "pydevices"
+    meta.mkdir()
+    (meta / "manifest.py").write_text(
+        render_pydevices_manifest("pydevices", version, tuple(leaf_names), None), encoding="utf-8"
+    )
+
+    desktop = destination_root / "pydevices-desktop"
+    desktop.mkdir()
+    payloads: list[str] = []
+    for source in sorted(filter(publishable, (source_root / "utils").iterdir()), key=lambda path: path.name):
+        copy_component(source, desktop / source.name)
+        payloads.append(f'module("{source.name}")' if source.is_file() else f'package("{source.name}")')
+    for source_name, destination_name in PYDEVICES_DESKTOP_FILES.items():
+        copy_component(source_root / source_name, desktop / destination_name)
+        payloads.append(f'module("{destination_name}")')
+    manifest = render_pydevices_manifest("pydevices-desktop", version, ("pydevices",), None)
+    manifest += "\n".join(payloads) + "\n"
+    (desktop / "manifest.py").write_text(manifest, encoding="utf-8")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--source-repository", required=True, type=Path)
+    parser.add_argument("--source-repository-name", required=True)
+    parser.add_argument("--mip-repository", required=True, type=Path)
+    parser.add_argument("--profile", required=True, choices=sorted((*PROFILES, "pydevices")))
+    parser.add_argument("--version", required=True)
+    args = parser.parse_args()
+
+    expected_repository = PROFILE_REPOSITORIES[args.profile]
+    if args.source_repository_name != expected_repository:
+        raise SystemExit(
+            f"profile {args.profile!r} requires {expected_repository}, "
+            f"not {args.source_repository_name}"
+        )
+
+    source_repository = args.source_repository.resolve()
+    mip_root = args.mip_repository.resolve()
+    if args.profile == "pydevices":
+        synchronize_pydevices(source_repository, mip_root, args.version)
+        return
+
+    profile = PROFILES[args.profile]
+    source = source_repository / "lib" / profile.package
+    destination = mip_root / "micropython" / profile.package
+    if not source.is_dir():
+        raise SystemExit(f"package source does not exist: {source}")
+    expected_parent = mip_root / "micropython"
+    if destination.parent != expected_parent:
+        raise SystemExit(f"refusing unexpected MIP destination: {destination}")
+
+    if destination.exists():
+        shutil.rmtree(destination)
+    package_destination = destination / profile.package
+    shutil.copytree(source, package_destination, ignore=ignore_debris)
+    (destination / "manifest.py").write_text(render_manifest(profile, args.version))
+
+
+if __name__ == "__main__":
+    main()

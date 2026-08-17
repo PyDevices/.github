@@ -1,0 +1,100 @@
+name: Reusable build pure-Python distribution
+
+on:
+  workflow_call:
+    inputs:
+      distribution-name:
+        description: Published TestPyPI distribution name
+        required: true
+        type: string
+      import-name:
+        description: Import name used by the smoke test
+        required: true
+        type: string
+      release-ref:
+        description: Exact source tag or commit to build
+        required: true
+        type: string
+      version:
+        description: Normalized X.Y.Z release version
+        required: true
+        type: string
+      working-directory:
+        description: Directory containing pyproject.toml
+        default: .
+        type: string
+      smoke-command:
+        description: Python code run after installing the wheel without dependencies
+        default: ""
+        type: string
+      install-dependencies:
+        description: Resolve runtime dependencies from TestPyPI and PyPI for the smoke test
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-validate-python-distribution:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the exact release
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release-ref }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Write the release version
+        working-directory: ${{ inputs.working-directory }}
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          if [[ -f VERSION ]]; then
+            COMMITTED_VERSION="$(tr -d '[:space:]' < VERSION)"
+            if [[ "$COMMITTED_VERSION" != "$RELEASE_VERSION" ]]; then
+              echo "VERSION contains $COMMITTED_VERSION but the release tag is $RELEASE_VERSION" >&2
+              exit 1
+            fi
+          fi
+          printf '%s\n' "$RELEASE_VERSION" > VERSION
+
+      - name: Build wheel and source distribution
+        env:
+          PACKAGE_DIRECTORY: ${{ inputs.working-directory }}
+        run: |
+          python -m pip install --disable-pip-version-check build twine
+          python -m build "$PACKAGE_DIRECTORY" --outdir dist
+          python -m twine check dist/*
+
+      - name: Test the built wheel in a clean environment
+        env:
+          IMPORT_NAME: ${{ inputs.import-name }}
+          SMOKE_COMMAND: ${{ inputs.smoke-command }}
+          INSTALL_DEPENDENCIES: ${{ inputs.install-dependencies }}
+        run: |
+          python -m venv /tmp/pydevices-package-smoke
+          if [[ "$INSTALL_DEPENDENCIES" == "true" ]]; then
+            /tmp/pydevices-package-smoke/bin/python -m pip install \
+              --index-url https://test.pypi.org/simple/ \
+              --extra-index-url https://pypi.org/simple/ \
+              dist/*.whl
+          else
+            /tmp/pydevices-package-smoke/bin/python -m pip install --no-deps dist/*.whl
+          fi
+          if [[ -n "$SMOKE_COMMAND" ]]; then
+            /tmp/pydevices-package-smoke/bin/python -c "$SMOKE_COMMAND"
+          else
+            /tmp/pydevices-package-smoke/bin/python -c "__import__('${IMPORT_NAME}')"
+          fi
+
+      - name: Upload validated distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: testpypi-${{ inputs.distribution-name }}-${{ inputs.version }}
+          path: dist/*
+          if-no-files-found: error

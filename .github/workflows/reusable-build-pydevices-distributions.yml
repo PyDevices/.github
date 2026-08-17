@@ -1,0 +1,64 @@
+name: Reusable build PyDevices distributions
+
+on:
+  workflow_call:
+    inputs:
+      release-ref:
+        required: true
+        type: string
+      version:
+        required: true
+        type: string
+      publishing-tools-ref:
+        default: publishing-v1
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-validate-pydevices-distributions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the exact release
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release-ref }}
+
+      - name: Check out shared publishing tools
+        uses: actions/checkout@v4
+        with:
+          repository: PyDevices/.github
+          ref: ${{ inputs.publishing-tools-ref }}
+          path: .pydevices-publishing-tools
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate committed release version
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          COMMITTED_VERSION="$(tr -d '[:space:]' < VERSION)"
+          [[ "$COMMITTED_VERSION" == "$RELEASE_VERSION" ]] || {
+            echo "VERSION contains $COMMITTED_VERSION but the release tag is $RELEASE_VERSION" >&2
+            exit 1
+          }
+
+      - name: Build every discovered distribution
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          python -m pip install --disable-pip-version-check build twine
+          python .pydevices-publishing-tools/scripts/build_pydevices_python_distributions.py \
+            --source-repository . \
+            --output .pydevices-publication \
+            --version "$RELEASE_VERSION"
+
+      - name: Upload validated distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: testpypi-pydevices-${{ inputs.version }}
+          path: .pydevices-publication/dist/*
+          if-no-files-found: error

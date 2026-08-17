@@ -1,0 +1,55 @@
+name: Reusable validate PyScript filesystem TOML
+
+on:
+  workflow_call:
+    inputs:
+      config-path:
+        required: true
+        type: string
+      source-mappings:
+        description: Newline-separated SOURCE=/destination mappings
+        required: true
+        type: string
+      file-mappings:
+        description: Newline-separated FILE=/destination mappings
+        default: ""
+        type: string
+      publishing-tools-ref:
+        default: publishing-v1
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  validate-generated-pyscript-filesystem:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out product source
+        uses: actions/checkout@v4
+
+      - name: Check out shared publishing tools
+        uses: actions/checkout@v4
+        with:
+          repository: PyDevices/.github
+          ref: ${{ inputs.publishing-tools-ref }}
+          path: .pydevices-publishing-tools
+
+      - name: Verify generated TOML is current
+        env:
+          CONFIG_PATH: ${{ inputs.config-path }}
+          SOURCE_MAPPINGS: ${{ inputs.source-mappings }}
+          FILE_MAPPINGS: ${{ inputs.file-mappings }}
+        run: |
+          args=()
+          while IFS= read -r mapping; do
+            [[ -n "$mapping" ]] && args+=(--source "$mapping")
+          done <<< "$SOURCE_MAPPINGS"
+          while IFS= read -r mapping; do
+            [[ -n "$mapping" ]] && args+=(--file "$mapping")
+          done <<< "$FILE_MAPPINGS"
+          python .pydevices-publishing-tools/scripts/generate_pyscript_filesystem_toml.py \
+            --repository "$GITHUB_REPOSITORY" \
+            --output "$CONFIG_PATH" \
+            --check \
+            "${args[@]}"

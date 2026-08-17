@@ -1,0 +1,42 @@
+name: Reusable request MIP publication
+
+on:
+  workflow_call:
+    inputs:
+      release-ref:
+        description: Exact source tag or commit to publish
+        required: true
+        type: string
+      version:
+        description: Normalized X.Y.Z release version
+        required: true
+        type: string
+      profile:
+        description: Central MIP synchronization profile
+        required: true
+        type: string
+    secrets:
+      mip-publication-token:
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  request-serialized-mip-publication:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch the exact release to the MIP queue
+        env:
+          GH_TOKEN: ${{ secrets.mip-publication-token }}
+          SOURCE_REPOSITORY: ${{ github.repository }}
+          SOURCE_REF: ${{ inputs.release-ref }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          PUBLICATION_PROFILE: ${{ inputs.profile }}
+        run: |
+          gh api --method POST repos/PyDevices/mip/dispatches \
+            -f event_type=publish-package-release \
+            -f client_payload[source_repository]="$SOURCE_REPOSITORY" \
+            -f client_payload[source_ref]="$SOURCE_REF" \
+            -f client_payload[version]="$RELEASE_VERSION" \
+            -f client_payload[profile]="$PUBLICATION_PROFILE"
