@@ -118,7 +118,7 @@ Embedded Linux kiosks (Raspberry Pi without desktop, industrial HMI, digital sig
 
 | Approach | Reuses existing code | Pros | Cons |
 |----------|---------------------|------|------|
-| **A. SDL `kmsdrm` video driver** | `SDLDisplay`, `usdl2`, `eventsys`, `multimer._sdl2` | Smallest diff; same Python API | Needs SDL2 with KMS; input via `evdev`/SDL; dependency on SDL behavior |
+| **A. SDL `kmsdrm` video driver** | `SDLDisplay`, `usdl2`, `eventsys`, `multimer.sdl2` | Smallest diff; same Python API | Needs SDL2 with KMS; input via `evdev`/SDL; dependency on SDL behavior |
 | **B. New `LinuxFBDisplay` (fbdev mmap)** | `DisplayDriver` contract, `pygraphics` | No X11/Wayland; true bare metal feel | New C extension or ctypes; rotation/format quirks; deprecated on many distros |
 | **C. New `DRMDisplay` (libdrm/GBM)** | Same | Modern, zero-copy potential with `displayif`-style thinking | Most engineering; buffer management; mode-setting |
 | **D. LVGL linux fbdev/drm driver + flush shim** | `lvgl-python` / `lvgl-micropython` | LVGL already has drivers | Bypasses pydevices-examples `show()` path unless integrated as backend |
@@ -224,7 +224,7 @@ Do **not** pursue on the org roadmap. Cloud agents must not open console/homebre
 
 ### Feasibility: **Medium–High**
 
-**Why High:** This is an **extension of existing Android work**, not a new runtime or display backend. Same `SDLDisplay` + `usdl2` + `multimer._sdl2` stack.
+**Why High:** This is an **extension of existing Android work**, not a new runtime or display backend. Same `SDLDisplay` + `usdl2` + `multimer.sdl2` stack.
 
 **Suggested first steps:**
 
