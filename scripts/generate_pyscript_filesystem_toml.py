@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from pathlib import Path, PurePosixPath
 
@@ -47,6 +48,24 @@ def repository_path(path: Path) -> Path:
     return path
 
 
+def find_ignored_paths(repository_root: Path, paths: list[Path]) -> set[Path]:
+    if not paths or not (repository_root / ".git").exists():
+        return set()
+    try:
+        proc = subprocess.run(
+            ["git", "check-ignore", "--stdin"],
+            input="\n".join(p.as_posix() for p in paths),
+            text=True,
+            cwd=repository_root,
+            capture_output=True,
+        )
+        if proc.returncode in (0, 1):
+            return {Path(line.strip()) for line in proc.stdout.splitlines() if line.strip()}
+    except Exception:
+        pass
+    return set()
+
+
 def render(
     repository: str,
     ref: str,
@@ -66,6 +85,7 @@ def render(
             )
         destinations[destination_text] = source_url
 
+    candidates: list[tuple[Path, PurePosixPath]] = []
     for source_root, destination_root in source_mappings:
         source_root = repository_path(source_root)
         source_root_on_disk = repository_root / source_root
@@ -78,7 +98,12 @@ def render(
                 and not source_on_disk.is_symlink()
                 and include_file(relative)
             ):
-                add(source_root / relative, destination_root / PurePosixPath(relative.as_posix()))
+                candidates.append((source_root / relative, destination_root / PurePosixPath(relative.as_posix())))
+
+    ignored = find_ignored_paths(repository_root, [c[0] for c in candidates])
+    for src, dst in candidates:
+        if src not in ignored:
+            add(src, dst)
 
     for source, destination in file_mappings:
         source = repository_path(source)
