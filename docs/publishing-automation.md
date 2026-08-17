@@ -43,9 +43,9 @@ The `pydevices` build does not maintain an inclusion list:
 
 Adding or removing a publishable entry under `lib/` or `utils/` therefore
 changes the next release automatically. Review the generated package set as
-part of release preparation. The single `pydevices-desktop.toml` is a PyScript
-filesystem mapping of the full desktop payload, not package metadata; its
-validation must pass before release.
+part of release preparation. Committed root TOML files (such as `pydevices-desktop.toml`
+and `pydevices-examples.toml`) are PyScript filesystem mappings of the repository
+payloads, not package metadata; their CI validation must pass before release.
 
 ## Automation and credentials
 
