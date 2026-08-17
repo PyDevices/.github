@@ -65,6 +65,9 @@ jobs:
             --profile "$PUBLICATION_PROFILE" \
             --version "$RELEASE_VERSION"
 
+      - name: Remove temporary publication checkouts
+        run: rm -rf .publication-source .pydevices-publishing-tools
+
       - name: Build and validate the complete latest-only index
         run: |
           rm -rf "$PACKAGE_INDEX_PATH"
