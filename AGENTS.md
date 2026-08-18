@@ -160,11 +160,8 @@ gh pr create -R PyDevices/<repo> --base main --head <branch> --title "…" --bod
 
 ## Multi-Repository Command Iteration
 
-When running shell commands across workspace repositories, **ALWAYS** use `./list_pydevices_repos.sh` located at the workspace root (`~/gh/pydevices/list_pydevices_repos.sh`) to stream owned repository paths cleanly and safely:
-
-```bash
-timeout 10s bash -c "./list_pydevices_repos.sh | while read repo; do echo \"\$(basename \$repo): \$(git -C \"\$repo\" status -s)\"; done"
-```
+See [`.agents/rules/multi_repo_command_rule.md`](../.agents/rules/multi_repo_command_rule.md)
+at the workspace root — the single home for this rule.
 
 ## Known Environment Bugs
 
