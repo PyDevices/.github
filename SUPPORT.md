@@ -4,7 +4,7 @@ Welcome to PyDevices! Here are the best ways to get help and ask questions acros
 
 ## 💬 Getting Help & Discussions
 
-- **Q&A & Ideas**: For questions, hardware setup discussions, or feature ideas, please use [pydevices-examples Discussions](https://github.com/PyDevices/pydevices-examples/discussions).
+- **Q&A & Ideas**: For questions, hardware setup discussions, or feature ideas, please use [pydevices Discussions](https://github.com/PyDevices/pydevices/discussions) — the single Q&A venue for the whole organization. Other repositories intentionally have Discussions disabled and use Issues only.
 - **Bug Reports**: If you have found a reproducible bug in a specific package, please open an issue in the corresponding repository (e.g. `pydevices`, `displayif`, `pygraphics`, `pdwidgets`).
 
 ## 📚 Live Documentation & Specs

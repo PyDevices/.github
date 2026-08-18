@@ -90,14 +90,14 @@ release.
 
 ## Standard release procedure
 
-The commands below assume sibling repositories under
-`/home/brad/gh/pydevices`. Substitute the repository and version being
-released.
+The commands below assume sibling repositories under your PyDevices
+workspace root (for example `~/gh/pydevices`). Substitute the repository
+and version being released.
 
 ### 1. Start from synchronized `main`
 
 ```bash
-cd /home/brad/gh/pydevices/<repository>
+cd <workspace-root>/<repository>
 git switch main
 git fetch origin --prune
 git pull --ff-only

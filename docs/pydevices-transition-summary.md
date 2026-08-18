@@ -174,7 +174,7 @@ optional application runtime and event-adapter layer.
 - `pydevices` and `pydevices-desktop` source distributions and wheels build and
   pass `twine check`.
 - Product Pages and examples documentation builds complete in WSL with temp
-  data under `/home/brad/tmp`.
+  data under a local temp directory.
 - The PyScript template passes unit, online browser, service-worker reload, and
   offline reload tests.
 - `v0.1.0` TestPyPI and MIP publication workflows completed successfully.

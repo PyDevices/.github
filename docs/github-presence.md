@@ -17,7 +17,7 @@ the answer from scratch.
 | Read pydevices-examples documentation | [pydevices-examples/docs](https://github.com/PyDevices/pydevices-examples/tree/main/docs) |
 | Read pygraphics documentation | [pygraphics.readthedocs.io](https://pygraphics.readthedocs.io) |
 | Read palettes / pdwidgets docs | [palettes.readthedocs.io](https://palettes.readthedocs.io), [pdwidgets.readthedocs.io](https://pdwidgets.readthedocs.io) |
-| Manage Read the Docs ↔ GitHub (org app) | [Read the Docs Community GitHub App](https://github.com/organizations/PyDevices/settings/installations/149173814) (all repos); migrate legacy projects at [RTD migrate-to-github-app](https://app.readthedocs.org/accounts/migrate-to-github-app/) |
+| Manage Read the Docs ↔ GitHub (org app) | [Read the Docs Community GitHub App](https://github.com/organizations/PyDevices/settings/installations) (all repos); migrate legacy projects at [RTD migrate-to-github-app](https://app.readthedocs.org/accounts/migrate-to-github-app/) |
 | Try the library without installing anything | [PyScript browser demos](https://pydevices.github.io/pydevices-examples/pyscript/) |
 | Hardware board/driver docs (configs, contract, drivers, matrix) | [pydevices Pages](https://pydevices.github.io/pydevices/) ([docs/](https://github.com/PyDevices/pydevices/tree/main/docs)) |
 | Talk to a board from VS Code / Cursor (REPL, files, firmware) | [mpftp](https://github.com/PyDevices/mpftp) ([Pages](https://pydevices.github.io/mpftp/); agent state under `~/.mpftp/`) |
@@ -59,8 +59,8 @@ the answer from scratch.
 MkDocs sites for **pydevices-examples**, **pygraphics**, **palettes**, and **pdwidgets**
 publish to `*.readthedocs.io`. GitHub integration uses the org-installed
 [Read the Docs Community](https://github.com/apps/read-the-docs-community)
-app (**all repositories** — installation
-[149173814](https://github.com/organizations/PyDevices/settings/installations/149173814)).
+app (**all repositories** — see the org's
+[installed GitHub Apps](https://github.com/organizations/PyDevices/settings/installations)).
 
 With the GitHub App, RTD receives push/PR events directly — no per-repo webhook
 is required. The docs repos (**pydevices-examples**, **pygraphics**, **palettes**,
