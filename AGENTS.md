@@ -174,5 +174,5 @@ timeout 10s bash -c "./list_pydevices_repos.sh | while read repo; do echo \"\$(b
 
 - [cmods AGENTS.md](https://github.com/PyDevices/cmods/blob/main/AGENTS.md) —
   workspace build scripts
-- [lvgl-bindings publishing.md](https://github.com/PyDevices/lvgl-bindings/blob/main/docs/publishing.md) —
+- [lvgl-bindings releasing-bindings.md](https://github.com/PyDevices/lvgl-bindings/blob/main/docs/releasing-bindings.md) —
   binding regeneration and `lvgl-python` release dispatch
