@@ -1,8 +1,15 @@
 # Releasing and publishing PyDevices packages
 
-This is the organization-wide runbook for publishing a new package version.
-Repository-specific publishing documents may add build or test details, but
-they do not replace this release process.
+This is the organization-wide runbook for publishing a new package version, and
+it **lives here because it is org-wide**: it governs `palettes`, `pdwidgets`,
+`pygraphics`, `pydevices`, and `lvgl-python`, and it documents the reusable
+workflows and shared secrets that this repository owns.
+
+Repository-specific publishing documents cover only what their own release
+produces — for example
+[pydevices/docs/publishing.md](https://github.com/PyDevices/pydevices/blob/main/docs/publishing.md)
+describes that repo's dynamically discovered package set. They add build or test
+details; they do not restate or replace the procedure below.
 
 A **published GitHub Release named `vX.Y.Z` is the authoritative release
 event**. The source tag selects the exact files to build, and `X.Y.Z` becomes
