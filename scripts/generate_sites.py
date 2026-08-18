@@ -59,6 +59,36 @@ def get_tag_label(repo_name):
     }
     return tags.get(repo_name, repo_name)
 
+def validate_db(db):
+    """Fail fast on a malformed database.
+
+    The generator is run by hand, so this is where the check belongs -- it runs
+    exactly when someone edits the database and regenerates.
+    """
+    if '_meta' not in db:
+        raise SystemExit('repos_db.json is missing its _meta block')
+
+    tiers = db['_meta']['tiers']
+    problems = []
+    for name, data in repos(db).items():
+        # `is None`, not falsiness: the portal repo is legitimately tier 0.
+        for field in ('tier', 'tier_name', 'description', 'buttons'):
+            if data.get(field) is None:
+                problems.append(f'{name}: missing {field}')
+        tier = str(data.get('tier'))
+        if tier not in tiers:
+            problems.append(f'{name}: tier {tier} has no _meta.tiers entry')
+        elif data.get('tier_name') != tiers[tier]['name']:
+            problems.append(
+                f'{name}: tier_name {data.get("tier_name")!r} disagrees with '
+                f'_meta.tiers[{tier}].name {tiers[tier]["name"]!r}'
+            )
+
+    if problems:
+        raise SystemExit('repos_db.json is invalid:\n  ' + '\n  '.join(problems))
+    print(f"[OK] Database valid: {len(repos(db))} repos across {len(tiers)} tiers")
+
+
 def repos(db):
     """Repository entries only; keys beginning with '_' are metadata."""
     return {k: v for k, v in db.items() if not k.startswith('_')}
@@ -270,6 +300,8 @@ def main():
     
     with open(DB_PATH, 'r', encoding='utf-8') as f:
         db = json.load(f)
+
+    validate_db(db)
 
     updated_sites = 0
 
