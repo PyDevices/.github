@@ -19,7 +19,7 @@ the answer from scratch.
 | Read palettes / pdwidgets docs | [palettes.readthedocs.io](https://palettes.readthedocs.io), [pdwidgets.readthedocs.io](https://pdwidgets.readthedocs.io) |
 | Manage Read the Docs ↔ GitHub (org app) | [Read the Docs Community GitHub App](https://github.com/organizations/PyDevices/settings/installations) (all repos); migrate legacy projects at [RTD migrate-to-github-app](https://app.readthedocs.org/accounts/migrate-to-github-app/) |
 | Try the library without installing anything | [PyScript browser demos](https://pydevices.github.io/pydevices-examples/pyscript/) |
-| Hardware board/driver docs (configs, contract, drivers, matrix) | [pydevices Pages](https://pydevices.github.io/pydevices/) ([docs/](https://github.com/PyDevices/pydevices/tree/main/docs)) |
+| Hardware board/driver docs (configs, contract, drivers, matrix) | [pydevices docs/](https://github.com/PyDevices/pydevices/tree/main/docs) (markdown; the [Pages site](https://pydevices.github.io/pydevices/) is a landing page only) |
 | Talk to a board from VS Code / Cursor (REPL, files, firmware) | [mpftp](https://github.com/PyDevices/mpftp) ([Pages](https://pydevices.github.io/mpftp/); agent state under `~/.mpftp/`) |
 
 ## Getting help: Discussions vs. Issues
