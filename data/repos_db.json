@@ -1,4 +1,37 @@
 {
+  "_meta": {
+    "_comment": "Keys beginning with an underscore are metadata, not repositories. Consumers must filter them out before iterating.",
+    "tiers": {
+      "0": {
+        "name": "Organization Portal",
+        "hint": "The organization landing portal itself."
+      },
+      "1": {
+        "name": "Core Platform & Board Contract",
+        "hint": "Standard hardware driver engine and companion reference code."
+      },
+      "2": {
+        "name": "Python Framebuffers & GUI Toolkits",
+        "hint": "Zero external native dependencies — runs on any Python 3 host."
+      },
+      "3": {
+        "name": "LVGL Native Extensions & Binding Generator",
+        "hint": "Single-source LVGL C header binding generator and native runtime modules."
+      },
+      "4": {
+        "name": "Target App Hosts & PWA Templates",
+        "hint": "Deploy PyDevices apps directly to desktop browsers or mobile APKs."
+      },
+      "5": {
+        "name": "Developer Tools & Infrastructure",
+        "hint": "MIP package indexing, multi-usermod builds, and serial/FTP IDE extensions."
+      }
+    },
+    "excluded": {
+      ".github (dotgithub)": "No landing page by design. It holds org-wide data, scripts, and community health files, and is documented as markdown only.",
+      "pydevices-android-runner": "Exists solely to enable pydevices/bin/android.py. The APK is documented in pydevices; the runner publishes no site."
+    }
+  },
   "pydevices": {
     "tier": 1,
     "tier_name": "Core Platform & Board Contract",
@@ -7,10 +40,26 @@
     "headline": "pydevices — Hardware Abstraction Layer & Core Contract.",
     "description": "Unified pure-Python hardware abstraction layer and core device contract for MicroPython, CircuitPython, CPython, Pyodide WASM, and Android.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/pydevices", "primary": true },
-      { "label": "Getting Started", "href": "https://github.com/PyDevices/pydevices/blob/main/README.md", "tier_color": true },
-      { "label": "PyScript Demos", "href": "https://pydevices.github.io/pydevices-examples/pyscript/", "tier_color": true },
-      { "label": "MIP Index", "href": "https://PyDevices.github.io/mip", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/pydevices",
+        "primary": true
+      },
+      {
+        "label": "Getting Started",
+        "href": "https://github.com/PyDevices/pydevices/blob/main/README.md",
+        "tier_color": true
+      },
+      {
+        "label": "PyScript Demos",
+        "href": "https://pydevices.github.io/pydevices-examples/pyscript/",
+        "tier_color": true
+      },
+      {
+        "label": "MIP Index",
+        "href": "https://PyDevices.github.io/mip",
+        "tier_color": true
+      }
     ]
   },
   "displayif": {
@@ -21,10 +70,26 @@
     "headline": "displayif — C hardware bus engine & usermod drivers.",
     "description": "High-performance C hardware bus engines (SPI, I2C, Intel 8080, RGB/DPI, MIPI DSI) and native usermod display drivers for MicroPython and CircuitPython.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/displayif", "primary": true },
-      { "label": "Hardware Bring-up", "href": "https://github.com/PyDevices/displayif/blob/main/docs/hardware.md", "tier_color": true },
-      { "label": "pygraphics", "href": "https://pydevices.github.io/pygraphics/", "tier_color": true },
-      { "label": "pydevices Core", "href": "https://pydevices.github.io/pydevices/", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/displayif",
+        "primary": true
+      },
+      {
+        "label": "Hardware Bring-up",
+        "href": "https://github.com/PyDevices/displayif/blob/main/docs/hardware.md",
+        "tier_color": true
+      },
+      {
+        "label": "pygraphics",
+        "href": "https://pydevices.github.io/pygraphics/",
+        "tier_color": true
+      },
+      {
+        "label": "pydevices Core",
+        "href": "https://pydevices.github.io/pydevices/",
+        "tier_color": true
+      }
     ]
   },
   "pygraphics": {
@@ -35,10 +100,26 @@
     "headline": "pygraphics — 2D graphics engine & canvas framebuffer.",
     "description": "Pure-Python 2D graphics library with drawing primitives, anti-aliased font rendering, paletted surface blitting, and area-dirtying pipelines.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/pygraphics", "primary": true },
-      { "label": "PyPI Package", "href": "https://pypi.org/project/pydevices-pygraphics/", "tier_color": true },
-      { "label": "PyScript Demos", "href": "https://pydevices.github.io/pydevices-examples/pyscript/", "tier_color": true },
-      { "label": "MIP Index", "href": "https://PyDevices.github.io/mip", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/pygraphics",
+        "primary": true
+      },
+      {
+        "label": "PyPI Package",
+        "href": "https://pypi.org/project/pydevices-pygraphics/",
+        "tier_color": true
+      },
+      {
+        "label": "PyScript Demos",
+        "href": "https://pydevices.github.io/pydevices-examples/pyscript/",
+        "tier_color": true
+      },
+      {
+        "label": "MIP Index",
+        "href": "https://PyDevices.github.io/mip",
+        "tier_color": true
+      }
     ]
   },
   "pdwidgets": {
@@ -49,10 +130,26 @@
     "headline": "pdwidgets — Pure-Python UI widget toolkit.",
     "description": "Lightweight object-oriented UI widget framework including buttons, sliders, progress bars, labels, and event routing for PyDevices screens.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/pdwidgets", "primary": true },
-      { "label": "Read the Docs", "href": "https://pdwidgets.readthedocs.io", "tier_color": true },
-      { "label": "PyScript Demos", "href": "https://pydevices.github.io/pydevices-examples/pyscript/", "tier_color": true },
-      { "label": "MIP Index", "href": "https://PyDevices.github.io/mip", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/pdwidgets",
+        "primary": true
+      },
+      {
+        "label": "Read the Docs",
+        "href": "https://pdwidgets.readthedocs.io",
+        "tier_color": true
+      },
+      {
+        "label": "PyScript Demos",
+        "href": "https://pydevices.github.io/pydevices-examples/pyscript/",
+        "tier_color": true
+      },
+      {
+        "label": "MIP Index",
+        "href": "https://PyDevices.github.io/mip",
+        "tier_color": true
+      }
     ]
   },
   "palettes": {
@@ -63,10 +160,26 @@
     "headline": "palettes — Color math, gradients & swatch palettes.",
     "description": "Color management library with RGB565 / RGB888 conversion, HSL / HSV color spaces, palette swatches, and smooth gradient generators.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/palettes", "primary": true },
-      { "label": "PyPI Package", "href": "https://pypi.org/project/pydevices-palettes/", "tier_color": true },
-      { "label": "PyScript Demos", "href": "https://pydevices.github.io/pydevices-examples/pyscript/", "tier_color": true },
-      { "label": "MIP Index", "href": "https://PyDevices.github.io/mip", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/palettes",
+        "primary": true
+      },
+      {
+        "label": "PyPI Package",
+        "href": "https://pypi.org/project/pydevices-palettes/",
+        "tier_color": true
+      },
+      {
+        "label": "PyScript Demos",
+        "href": "https://pydevices.github.io/pydevices-examples/pyscript/",
+        "tier_color": true
+      },
+      {
+        "label": "MIP Index",
+        "href": "https://PyDevices.github.io/mip",
+        "tier_color": true
+      }
     ]
   },
   "lvgl-bindings": {
@@ -77,10 +190,26 @@
     "headline": "lvgl-bindings — Automated C header parser & binding generator.",
     "description": "Automated binding generator parsing LVGL C headers into native CPython extensions, MicroPython usermods, and CircuitPython modules.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/lvgl-bindings", "primary": true },
-      { "label": "MicroPython Module", "href": "https://pydevices.github.io/lvgl-micropython/", "tier_color": true },
-      { "label": "CPython Wheel", "href": "https://pydevices.github.io/lvgl-python/", "tier_color": true },
-      { "label": "CircuitPython Module", "href": "https://pydevices.github.io/lvgl-circuitpython/", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/lvgl-bindings",
+        "primary": true
+      },
+      {
+        "label": "MicroPython Module",
+        "href": "https://pydevices.github.io/lvgl-micropython/",
+        "tier_color": true
+      },
+      {
+        "label": "CPython Wheel",
+        "href": "https://pydevices.github.io/lvgl-python/",
+        "tier_color": true
+      },
+      {
+        "label": "CircuitPython Module",
+        "href": "https://pydevices.github.io/lvgl-circuitpython/",
+        "tier_color": true
+      }
     ]
   },
   "lvgl-micropython": {
@@ -91,10 +220,26 @@
     "headline": "lvgl-micropython — MicroPython C usermod for LVGL v9.",
     "description": "Native MicroPython C module integrating LVGL v9 graphics engine with displayif bus drivers across ESP32, RP2040, and i.MX RT targets.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/lvgl-micropython", "primary": true },
-      { "label": "cmods Workspace", "href": "https://pydevices.github.io/cmods/", "tier_color": true },
-      { "label": "lvgl-bindings", "href": "https://pydevices.github.io/lvgl-bindings/", "tier_color": true },
-      { "label": "pydevices Core", "href": "https://pydevices.github.io/pydevices/", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/lvgl-micropython",
+        "primary": true
+      },
+      {
+        "label": "cmods Workspace",
+        "href": "https://pydevices.github.io/cmods/",
+        "tier_color": true
+      },
+      {
+        "label": "lvgl-bindings",
+        "href": "https://pydevices.github.io/lvgl-bindings/",
+        "tier_color": true
+      },
+      {
+        "label": "pydevices Core",
+        "href": "https://pydevices.github.io/pydevices/",
+        "tier_color": true
+      }
     ]
   },
   "lvgl-python": {
@@ -105,10 +250,26 @@
     "headline": "lvgl-python — CPython & Pyodide WASM extension wheels.",
     "description": "Pre-built CPython extension wheels and Pyodide WASM packages bringing LVGL v9 to desktop Linux, macOS, Windows, and web browsers.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/lvgl-python", "primary": true },
-      { "label": "PyPI Package", "href": "https://pypi.org/project/pydevices-lvgl/", "tier_color": true },
-      { "label": "PyScript Demos", "href": "https://pydevices.github.io/pydevices-examples/pyscript/", "tier_color": true },
-      { "label": "pydevices Core", "href": "https://pydevices.github.io/pydevices/", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/lvgl-python",
+        "primary": true
+      },
+      {
+        "label": "PyPI Package",
+        "href": "https://pypi.org/project/pydevices-lvgl/",
+        "tier_color": true
+      },
+      {
+        "label": "PyScript Demos",
+        "href": "https://pydevices.github.io/pydevices-examples/pyscript/",
+        "tier_color": true
+      },
+      {
+        "label": "pydevices Core",
+        "href": "https://pydevices.github.io/pydevices/",
+        "tier_color": true
+      }
     ]
   },
   "lvgl-circuitpython": {
@@ -119,10 +280,26 @@
     "headline": "lvgl-circuitpython — CircuitPython native LVGL C module.",
     "description": "CircuitPython native C module providing LVGL v9 bindings and displayif integration for Adafruit Feather and SAMD51 / RP2040 boards.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/lvgl-circuitpython", "primary": true },
-      { "label": "cmods Workspace", "href": "https://pydevices.github.io/cmods/", "tier_color": true },
-      { "label": "lvgl-bindings", "href": "https://pydevices.github.io/lvgl-bindings/", "tier_color": true },
-      { "label": "pydevices Core", "href": "https://pydevices.github.io/pydevices/", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/lvgl-circuitpython",
+        "primary": true
+      },
+      {
+        "label": "cmods Workspace",
+        "href": "https://pydevices.github.io/cmods/",
+        "tier_color": true
+      },
+      {
+        "label": "lvgl-bindings",
+        "href": "https://pydevices.github.io/lvgl-bindings/",
+        "tier_color": true
+      },
+      {
+        "label": "pydevices Core",
+        "href": "https://pydevices.github.io/pydevices/",
+        "tier_color": true
+      }
     ]
   },
   "pydevices-pyscript-template": {
@@ -133,10 +310,26 @@
     "headline": "pydevices-pyscript-template — Offline PWA starter template.",
     "description": "Progressive Web App starter template repository for deploying offline-capable client-side PyDevices applications on GitHub Pages.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/pydevices-pyscript-template", "primary": true },
-      { "label": "Live PWA Demo", "href": "pwa/", "tier_color": true },
-      { "label": "PWA Setup Guide", "href": "https://github.com/PyDevices/pydevices-pyscript-template/blob/main/README.md", "tier_color": true },
-      { "label": "pydevices Core", "href": "https://pydevices.github.io/pydevices/", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/pydevices-pyscript-template",
+        "primary": true
+      },
+      {
+        "label": "Live PWA Demo",
+        "href": "pwa/",
+        "tier_color": true
+      },
+      {
+        "label": "PWA Setup Guide",
+        "href": "https://github.com/PyDevices/pydevices-pyscript-template/blob/main/README.md",
+        "tier_color": true
+      },
+      {
+        "label": "pydevices Core",
+        "href": "https://pydevices.github.io/pydevices/",
+        "tier_color": true
+      }
     ]
   },
   "pydevices-android-template": {
@@ -147,10 +340,26 @@
     "headline": "pydevices-android-template — Android APK Buildozer project.",
     "description": "Pre-configured python-for-android build recipes and Buildozer project template for packaging PyDevices applications into native Android APKs.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/pydevices-android-template", "primary": true },
-      { "label": "Buildozer Guide", "href": "https://github.com/PyDevices/pydevices-android-template/blob/main/README.md", "tier_color": true },
-      { "label": "p4a Recipes", "href": "https://github.com/PyDevices/pydevices-android-template/tree/main/recipes", "tier_color": true },
-      { "label": "pydevices Core", "href": "https://pydevices.github.io/pydevices/", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/pydevices-android-template",
+        "primary": true
+      },
+      {
+        "label": "Buildozer Guide",
+        "href": "https://github.com/PyDevices/pydevices-android-template/blob/main/README.md",
+        "tier_color": true
+      },
+      {
+        "label": "p4a Recipes",
+        "href": "https://github.com/PyDevices/pydevices-android-template/tree/main/recipes",
+        "tier_color": true
+      },
+      {
+        "label": "pydevices Core",
+        "href": "https://pydevices.github.io/pydevices/",
+        "tier_color": true
+      }
     ]
   },
   "mpftp": {
@@ -161,10 +370,26 @@
     "headline": "mpftp — IDE serial FTP & REPL extension.",
     "description": "Dual-pane serial FTP file manager, in-editor REPL console, and board flasher extension for VS Code, Antigravity IDE, and Cursor.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/mpftp", "primary": true },
-      { "label": "User Guide", "href": "https://github.com/PyDevices/mpftp/blob/main/docs/user-guide.md", "tier_color": true },
-      { "label": "MIP Index", "href": "https://PyDevices.github.io/mip", "tier_color": true },
-      { "label": "pydevices Core", "href": "https://pydevices.github.io/pydevices/", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/mpftp",
+        "primary": true
+      },
+      {
+        "label": "User Guide",
+        "href": "https://github.com/PyDevices/mpftp/blob/main/docs/user-guide.md",
+        "tier_color": true
+      },
+      {
+        "label": "MIP Index",
+        "href": "https://PyDevices.github.io/mip",
+        "tier_color": true
+      },
+      {
+        "label": "pydevices Core",
+        "href": "https://pydevices.github.io/pydevices/",
+        "tier_color": true
+      }
     ]
   },
   "mip": {
@@ -175,10 +400,26 @@
     "headline": "mip — PyDevices MIP package index & distribution.",
     "description": "Single source of truth (SoT) for precompiled MicroPython .mpy bytecode packages and pure-Python library distributions across the PyDevices ecosystem.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/mip", "primary": true },
-      { "label": "cmods Workspace", "href": "https://pydevices.github.io/cmods/", "tier_color": true },
-      { "label": "mpftp Workbench", "href": "https://pydevices.github.io/mpftp/", "tier_color": true },
-      { "label": "pydevices Core", "href": "https://pydevices.github.io/pydevices/", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/mip",
+        "primary": true
+      },
+      {
+        "label": "cmods Workspace",
+        "href": "https://pydevices.github.io/cmods/",
+        "tier_color": true
+      },
+      {
+        "label": "mpftp Workbench",
+        "href": "https://pydevices.github.io/mpftp/",
+        "tier_color": true
+      },
+      {
+        "label": "pydevices Core",
+        "href": "https://pydevices.github.io/pydevices/",
+        "tier_color": true
+      }
     ]
   },
   "cmods": {
@@ -189,10 +430,26 @@
     "headline": "cmods — Multi-usermod C compilation workspace.",
     "description": "Out-of-tree C build workspace for compiling MicroPython and CircuitPython firmware binaries with displayif drivers and LVGL bindings.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/cmods", "primary": true },
-      { "label": "displayif Usermods", "href": "https://pydevices.github.io/displayif/", "tier_color": true },
-      { "label": "lvgl-bindings", "href": "https://pydevices.github.io/lvgl-bindings/", "tier_color": true },
-      { "label": "pydevices Core", "href": "https://pydevices.github.io/pydevices/", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/cmods",
+        "primary": true
+      },
+      {
+        "label": "displayif Usermods",
+        "href": "https://pydevices.github.io/displayif/",
+        "tier_color": true
+      },
+      {
+        "label": "lvgl-bindings",
+        "href": "https://pydevices.github.io/lvgl-bindings/",
+        "tier_color": true
+      },
+      {
+        "label": "pydevices Core",
+        "href": "https://pydevices.github.io/pydevices/",
+        "tier_color": true
+      }
     ]
   },
   "pydevices-examples": {
@@ -203,10 +460,26 @@
     "headline": "pydevices-examples — Showcase, demos & PyScript runner.",
     "description": "Comprehensive example code, interactive PyScript browser demos, board configurations, and multi-runtime showcase benchmarks.",
     "buttons": [
-      { "label": "GitHub Repo", "href": "https://github.com/PyDevices/pydevices-examples", "primary": true },
-      { "label": "PyScript Demos", "href": "https://pydevices.github.io/pydevices-examples/pyscript/", "tier_color": true },
-      { "label": "MIP Index", "href": "https://PyDevices.github.io/mip", "tier_color": true },
-      { "label": "pydevices Core", "href": "https://pydevices.github.io/pydevices/", "tier_color": true }
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/pydevices-examples",
+        "primary": true
+      },
+      {
+        "label": "PyScript Demos",
+        "href": "https://pydevices.github.io/pydevices-examples/pyscript/",
+        "tier_color": true
+      },
+      {
+        "label": "MIP Index",
+        "href": "https://PyDevices.github.io/mip",
+        "tier_color": true
+      },
+      {
+        "label": "pydevices Core",
+        "href": "https://pydevices.github.io/pydevices/",
+        "tier_color": true
+      }
     ]
   },
   "PyDevices.github.io": {
@@ -217,10 +490,26 @@
     "headline": "One display & hardware contract. 5 Python runtimes.",
     "description": "Cross-platform hardware driver engine, board contract specification, and display stack for MicroPython, CircuitPython, CPython, PyScript, and Android.",
     "buttons": [
-      { "label": "GitHub Org", "href": "https://github.com/PyDevices", "primary": true },
-      { "label": "Get Started", "href": "https://pydevices.github.io/pydevices/", "tier_color": true },
-      { "label": "PyScript Demos", "href": "https://pydevices.github.io/pydevices-examples/pyscript/", "tier_color": true },
-      { "label": "MIP Index", "href": "https://pydevices.github.io/mip/", "tier_color": true }
+      {
+        "label": "GitHub Org",
+        "href": "https://github.com/PyDevices",
+        "primary": true
+      },
+      {
+        "label": "Get Started",
+        "href": "https://pydevices.github.io/pydevices/",
+        "tier_color": true
+      },
+      {
+        "label": "PyScript Demos",
+        "href": "https://pydevices.github.io/pydevices-examples/pyscript/",
+        "tier_color": true
+      },
+      {
+        "label": "MIP Index",
+        "href": "https://pydevices.github.io/mip/",
+        "tier_color": true
+      }
     ]
   }
 }

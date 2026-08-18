@@ -1,0 +1,84 @@
+name: Ecosystem map
+
+# data/repos_db.json is the single source of truth for the org repository map.
+# generate_sites.py renders it into every landing page, into profile/README.md,
+# and into pydevices/docs/ecosystem.md. This job guards the copy that lives in
+# THIS repo, so the profile can never drift from the database again.
+#
+# Propagating to the sibling repos still needs a run of generate_sites.py from a
+# full workspace checkout; see docs/publishing-automation.md. Automating that
+# push requires a token with write access to all 16 repos, which is a separate
+# decision.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/repos_db.json"
+      - "scripts/generate_sites.py"
+      - "profile/README.md"
+      - ".github/workflows/ecosystem-map.yml"
+  pull_request:
+    paths:
+      - "data/repos_db.json"
+      - "scripts/generate_sites.py"
+      - "profile/README.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # generate_sites.py resolves sibling repos from BASE_DIR = ../..,
+          # so it must sit at <workspace>/dotgithub.
+          path: dotgithub
+
+      - name: Validate repos_db.json
+        run: |
+          python3 - <<'PY'
+          import json, sys
+
+          db = json.load(open('dotgithub/data/repos_db.json', encoding='utf-8'))
+          meta = db.get('_meta')
+          if meta is None:
+              sys.exit('repos_db.json is missing its _meta block')
+
+          repos = {k: v for k, v in db.items() if not k.startswith('_')}
+          tiers = meta['tiers']
+          problems = []
+
+          for name, data in repos.items():
+              # `is None`, not falsiness: the portal repo is legitimately tier 0.
+              for field in ('tier', 'tier_name', 'description', 'buttons'):
+                  if data.get(field) is None:
+                      problems.append(f'{name}: missing {field}')
+              tier = str(data.get('tier'))
+              if tier not in tiers:
+                  problems.append(f'{name}: tier {tier} has no _meta.tiers entry')
+              elif data.get('tier_name') != tiers[tier]['name']:
+                  problems.append(
+                      f'{name}: tier_name {data.get("tier_name")!r} disagrees with '
+                      f'_meta.tiers[{tier}].name {tiers[tier]["name"]!r}'
+                  )
+
+          if problems:
+              sys.exit('\n'.join(problems))
+          print(f'{len(repos)} repos, {len(tiers)} tiers, no problems')
+          PY
+
+      - name: Regenerate and check profile/README.md for drift
+        run: |
+          cd dotgithub
+          python3 scripts/generate_sites.py
+          if ! git diff --quiet -- profile/README.md; then
+            echo "::error file=profile/README.md::Out of date with data/repos_db.json."
+            echo "Run: python3 scripts/generate_sites.py"
+            git --no-pager diff -- profile/README.md
+            exit 1
+          fi
+          echo "profile/README.md is in sync with the database"

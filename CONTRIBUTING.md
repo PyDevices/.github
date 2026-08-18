@@ -10,18 +10,13 @@ instructions — read that first.
 Repo directory and root-file layout (`src/`, `lib/`, `tests/`,
 `requirements-dev.txt`, …): see [`docs/repo-layout.md`](docs/repo-layout.md).
 
-- **[pydevices](https://github.com/PyDevices/pydevices)** — core display, touch, and hardware abstraction layer (HAL) library.
-- **[pydevices-examples](https://github.com/PyDevices/pydevices-examples)** — showcase apps, PyScript runner, and reference gallery.
-- **[palettes](https://github.com/PyDevices/palettes)** / **[pdwidgets](https://github.com/PyDevices/pdwidgets)** — color engine and lightweight UI widgets.
-- **[mpftp](https://github.com/PyDevices/mpftp)** — VS Code / Cursor board tools (REPL, file transfer, firmware).
-- **[lvgl-bindings](https://github.com/PyDevices/lvgl-bindings)** — the LVGL binding generator; source of truth for the native LVGL cmods.
-- **Native modules** — [displayif](https://github.com/PyDevices/displayif), [pygraphics](https://github.com/PyDevices/pygraphics) (also pure-Python `pygraphics`), [lvgl-micropython](https://github.com/PyDevices/lvgl-micropython), [lvgl-circuitpython](https://github.com/PyDevices/lvgl-circuitpython), [lvgl-python](https://github.com/PyDevices/lvgl-python).
-- **[cmods](https://github.com/PyDevices/cmods)** — workspace wrapper that builds/smoke-tests the native cmods together.
-- **[pydevices-android-template](https://github.com/PyDevices/pydevices-android-template)** — Android packaging (python-for-android/buildozer).
-- **[pydevices-pyscript-template](https://github.com/PyDevices/pydevices-pyscript-template)** — installable PyScript/PWA application starter.
+The full repository map — every repo, grouped by tier, with what each one owns —
+is generated from `data/repos_db.json` and published at
+[pydevices/docs/ecosystem.md](https://github.com/PyDevices/pydevices/blob/main/docs/ecosystem.md) and on the
+[org profile](https://github.com/PyDevices). Do not restate it here; it drifts.
 
 If you're not sure which repo an issue or PR belongs to, open it on
-[pydevices-examples](https://github.com/PyDevices/pydevices-examples/issues) — we'll help route it.
+[pydevices](https://github.com/PyDevices/pydevices/issues) — we'll help route it.
 
 ## 🐛 Reporting bugs / requesting features
 
@@ -30,7 +25,7 @@ Use the issue templates on the relevant repo. Include the runtime
 applicable — most bugs here are runtime- or hardware-specific.
 
 For open-ended questions, ideas, or show-and-tell, use
-[pydevices-examples Discussions](https://github.com/PyDevices/pydevices-examples/discussions)
+[pydevices Discussions](https://github.com/PyDevices/pydevices/discussions)
 instead of opening an issue.
 
 ## Pull requests

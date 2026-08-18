@@ -81,7 +81,7 @@ Examples:
 
 ## Exceptions
 
-1. **[pydevices-examples](https://github.com/PyDevices/pydevices-examples)** — example applications and gallery utilities live under `src/`. Shareable packages belong in their owning product repos, not a top-level `lib/` here.
+1. **[pydevices-examples](https://github.com/PyDevices/pydevices-examples)** — example applications and gallery utilities live under `lib/` (`lib/examples/`, `lib/utils/`). Shareable packages belong in their owning product repos, not here.
 2. **[pydevices](https://github.com/PyDevices/pydevices)** — canonical product repo: portable packages under `lib/`, board configs under `board_configs/`, hardware drivers under `drivers/`, and MIP manifests under `packages/`.
 3. **Application templates** — `pydevices-android-template` and `pydevices-pyscript-template` are replaceable host shells, not product package trees.
 
@@ -92,3 +92,36 @@ Examples:
 - Root build glue may stay at the repo root when discovery requires it
   (e.g. `micropython.mk`, `setup.py`, `apply_*.sh` entry points).
 - Meta / workspace repos (this `.github` org repo, `PyDevices.github.io`, `cmods`, `mip`) are not package trees; they follow their own roles and need not mirror every directory above.
+
+## Preferred search paths (`MICROPYPATH` / `PYTHONPATH`)
+
+On hosted runtimes — CPython, the MicroPython unix and Windows ports, CircuitPython
+unix — set:
+
+```bash
+# Linux / macOS (bash)
+export MICROPYPATH=".:.frozen:lib:utils:~/.micropython/lib:/usr/lib/micropython"
+export PYTHONPATH=".:lib:utils"
+```
+
+```bat
+REM Windows (cmd.exe)
+set MICROPYPATH=.;.frozen;lib;utils;%USERPROFILE%\.micropython\lib
+set PYTHONPATH=.;lib;utils
+```
+
+This mirrors the default search order on hosted runtimes and on hardware MCUs —
+where `.frozen`, the user's `~/.micropython/lib`, and the system
+`/usr/lib/micropython` are searched by default — while appending `.` (the current
+folder), `lib/` (the local workspace), and `utils/` (shared dev tools). Custom
+packages and examples then run from any directory without path conflicts, and
+installing the CPython `micropython.py` compatibility shim stays harmless on
+MicroPython because `.frozen` resolves first.
+
+## Optional by design
+
+The workflow helpers — [cmods](https://github.com/PyDevices/cmods),
+[mpftp](https://github.com/PyDevices/mpftp), and the custom
+[MIP index](https://github.com/PyDevices/mip) — are **all optional**. Stock
+`make USER_C_MODULES=...`, `mpremote`, `circup`, and any standalone IDE work
+unchanged.
