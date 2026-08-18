@@ -12,6 +12,8 @@ Org-wide community health files and profile for [PyDevices](https://github.com/P
 - [`docs/platform-feasibility-report.md`](docs/platform-feasibility-report.md) — platform feasibility analysis + org triage decisions (pursue / docs-only / out).
 - [`docs/platform-roadmap.md`](docs/platform-roadmap.md) — cloud-agent workstreams for platform expansion (parallel pursue tracks, why-comment rule, out-of-scope list).
 - [`docs/publishing-automation.md`](docs/publishing-automation.md) — shared release workflows, discovery rules, and the centralized MIP queue.
+- [`docs/building-docs.md`](docs/building-docs.md) — how the three library ReadTheDocs sites (`palettes`, `pdwidgets`, `pygraphics`) are built and published.
+- [`docs/docstrings.md`](docs/docstrings.md) — Google-style docstring conventions for the generated API reference pages.
 
 Board / Detect inventory docs live in
 [pydevices/docs](https://github.com/PyDevices/pydevices/tree/main/docs)
