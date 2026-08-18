@@ -38,9 +38,13 @@ Long-form notes and guides belong under `docs/`.
 
 - Reserve all-caps Markdown names for conventional repository and community
   control files such as `README.md`, `AGENTS.md`, `CONTRIBUTING.md`,
-  `SECURITY.md`, `CHANGELOG.md`, and `RELEASE_NOTES.md`.
+  `SECURITY.md`, and `CHANGELOG.md`.
+- **Do not add `RELEASE_NOTES.md`.** All three that existed carried a bare
+  `## Unreleased` heading, never recorded a shipped version, and were linked from
+  nowhere; they were deleted in August 2026. Releases use `--generate-notes`, so
+  a hand-maintained file is a second source of truth that goes stale immediately.
 - Name narrative and topic documents under `docs/` with lowercase kebab-case,
-  for example `publishing.md`, `build-and-flash.md`, and
+  for example `building-wheels.md`, `build-and-flash.md`, and
   `soft-reset-and-bring-up.md`.
 - Keep generated fixtures and upstream or vendored filenames unchanged when
   renaming would create needless divergence from their source project. This
