@@ -76,7 +76,7 @@ def render_manifest(profile: Profile, version: str) -> str:
         "metadata(",
         f'    description={profile.description!r},',
         f'    version="{version}",',
-        '    author="Brad Barnett <contact@pydevices.com>",',
+        '    author="Brad Barnett",',
         '    license="MIT",',
     ]
     if profile.pypi_name:
@@ -112,7 +112,7 @@ def render_pydevices_manifest(name: str, version: str, requirements: tuple[str, 
         "metadata(",
         f'    description="PyDevices {name}",',
         f'    version="{version}",',
-        '    author="Brad Barnett <contact@pydevices.com>",',
+        '    author="Brad Barnett",',
         '    license="MIT",',
         f'    pypi_publish="{pypi_name}",',
         ")",

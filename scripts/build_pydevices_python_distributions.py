@@ -57,7 +57,7 @@ description = "{description}"
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
-authors = [{{ name = "Brad Barnett", email = "contact@pydevices.com" }}]
+authors = [{{ name = "Brad Barnett" }}]
 dependencies = [
 {dependency_lines}
 ]
