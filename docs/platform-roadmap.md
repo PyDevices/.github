@@ -1,10 +1,13 @@
 # Platform expansion roadmap
 
 **Triage date:** 2026-07-15  
-**Repo:** [PyDevices/.github](https://github.com/PyDevices/.github)  
-**Source analysis:** [`platform-feasibility-report.md`](platform-feasibility-report.md)
+**Repo:** [PyDevices/.github](https://github.com/PyDevices/.github)
 
-This is the **cloud-agent workstream** doc. Decisions live in the feasibility report; this file lists what to implement and what not to reopen.
+This is the **cloud-agent workstream** doc. It carries the org's platform-expansion
+decisions directly (the original feasibility-analysis writeup that produced them
+was a one-time 2026-07-14 research doc, superseded by the 2026-07-15 triage below
+and since removed — this file is now the source of record for what to implement
+and what not to reopen).
 
 Follow [AGENTS.md](../AGENTS.md) for the `~/gh/pydevices` workspace layout when running as a Cloud Agent.
 
@@ -13,7 +16,7 @@ Follow [AGENTS.md](../AGENTS.md) for the `~/gh/pydevices` workspace layout when 
 ## How to use this doc (cloud agents)
 
 1. Pick **one** pursue workstream below (tracks may run in parallel across agents/sessions).
-2. Read the matching section in [`platform-feasibility-report.md`](platform-feasibility-report.md).
+2. Read the matching workstream section below for scope and first steps.
 3. Implement with the **why-comment** rule on every non-obvious edit for that track.
 4. Do **not** start work listed under [Out of scope](#out-of-scope) or [Not a platform track](#not-a-platform-track).
 
@@ -33,6 +36,23 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 | **Docs only** | PWA (installable PyScript — **where they run**); iOS / iPadOS via PyScript |
 | **Not a platform track** | FreeRTOS board expansion; Zephyr |
 | **Ruled out** | Native iOS; watchOS; Switch / Vita / PS; native webOS / Tizen |
+
+## Decisions (per target, 2026-07-15 triage)
+
+| Target | Feasibility | Org decision | Notes |
+|--------|:-----------:|--------------|-------|
+| Linux fbdev / DRM / KMS (no WM) | Medium–High | **Pursue** | SDL `kmsdrm` first; native fbdev/DRM only if needed. Parallel with other pursue tracks. Why-comments on KMS edits. |
+| Android TV / Fire OS | Medium–High | **Pursue** | Phone Android treated as stable. Why-comments on new edits. |
+| LG webOS / Samsung Tizen (web) | Low–Medium | **Pursue** (web only) | PyScript TV examples + remote/key bridge; **no native SDL**. Why-comments on new edits. |
+| iOS / iPadOS via PyScript | Low–Medium | **Docs note only** | Position Mobile Safari / `PSDisplay` in platform docs; no dedicated smoke campaign. |
+| Progressive Web Apps (PyScript) | N/A (ships today) | **Docs only** | Major pydevices-examples feature — document **where PWAs run** (browser×OS×install UX) in platform docs; how-to already in `guides/pyscript-pwa.md`. |
+| Native iOS / iPadOS app | Low–Medium | **Ruled out** | Foreseeable roadmap: Apple path is PyScript-in-Safari (docs note) only. |
+| Apple watchOS | Very Low | **Ruled out** | Entirely. |
+| FreeRTOS / new MCU boards | Medium (via MP) | **Not a platform track** | Normal `displayif` + board_config product work. |
+| Zephyr RTOS | Low–Medium | **Not a platform track** | Only if a specific board need appears later. |
+| Nintendo Switch / Vita / PS | Very Low | **Ruled out** | Org roadmap — no consoles. |
+
+**Parallel OK:** Linux KMS, Android TV, and webOS/Tizen web may proceed independently (no forced sequence).
 
 ---
 
@@ -152,7 +172,5 @@ Do **not** start from this roadmap:
 
 | Doc | Role |
 |-----|------|
-| [`platform-feasibility-report.md`](platform-feasibility-report.md) | Analysis + org decisions |
-| [`notes.md`](notes.md) | Brad's personal todo (not this roadmap) |
 | [`AGENTS.md`](../AGENTS.md) | Cloud workspace layout |
 | `pydevices-examples` platform docs | User-facing install/portability matrix |
