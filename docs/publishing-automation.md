@@ -420,6 +420,10 @@ entry when the central latest-only index is deployed.
 
 ## Shared implementation reference
 
+For the workflows *outside* this release chain — the Pages `deploy.yml` pipeline,
+test and lint jobs, validators, and the MIP index jobs — see
+[workflows.md](workflows.md).
+
 | Workflow | Responsibility |
 |---|---|
 | `reusable-build-pure-python-distribution.yml` | Build, check, clean-install, and upload one wheel/sdist artifact |

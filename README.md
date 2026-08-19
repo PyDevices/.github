@@ -10,6 +10,7 @@ Org-wide community health files and profile for [PyDevices](https://github.com/P
 - [`docs/github-presence.md`](docs/github-presence.md) — map of Discussions, Issues, Pages sites, licensing, and other org setup.
 - [`docs/platform-roadmap.md`](docs/platform-roadmap.md) — cloud-agent workstreams for platform expansion, including the 2026-07-15 org triage decisions (pursue / docs-only / out; parallel pursue tracks, why-comment rule, out-of-scope list).
 - [`docs/publishing-automation.md`](docs/publishing-automation.md) — **the org-wide release runbook** for `palettes`, `pdwidgets`, `pygraphics`, `pydevices`, and `lvgl-python`: shared workflows, secrets, discovery rules, and the centralized MIP queue.
+- [`docs/workflows.md`](docs/workflows.md) — inventory of every GitHub Actions workflow in the org: which are shared, which are per-repo, and which deliberately differ.
 - [`docs/building-docs.md`](docs/building-docs.md) — how the three library ReadTheDocs sites (`palettes`, `pdwidgets`, `pygraphics`) are built and published.
 - [`docs/docstrings.md`](docs/docstrings.md) — Google-style docstring conventions for the generated API reference pages.
 - [`docs/doc-style.md`](docs/doc-style.md) — the fixed set of landmark emoji used on doc section headings across PyDevices, and when (not) to use them.
