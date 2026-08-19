@@ -11,7 +11,7 @@ markdown browsed on github.com; do not add MkDocs to one.
 |---|---|
 | [pygraphics](https://github.com/PyDevices/pygraphics) | [pygraphics.readthedocs.io](https://pygraphics.readthedocs.io) |
 | [pdwidgets](https://github.com/PyDevices/pdwidgets) | [pdwidgets.readthedocs.io](https://pdwidgets.readthedocs.io) |
-| [palettes](https://github.com/PyDevices/palettes) | [pydevices-palettes.readthedocs.io](https://pydevices-palettes.readthedocs.io) |
+| [palettes](https://github.com/PyDevices/palettes) | [palettes.readthedocs.io](https://palettes.readthedocs.io) |
 
 Docstring conventions for the generated API pages: [docstrings.md](docstrings.md).
 
