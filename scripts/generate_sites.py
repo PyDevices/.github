@@ -192,6 +192,15 @@ def build_head_tags_html(repo_name, data):
 
 def build_above_the_fold_html(repo_name, data):
     asset_root = asset_prefix(data)
+    # The hero shows the repo's own mark -- the same glyph as its portal card.
+    # The portal keeps the org logo: it is the org's page, and get_card_icon
+    # has no entry for it, so it would otherwise fall through to the generic
+    # default. The glyphs are stroke="currentColor", hence color on the badge.
+    mark = (
+        f'<img src="{asset_root}img/logo.svg" alt="PyDevices" width="112" height="112">'
+        if page_destination(data) == 'portal-root'
+        else get_card_icon(repo_name)
+    )
     theme_color = data.get('theme_color', 'var(--tier-5-steel)')
     dark_gradient = get_gradient_dark(theme_color)
     eyebrow = data.get('eyebrow', repo_name)
@@ -221,7 +230,7 @@ def build_above_the_fold_html(repo_name, data):
         f'  <section class="hero wrap">\n'
         f'    <div class="hero-lead">\n'
         f'      <div class="hero-brand">\n'
-        f'        <div class="logo-badge product-mark" style="background: linear-gradient(135deg, {theme_color}, {dark_gradient});"><img src="{asset_root}img/logo.svg" alt="{repo_name}" width="112" height="112"></div>\n'
+        f'        <div class="logo-badge product-mark" style="background: linear-gradient(135deg, {theme_color}, {dark_gradient}); color: #fff;">{mark}</div>\n'
         f'        <span class="eyebrow" style="color: {theme_color};">{eyebrow}</span>\n'
         f'      </div>\n'
         f'      <h1>{headline}</h1>\n'
@@ -418,6 +427,17 @@ def main():
             content = f.read()
 
         # Update section markers cleanly
+        # A page with no marker blocks is not a page this generator manages --
+        # report it rather than claiming success. pydevices sat like this for
+        # months after its landing page was replaced by a redirect stub.
+        missing = [
+            marker for marker in ('PYDEVICES-HEAD-TAGS', 'PYDEVICES-ABOVE-THE-FOLD')
+            if f'<!-- {marker}: START -->' not in content
+        ]
+        if missing:
+            print(f"[WARN] {repo_name}: no {', '.join(missing)} marker block -- nothing written")
+            continue
+
         content = update_html_section(content, '<!-- PYDEVICES-HEAD-TAGS: START -->', '<!-- PYDEVICES-HEAD-TAGS: END -->', build_head_tags_html(repo_name, data))
         content = update_html_section(content, '<!-- PYDEVICES-ABOVE-THE-FOLD: START -->', '<!-- PYDEVICES-ABOVE-THE-FOLD: END -->', build_above_the_fold_html(repo_name, data))
 
