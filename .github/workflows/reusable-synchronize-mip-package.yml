@@ -34,20 +34,20 @@ jobs:
       PACKAGE_INDEX_PATH: /tmp/pydevices-mip-site
     steps:
       - name: Check out the MIP index source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           token: ${{ secrets.mip-publication-token }}
           fetch-depth: 0
 
       - name: Check out the exact product release
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: ${{ inputs.source-repository }}
           ref: ${{ inputs.source-ref }}
           path: .publication-source
 
       - name: Check out shared publishing tools
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: PyDevices/.github
           ref: ${{ inputs.publishing-tools-ref }}
@@ -97,9 +97,9 @@ jobs:
           touch "$PACKAGE_INDEX_PATH/.nojekyll"
 
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Upload the GitHub Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ${{ env.PACKAGE_INDEX_PATH }}
