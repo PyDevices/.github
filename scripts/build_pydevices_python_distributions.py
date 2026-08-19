@@ -10,10 +10,10 @@ import sys
 from pathlib import Path
 
 DEBRIS = {"__pycache__", "README.md", "build", "dist"}
-INTERNAL_REQUIREMENTS = {
-    "displaydev": ("events", "keys"),
-    "appdev": ("events", "keys", "multimer"),
-}
+# No internal dependency table here: with lib/ shipped as one distribution the
+# graph between its components is internal imports, not package requirements.
+# synchronize_mip_package.py still needs it, because MIP publishes each
+# component separately.
 # See synchronize_mip_package.py: the desktop distribution ships utils/ plus
 # the desktop board config directory, both taken whole.
 DESKTOP_DIR = "board_configs/desktop"
@@ -94,22 +94,22 @@ def build(root: Path, output: Path, version: str) -> None:
     if len(leaf_names) != len(set(leaf_names)):
         raise SystemExit("lib/ contains colliding module and package names")
 
+    # One distribution holding all of lib/, not one per component. On a desktop
+    # nobody installs a single leaf, and the per-leaf shape produced eight
+    # distributions pinned to each other with ==version, all of which had to be
+    # republished in lockstep. MIP stays granular because flash is scarce there;
+    # pip has no such constraint.
     stages: list[Path] = []
-    for source, leaf in zip(leaves, leaf_names, strict=True):
-        stage = work / leaf
-        target = stage / "src" / (source.name if source.is_file() else leaf)
-        copy_component(source, target)
-        requirements = [f"pydevices-{dependency}=={version}" for dependency in INTERNAL_REQUIREMENTS.get(leaf, ())]
-        write_project(stage, f"pydevices-{leaf}", version, f"PyDevices {leaf}", requirements)
-        stages.append(stage)
-
     meta = work / "pydevices"
+    meta_src = meta / "src"
+    for source in leaves:
+        copy_component(source, meta_src / source.name)
     write_project(
         meta,
         "pydevices",
         version,
         "Portable display, audio, event, and timing foundations for PyDevices",
-        [f"pydevices-{leaf}=={version}" for leaf in leaf_names],
+        [],
     )
     stages.append(meta)
 
@@ -134,7 +134,7 @@ def build(root: Path, output: Path, version: str) -> None:
             check=True,
         )
     subprocess.run([sys.executable, "-m", "twine", "check", *map(str, sorted(dist.iterdir()))], check=True)
-    print(f"Built {len(stages)} distributions from {len(leaves)} dynamic lib components.")
+    print(f"Built {len(stages)} distributions covering {len(leaves)} lib components.")
 
 
 def main() -> None:

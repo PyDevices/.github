@@ -27,10 +27,13 @@ PROFILES = {
         package="pdwidgets",
         description="Cross-platform widget toolkit for PyDevices",
         pypi_name="pydevices-pdwidgets",
+        # (MIP package name, PyPI distribution that provides it). MIP stays
+        # granular; on PyPI the whole of pydevices/lib ships as one
+        # distribution, so appdev and multimer both point at "pydevices".
         requirements=(
-            ("appdev", "pydevices-appdev"),
+            ("appdev", "pydevices"),
             ("pygraphics", "pydevices-pygraphics"),
-            ("multimer", "pydevices-multimer"),
+            ("multimer", "pydevices"),
             ("palettes", "pydevices-palettes"),
         ),
     ),
@@ -107,17 +110,24 @@ def copy_component(source: Path, destination: Path) -> None:
         shutil.copy2(source, destination)
 
 
+# The only two PyDevices distributions on PyPI. Every lib/ component ships
+# inside "pydevices", so a leaf manifest must not claim a pypi_publish of its
+# own -- pydevices-appdev and friends stopped existing when pip collapsed to
+# one distribution, and naming them here would advertise something unpublished.
+PYPI_DISTRIBUTIONS = {"pydevices", "pydevices-desktop"}
+
+
 def render_pydevices_manifest(name: str, version: str, requirements: tuple[str, ...], payload: str | None) -> str:
-    pypi_name = name if name in {"pydevices", "pydevices-desktop"} else f"pydevices-{name}"
     lines = [
         "metadata(",
         f'    description="PyDevices {name}",',
         f'    version="{version}",',
         '    author="Brad Barnett",',
         '    license="MIT",',
-        f'    pypi_publish="{pypi_name}",',
-        ")",
     ]
+    if name in PYPI_DISTRIBUTIONS:
+        lines.append(f'    pypi_publish="{name}",')
+    lines.append(")")
     lines.extend(f'require("{requirement}")' for requirement in requirements)
     if payload:
         lines.append(payload)
