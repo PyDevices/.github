@@ -60,7 +60,30 @@ Interactive Jupyter notebooks are generated on demand from example scripts using
 
 **`ModuleNotFoundError` during build** — use a venv as shown above; do not `pip install` into the system Python on Debian/Ubuntu (externally-managed-environment error).
 
-**Griffe warnings** — docstring parameter mismatches in source; warnings only, build still succeeds.
+**Griffe warnings** — docstring parameter mismatches in source. All three sites
+now build under `strict: true`, so these fail the build rather than scrolling
+past. Fix them in the **docstring**, not the signature: these packages run on
+MicroPython and CircuitPython, where annotations cost bytecode and RAM. See
+[docstrings.md](docstrings.md).
+
+**`Returns` type reported as missing when it is right there** — griffe's default
+`returns_named_value: true` expects the type in parentheses, `(Area): text`,
+while our convention writes a bare `Area: text` and griffe then reads `Area` as
+the return's *name*. All three sites therefore set:
+
+```yaml
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_options:
+              returns_named_value: false
+```
+
+A new library site must set it too, or it will fail `strict` on warnings that
+are not real. If shared mkdocs config is ever centralized in this repo, this
+option belongs in it.
 
 **MkDocs 2.0 warning banner** — harmless; set `DISABLE_MKDOCS_2_WARNING=true` to hide it.
 
