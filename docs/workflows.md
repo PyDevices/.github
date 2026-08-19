@@ -61,7 +61,7 @@ Two repositories in `repos_db.json` have **no** `deploy.yml`, correctly:
   to assemble.
 
 Two repositories have no Pages site at all, by design — `.github` (this
-repository) and `pydevices-android-runner`. Both are recorded with reasons in
+repository) and `android-runner`. Both are recorded with reasons in
 `repos_db.json` under `_meta.excluded`.
 
 > **If a Pages site 404s, check this first.** In August 2026 an unrelated merge
@@ -82,7 +82,7 @@ repository) and `pydevices-android-runner`. Both are recorded with reasons in
 | `lvgl-bindings` | `trigger-lvgl-python-release.yml` | Dispatches the release above after bindings regenerate. |
 | `lvgl-bindings` | `check-dispatch-token.yml` | `workflow_dispatch` only. A manual credential check for that cross-repo dispatch — run it when a trigger fails silently. |
 | `mpftp` | `publish-vsix.yml` | Packages and publishes the VS Code extension. Not a Python distribution, so it is outside the runbook. |
-| `pydevices-android-runner` | `release_apk.yml` | On `v*` tags, builds the multi-ABI Runner APK and attaches it to the GitHub Release. This is what `android.py --install-apk` downloads, so most users never build one. |
+| `android-runner` | `release_apk.yml` | On `v*` tags, builds the multi-ABI Runner APK and attaches it to the GitHub Release. This is what `android.py --install-apk` downloads, so most users never build one. |
 
 ### Testing and linting
 

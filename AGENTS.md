@@ -59,8 +59,8 @@ handing work from Cursor desktop to Cloud Agents.
     ├── palettes              -> /agent/repos/palettes
     ├── pdwidgets             -> /agent/repos/pdwidgets
     ├── pydevices-examples             -> /agent/repos/pydevices-examples
-    ├── pydevices-android-template     -> /agent/repos/pydevices-android-template
-    └── pydevices-pyscript-template    -> /agent/repos/pydevices-pyscript-template
+    ├── android-template     -> /agent/repos/android-template
+    └── pyscript-template    -> /agent/repos/pyscript-template
 ```
 
 **Not cloned locally:** `mip` — GitHub Actions owns sync and

@@ -99,8 +99,8 @@ icons. Header brand stays on the shared org logo.
 | [lvgl-micropython](https://github.com/PyDevices/lvgl-micropython) | MicroPython user C module glue for LVGL | [pydevices.github.io/lvgl-micropython](https://pydevices.github.io/lvgl-micropython/) |
 | [lvgl-circuitpython](https://github.com/PyDevices/lvgl-circuitpython) | CircuitPython integration for LVGL | [pydevices.github.io/lvgl-circuitpython](https://pydevices.github.io/lvgl-circuitpython/) |
 | [lvgl-python](https://github.com/PyDevices/lvgl-python) | Native CPython LVGL extension (`import lvgl`) | [pydevices.github.io/lvgl-python](https://pydevices.github.io/lvgl-python/) |
-| [pydevices-android-template](https://github.com/PyDevices/pydevices-android-template) | Native Android APK application template for PyDevices | [pydevices.github.io/pydevices-android-template](https://pydevices.github.io/pydevices-android-template/) |
-| [pydevices-pyscript-template](https://github.com/PyDevices/pydevices-pyscript-template) | Minimal installable PyScript/PWA application template | [pydevices.github.io/pydevices-pyscript-template](https://pydevices.github.io/pydevices-pyscript-template/) |
+| [android-template](https://github.com/PyDevices/android-template) | Native Android APK application template for PyDevices | [pydevices.github.io/android-template](https://pydevices.github.io/android-template/) |
+| [pyscript-template](https://github.com/PyDevices/pyscript-template) | Minimal installable PyScript/PWA application template | [pydevices.github.io/pyscript-template](https://pydevices.github.io/pyscript-template/) |
 | [PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io) | Org landing + shared chrome | [pydevices.github.io](https://pydevices.github.io/) |
 | [.github](https://github.com/PyDevices/.github) | This repo — org profile README, issue templates, CONTRIBUTING.md, `docs/github-presence.md`, `docs/repo-layout.md` | *(no Pages site — org metadata only)* |
 | [micropython-lib](https://github.com/PyDevices/mip) | Fork carrying PyDevices' micropython-lib packages for `mip install` | *(no dedicated marketing site — it's a package index fork, not a product)* |

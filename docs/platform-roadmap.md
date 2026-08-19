@@ -84,13 +84,13 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 
 **First steps:**
 
-- TV / leanback launcher intent category in `pydevices-android-template` packaging (`buildozer.spec` / p4a as needed).
+- TV / leanback launcher intent category in `android-template` packaging (`buildozer.spec` / p4a as needed).
 - Android TV host settings (fullscreen assumptions, 10-foot scale hints); extend the canonical desktop config only if needed.
 - Map D-pad / enter / back through the neutral PyDevices input contracts in `pydevices` (why-comment each mapping).
 - ~~Document in `pydevices-examples`~~ **Done 2026-08-18** — [`pydevices/docs/android.md` § Android TV / Fire OS](https://github.com/PyDevices/pydevices/blob/main/docs/android.md) covers the leanback framebuffer and the remote → `keys` mapping.
-- Optional: Android TV emulator smoke under `pydevices-android-template/scripts/`.
+- Optional: Android TV emulator smoke under `android-template/scripts/`.
 
-**Touchpoints:** `pydevices-android-template`, `pydevices` (portable input/config packages), and `pydevices-examples` (examples/docs); TestPyPI `pydevices-desktop` changes only if TV input/SDL gaps appear.
+**Touchpoints:** `android-template`, `pydevices` (portable input/config packages), and `pydevices-examples` (examples/docs); TestPyPI `pydevices-desktop` changes only if TV input/SDL gaps appear.
 
 **Why-comments:** required on every new edit for this track.
 
@@ -119,7 +119,7 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 **Goal:** Treat installable / offline PyScript apps as a **first-class** platform story, documented as clearly as MCU / desktop / Android APK — especially **where** a pydevices-examples PWA actually runs.
 
 **Largely done as of 2026-08-18.** The how-to now lives with the repo that owns
-the subject: [`pydevices-pyscript-template/docs/pwa-guide.md`](https://github.com/PyDevices/pydevices-pyscript-template/blob/main/docs/pwa-guide.md)
+the subject: [`pyscript-template/docs/pwa-guide.md`](https://github.com/PyDevices/pyscript-template/blob/main/docs/pwa-guide.md)
 (manifest, service worker, COI, GitHub Pages), and the **where PWAs run** host
 matrix was folded into it from the retired `platforms/pwa.md` — so the gap below
 is closed. What remains is judgement about prominence, not missing content.
@@ -128,7 +128,7 @@ is closed. What remains is judgement about prominence, not missing content.
 
 - The host matrix in that guide should stay current; it covers at least:
   - Desktop Chromium (Chrome / Edge) — install prompt / standalone window
-  - Android Chrome — install / home-screen; contrast with native `pydevices-android-template` APK
+  - Android Chrome — install / home-screen; contrast with native `android-template` APK
   - iOS / iPadOS Safari — Share → Add to Home Screen (no `beforeinstallprompt`)
   - Chromebook and other desktop Linux browsers as relevant
   - Relation to TV **web** path (webOS / Tizen Chromium browsers — browser or installable web app, not native SDL)

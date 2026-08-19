@@ -29,7 +29,7 @@
     },
     "excluded": {
       ".github (dotgithub)": "No landing page by design. It holds org-wide data, scripts, and community health files, and is documented as markdown only.",
-      "pydevices-android-runner": "Exists solely to enable pydevices/bin/android.py. The APK is documented in pydevices; the runner publishes no site."
+      "android-runner": "Exists solely to enable pydevices/bin/android.py. The APK is documented in pydevices; the runner publishes no site."
     }
   },
   "pydevices": {
@@ -311,18 +311,18 @@
       }
     ]
   },
-  "pydevices-pyscript-template": {
+  "pyscript-template": {
     "tier": 4,
     "page": "portal-subdir",
     "tier_name": "Target App Hosts & PWA Templates",
     "theme_color": "var(--tier-4-purple)",
     "eyebrow": "pyscript-template",
-    "headline": "pydevices-pyscript-template — Offline PWA starter template.",
+    "headline": "pyscript-template — Offline PWA starter template.",
     "description": "Progressive Web App starter template repository for deploying offline-capable client-side PyDevices applications on GitHub Pages.",
     "buttons": [
       {
         "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/pydevices-pyscript-template",
+        "href": "https://github.com/PyDevices/pyscript-template",
         "primary": true
       },
       {
@@ -332,7 +332,7 @@
       },
       {
         "label": "PWA Setup Guide",
-        "href": "https://github.com/PyDevices/pydevices-pyscript-template/blob/main/README.md",
+        "href": "https://github.com/PyDevices/pyscript-template/blob/main/README.md",
         "tier_color": true
       },
       {
@@ -342,28 +342,28 @@
       }
     ]
   },
-  "pydevices-android-template": {
+  "android-template": {
     "tier": 4,
     "page": "portal-subdir",
     "tier_name": "Target App Hosts & PWA Templates",
     "theme_color": "var(--tier-4-purple)",
     "eyebrow": "android-template",
-    "headline": "pydevices-android-template — Android APK Buildozer project.",
+    "headline": "android-template — Android APK Buildozer project.",
     "description": "Pre-configured python-for-android build recipes and Buildozer project template for packaging PyDevices applications into native Android APKs.",
     "buttons": [
       {
         "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/pydevices-android-template",
+        "href": "https://github.com/PyDevices/android-template",
         "primary": true
       },
       {
         "label": "Buildozer Guide",
-        "href": "https://github.com/PyDevices/pydevices-android-template/blob/main/README.md",
+        "href": "https://github.com/PyDevices/android-template/blob/main/README.md",
         "tier_color": true
       },
       {
         "label": "p4a Recipes",
-        "href": "https://github.com/PyDevices/pydevices-android-template/tree/main/recipes",
+        "href": "https://github.com/PyDevices/android-template/tree/main/recipes",
         "tier_color": true
       },
       {

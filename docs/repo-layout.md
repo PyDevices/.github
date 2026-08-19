@@ -80,14 +80,14 @@ Examples:
 | [lvgl-bindings](https://github.com/PyDevices/lvgl-bindings) | `requirements.txt` | Generator runtime (`pycparser`) |
 | [pydevices-examples](https://github.com/PyDevices/pydevices-examples) | `requirements-dev.txt` | Playwright, pytest, Jupyter, ruff, … — not product runtime |
 | [lvgl-python](https://github.com/PyDevices/lvgl-python) | `requirements-dev.txt` | Local editable build / wheel tooling; users install `pydevices-lvgl` |
-| [pydevices-android-template](https://github.com/PyDevices/pydevices-android-template) | `requirements-dev.txt` | Host buildozer/Cython for APK builds — not packaged into the APK |
-| [pydevices-pyscript-template](https://github.com/PyDevices/pydevices-pyscript-template) | none | Static app template; PyScript runtime is vendored only for Pages deployment |
+| [android-template](https://github.com/PyDevices/android-template) | `requirements-dev.txt` | Host buildozer/Cython for APK builds — not packaged into the APK |
+| [pyscript-template](https://github.com/PyDevices/pyscript-template) | none | Static app template; PyScript runtime is vendored only for Pages deployment |
 
 ## Exceptions
 
 1. **[pydevices-examples](https://github.com/PyDevices/pydevices-examples)** — example applications and gallery utilities live under `lib/` (`lib/examples/`, `lib/utils/`). Shareable packages belong in their owning product repos, not here.
 2. **[pydevices](https://github.com/PyDevices/pydevices)** — canonical product repo: portable packages under `lib/`, board configs under `board_configs/`, hardware drivers under `drivers/`, and MIP manifests under `packages/`.
-3. **Application templates** — `pydevices-android-template` and `pydevices-pyscript-template` are replaceable host shells, not product package trees.
+3. **Application templates** — `android-template` and `pyscript-template` are replaceable host shells, not product package trees.
 
 ## Notes
 

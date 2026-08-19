@@ -31,8 +31,8 @@ def get_card_icon(repo_name):
         'lvgl-micropython': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17V7l8-4 8 4v10l-8 4z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg>',
         'lvgl-python': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 3 3v1a4 4 0 0 1-4 4h-1v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4v-1H6a4 4 0 0 1-4-4v-1a3 3 0 0 1 3-3h1V6a4 4 0 0 1 4-4z"/></svg>',
         'lvgl-circuitpython': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M3 12h3M18 12h3M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="4"/></svg>',
-        'pydevices-pyscript-template': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/><path d="M8 9h8M8 13h5"/></svg>',
-        'pydevices-android-template': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 19h4"/></svg>',
+        'pyscript-template': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/><path d="M8 9h8M8 13h5"/></svg>',
+        'android-template': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 19h4"/></svg>',
         'mip': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg>',
         'cmods': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>',
         'mpftp': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/><circle cx="15" cy="15" r="1"/><path d="M15 16v3M13 19h4"/></svg>'
@@ -51,8 +51,8 @@ def get_tag_label(repo_name):
         'lvgl-micropython': 'MicroPython C',
         'lvgl-python': 'CPython / Pyodide',
         'lvgl-circuitpython': 'CircuitPython C',
-        'pydevices-pyscript-template': 'PWA Template',
-        'pydevices-android-template': 'Android APK',
+        'pyscript-template': 'PWA Template',
+        'android-template': 'Android APK',
         'mip': 'MIP Index',
         'cmods': 'Build Tool',
         'mpftp': 'Workbench Tool'
@@ -328,16 +328,9 @@ def page_destination(data):
     return data.get('page', 'portal-subdir')
 
 
-def sync_assets():
-    """Copy the shared chrome into the portal, the only place that serves it.
-
-    Landing pages reference /vendor/pydevices-chrome/... and /img/logo.svg,
-    so one copy at the portal root covers every page including the
-    subdirectories. This used to fan out into 15 repositories.
-    """
-    portal = os.path.join(BASE_DIR, PORTAL_REPO)
-    vendor_dir = os.path.join(portal, 'vendor/pydevices-chrome')
-    img_dir = os.path.join(portal, 'img')
+def _copy_chrome_into(site_root):
+    vendor_dir = os.path.join(site_root, 'vendor/pydevices-chrome')
+    img_dir = os.path.join(site_root, 'img')
     os.makedirs(vendor_dir, exist_ok=True)
     os.makedirs(img_dir, exist_ok=True)
 
@@ -349,6 +342,21 @@ def sync_assets():
     src_logo = os.path.join(ASSETS_DIR, 'img/logo.svg')
     if os.path.exists(src_logo):
         shutil.copy2(src_logo, os.path.join(img_dir, 'logo.svg'))
+
+
+def sync_assets(db):
+    """Copy the shared chrome to every site root that serves it.
+
+    Portal pages -- root and subdirectories -- share the one copy at the portal
+    root, which is why this no longer fans out into 15 repositories. But a repo
+    still publishing its own Pages is a separate site and needs its own copy,
+    or its chrome silently goes stale: the tree-nav in site-chrome.js hardcodes
+    every repo URL, so an out-of-date copy links to pages that no longer exist.
+    """
+    _copy_chrome_into(os.path.join(BASE_DIR, PORTAL_REPO))
+    for repo_name, data in repos(db).items():
+        if page_destination(data) == 'self':
+            _copy_chrome_into(os.path.join(BASE_DIR, repo_name, '.site'))
 
 def update_html_section(content, marker_start, marker_end, new_html):
     # Consume any existing indentation before the start marker. The replacement
@@ -386,7 +394,7 @@ def main():
 
     updated_sites = 0
 
-    sync_assets()
+    sync_assets(db)
 
     for repo_name, data in repos(db).items():
         site_html_path = get_site_html_path(repo_name, data)

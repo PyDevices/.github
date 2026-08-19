@@ -27,8 +27,8 @@ SIBLINGS=(
     palettes
     pdwidgets
     pydevices-examples
-    pydevices-android-template
-    pydevices-pyscript-template
+    android-template
+    pyscript-template
     PyDevices.github.io
 )
 
@@ -241,7 +241,7 @@ link_pydevices mpftp "$REPOS/mpftp"
 link_pydevices palettes "$REPOS/palettes"
 link_pydevices pdwidgets "$REPOS/pdwidgets"
 link_pydevices pydevices-examples "$REPOS/pydevices-examples"
-link_pydevices pydevices-android-template "$REPOS/pydevices-android-template"
+link_pydevices android-template "$REPOS/android-template"
 
 # cmods must exist before interior sibling links
 [[ -d "$PD/cmods" ]] || die "cmods missing after link step ($PD/cmods)"
