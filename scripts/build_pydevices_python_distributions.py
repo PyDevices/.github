@@ -14,11 +14,9 @@ INTERNAL_REQUIREMENTS = {
     "displaydev": ("events", "keys"),
     "appdev": ("events", "keys", "multimer"),
 }
-DESKTOP_FILES = {
-    "board_configs/desktop/board_config.py": "board_config.py",
-    "board_configs/desktop/board_peripherals.py": "board_peripherals.py",
-    "drivers/boarddev.py": "boarddev.py",
-}
+# See synchronize_mip_package.py: the desktop distribution ships utils/ plus
+# the desktop board config directory, both taken whole.
+DESKTOP_DIR = "board_configs/desktop"
 
 
 def publishable(path: Path) -> bool:
@@ -119,8 +117,8 @@ def build(root: Path, output: Path, version: str) -> None:
     desktop_source = desktop / "src"
     for source in components(root / "utils"):
         copy_component(source, desktop_source / source.name)
-    for source_name, destination_name in DESKTOP_FILES.items():
-        copy_component(root / source_name, desktop_source / destination_name)
+    for source in components(root / DESKTOP_DIR):
+        copy_component(source, desktop_source / source.name)
     write_project(
         desktop,
         "pydevices-desktop",

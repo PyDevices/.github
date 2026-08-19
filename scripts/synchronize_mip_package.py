@@ -55,11 +55,12 @@ PYDEVICES_REQUIREMENTS = {
     "displaydev": ("events", "keys"),
     "appdev": ("events", "keys", "multimer"),
 }
-PYDEVICES_DESKTOP_FILES = {
-    "board_configs/desktop/board_config.py": "board_config.py",
-    "board_configs/desktop/board_peripherals.py": "board_peripherals.py",
-    "drivers/boarddev.py": "boarddev.py",
-}
+# The desktop package ships utils/ plus the desktop board config. Both are
+# whole directories, so there is nothing to enumerate: publishable() already
+# filters README.md, package.json, and __pycache__ out of the latter.
+# boarddev.py used to be listed here too, before it moved into lib/ and became
+# a package of its own.
+PYDEVICES_DESKTOP_DIR = "board_configs/desktop"
 
 
 def ignore_debris(_directory: str, names: list[str]) -> set[str]:
@@ -160,9 +161,9 @@ def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> No
     for source in sorted(filter(publishable, (source_root / "utils").iterdir()), key=lambda path: path.name):
         copy_component(source, desktop / source.name)
         payloads.append(f'module("{source.name}")' if source.is_file() else f'package("{source.name}")')
-    for source_name, destination_name in PYDEVICES_DESKTOP_FILES.items():
-        copy_component(source_root / source_name, desktop / destination_name)
-        payloads.append(f'module("{destination_name}")')
+    for source in sorted(filter(publishable, (source_root / PYDEVICES_DESKTOP_DIR).iterdir()), key=lambda path: path.name):
+        copy_component(source, desktop / source.name)
+        payloads.append(f'module("{source.name}")' if source.is_file() else f'package("{source.name}")')
     manifest = render_pydevices_manifest("pydevices-desktop", version, ("pydevices",), None)
     manifest += "\n".join(payloads) + "\n"
     (desktop / "manifest.py").write_text(manifest, encoding="utf-8")
