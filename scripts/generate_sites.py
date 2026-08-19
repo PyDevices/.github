@@ -84,6 +84,24 @@ def validate_db(db):
                 f'_meta.tiers[{tier}].name {tiers[tier]["name"]!r}'
             )
 
+    valid_pages = {'portal-root', 'portal-subdir', 'self', 'none'}
+    roots = [n for n, d in repos(db).items() if page_destination(d) == 'portal-root']
+    for name, data in repos(db).items():
+        destination = page_destination(data)
+        if destination not in valid_pages:
+            problems.append(
+                f'{name}: page {destination!r} is not one of {sorted(valid_pages)}'
+            )
+        # A repo keeping its own Pages must still have somewhere to publish from.
+        if destination == 'self' and not os.path.isdir(
+            os.path.join(BASE_DIR, name, '.site')
+        ):
+            problems.append(f'{name}: page=self but no .site/ directory')
+    if len(roots) != 1:
+        problems.append(
+            f'expected exactly one page=portal-root repo, found {roots or "none"}'
+        )
+
     if problems:
         raise SystemExit('repos_db.json is invalid:\n  ' + '\n  '.join(problems))
     print(f"[OK] Database valid: {len(repos(db))} repos across {len(tiers)} tiers")
@@ -163,15 +181,17 @@ def write_ecosystem_markdown(db):
 
 
 def build_head_tags_html(repo_name, data):
+    asset_root = asset_prefix(data)
     return (
         f'  <!-- PYDEVICES-HEAD-TAGS: START -->\n'
         f'  <title>PyDevices - {repo_name}</title>\n'
         f'  <meta name="description" content="{data.get("description", "")}">\n'
-        f'  <link rel="icon" type="image/svg+xml" href="img/logo.svg">\n'
+        f'  <link rel="icon" type="image/svg+xml" href="{asset_root}img/logo.svg">\n'
         f'  <!-- PYDEVICES-HEAD-TAGS: END -->'
     )
 
 def build_above_the_fold_html(repo_name, data):
+    asset_root = asset_prefix(data)
     theme_color = data.get('theme_color', 'var(--tier-5-steel)')
     dark_gradient = get_gradient_dark(theme_color)
     eyebrow = data.get('eyebrow', repo_name)
@@ -201,7 +221,7 @@ def build_above_the_fold_html(repo_name, data):
         f'  <section class="hero wrap">\n'
         f'    <div class="hero-lead">\n'
         f'      <div class="hero-brand">\n'
-        f'        <div class="logo-badge product-mark" style="background: linear-gradient(135deg, {theme_color}, {dark_gradient});"><img src="img/logo.svg" alt="{repo_name}" width="112" height="112"></div>\n'
+        f'        <div class="logo-badge product-mark" style="background: linear-gradient(135deg, {theme_color}, {dark_gradient});"><img src="{asset_root}img/logo.svg" alt="{repo_name}" width="112" height="112"></div>\n'
         f'        <span class="eyebrow" style="color: {theme_color};">{eyebrow}</span>\n'
         f'      </div>\n'
         f'      <h1>{headline}</h1>\n'
@@ -260,10 +280,64 @@ def build_portal_grids_html(db):
         f'  <!-- PYDEVICES-PORTAL-GRIDS: END -->'
     )
 
-def sync_assets(repo_name):
-    site_prefix = '' if repo_name == 'PyDevices.github.io' else '.site'
-    vendor_dir = os.path.join(BASE_DIR, repo_name, site_prefix, 'vendor/pydevices-chrome')
-    img_dir = os.path.join(BASE_DIR, repo_name, site_prefix, 'img')
+PORTAL_REPO = 'PyDevices.github.io'
+
+# Written only when a portal subdirectory has no page yet; every run then
+# rewrites the marker blocks in place, so this is a one-time scaffold.
+PAGE_SKELETON = '''<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- PYDEVICES-HEAD-TAGS: START -->
+  <!-- PYDEVICES-HEAD-TAGS: END -->
+  <link rel="stylesheet" href="/vendor/pydevices-chrome/site.css">
+</head>
+<body>
+  <!-- PYDEVICES-ABOVE-THE-FOLD: START -->
+  <!-- PYDEVICES-ABOVE-THE-FOLD: END -->
+  <div id="pydevices-site-footer"></div>
+  <script src="/vendor/pydevices-chrome/site-chrome.js"></script>
+  <script src="/vendor/pydevices-chrome/theme-toggle.js"></script>
+  <script src="/vendor/pydevices-chrome/tree-nav.js"></script>
+</body>
+</html>
+'''
+
+
+def asset_prefix(data):
+    """Prefix for shared-asset URLs in this repo's page.
+
+    Portal pages -- root and subdirectories alike -- share the one copy at the
+    portal root, so they use '/'. A repo still publishing its own Pages is a
+    separate site: it must reference its own .site/ copies relatively, or its
+    logo would depend on the portal repository.
+    """
+    return '' if page_destination(data) == 'self' else '/'
+
+
+def page_destination(data):
+    """Where this repo's landing page is written.
+
+    'portal-root'   the portal's own index.html
+    'portal-subdir' PyDevices.github.io/<portal_path or repo>/index.html
+    'self'          the repo's own .site/index.html, for repos that still
+                    publish their own Pages because they serve real payload
+    'none'          no generated page; the repo keeps only its portal card
+    """
+    return data.get('page', 'portal-subdir')
+
+
+def sync_assets():
+    """Copy the shared chrome into the portal, the only place that serves it.
+
+    Landing pages reference /vendor/pydevices-chrome/... and /img/logo.svg,
+    so one copy at the portal root covers every page including the
+    subdirectories. This used to fan out into 15 repositories.
+    """
+    portal = os.path.join(BASE_DIR, PORTAL_REPO)
+    vendor_dir = os.path.join(portal, 'vendor/pydevices-chrome')
+    img_dir = os.path.join(portal, 'img')
     os.makedirs(vendor_dir, exist_ok=True)
     os.makedirs(img_dir, exist_ok=True)
 
@@ -271,7 +345,7 @@ def sync_assets(repo_name):
         src = os.path.join(ASSETS_DIR, 'js' if fname.endswith('.js') else 'css', fname)
         if os.path.exists(src):
             shutil.copy2(src, os.path.join(vendor_dir, fname))
-    
+
     src_logo = os.path.join(ASSETS_DIR, 'img/logo.svg')
     if os.path.exists(src_logo):
         shutil.copy2(src_logo, os.path.join(img_dir, 'logo.svg'))
@@ -290,10 +364,17 @@ def update_html_section(content, marker_start, marker_end, new_html):
         return pattern.sub(lambda _m: new_html, content)
     return content
 
-def get_site_html_path(repo_dir, repo_name):
-    if repo_name == 'PyDevices.github.io':
-        return os.path.join(repo_dir, 'index.html')
-    return os.path.join(repo_dir, '.site/index.html')
+def get_site_html_path(repo_name, data):
+    """Absolute path of the index.html this repo's entry writes, or None."""
+    destination = page_destination(data)
+    portal = os.path.join(BASE_DIR, PORTAL_REPO)
+    if destination == 'portal-root':
+        return os.path.join(portal, 'index.html')
+    if destination == 'portal-subdir':
+        return os.path.join(portal, data.get('portal_path', repo_name), 'index.html')
+    if destination == 'self':
+        return os.path.join(BASE_DIR, repo_name, '.site/index.html')
+    return None
 
 def main():
     print("=== Pure Harmonized PyDevices Site Generator (.github) ===")
@@ -305,15 +386,22 @@ def main():
 
     updated_sites = 0
 
+    sync_assets()
+
     for repo_name, data in repos(db).items():
-        repo_dir = os.path.join(BASE_DIR, repo_name)
-        if not os.path.exists(repo_dir):
-            print(f"[SKIP] Repo dir not found: {repo_dir}")
+        site_html_path = get_site_html_path(repo_name, data)
+        if site_html_path is None:
+            print(f"[SKIP] {repo_name}: no generated page (page=none)")
             continue
 
-        sync_assets(repo_name)
+        # A portal subdirectory is ours to create; a repo's own .site is not.
+        if page_destination(data) in ('portal-root', 'portal-subdir'):
+            os.makedirs(os.path.dirname(site_html_path), exist_ok=True)
+            if not os.path.exists(site_html_path):
+                with open(site_html_path, 'w', encoding='utf-8') as f:
+                    f.write(PAGE_SKELETON)
+                print(f"[NEW] Created {os.path.relpath(site_html_path, BASE_DIR)}")
 
-        site_html_path = get_site_html_path(repo_dir, repo_name)
         if not os.path.exists(site_html_path):
             print(f"[SKIP] HTML file missing: {site_html_path}")
             continue
@@ -339,7 +427,7 @@ def main():
             f.write(content)
 
         updated_sites += 1
-        print(f"[OK] Generated & Updated {repo_name} ({os.path.relpath(site_html_path, repo_dir)})")
+        print(f"[OK] Generated & Updated {repo_name} ({os.path.relpath(site_html_path, BASE_DIR)})")
 
     written = write_ecosystem_markdown(db)
 

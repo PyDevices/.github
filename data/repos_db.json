@@ -34,6 +34,7 @@
   },
   "pydevices": {
     "tier": 1,
+    "page": "portal-subdir",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "pydevices",
@@ -64,6 +65,7 @@
   },
   "displayif": {
     "tier": 1,
+    "page": "portal-subdir",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "displayif",
@@ -94,6 +96,7 @@
   },
   "pygraphics": {
     "tier": 2,
+    "page": "portal-subdir",
     "tier_name": "Python Framebuffers & GUI Toolkits",
     "theme_color": "var(--tier-2-emerald)",
     "eyebrow": "pygraphics",
@@ -124,6 +127,7 @@
   },
   "pdwidgets": {
     "tier": 2,
+    "page": "portal-subdir",
     "tier_name": "Python Framebuffers & GUI Toolkits",
     "theme_color": "var(--tier-2-emerald)",
     "eyebrow": "pdwidgets",
@@ -154,6 +158,7 @@
   },
   "palettes": {
     "tier": 2,
+    "page": "portal-subdir",
     "tier_name": "Python Framebuffers & GUI Toolkits",
     "theme_color": "var(--tier-2-emerald)",
     "eyebrow": "palettes",
@@ -184,6 +189,7 @@
   },
   "lvgl-bindings": {
     "tier": 3,
+    "page": "portal-subdir",
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-bindings",
@@ -214,6 +220,7 @@
   },
   "lvgl-micropython": {
     "tier": 3,
+    "page": "portal-subdir",
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-micropython",
@@ -244,6 +251,7 @@
   },
   "lvgl-python": {
     "tier": 3,
+    "page": "portal-subdir",
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-python",
@@ -274,6 +282,7 @@
   },
   "lvgl-circuitpython": {
     "tier": 3,
+    "page": "portal-subdir",
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-circuitpython",
@@ -304,6 +313,7 @@
   },
   "pydevices-pyscript-template": {
     "tier": 4,
+    "page": "portal-subdir",
     "tier_name": "Target App Hosts & PWA Templates",
     "theme_color": "var(--tier-4-purple)",
     "eyebrow": "pyscript-template",
@@ -334,6 +344,7 @@
   },
   "pydevices-android-template": {
     "tier": 4,
+    "page": "portal-subdir",
     "tier_name": "Target App Hosts & PWA Templates",
     "theme_color": "var(--tier-4-purple)",
     "eyebrow": "android-template",
@@ -364,6 +375,7 @@
   },
   "mpftp": {
     "tier": 5,
+    "page": "portal-subdir",
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "mpftp",
@@ -394,6 +406,7 @@
   },
   "mip": {
     "tier": 5,
+    "page": "self",
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "mip",
@@ -424,6 +437,7 @@
   },
   "cmods": {
     "tier": 5,
+    "page": "portal-subdir",
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "cmods",
@@ -454,6 +468,7 @@
   },
   "pydevices-examples": {
     "tier": 1,
+    "page": "self",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "pydevices-examples",
@@ -484,6 +499,7 @@
   },
   "PyDevices.github.io": {
     "tier": 0,
+    "page": "portal-root",
     "tier_name": "Organization Portal",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "PyDevices Portal",
