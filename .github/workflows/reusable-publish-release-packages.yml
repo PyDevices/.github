@@ -1,0 +1,146 @@
+# The whole release chain for one repository: resolve the tag, build, publish
+# to TestPyPI, and (optionally) request MIP publication.
+#
+# Callers were five near-identical copies of this. The tag regex, the
+# workflow_dispatch retry contract, and the TestPyPI upload existed once per
+# repo; only the build kind and a few names actually differed.
+name: Reusable publish release packages
+
+on:
+  workflow_call:
+    inputs:
+      build-kind:
+        description: pure-python | native-and-wasm | pydevices-multi
+        required: true
+        type: string
+      distribution-name:
+        description: TestPyPI distribution name, e.g. pydevices-palettes
+        required: true
+        type: string
+      import-name:
+        description: pure-python only -- module imported by the smoke test
+        default: ""
+        type: string
+      wheel-filename-prefix:
+        description: native-and-wasm only -- e.g. pydevices_pygraphics
+        default: ""
+        type: string
+      install-dependencies:
+        description: pure-python only -- install deps before the smoke test
+        default: false
+        type: boolean
+      checkout-submodules:
+        default: false
+        type: boolean
+      mip-profile:
+        description: synchronize_mip_package.py profile; empty skips MIP
+        default: ""
+        type: string
+      release-ref:
+        description: Exact vX.Y.Z tag, for a workflow_dispatch retry. Empty on
+          a release event, where the tag comes from the event itself.
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+    outputs:
+      release-ref: ${{ steps.release.outputs.release-ref }}
+      version: ${{ steps.release.outputs.version }}
+    steps:
+      - name: Resolve and validate the release tag
+        id: release
+        env:
+          # A reusable workflow sees the triggering event, so a release build
+          # needs nothing from the caller; release-ref is only for retries.
+          RELEASE_TAG: ${{ github.event.release.tag_name || inputs.release-ref }}
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+            echo "Release ref must be an exact vX.Y.Z tag: $RELEASE_TAG" >&2
+            exit 1
+          fi
+          echo "release-ref=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+          echo "version=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
+
+  build-pure-python:
+    if: inputs.build-kind == 'pure-python'
+    needs: prepare-release
+    uses: PyDevices/.github/.github/workflows/reusable-build-pure-python-distribution.yml@publishing-v2
+    with:
+      distribution-name: ${{ inputs.distribution-name }}
+      import-name: ${{ inputs.import-name }}
+      install-dependencies: ${{ inputs.install-dependencies }}
+      release-ref: ${{ needs.prepare-release.outputs.release-ref }}
+      version: ${{ needs.prepare-release.outputs.version }}
+
+  build-native-and-wasm:
+    if: inputs.build-kind == 'native-and-wasm'
+    needs: prepare-release
+    uses: PyDevices/.github/.github/workflows/reusable-build-native-and-wasm-wheels.yml@publishing-v2
+    with:
+      distribution-name: ${{ inputs.distribution-name }}
+      wheel-filename-prefix: ${{ inputs.wheel-filename-prefix }}
+      checkout-submodules: ${{ inputs.checkout-submodules }}
+      release-ref: ${{ needs.prepare-release.outputs.release-ref }}
+      version: ${{ needs.prepare-release.outputs.version }}
+
+  build-pydevices-multi:
+    if: inputs.build-kind == 'pydevices-multi'
+    needs: prepare-release
+    uses: PyDevices/.github/.github/workflows/reusable-build-pydevices-distributions.yml@publishing-v2
+    with:
+      release-ref: ${{ needs.prepare-release.outputs.release-ref }}
+      version: ${{ needs.prepare-release.outputs.version }}
+
+  publish-to-testpypi:
+    needs:
+      - prepare-release
+      - build-pure-python
+      - build-native-and-wasm
+      - build-pydevices-multi
+    # Exactly one build job runs; the other two are skipped. Without this the
+    # publish would be skipped too, because a skipped dependency is not success.
+    if: >-
+      always()
+      && needs.prepare-release.result == 'success'
+      && !contains(needs.*.result, 'failure')
+      && !contains(needs.*.result, 'cancelled')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download the validated distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: testpypi-${{ inputs.distribution-name }}-${{ needs.prepare-release.outputs.version }}
+          path: dist
+
+      - name: Publish to TestPyPI with API token
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.TESTPYPI_API_TOKEN }}
+          repository-url: https://test.pypi.org/legacy/
+          skip-existing: true
+
+  request-mip-publication:
+    if: >-
+      always()
+      && inputs.mip-profile != ''
+      && needs.prepare-release.result == 'success'
+      && !contains(needs.*.result, 'failure')
+      && !contains(needs.*.result, 'cancelled')
+    needs:
+      - prepare-release
+      - build-pure-python
+      - build-native-and-wasm
+      - build-pydevices-multi
+    uses: PyDevices/.github/.github/workflows/reusable-request-mip-publication.yml@publishing-v2
+    with:
+      release-ref: ${{ needs.prepare-release.outputs.release-ref }}
+      version: ${{ needs.prepare-release.outputs.version }}
+      profile: ${{ inputs.mip-profile }}
+    secrets:
+      mip-publication-token: ${{ secrets.MICROPYTHON_LIB_DEPLOY_TOKEN }}
