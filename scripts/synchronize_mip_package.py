@@ -28,7 +28,7 @@ PROFILES = {
         description="Cross-platform widget toolkit for PyDevices",
         pypi_name="pydevices-pdwidgets",
         requirements=(
-            ("eventsys", "pydevices-eventsys"),
+            ("appdev", "pydevices-appdev"),
             ("pygraphics", "pydevices-pygraphics"),
             ("multimer", "pydevices-multimer"),
             ("palettes", "pydevices-palettes"),
@@ -53,7 +53,7 @@ PROFILE_REPOSITORIES = {
 
 PYDEVICES_REQUIREMENTS = {
     "displaydev": ("events", "keys"),
-    "eventsys": ("events", "keys", "multimer"),
+    "appdev": ("events", "keys", "multimer"),
 }
 PYDEVICES_DESKTOP_FILES = {
     "board_configs/desktop/board_config.py": "board_config.py",

@@ -12,7 +12,7 @@ from pathlib import Path
 DEBRIS = {"__pycache__", "README.md", "build", "dist"}
 INTERNAL_REQUIREMENTS = {
     "displaydev": ("events", "keys"),
-    "eventsys": ("events", "keys", "multimer"),
+    "appdev": ("events", "keys", "multimer"),
 }
 DESKTOP_FILES = {
     "board_configs/desktop/board_config.py": "board_config.py",

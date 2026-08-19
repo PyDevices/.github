@@ -42,7 +42,7 @@ See also: https://github.com/PyDevices/pydevices/blob/main/docs/displaydev.md
 ## Repository-specific notes
 
 - **`Area` returns:** Drawing helpers that return dirty regions use `pygraphics.Area` (`x`, `y`, `w`, `h`).
-- **Runtime:** Document poll/subscribe patterns; link to [Events concept](https://github.com/PyDevices/pydevices/blob/main/docs/eventsys.md).
+- **Runtime:** Document poll/subscribe patterns; link to [Events concept](https://github.com/PyDevices/pydevices/blob/main/docs/appdev.md).
 - **Private API:** Names starting with `_` are excluded from mkdocstrings output; minimal or no docstrings are fine.
   Document public methods that live on private implementation bases when they surface via inheritance
   (e.g. provider `Timer` classes ← `_TimerCore.init` / `deinit` with `inherited_members: true`).
@@ -61,7 +61,7 @@ Griffe warnings mean a docstring parameter does not appear in the signature — 
 
 | Tier | Modules |
 |------|---------|
-| P0 | `displaydev`, `eventsys`, `events`, `keys`, `multimer` |
+| P0 | `displaydev`, `appdev`, `events`, `keys`, `multimer` |
 | P1 | `displaybuf`, `console`, other `utils` |
 | P2 | Sibling packages document their own APIs: [pygraphics](https://pygraphics.readthedocs.io), [pdwidgets](https://pdwidgets.readthedocs.io), [palettes](https://palettes.readthedocs.io) |
 

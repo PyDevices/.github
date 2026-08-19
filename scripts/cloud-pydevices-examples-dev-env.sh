@@ -3,7 +3,7 @@
 #
 # Complements cloud-workspace-install.sh and cloud-python-deps.sh:
 #   - pip install pydevices-examples requirements.txt (TestPyPI runtime stack for CPython)
-#   - mip install desktop board_config, eventsys, palettes, pdwidgets into ~/.micropython/lib
+#   - mip install desktop board_config, appdev, palettes, pdwidgets into ~/.micropython/lib
 #   - ensure shell env (PATH, PYTHONPATH, MICROPYPATH) via pydevices-examples-env.sh + bashrc hook
 #
 # Run from pydevices-examples/lib/ after sourcing pydevices-examples-env.sh (or open a new shell).
@@ -62,24 +62,24 @@ ensure_micropython_bin() {
 
 mip_install_micropython_lib() {
     mkdir -p "${MPY_LIB}/lib"
-    log "mip install desktop board_config, eventsys, palettes, pdwidgets -> ${MPY_LIB}/lib"
+    log "mip install desktop board_config, appdev, palettes, pdwidgets -> ${MPY_LIB}/lib"
     (
         cd "${MPY_LIB}" || exit 1
         INDEX="https://PyDevices.github.io/mip"
         micropython -m mip install --no-mpy -t lib -i "$INDEX" \
             github:PyDevices/pydevices/board_configs/desktop \
-            eventsys \
+            appdev \
             palettes \
             pdwidgets
         micropython <<'PY'
 import board_config
 import board_peripherals
-import eventsys
+import appdev
 import palettes
 import pdwidgets
 print("board_config:", board_config.__file__)
-print("eventsys:", eventsys.__file__)
-print("from_board_config:", hasattr(eventsys.Runtime, "from_board_config"))
+print("appdev:", appdev.__file__)
+print("App:", hasattr(appdev, "App"))
 print("palettes:", palettes.__file__)
 print("pdwidgets:", pdwidgets.__file__)
 PY
