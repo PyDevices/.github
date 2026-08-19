@@ -72,7 +72,7 @@ The following GitHub Actions secrets must already exist:
 |---|---|---|
 | `TESTPYPI_API_TOKEN` | Every repository that uploads to TestPyPI | API token currently owned by the `bdbarnett` TestPyPI account |
 | `MICROPYTHON_LIB_DEPLOY_TOKEN` | Source repositories that publish MIP packages and `PyDevices/mip` | Dispatch the MIP request and commit the resulting index update |
-| `RELEASE_WORKFLOW_TOKEN` | LVGL release/synchronization automation | Allow the cross-repository LVGL workflow to commit and publish a GitHub Release |
+| `RELEASE_WORKFLOW_TOKEN` | **`lvgl-python` only** (`.github/workflows/sync-and-release.yml`) | Allow the cross-repository LVGL sync workflow to commit and publish a GitHub Release. No other repository reads it. |
 
 TestPyPI currently uses token authentication while the PyDevices TestPyPI
 organization request is pending. The upload action must receive:
