@@ -23,7 +23,7 @@ exact tag; it is not a way to publish an untagged branch or a different commit.
 | `palettes` | `pydevices-palettes` wheel and sdist | `palettes` |
 | `pdwidgets` | `pydevices-pdwidgets` wheel and sdist | `pdwidgets` |
 | `pygraphics` | `pydevices-pygraphics` Linux, Windows, Android, and PyEmscripten wheels | Pure-Python `pygraphics` |
-| `pydevices` | Dynamically discovered leaf distributions, `pydevices`, and `pydevices-desktop` | The same leaves plus `pydevices` and `pydevices-desktop` |
+| `pydevices` | `pydevices` (all of `lib/`) and `pydevices-desktop` | One package per `lib/` component, plus `pydevices` and `pydevices-desktop` |
 | `lvgl-python` | `pydevices-lvgl` Linux, Windows, Android, and PyEmscripten wheels | Nothing |
 
 The pip distribution names are prefixed with `pydevices-`; MIP package names
@@ -32,18 +32,27 @@ systems.
 
 ### The dynamic `pydevices` release
 
-The `pydevices` build does not maintain an inclusion list:
+The `pydevices` build does not maintain an inclusion list. **The distribution
+is exactly `lib/`, nothing more** — but the two ecosystems package it
+differently, because their constraints differ:
 
-- Every publishable module or package directly under `lib/` becomes a leaf
-  distribution and MIP package.
-- The `pydevices` meta-package depends on every discovered leaf.
-- Every publishable module or package under `utils/`, plus the desktop board
-  files selected by the shared builder, is bundled into `pydevices-desktop`.
+- **MIP is granular.** Every publishable module or package directly under
+  `lib/` becomes its own package, and the `pydevices` meta-package requires
+  all of them. Flash is scarce on a board, so `mip.install("displaydev")`
+  fetching only what it needs is worth having.
+- **pip is not.** All of `lib/` ships as the single `pydevices` distribution.
+  Nobody installs one leaf on a desktop, and the former per-component shape
+  produced eight distributions pinned to each other with `==version`, all
+  needing republication in lockstep.
+- Every publishable entry under `utils/`, plus everything publishable in
+  `board_configs/desktop/`, is bundled into `pydevices-desktop`.
 - `pydevices-desktop` depends on `pydevices`, so one install gets the complete
   desktop runtime.
-- All artifacts generated from one `pydevices` release have the same version.
-- TestPyPI internal dependencies use that exact version. MIP meta-package
-  dependencies resolve `latest` from the latest-only index.
+- All artifacts from one `pydevices` release share a version.
+- MIP meta-package dependencies resolve `latest` from the latest-only index.
+- Only `pydevices` and `pydevices-desktop` declare `pypi_publish`; the MIP leaf
+  packages deliberately do not, because they have no PyPI distribution of their
+  own.
 - Board `package.json` installers are not copied into the central MIP index.
   Install them from their documented raw GitHub paths; the desktop board
   runtime files themselves remain part of `pydevices-desktop`.
@@ -71,8 +80,10 @@ The following GitHub Actions secrets must already exist:
 | Secret | Where needed | Purpose |
 |---|---|---|
 | `TESTPYPI_API_TOKEN` | Every repository that uploads to TestPyPI | API token currently owned by the `bdbarnett` TestPyPI account |
-| `MICROPYTHON_LIB_DEPLOY_TOKEN` | Source repositories that publish MIP packages and `PyDevices/mip` | Dispatch the MIP request and commit the resulting index update |
-| `RELEASE_WORKFLOW_TOKEN` | **`lvgl-python` only** (`.github/workflows/sync-and-release.yml`) | Allow the cross-repository LVGL sync workflow to commit and publish a GitHub Release. No other repository reads it. |
+| `MICROPYTHON_LIB_DEPLOY_TOKEN` | Source repositories that publish MIP packages, and `PyDevices/mip` | Dispatch the MIP request and commit the resulting index update |
+| `RELEASE_WORKFLOW_TOKEN` | **`lvgl-python` only** (`sync-and-release.yml`) | Create the GitHub Release. Not redundant with `GITHUB_TOKEN`: a Release created with `GITHUB_TOKEN` does **not** trigger `on: release` workflows, so publishing would silently never run. |
+| `LVCPYTHON_MOD_DISPATCH_TOKEN` | **`lvgl-bindings` only** (`trigger-lvgl-python-release.yml`, `check-dispatch-token.yml`) | Dispatch `lvgl-python`'s sync workflow across repositories |
+| `VSCE_PAT`, `OVSX_PAT` | **`mpftp` only** (`publish-vsix.yml`) | VS Marketplace and Open VSX. Both optional; the steps skip when unset |
 
 TestPyPI currently uses token authentication while the PyDevices TestPyPI
 organization request is pending. The upload action must receive:
@@ -94,6 +105,33 @@ Before every release, confirm that the coordinator still references the
 intended stable shared-workflow ref and that the required secrets are present.
 Do not move or replace a stable publishing ref as part of an ordinary package
 release.
+
+## How the release chain is wired
+
+Each publishing repository has a ~26-line `publish-release-packages.yml` that
+calls one reusable workflow and supplies only what differs — the build kind, the
+distribution name, and the MIP profile:
+
+```yaml
+jobs:
+  publish:
+    uses: PyDevices/.github/.github/workflows/reusable-publish-release-packages.yml@publishing-v2
+    with:
+      build-kind: pure-python          # or native-and-wasm, pydevices-multi
+      distribution-name: pydevices-palettes
+      import-name: palettes
+      mip-profile: palettes            # omit to skip MIP, as lvgl-python does
+      release-ref: ${{ inputs.release-ref }}
+    secrets: inherit
+```
+
+That reusable resolves and validates the `vX.Y.Z` tag, runs the matching build,
+uploads to TestPyPI, and requests MIP publication. It replaced five copies of
+the same three jobs.
+
+**Callers pin `@publishing-v2`.** `publishing-v1` is left in place so a release
+cut before the consolidation can still be retried against the contract it was
+built with.
 
 ## Standard release procedure
 

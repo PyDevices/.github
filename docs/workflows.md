@@ -1,127 +1,123 @@
-# GitHub Actions workflows across the organization
+# GitHub Actions workflows
 
-An inventory of every workflow in the PyDevices repositories: which are shared,
-which are per-repo, and which deliberately differ. **Depth lives elsewhere** —
-this page says what exists and who owns it, and points at the runbook or guide
-that explains each area.
+What exists, in which repository, and why. Procedures live elsewhere:
+[publishing-automation.md](publishing-automation.md) for releases,
+[building-docs.md](building-docs.md) for documentation.
 
-| Area | Reference |
+**32 workflow files across 18 repositories.**
+
+## Reusable workflows (`PyDevices/.github`)
+
+Callers pin a tag, not a branch, so a change here does not alter a release
+until the tag moves. **`publishing-v2` is current**; `publishing-v1` remains for
+retrying a release cut before the consolidation.
+
+| Workflow | Purpose |
 |---|---|
-| Releasing and publishing packages | [publishing-automation.md](publishing-automation.md) |
-| The three library documentation sites | [building-docs.md](building-docs.md) |
-| Which repos publish a Pages site at all | [data/repos_db.json](../data/repos_db.json) |
+| `reusable-publish-release-packages.yml` | The whole release chain: resolve the tag, build, publish to TestPyPI, request MIP publication |
+| `reusable-build-pure-python-distribution.yml` | sdist + wheel for a pure-Python package |
+| `reusable-build-native-and-wasm-wheels.yml` | cibuildwheel: Linux, Windows, Android (PEP 738), Pyodide wasm32 |
+| `reusable-build-pydevices-distributions.yml` | The `pydevices` and `pydevices-desktop` distributions, derived from `lib/` and `utils/` |
+| `reusable-request-mip-publication.yml` | Dispatch into `mip`'s serialized publication queue |
+| `reusable-synchronize-mip-package.yml` | Copy a package into `mip` and generate its manifests |
+| `reusable-validate-pyscript-filesystem-toml.yml` | Check a `*.toml` filesystem map against the tree it claims to mirror |
 
-As of 2026-08-18 there are 47 workflow files across 18 repositories.
+The build workflows also check this repository out for its scripts, pinned by
+`publishing-tools-ref` — which defaults to `publishing-v2`, so workflows and
+scripts always come from the same tag.
 
----
+## Releasing
 
-## Reusable workflows (this repository)
+`publish-release-packages.yml` in five repositories, each a ~26-line caller of
+`reusable-publish-release-packages.yml`. All they supply is what differs:
 
-Called by other repositories at a stable ref, `PyDevices/.github@publishing-v1`.
-Changing one is an automation rollout, not a package release — see the runbook.
+| Repository | `build-kind` | Distribution | MIP profile |
+|---|---|---|---|
+| `pydevices` | `pydevices-multi` | `pydevices` | `pydevices` |
+| `palettes` | `pure-python` | `pydevices-palettes` | `palettes` |
+| `pdwidgets` | `pure-python` | `pydevices-pdwidgets` | `pdwidgets` |
+| `pygraphics` | `native-and-wasm` | `pydevices-pygraphics` | `pygraphics` |
+| `lvgl-python` | `native-and-wasm` | `pydevices-lvgl` | — none |
 
-| Workflow | Responsibility |
+Triggered by a published GitHub Release, or by `workflow_dispatch` with an exact
+`vX.Y.Z` tag to retry one.
+
+Cross-repository release plumbing:
+
+| Repository | Workflow | Role |
+|---|---|---|
+| `lvgl-bindings` | `trigger-lvgl-python-release.yml` | On a bindings change, dispatch `lvgl-python`'s sync |
+| `lvgl-bindings` | `check-dispatch-token.yml` | Manual check that `LVCPYTHON_MOD_DISPATCH_TOKEN` still works |
+| `lvgl-python` | `sync-and-release.yml` | Sync generated bindings, commit, publish a Release |
+| `mpftp` | `publish-vsix.yml` | Build the VSIX and publish to VS Marketplace / Open VSX |
+| `android-runner` | `release_apk.yml` | Build the APK that `pydevices/bin/android.py --install-apk` downloads |
+
+> `sync-and-release.yml` uses a PAT to create its own repository's Release, which
+> looks redundant and is not: **a Release created with `GITHUB_TOKEN` does not
+> trigger `on: release` workflows**, so `publish-release-packages.yml` would
+> never fire and nothing would reach TestPyPI.
+
+## MIP index (`mip`)
+
+| Workflow | Role |
 |---|---|
-| `reusable-build-pure-python-distribution.yml` | Build, check, clean-install, and upload one wheel/sdist artifact |
-| `reusable-build-native-and-wasm-wheels.yml` | Build Linux, Windows, Android, and PyEmscripten wheels into one validated artifact |
-| `reusable-build-pydevices-distributions.yml` | Discover `pydevices/lib` leaves and the `utils` desktop payload; build every exact-version distribution |
-| `reusable-request-mip-publication.yml` | Dispatch repository, ref, version, and profile to the central MIP queue |
-| `reusable-synchronize-mip-package.yml` | Synchronize one source release, validate the latest-only index, commit, and stage the Pages artifact |
-| `reusable-validate-pyscript-filesystem-toml.yml` | Reject stale generated PyScript filesystem mappings |
+| `process-mip-publication-request.yml` | Serialized queue consumer: synchronize a package, rebuild the index, deploy |
+| `deploy-mip-index-to-pages.yml` | Compile and publish the index. Triggers on the **`PyDevices`** branch, not `main` |
+| `validate-mip-package-index.yml` | Check index integrity |
+| `tests.yml`, `ruff.yml`, `commit-formatting.yml` | Inherited from micropython-lib upstream — leave them alone |
 
----
+## Testing and validation
 
-## `deploy.yml` — the Pages pipeline
+| Repository | Workflow | Notes |
+|---|---|---|
+| `pydevices` | `tests.yml` | Also validates board MIP installers |
+| `palettes`, `pdwidgets` | `tests.yml` | Sparse-checkout of sibling repos onto `PYTHONPATH` (`pdwidgets` needs four) |
+| `pygraphics` | `tests.yml` | Runs the suite twice — pure Python, then the native extension via `PYGRAPHICS_TEST_NATIVE=1` |
+| `pydevices-examples` | `tests.yml`, `manifests.yml` | Gallery and install-manifest freshness |
+| `pydevices`, `pygraphics` | `validate-pyscript-filesystem-toml.yml` | Standalone callers. `pdwidgets` and `palettes` call the same reusable as a job inside `tests.yml` |
 
-**The most replicated workflow in the organization: 12 byte-identical copies,
-plus two deliberate variants.** It is what makes the *Pages = marketing* rule
-work, and it is easy to delete by accident because nothing else references it.
+## Pages
 
-Every repository listed in [repos_db.json](../data/repos_db.json) must have one,
-paired with a checked-in `.site/` directory. Landing pages are generated into
-`.site/` from that database by
-[scripts/generate_sites.py](../scripts/generate_sites.py); `deploy.yml` is what
-publishes them.
+**Two repositories publish Pages**, plus the portal:
 
-The standard form triggers on pushes touching `.site/**` or itself, copies
-`.site/*` into `_site/`, touches `.nojekyll`, and pushes to the `gh-pages`
-branch with `peaceiris/actions-gh-pages@v4`.
-
-Two repositories differ, on purpose:
-
-| Repository | How it differs |
+| Repository | What it serves |
 |---|---|
-| `pydevices` | Also copies `bin/micropython.mjs` and `bin/micropython.wasm` into `_site/bin/`. Browser clients fetch that WebAssembly pair from Pages, so dropping it breaks them. `.site/` here is a landing page **plus redirect stubs** for the retired `pydevices.github.io/pydevices/<page>.html` URLs from before the docs became markdown. |
-| `pydevices-examples` | Publishes the PyScript gallery, so it does real work first: audits install-manifest freshness, checks gallery manifests, replaces symlinks under `_site/pyscript` with real trees, and stamps the PWA `CACHE_NAME` from a hash of the shell. |
+| `PyDevices.github.io` | The portal **and every repository's landing page**, at `/<repo>/`. Serves from `main`, no workflow |
+| `pydevices-examples` | `deploy.yml` — the PyScript gallery: manifest audits, symlink replacement, PWA cache stamping |
+| `mip` | `deploy-mip-index-to-pages.yml` — the package index |
 
-Two repositories in `repos_db.json` have **no** `deploy.yml`, correctly:
+Every other landing page is generated by
+[`scripts/generate_sites.py`](../scripts/generate_sites.py) into the portal
+repository from [`data/repos_db.json`](../data/repos_db.json). Where a page goes
+is the entry's `page` field: `portal-root`, `portal-subdir`, `self`, or `none`.
+There are no per-repo `deploy.yml` files and no `gh-pages` branches; thirteen of
+each were removed once the portal took over those paths.
 
-- **`mip`** uses its own `deploy-mip-index-to-pages.yml` (below).
-- **`PyDevices.github.io`** serves the repository root directly; there is nothing
-  to assemble.
+> A landing page is a single `index.html` referencing `/vendor/pydevices-chrome/`
+> and `/img/logo.svg` at the portal root. The chrome used to be copied into
+> fifteen repositories.
 
-Two repositories have no Pages site at all, by design — `.github` (this
-repository) and `android-runner`. Both are recorded with reasons in
-`repos_db.json` under `_meta.excluded`.
+## Documentation
 
-> **If a Pages site 404s, check this first.** In August 2026 an unrelated merge
-> removed `.site/` and `deploy.yml` from five repositories. The organization
-> portal kept linking all of them and the `gh-pages` branches were gone, so five
-> cards on the front page 404'd until it was noticed by accident.
+**No repository builds documentation in Actions.** ReadTheDocs builds
+`palettes`, `pdwidgets`, and `pygraphics` on push via the org GitHub App. A
+duplicate `mkdocs build` used to run here too and was deleted: it passed while
+two of the three sites were failing to publish, because `mkdocs` exits 0 and RTD
+then fails the build on output checks `mkdocs` cannot see.
 
----
+## Maintenance
 
-## Per-repository workflows
-
-### Releasing
-
-| Repository | Workflow | Purpose |
-|---|---|---|
-| `pydevices`, `palettes`, `pdwidgets`, `pygraphics`, `lvgl-python` | `publish-release-packages.yml` | The only package release coordinator. Calls the reusable workflows above. See the [runbook](publishing-automation.md). |
-| `lvgl-python` | `sync-and-release.yml` | Cross-repository LVGL sync and release. The only reader of `RELEASE_WORKFLOW_TOKEN`. |
-| `lvgl-bindings` | `trigger-lvgl-python-release.yml` | Dispatches the release above after bindings regenerate. |
-| `lvgl-bindings` | `check-dispatch-token.yml` | `workflow_dispatch` only. A manual credential check for that cross-repo dispatch — run it when a trigger fails silently. |
-| `mpftp` | `publish-vsix.yml` | Packages and publishes the VS Code extension. Not a Python distribution, so it is outside the runbook. |
-| `android-runner` | `release_apk.yml` | On `v*` tags, builds the multi-ABI Runner APK and attaches it to the GitHub Release. This is what `android.py --install-apk` downloads, so most users never build one. |
-
-### Testing and linting
-
-| Repository | Workflow | Notes |
-|---|---|---|
-| `pydevices`, `palettes`, `pdwidgets`, `pygraphics`, `pydevices-examples`, `mip` | `tests.yml` | Unit tests plus `ruff`. `pdwidgets` checks out sibling repositories first, because it imports `appdev`, `pygraphics`, and `palettes` from them. `pygraphics` runs the suite **twice** — pure Python and, with `PYGRAPHICS_TEST_NATIVE=1`, the native C extension — so the two implementations cannot drift apart again. |
-| `mip` | `ruff.yml` | Lint only, separate from `tests.yml`. |
-| `mip` | `commit-formatting.yml` | Enforces commit-message conventions inherited from upstream micropython-lib. |
-
-### Validation
-
-| Repository | Workflow | Notes |
-|---|---|---|
-| `pydevices`, `pygraphics` | `validate-pyscript-filesystem-toml.yml` | Thin caller of the reusable validator; rejects a stale committed TOML mapping. |
-| `pydevices-examples` | `manifests.yml` | Manifest freshness for the gallery and install packages. |
-| `mip` | `validate-mip-package-index.yml` | Validates the latest-only package index after a publication request lands. |
-
-### Documentation
-
-| Repository | Workflow | Notes |
-|---|---|---|
-| `palettes`, `pdwidgets`, `pygraphics` | `docs.yml` | The three ReadTheDocs library sites — the deliberate exception to the markdown-only rule. All three build with `strict: true`. See [building-docs.md](building-docs.md). |
-
-### MIP index
-
-| Repository | Workflow | Notes |
-|---|---|---|
-| `mip` | `process-mip-publication-request.yml` | Receives the serialized queue dispatch and runs the reusable synchronizer. |
-| `mip` | `deploy-mip-index-to-pages.yml` | Publishes the index to Pages. Note it triggers on the **`PyDevices`** branch, not `main`. |
-
----
+`dependabot.yml` watches pinned action versions in the ten repositories that
+have workflows, grouped into one weekly PR each. `mip` is excluded — its
+workflows come from upstream.
 
 ## Conventions
 
-- **A repository in `repos_db.json` has `.site/` and a `deploy.yml`.** The only
-  exceptions are the two recorded above.
-- **Package releases go through the runbook**, never a bespoke per-repo release
-  job. `publish-vsix.yml` and `release_apk.yml` are not Python distributions and
-  are the exceptions.
-- **Never edit `.site/index.html` by hand** — regenerate from the database.
-- **Shared logic belongs in a `reusable-*.yml` here**, called at a stable ref, not
-  copied between repositories.
+- Pin actions to a major version (`actions/checkout@v4`).
+- Logic shared by more than one repository belongs in a `reusable-*.yml` here,
+  called at a pinned tag.
+- Path filters on `push` and `pull_request`; `workflow_dispatch` on anything you
+  might need to re-run by hand.
+- A workflow that writes to another repository needs a token in `secrets`;
+  `GITHUB_TOKEN` cannot reach across repositories, and cannot trigger another
+  workflow even within one.
