@@ -101,7 +101,7 @@ jobs:
           path: wheelhouse/*.whl
           if-no-files-found: error
 
-  build-wasm-wheel:
+  build-wasm-wheels:
     runs-on: ubuntu-latest
     steps:
       - name: Check out exact release
@@ -120,36 +120,16 @@ jobs:
             exit 1
           }
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v6
-        with:
-          enable-cache: true
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
-      - name: Build PyEmscripten WASM wheel
+      # cibuildwheel drives pyodide-build and the emscripten xbuildenv itself,
+      # and builds every Pyodide target the `build` selector allows -- currently
+      # cp313/pyemscripten_2025_0 and cp314/pyemscripten_2026_0. The retired
+      # scripts/build_pyodide_wheel.sh produced only the latter.
+      - name: Build WASM wheels
+        uses: pypa/cibuildwheel@v4.1.0
         env:
-          WHEEL_PREFIX: ${{ inputs.wheel-filename-prefix }}
-        run: |
-          uv python install 3.14
-          ./scripts/build_pyodide_wheel.sh --no-copy
-          mkdir -p wheelhouse
-          shopt -s nullglob
-          wheels=(
-            dist/${WHEEL_PREFIX}-*-pyemscripten_*_wasm32.whl
-            dist/${WHEEL_PREFIX}-*-pyodide_*_wasm32.whl
-            dist/${WHEEL_PREFIX}-*-emscripten_*_wasm32.whl
-          )
-          if ((${#wheels[@]} == 0)); then
-            echo "No WASM wheel found in dist/ for $WHEEL_PREFIX" >&2
-            exit 1
-          fi
-          cp -f "${wheels[@]}" wheelhouse/
+          CIBW_PLATFORM: pyodide
 
-      - name: Upload WASM wheel
+      - name: Upload WASM wheels
         uses: actions/upload-artifact@v4
         with:
           name: native-wheels-${{ inputs.distribution-name }}-wasm
@@ -160,7 +140,7 @@ jobs:
     needs:
       - build-desktop-wheels
       - build-android-wheels
-      - build-wasm-wheel
+      - build-wasm-wheels
     runs-on: ubuntu-latest
     steps:
       - name: Download every platform wheel
