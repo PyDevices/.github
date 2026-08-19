@@ -119,11 +119,8 @@ installed on the org with access to **all repositories** (see
 That app delivers push/PR events to RTD — do **not** add a manual
 `readthedocs.org/api/v2/webhook/...` hook on the repo.
 
-> **Installing the app on the org is not the same as connecting a project to
-> it.** Both are required. A project that is still on the legacy integration has
-> `remote_repository: none` in the API and shows a *"You have projects that need
-> to be migrated to the new GitHub App"* banner on the dashboard — see
-> [Symptom: pushes do not trigger builds](#symptom-pushes-do-not-trigger-builds).
+Docs projects on the same app: **pygraphics**,
+**palettes**, **pdwidgets**.
 
 ### First-time setup (new project)
 
@@ -151,33 +148,11 @@ That app delivers push/PR events to RTD — do **not** add a manual
 ### Migrating a legacy (webhook) project to the GitHub App
 
 Older imports used a per-repo webhook under GitHub **Settings → Webhooks**.
-All three PyDevices docs projects (**pygraphics**, **palettes**, **pdwidgets**)
-were imported that way and their legacy webhooks have been removed.
-
-Migrate each one at
-[Migrate to GitHub App](https://app.readthedocs.org/accounts/migrate-to-github-app/).
-New projects should use the App from the start (no manual webhook).
-
-#### Symptom: pushes do not trigger builds
-
-With the legacy webhook removed but the migration not completed, a project has
-**no trigger at all**. Builds succeed when started by hand and never start on
-their own, which looks like a broken build system and is not one.
-
-Check it without logging in:
-
-```bash
-curl -s https://app.readthedocs.org/api/v3/projects/<slug>/ | grep -o '"remote_repository":[^,]*'
-```
-
-`null` means the project is not connected to the App. Compare the newest build's
-commit against the branch head:
-
-```bash
-curl -s "https://app.readthedocs.org/api/v3/projects/<slug>/builds/?limit=1"
-```
-
-If that commit is behind `main`, the push was never delivered.
+Those PyDevices docs projects (**pygraphics**, **palettes**, **pdwidgets**) have
+been migrated to the org GitHub App via
+[Migrate to GitHub App](https://app.readthedocs.org/accounts/migrate-to-github-app/);
+legacy webhooks are removed. New projects should use the App from the start
+(no manual webhook).
 
 ### Ongoing
 
