@@ -47,6 +47,16 @@ See also: https://github.com/PyDevices/pydevices/blob/main/docs/displaydev.md
   Document public methods that live on private implementation bases when they surface via inheritance
   (e.g. provider `Timer` classes ← `_TimerCore.init` / `deinit` with `inherited_members: true`).
 
+## Types
+
+Type information goes in the **docstring**, not the signature. These packages
+run on MicroPython, where annotations cost bytecode and RAM.
+
+Stubs are the planned answer for pip consumers who want real types — see
+[Planned: type stubs](publishing-automation.md#planned-type-stubs-for-every-published-package).
+Do not add `py.typed` to a package: it tells a type checker to trust inline
+annotations that deliberately are not there.
+
 ## Verification
 
 From the repo root:

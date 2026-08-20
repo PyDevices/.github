@@ -106,6 +106,64 @@ intended stable shared-workflow ref and that the required secrets are present.
 Do not move or replace a stable publishing ref as part of an ordinary package
 release.
 
+## Planned: type stubs for every published package
+
+**Not started. Recorded so the reasoning is not re-derived.**
+
+Intent: ship `.pyi` stubs for all published packages so pip consumers get real
+type information.
+
+### Why stubs rather than annotations
+
+These packages run on MicroPython, where annotations cost bytecode and RAM.
+That is why the convention is types in docstrings, not signatures. A `.pyi`
+file carries the same information for a type checker, costs nothing at
+runtime, and never reaches a device — MIP installs `.py` files only, verified
+against the live index.
+
+The org already does this elsewhere: `lvgl-bindings` generates `lvgl.pyi` and
+syncs it into `lvgl-python`, and `pydevices-examples/tools/typings/` holds a
+tree of `.pyi` for MicroPython builtins.
+
+### The `py.typed` constraint
+
+Maintainer preference is **no `py.typed` files**. PEP 561 makes that a real
+constraint rather than a formatting choice: a type checker ignores `.pyi`
+bundled inside a regular package unless `py.typed` is present. Stubs dropped
+into the `pydevices` wheel without the marker would ship and never be read.
+
+Two mechanisms avoid the marker:
+
+| Mechanism | pip-installable | Needs `py.typed` |
+|---|---|---|
+| **GitHub Release assets** — `.pyi` attached per tag, consumer points `mypy_path` / `stubPath` at them | no, manual setup | no — not a distribution |
+| **A `pydevices-stubs` distribution** — importable dirs named `multimer-stubs/`, `displaydev-stubs/`, … | yes | no — PEP 561 exempts stub-only packages |
+
+Maintainer picked release assets when asked. The `-stubs` route was surfaced
+afterwards and satisfies both constraints more completely; decide between them
+before starting.
+
+### Scope
+
+Roughly 633 functions across `appdev`, `audiodev`, `displaydev`, and
+`multimer`. `stubgen` (mypy) is the starting point, but on unannotated source
+it emits mostly `Any`, which is worth nothing to a consumer — the work is
+hand-writing signatures. Treat generation as scaffolding, not output.
+
+`displaydev` is partly annotated already (101 of 310 functions), clustered in
+the host backends — `sdldisplay` 19/42, `pgdisplay` 17/33 — while MCU-facing
+files such as `windisplay` are at 0/27. Those inline annotations are a
+reasonable seed for its stubs, and `busdisplay` at 16/26 is worth a look on
+its own, since that is MCU code carrying a cost the convention says it should
+not.
+
+### What prompted this
+
+`lib/multimer/py.typed` was removed in the 0.1.4 cycle. It claimed the package
+shipped inline types while annotating 0 of 151 functions, which makes checker
+inference strictly worse than no marker: `py.typed` tells a checker to trust
+inline types and stop looking for stubs.
+
 ## How the release chain is wired
 
 Each publishing repository has a ~26-line `publish-release-packages.yml` that
