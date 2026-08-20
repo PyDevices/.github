@@ -27,14 +27,16 @@ PROFILES = {
         package="pdwidgets",
         description="Cross-platform widget toolkit for PyDevices",
         pypi_name="pydevices-pdwidgets",
-        # (MIP package name, PyPI distribution that provides it). MIP stays
-        # granular; on PyPI the whole of pydevices/lib ships as one
-        # distribution, so appdev and multimer both point at "pydevices".
-        requirements=(
-            ("pydevices", "pydevices"),
-            ("pygraphics", "pydevices-pygraphics"),
-            ("palettes", "pydevices-palettes"),
-        ),
+        # No cross-repository requirements. micropython-lib resolves require()
+        # by inclusion at build time, so these three shipped all of pydevices,
+        # pygraphics, and palettes inside the pdwidgets package -- 212 files
+        # for a widget toolkit. Removed until build.py can emit real install
+        # time deps; see "Planned: real MIP dependencies" in
+        # docs/publishing-automation.md.
+        #
+        # The PyPI side keeps proper dependencies in pdwidgets/pyproject.toml;
+        # only MIP loses them.
+        requirements=(),
     ),
     "pygraphics": Profile(
         package="pygraphics",

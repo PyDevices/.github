@@ -109,6 +109,68 @@ intended stable shared-workflow ref and that the required secrets are present.
 Do not move or replace a stable publishing ref as part of an ordinary package
 release.
 
+## Planned: real MIP dependencies instead of `require()` inclusion
+
+**Not started.** Cross-repository `require()`s were removed in the meantime, so
+MIP packages currently have **no** dependencies at all — see "Current state"
+below.
+
+### The finding
+
+`mip`'s package format supports install-time dependencies, and the client
+resolves them. `utils/mip.py` walks `package_json["deps"]` and recursively
+installs each entry, which is how board-config `package.json` files work
+(`"deps": [["pydevices", "latest"]]`).
+
+`build.py` never emits that field. The string `deps` appears in it exactly
+once, in a comment on the format:
+
+```
+#   "deps": [   <-- not used by micropython-lib packages
+```
+
+`require()` in a `manifest.py` is a **build-time include**, inherited from the
+manifest system used to freeze modules into firmware. It folds the required
+package's files into the requiring package and emits one flat file list.
+
+So the three layers disagree: the format supports deps, the client resolves
+deps, the builder never writes them.
+
+### What that produced
+
+Before removal, `pdwidgets` required `pydevices`, `pygraphics`, and `palettes`
+— and its index entry was **212 files with `deps: null`**, carrying a complete
+copy of all three. A board installing `pdwidgets` and `pydevices` wrote every
+`lib/` file twice, and `pdwidgets` could not be updated without re-fetching
+everything it had absorbed.
+
+### Two ways to fix it
+
+| Approach | Scope | Cost |
+|---|---|---|
+| **Patch `build.py`** so `require()` emits a `deps` entry rather than inlining | The whole index | Changes behaviour for the ~25 inherited upstream packages too — `aioble` and friends require each other — and is a permanent fork divergence to carry against upstream |
+| **Emit hand-written `package.json`** for PyDevices packages, as board configs already do, bypassing the manifest path | PyDevices packages only | Leaves upstream untouched, but means maintaining a second publishing path alongside `synchronize_mip_package.py` |
+
+The second is narrower and does not touch inherited files, which
+[repo-layout.md](repo-layout.md) protects. The first is more honest if the
+index is to behave like a package index generally.
+
+Either way, verify against a real device install before switching: `deps`
+resolution is client-side, so an older `mip` on a board may not honour it.
+
+### Current state
+
+Cross-repository `require()`s are removed from every profile. Consequences:
+
+- **MIP:** `mip.install("pdwidgets")` installs *only* `pdwidgets`. Its
+  dependencies must be installed by hand — the README and `docs/index.md` now
+  say so explicitly.
+- **pip:** unaffected. `pdwidgets/pyproject.toml` keeps real dependencies and
+  pip resolves them normally.
+- `pydevices-desktop` still requires `pydevices`. That one is intra-repository
+  — both are generated from the same source tree — so it is inclusion of code
+  that ships together anyway, not another repo's package.
+
 ## Planned: type stubs for every published package
 
 **Not started. Recorded so the reasoning is not re-derived.**
