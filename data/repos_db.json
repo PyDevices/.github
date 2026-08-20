@@ -16,7 +16,7 @@
       },
       "3": {
         "name": "LVGL Native Extensions & Binding Generator",
-        "hint": "Single-source LVGL C header binding generator and native runtime modules."
+        "hint": "Single-source LVGL C header binding generator and native interpreter modules."
       },
       "4": {
         "name": "Target App Hosts & PWA Templates",
@@ -473,7 +473,7 @@
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "pydevices-examples",
     "headline": "pydevices-examples — Showcase, demos & PyScript runner.",
-    "description": "Comprehensive example code, interactive PyScript browser demos, board configurations, and multi-runtime showcase benchmarks.",
+    "description": "Comprehensive example code, interactive PyScript browser demos, board configurations, and multi-interpreter showcase benchmarks.",
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -503,7 +503,7 @@
     "tier_name": "Organization Portal",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "PyDevices Portal",
-    "headline": "One display & hardware contract. 5 Python runtimes.",
+    "headline": "One display & hardware contract. 5 Python interpreters.",
     "description": "Cross-platform hardware driver engine, board contract specification, and display stack for MicroPython, CircuitPython, CPython, PyScript, and Android.",
     "buttons": [
       {

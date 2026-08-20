@@ -36,9 +36,9 @@ body:
       required: false
 
   - type: input
-    id: runtime
+    id: interpreter
     attributes:
-      label: Runtime & version
+      label: Interpreter & version
       description: MicroPython / CircuitPython / CPython, version, and board/platform if relevant.
       placeholder: e.g. MicroPython 1.28 on ESP32-S3, or CPython 3.12 on Windows
     validations:

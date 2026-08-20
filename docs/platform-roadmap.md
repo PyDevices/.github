@@ -137,7 +137,7 @@ is closed. What remains is judgement about prominence, not missing content.
 
 **Touchpoints:** `pydevices-examples` (`docs/platforms/`, `docs/guides/pyscript-pwa.md`, optionally `platforms/index.md` matrix wording). Cross-link from Android TV / webOS / iOS docs-only notes so PWA is not reinvented per track.
 
-**Not in this workstream:** new PWA runtime features or native shells — documentation and positioning only.
+**Not in this workstream:** new PWA interpreter features or native shells — documentation and positioning only.
 
 ---
 

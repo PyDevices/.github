@@ -20,9 +20,9 @@ If you're not sure which repo an issue or PR belongs to, open it on
 
 ## 🐛 Reporting bugs / requesting features
 
-Use the issue templates on the relevant repo. Include the runtime
+Use the issue templates on the relevant repo. Include the interpreter
 (MicroPython/CircuitPython/CPython), version, and platform/board where
-applicable — most bugs here are runtime- or hardware-specific.
+applicable — most bugs here are interpreter- or hardware-specific.
 
 For open-ended questions, ideas, or show-and-tell, use
 [pydevices Discussions](https://github.com/PyDevices/pydevices/discussions)

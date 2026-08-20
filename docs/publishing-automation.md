@@ -50,7 +50,7 @@ differently, because their constraints differ:
 - Every publishable entry under `utils/`, plus everything publishable in
   `board_configs/desktop/`, is bundled into `pydevices-desktop`.
 - `pydevices-desktop` depends on `pydevices`, so one install gets the complete
-  desktop runtime.
+  desktop stack.
 - All artifacts from one `pydevices` release share a version.
 - MIP meta-package dependencies resolve `latest` from the latest-only index.
 - Only `pydevices` and `pydevices-desktop` declare `pypi_publish`; the MIP leaf
@@ -58,7 +58,7 @@ differently, because their constraints differ:
   own.
 - Board `package.json` installers are not copied into the central MIP index.
   Install them from their documented raw GitHub paths; the desktop board
-  runtime files themselves remain part of `pydevices-desktop`.
+  library files themselves remain part of `pydevices-desktop`.
 
 Adding or removing a publishable entry under `lib/` or `utils/` therefore
 changes the next release automatically. Review the generated package set as

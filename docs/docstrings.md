@@ -27,7 +27,7 @@ See also: https://github.com/PyDevices/pydevices/blob/main/docs/displaydev.md
 
 - What the class is for and when to use it vs alternatives.
 - `Args` for constructor parameters when non-obvious.
-- Short usage example only when setup is not obvious (e.g. `Runtime`, `BusDisplay`).
+- Short usage example only when setup is not obvious (e.g. `App`, `BusDisplay`).
 
 ## Method / function docstrings
 
@@ -42,7 +42,7 @@ See also: https://github.com/PyDevices/pydevices/blob/main/docs/displaydev.md
 ## Repository-specific notes
 
 - **`Area` returns:** Drawing helpers that return dirty regions use `pygraphics.Area` (`x`, `y`, `w`, `h`).
-- **Runtime:** Document poll/subscribe patterns; link to [Events concept](https://github.com/PyDevices/pydevices/blob/main/docs/appdev.md).
+- **App:** Document poll/subscribe patterns; link to [Events concept](https://github.com/PyDevices/pydevices/blob/main/docs/appdev.md).
 - **Private API:** Names starting with `_` are excluded from mkdocstrings output; minimal or no docstrings are fine.
   Document public methods that live on private implementation bases when they surface via inheritance
   (e.g. provider `Timer` classes ← `_TimerCore.init` / `deinit` with `inherited_members: true`).

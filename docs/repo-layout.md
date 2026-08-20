@@ -81,7 +81,7 @@ Examples:
 | [pydevices-examples](https://github.com/PyDevices/pydevices-examples) | `requirements-dev.txt` | Playwright, pytest, Jupyter, ruff, … — not product runtime |
 | [lvgl-python](https://github.com/PyDevices/lvgl-python) | `requirements-dev.txt` | Local editable build / wheel tooling; users install `pydevices-lvgl` |
 | [android-template](https://github.com/PyDevices/android-template) | `requirements-dev.txt` | Host buildozer/Cython for APK builds — not packaged into the APK |
-| [pyscript-template](https://github.com/PyDevices/pyscript-template) | none | Static app template; PyScript runtime is vendored only for Pages deployment |
+| [pyscript-template](https://github.com/PyDevices/pyscript-template) | none | Static app template; PyScript interpreter is vendored only for Pages deployment |
 
 ## Exceptions
 
@@ -99,7 +99,7 @@ Examples:
 
 ## Preferred search paths (`MICROPYPATH` / `PYTHONPATH`)
 
-On hosted runtimes — CPython, the MicroPython unix and Windows ports, CircuitPython
+On hosted interpreters — CPython, the MicroPython unix and Windows ports, CircuitPython
 unix — set:
 
 ```bash
@@ -114,7 +114,7 @@ set MICROPYPATH=.;.frozen;lib;utils;%USERPROFILE%\.micropython\lib
 set PYTHONPATH=.;lib;utils
 ```
 
-This mirrors the default search order on hosted runtimes and on hardware MCUs —
+This mirrors the default search order on hosted interpreters and on hardware MCUs —
 where `.frozen`, the user's `~/.micropython/lib`, and the system
 `/usr/lib/micropython` are searched by default — while appending `.` (the current
 folder), `lib/` (the local workspace), and `utils/` (shared dev tools). Custom

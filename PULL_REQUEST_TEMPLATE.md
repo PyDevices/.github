@@ -12,5 +12,5 @@ Provide a concise summary of the changes made and the motivation behind them.
 ## Verification & Testing
 
 Describe the tests or hardware verification steps taken:
-- [ ] Verified on hardware / simulator (specify board/target runtime)
+- [ ] Verified on hardware / simulator (specify board/target interpreter)
 - [ ] All unit tests pass cleanly (`pytest` / local test runner)

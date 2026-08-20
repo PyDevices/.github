@@ -129,7 +129,7 @@ def build(root: Path, output: Path, version: str) -> None:
         desktop,
         "pydevices-desktop",
         version,
-        "Complete PyDevices desktop runtime and board configuration",
+        "Complete PyDevices desktop stack and board configuration",
         [f"pydevices=={version}"],
     )
     stages.append(desktop)
