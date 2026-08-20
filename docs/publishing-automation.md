@@ -36,14 +36,17 @@ The `pydevices` build does not maintain an inclusion list. **The distribution
 is exactly `lib/`, nothing more** — but the two ecosystems package it
 differently, because their constraints differ:
 
-- **MIP is granular.** Every publishable module or package directly under
-  `lib/` becomes its own package, and the `pydevices` meta-package requires
-  all of them. Flash is scarce on a board, so `mip.install("displaydev")`
-  fetching only what it needs is worth having.
-- **pip is not.** All of `lib/` ships as the single `pydevices` distribution.
-  Nobody installs one leaf on a desktop, and the former per-component shape
-  produced eight distributions pinned to each other with `==version`, all
-  needing republication in lockstep.
+- **Both ecosystems ship `lib/` as a single package.** On PyPI that is the
+  `pydevices` distribution; on MIP the `pydevices` package.
+- Publishing a package per component was tried and dropped. micropython-lib
+  resolves `require()` by **inclusion at build time**, not as a dependency
+  edge, so the index materialised every required component's files into each
+  package that required it -- `displaydev` and `appdev` each carried their own
+  copy of `events.py`, and installing both wrote it twice. The granularity was
+  an illusion, and it cost a package per component to maintain.
+- The trade is real but bounded: a display-only board installs about 232 KiB
+  more source than `displaydev` alone used to pull. Revisit if that starts to
+  matter on a target.
 - Every publishable entry under `utils/`, plus everything publishable in
   `board_configs/desktop/`, is bundled into `pydevices-desktop`.
 - `pydevices-desktop` depends on `pydevices`, so one install gets the complete

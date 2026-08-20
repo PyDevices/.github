@@ -31,9 +31,8 @@ PROFILES = {
         # granular; on PyPI the whole of pydevices/lib ships as one
         # distribution, so appdev and multimer both point at "pydevices".
         requirements=(
-            ("appdev", "pydevices"),
+            ("pydevices", "pydevices"),
             ("pygraphics", "pydevices-pygraphics"),
-            ("multimer", "pydevices"),
             ("palettes", "pydevices-palettes"),
         ),
     ),
@@ -54,10 +53,9 @@ PROFILE_REPOSITORIES = {
     "pydevices": "PyDevices/pydevices",
 }
 
-PYDEVICES_REQUIREMENTS = {
-    "displaydev": ("events", "keys"),
-    "appdev": ("events", "keys", "multimer"),
-}
+# No internal dependency table: lib/ ships as a single MIP package, so the graph
+# between its components is imports rather than package requirements. It was
+# needed while each component was published separately.
 # The desktop package ships utils/ plus the desktop board config. Both are
 # whole directories, so there is nothing to enumerate: publishable() already
 # filters README.md, package.json, and __pycache__ out of the latter.
@@ -122,7 +120,7 @@ def copy_component(source: Path, destination: Path) -> None:
 PYPI_DISTRIBUTIONS = {"pydevices", "pydevices-desktop"}
 
 
-def render_pydevices_manifest(name: str, version: str, requirements: tuple[str, ...], payload: str | None) -> str:
+def render_pydevices_manifest(name: str, version: str, requirements: tuple[str, ...], payloads: tuple[str, ...] = ()) -> str:
     lines = [
         "metadata(",
         f'    description="PyDevices {name}",',
@@ -134,8 +132,7 @@ def render_pydevices_manifest(name: str, version: str, requirements: tuple[str, 
         lines.append(f'    pypi_publish="{name}",')
     lines.append(")")
     lines.extend(f'require("{requirement}")' for requirement in requirements)
-    if payload:
-        lines.append(payload)
+    lines.extend(payloads)
     lines.append("")
     return "\n".join(lines)
 
@@ -148,39 +145,38 @@ def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> No
         shutil.rmtree(destination_root)
     destination_root.mkdir(parents=True)
 
-    leaf_names: list[str] = []
+    # One package for the whole of lib/, matching the PyPI distribution.
+    # Publishing a package per component bought nothing: micropython-lib
+    # resolves require() by inclusion at build time, not as a dependency edge,
+    # so the index materialised every component's files into each package that
+    # required it -- installing two of them wrote the shared files twice.
+    package = destination_root / "pydevices"
+    package.mkdir()
+    payloads: list[str] = []
+    names: list[str] = []
     for source in sorted(filter(publishable, (source_root / "lib").iterdir()), key=lambda path: path.name):
-        name = source.stem if source.is_file() else source.name
-        leaf_names.append(name)
-        destination = destination_root / name
-        destination.mkdir()
-        copy_component(source, destination / source.name)
-        payload = f'module("{source.name}")' if source.is_file() else f'package("{name}")'
-        (destination / "manifest.py").write_text(
-            render_pydevices_manifest(name, version, PYDEVICES_REQUIREMENTS.get(name, ()), payload),
-            encoding="utf-8",
-        )
+        names.append(source.stem if source.is_file() else source.name)
+        copy_component(source, package / source.name)
+        payloads.append(f'module("{source.name}")' if source.is_file() else f'package("{source.name}")')
 
-    if len(leaf_names) != len(set(leaf_names)):
+    if len(names) != len(set(names)):
         raise SystemExit("lib/ contains colliding module and package names")
 
-    meta = destination_root / "pydevices"
-    meta.mkdir()
-    (meta / "manifest.py").write_text(
-        render_pydevices_manifest("pydevices", version, tuple(leaf_names), None), encoding="utf-8"
+    (package / "manifest.py").write_text(
+        render_pydevices_manifest("pydevices", version, (), tuple(payloads)), encoding="utf-8"
     )
 
     desktop = destination_root / "pydevices-desktop"
     desktop.mkdir()
-    payloads: list[str] = []
+    desktop_payloads: list[str] = []
     for source in sorted(filter(publishable, (source_root / "utils").iterdir()), key=lambda path: path.name):
         copy_component(source, desktop / source.name)
-        payloads.append(f'module("{source.name}")' if source.is_file() else f'package("{source.name}")')
+        desktop_payloads.append(f'module("{source.name}")' if source.is_file() else f'package("{source.name}")')
     for source in sorted(filter(publishable, (source_root / PYDEVICES_DESKTOP_DIR).iterdir()), key=lambda path: path.name):
         copy_component(source, desktop / source.name)
-        payloads.append(f'module("{source.name}")' if source.is_file() else f'package("{source.name}")')
-    manifest = render_pydevices_manifest("pydevices-desktop", version, ("pydevices",), None)
-    manifest += "\n".join(payloads) + "\n"
+        desktop_payloads.append(f'module("{source.name}")' if source.is_file() else f'package("{source.name}")')
+    manifest = render_pydevices_manifest("pydevices-desktop", version, ("pydevices",))
+    manifest += "\n".join(desktop_payloads) + "\n"
     (desktop / "manifest.py").write_text(manifest, encoding="utf-8")
 
 
