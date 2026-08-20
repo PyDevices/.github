@@ -1,5 +1,17 @@
 name: Reusable synchronize MIP package
 
+# Rebuilds the whole MIP index from source at publish time. The package trees
+# are no longer committed to mip: they were build output that looked like
+# editable source, and every fix had to be made at the generator and never in
+# mip. What is committed instead is pydevices-lock.json, recording the released
+# tag of each source repository.
+#
+# build.py compiles every manifest.py in the repository, so all four sources
+# must be present in the working tree -- not just the one being released. The
+# lockfile is what makes that reproducible: without it a release of palettes
+# would rebuild pydevices from whatever main happened to be, publishing
+# unreleased work.
+
 on:
   workflow_call:
     inputs:
@@ -29,6 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PACKAGE_INDEX_PATH: /tmp/pydevices-mip-site
+      LOCKFILE: pydevices-lock.json
     steps:
       - name: Mint an installation token for mip
         id: app-token
@@ -45,13 +58,6 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
 
-      - name: Check out the exact product release
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ inputs.source-repository }}
-          ref: ${{ inputs.source-ref }}
-          path: .publication-source
-
       - name: Check out shared publishing tools
         uses: actions/checkout@v4
         with:
@@ -59,22 +65,57 @@ jobs:
           ref: ${{ inputs.publishing-tools-ref }}
           path: .pydevices-publishing-tools
 
-      - name: Synchronize package sources
+      - name: Record this release in the lockfile
         env:
           PUBLICATION_PROFILE: ${{ inputs.profile }}
-          RELEASE_VERSION: ${{ inputs.version }}
+          SOURCE_REPOSITORY: ${{ inputs.source-repository }}
+          SOURCE_REF: ${{ inputs.source-ref }}
         run: |
-          python .pydevices-publishing-tools/scripts/synchronize_mip_package.py \
-            --source-repository .publication-source \
-            --source-repository-name "${{ inputs.source-repository }}" \
-            --mip-repository . \
-            --profile "$PUBLICATION_PROFILE" \
-            --version "$RELEASE_VERSION"
+          python3 - <<'PY'
+          import json, os, pathlib
+          path = pathlib.Path(os.environ["LOCKFILE"])
+          lock = json.loads(path.read_text())
+          profile = os.environ["PUBLICATION_PROFILE"]
+          if profile not in lock:
+              raise SystemExit(f"{profile!r} is not in {path}; add it before publishing")
+          lock[profile] = {
+              "repository": os.environ["SOURCE_REPOSITORY"],
+              "ref": os.environ["SOURCE_REF"],
+          }
+          path.write_text(json.dumps(lock, indent=2) + "\n")
+          print(f"{profile} -> {lock[profile]['ref']}")
+          PY
 
-      - name: Remove temporary publication checkouts
-        run: rm -rf .publication-source .pydevices-publishing-tools
+      - name: Synchronize every locked source into the working tree
+        run: |
+          set -euo pipefail
+          rm -rf .publication-sources && mkdir -p .publication-sources
 
-      - name: Build and validate the complete latest-only index
+          python3 -c "
+          import json
+          for profile, entry in json.load(open('$LOCKFILE')).items():
+              print(profile, entry['repository'], entry['ref'])
+          " | while read -r profile repository ref; do
+            echo "::group::$profile @ $ref"
+            # Public repositories: a shallow anonymous clone is enough, and
+            # keeps the App token scoped to writing mip rather than reading
+            # four other repositories.
+            git clone --quiet --depth 1 --branch "$ref" \
+              "https://github.com/${repository}.git" ".publication-sources/${profile}"
+            version="${ref#v}"
+            python .pydevices-publishing-tools/scripts/synchronize_mip_package.py \
+              --source-repository ".publication-sources/${profile}" \
+              --source-repository-name "$repository" \
+              --mip-repository . \
+              --profile "$profile" \
+              --version "$version"
+            echo "::endgroup::"
+          done
+
+      - name: Remove temporary checkouts
+        run: rm -rf .publication-sources .pydevices-publishing-tools
+
+      - name: Build the complete latest-only index
         run: |
           rm -rf "$PACKAGE_INDEX_PATH"
           source tools/ci.sh
@@ -82,16 +123,47 @@ jobs:
           ci_build_packages_check_manifest
           ci_build_packages_compile_index
 
-      - name: Commit the complete source release atomically
+      - name: Verify every synchronized package reached the index
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, sys
+
+          index_root = pathlib.Path(os.environ["PACKAGE_INDEX_PATH"])
+          lock = json.loads(pathlib.Path(os.environ["LOCKFILE"]).read_text())
+          published = index_root / "package" / "py"
+
+          # Every manifest.py in the repository must have produced an index
+          # entry. Without this a mis-synchronized package deploys as a
+          # silently missing one -- the difference between a stale index and a
+          # broken one.
+          expected = sorted({p.parent.name for p in pathlib.Path("micropython").rglob("manifest.py")})
+          missing = [n for n in expected if not (published / n / "latest.json").is_file()]
+          print(f"{len(expected)} manifests, {len(list(published.iterdir()))} packages in the index")
+          if missing:
+              print("MISSING FROM INDEX:", missing, file=sys.stderr)
+              raise SystemExit(1)
+
+          # And each locked package must be at the version the lockfile names.
+          for profile, entry in lock.items():
+              want = entry["ref"].lstrip("v")
+              got = json.loads((published / profile / "latest.json").read_text())["version"]
+              if got != want:
+                  print(f"{profile}: index has {got}, lockfile says {want}", file=sys.stderr)
+                  raise SystemExit(1)
+              print(f"  {profile} {got}")
+          print("index matches the lockfile")
+          PY
+
+      - name: Commit the lockfile
         env:
           SOURCE_REPOSITORY: ${{ inputs.source-repository }}
           RELEASE_VERSION: ${{ inputs.version }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add --all micropython
+          git add "$LOCKFILE"
           if git diff --cached --quiet; then
-            echo "MIP sources already match ${SOURCE_REPOSITORY} v${RELEASE_VERSION}."
+            echo "Lockfile already records ${SOURCE_REPOSITORY} v${RELEASE_VERSION}."
           else
             git commit -m "Publish ${SOURCE_REPOSITORY#*/} v${RELEASE_VERSION}"
             git push origin HEAD
