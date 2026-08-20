@@ -15,9 +15,6 @@ on:
         description: Central MIP synchronization profile
         required: true
         type: string
-    secrets:
-      mip-publication-token:
-        required: true
 
 permissions:
   contents: read
@@ -26,9 +23,18 @@ jobs:
   request-serialized-mip-publication:
     runs-on: ubuntu-latest
     steps:
+      - name: Mint an installation token for mip
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.PYDEVICES_APP_ID }}
+          private-key: ${{ secrets.PYDEVICES_APP_PRIVATE_KEY }}
+          owner: PyDevices
+          repositories: mip
+
       - name: Dispatch the exact release to the MIP queue
         env:
-          GH_TOKEN: ${{ secrets.mip-publication-token }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           SOURCE_REPOSITORY: ${{ github.repository }}
           SOURCE_REF: ${{ inputs.release-ref }}
           RELEASE_VERSION: ${{ inputs.version }}

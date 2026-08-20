@@ -16,11 +16,8 @@ on:
         required: true
         type: string
       publishing-tools-ref:
-        default: publishing-v2
+        default: publishing-v3
         type: string
-    secrets:
-      mip-publication-token:
-        required: true
 
 permissions:
   contents: write
@@ -33,10 +30,19 @@ jobs:
     env:
       PACKAGE_INDEX_PATH: /tmp/pydevices-mip-site
     steps:
+      - name: Mint an installation token for mip
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.PYDEVICES_APP_ID }}
+          private-key: ${{ secrets.PYDEVICES_APP_PRIVATE_KEY }}
+          owner: PyDevices
+          repositories: mip
+
       - name: Check out the MIP index source
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.mip-publication-token }}
+          token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
 
       - name: Check out the exact product release
