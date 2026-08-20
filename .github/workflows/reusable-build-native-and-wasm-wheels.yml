@@ -34,7 +34,7 @@ jobs:
           - windows-latest
     steps:
       - name: Check out exact release
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ inputs.release-ref }}
           submodules: ${{ inputs.checkout-submodules && 'recursive' || 'false' }}
@@ -51,10 +51,10 @@ jobs:
           fi
 
       - name: Build native wheels
-        uses: pypa/cibuildwheel@v4.1.0
+        uses: pypa/cibuildwheel@v4.2.0
 
       - name: Upload native wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: native-wheels-${{ inputs.distribution-name }}-${{ matrix.os }}
           path: wheelhouse/*.whl
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out exact release
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ inputs.release-ref }}
           submodules: ${{ inputs.checkout-submodules && 'recursive' || 'false' }}
@@ -80,22 +80,22 @@ jobs:
           }
 
       - name: Set up Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
 
       - name: Build Android wheels
-        uses: pypa/cibuildwheel@v4.1.0
+        uses: pypa/cibuildwheel@v4.2.0
         env:
           CIBW_PLATFORM: android
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
       - name: Upload Android wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: native-wheels-${{ inputs.distribution-name }}-android
           path: wheelhouse/*.whl
@@ -105,7 +105,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out exact release
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ inputs.release-ref }}
           submodules: ${{ inputs.checkout-submodules && 'recursive' || 'false' }}
@@ -125,12 +125,12 @@ jobs:
       # cp313/pyemscripten_2025_0 and cp314/pyemscripten_2026_0. The retired
       # scripts/build_pyodide_wheel.sh produced only the latter.
       - name: Build WASM wheels
-        uses: pypa/cibuildwheel@v4.1.0
+        uses: pypa/cibuildwheel@v4.2.0
         env:
           CIBW_PLATFORM: pyodide
 
       - name: Upload WASM wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: native-wheels-${{ inputs.distribution-name }}-wasm
           path: wheelhouse/*.whl
@@ -144,7 +144,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download every platform wheel
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: native-wheels-${{ inputs.distribution-name }}-*
           merge-multiple: true
@@ -179,7 +179,7 @@ jobs:
           python -m twine check dist/*.whl
 
       - name: Upload complete validated wheel set
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: testpypi-${{ inputs.distribution-name }}-${{ inputs.version }}
           path: dist/*.whl
