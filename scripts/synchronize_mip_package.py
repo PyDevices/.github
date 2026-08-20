@@ -67,11 +67,16 @@ PYDEVICES_DESKTOP_DIR = "board_configs/desktop"
 
 
 def ignore_debris(_directory: str, names: list[str]) -> set[str]:
+    # publishable() gates the top level; this gates everything nested inside a
+    # package directory, which copytree would otherwise take wholesale. That is
+    # how four *.metadata.json editor artifacts once shipped inside appdev.
     ignored = {"__pycache__", "build", "dist"}
     return {
         name
         for name in names
-        if name.startswith(".") or name in ignored or name.endswith((".pyc", ".pyo"))
+        if name.startswith(".")
+        or name in ignored
+        or name.endswith((".pyc", ".pyo", ".metadata.json"))
     }
 
 

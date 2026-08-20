@@ -34,7 +34,13 @@ def components(directory: Path) -> list[Path]:
 
 def copy_component(source: Path, destination: Path) -> None:
     if source.is_dir():
-        shutil.copytree(source, destination, ignore=shutil.ignore_patterns(".*", "__pycache__", "*.pyc", "*.pyo"))
+        # Mirrors ignore_debris in synchronize_mip_package.py: the top level is
+        # gated by publishable(), everything nested is gated here.
+        shutil.copytree(
+            source,
+            destination,
+            ignore=shutil.ignore_patterns(".*", "__pycache__", "*.pyc", "*.pyo", "*.metadata.json"),
+        )
     else:
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
