@@ -246,7 +246,7 @@ def build_above_the_fold_html(repo_name, data):
         deps_str = ','.join(deps)
         app_url = hero_canvas.get('app_url', f'https://PyDevices.github.io/assets/apps/{app_name}.py')
         canvas_id = 'hero_canvas'
-        container_class = 'hero-canvas-circle' if shape == 'round' else 'hero-canvas-rect'
+        container_class = 'hero-canvas-circle' if shape == 'round' else 'hero-canvas-square'
 
         canvas_html = (
             f'    <div class="hero-canvas-wrap" data-hero-canvas="{canvas_id}" data-hero-app="{app_name}" data-hero-deps="{deps_str}" data-hero-app-url="{app_url}">\n'

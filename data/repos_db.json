@@ -40,6 +40,16 @@
     "eyebrow": "pydevices",
     "headline": "pydevices — Hardware Abstraction Layer & Core Contract.",
     "description": "Unified pure-Python hardware abstraction layer and core device contract for MicroPython, CircuitPython, CPython, Pyodide WASM, and Android.",
+    "hero_canvas": {
+      "app": "encoder",
+      "width": 240,
+      "height": 240,
+      "shape": "round",
+      "deps": [
+        "pydevices"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/encoder.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -71,6 +81,16 @@
     "eyebrow": "displayif",
     "headline": "displayif — C hardware bus engine & usermod drivers.",
     "description": "High-performance C hardware bus engines (SPI, I2C, Intel 8080, RGB/DPI, MIPI DSI) and native usermod display drivers for MicroPython and CircuitPython.",
+    "hero_canvas": {
+      "app": "bus_scope",
+      "width": 240,
+      "height": 240,
+      "shape": "square",
+      "deps": [
+        "pydevices"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/bus_scope.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -102,6 +122,18 @@
     "eyebrow": "pygraphics",
     "headline": "pygraphics — 2D graphics engine & canvas framebuffer.",
     "description": "Pure-Python 2D graphics library with drawing primitives, anti-aliased font rendering, paletted surface blitting, and area-dirtying pipelines.",
+    "hero_canvas": {
+      "app": "simon",
+      "width": 240,
+      "height": 240,
+      "shape": "round",
+      "deps": [
+        "pydevices",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/simon.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -133,6 +165,19 @@
     "eyebrow": "pdwidgets",
     "headline": "pdwidgets — Pure-Python UI widget toolkit.",
     "description": "Lightweight object-oriented UI widget framework including buttons, sliders, progress bars, labels, and event routing for PyDevices screens.",
+    "hero_canvas": {
+      "app": "sensor_deck",
+      "width": 240,
+      "height": 240,
+      "shape": "square",
+      "deps": [
+        "pydevices",
+        "pydevices-pdwidgets",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/sensor_deck.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -164,6 +209,18 @@
     "eyebrow": "palettes",
     "headline": "palettes — Color math, gradients & swatch palettes.",
     "description": "Color management library with RGB565 / RGB888 conversion, HSL / HSV color spaces, palette swatches, and smooth gradient generators.",
+    "hero_canvas": {
+      "app": "palette_orb",
+      "width": 240,
+      "height": 240,
+      "shape": "round",
+      "deps": [
+        "pydevices",
+        "pydevices-palettes",
+        "pydevices-pygraphics"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/palette_orb.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -257,6 +314,17 @@
     "eyebrow": "lvgl-python",
     "headline": "lvgl-python — CPython & Pyodide WASM extension wheels.",
     "description": "Pre-built CPython extension wheels and Pyodide WASM packages bringing LVGL v9 to desktop Linux, macOS, Windows, and web browsers.",
+    "hero_canvas": {
+      "app": "thermostat",
+      "width": 240,
+      "height": 240,
+      "shape": "round",
+      "deps": [
+        "pydevices",
+        "pydevices-lvgl"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/thermostat.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -319,6 +387,18 @@
     "eyebrow": "pyscript-template",
     "headline": "pyscript-template — Offline PWA starter template.",
     "description": "Progressive Web App starter template repository for deploying offline-capable client-side PyDevices applications on GitHub Pages.",
+    "hero_canvas": {
+      "app": "radar_scope",
+      "width": 240,
+      "height": 240,
+      "shape": "round",
+      "deps": [
+        "pydevices",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/radar_scope.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -443,6 +523,18 @@
     "eyebrow": "cmods",
     "headline": "cmods — Multi-usermod C compilation workspace.",
     "description": "Out-of-tree C build workspace for compiling MicroPython and CircuitPython firmware binaries with displayif drivers and LVGL bindings.",
+    "hero_canvas": {
+      "app": "polyhedron",
+      "width": 240,
+      "height": 240,
+      "shape": "square",
+      "deps": [
+        "pydevices",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/polyhedron.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
