@@ -109,13 +109,13 @@
         "primary": true
       },
       {
-        "label": "PyPI Package",
-        "href": "https://pypi.org/project/pydevices-pygraphics/",
+        "label": "Read the Docs",
+        "href": "https://pygraphics.readthedocs.io",
         "tier_color": true
       },
       {
-        "label": "PyScript Demos",
-        "href": "https://pydevices.github.io/pydevices-examples/pyscript/",
+        "label": "TestPyPI",
+        "href": "https://test.pypi.org/project/pydevices-pygraphics/",
         "tier_color": true
       },
       {
@@ -145,8 +145,8 @@
         "tier_color": true
       },
       {
-        "label": "PyScript Demos",
-        "href": "https://pydevices.github.io/pydevices-examples/pyscript/",
+        "label": "TestPyPI",
+        "href": "https://test.pypi.org/project/pydevices-pdwidgets/",
         "tier_color": true
       },
       {
@@ -171,13 +171,13 @@
         "primary": true
       },
       {
-        "label": "PyPI Package",
-        "href": "https://pypi.org/project/pydevices-palettes/",
+        "label": "Read the Docs",
+        "href": "https://palettes.readthedocs.io",
         "tier_color": true
       },
       {
-        "label": "PyScript Demos",
-        "href": "https://pydevices.github.io/pydevices-examples/pyscript/",
+        "label": "TestPyPI",
+        "href": "https://test.pypi.org/project/pydevices-palettes/",
         "tier_color": true
       },
       {
