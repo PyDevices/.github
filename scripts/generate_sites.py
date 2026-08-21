@@ -84,6 +84,19 @@ def validate_db(db):
                 f'_meta.tiers[{tier}].name {tiers[tier]["name"]!r}'
             )
 
+        hero_canvas = data.get('hero_canvas')
+        if hero_canvas is not None:
+            if not isinstance(hero_canvas, dict):
+                problems.append(f'{name}: hero_canvas must be an object')
+            else:
+                for req in ('app', 'width', 'height'):
+                    if req not in hero_canvas:
+                        problems.append(f'{name}: hero_canvas missing {req}')
+                app_name = hero_canvas.get('app')
+                app_path = os.path.join(ASSETS_DIR, 'apps', f'{app_name}.py')
+                if app_name and not os.path.exists(app_path):
+                    problems.append(f'{name}: hero_canvas app {app_name}.py not found in {os.path.relpath(app_path, BASE_DIR)}')
+
     valid_pages = {'portal-root', 'portal-subdir', 'self', 'none'}
     roots = [n for n, d in repos(db).items() if page_destination(d) == 'portal-root']
     for name, data in repos(db).items():
@@ -223,6 +236,51 @@ def build_above_the_fold_html(repo_name, data):
 
     buttons_joined = '\n'.join(button_html_list)
 
+    hero_canvas = data.get('hero_canvas')
+    if hero_canvas:
+        app_name = hero_canvas.get('app', 'watch')
+        width = hero_canvas.get('width', 240)
+        height = hero_canvas.get('height', 240)
+        shape = hero_canvas.get('shape', 'round')
+        deps = hero_canvas.get('deps', ['pydevices', 'pydevices-lvgl'])
+        deps_str = ','.join(deps)
+        app_url = hero_canvas.get('app_url', f'https://PyDevices.github.io/assets/apps/{app_name}.py')
+        canvas_id = 'hero_canvas'
+        container_class = 'hero-canvas-circle' if shape == 'round' else 'hero-canvas-rect'
+
+        canvas_html = (
+            f'    <div class="hero-canvas-wrap" data-hero-canvas="{canvas_id}" data-hero-app="{app_name}" data-hero-deps="{deps_str}" data-hero-app-url="{app_url}">\n'
+            f'      <div class="{container_class}">\n'
+            f'        <div class="hero-canvas-loader">\n'
+            f'          <div class="hero-spinner"></div>\n'
+            f'          <span class="hero-canvas-status">Live Pure-Python Device</span>\n'
+            f'        </div>\n'
+            f'        <canvas id="{canvas_id}" width="{width}" height="{height}" tabindex="0"></canvas>\n'
+            f'      </div>\n'
+            f'    </div>'
+        )
+
+        return (
+            f'  <!-- PYDEVICES-ABOVE-THE-FOLD: START -->\n'
+            f'  <div id="pydevices-site-header"></div>\n\n'
+            f'  <!-- Hero Banner -->\n'
+            f'  <section class="hero wrap has-hero-canvas">\n'
+            f'    <div class="hero-main">\n'
+            f'      <div class="hero-lead">\n'
+            f'        <div class="logo-badge product-mark" style="background: linear-gradient(135deg, {theme_color}, {dark_gradient}); color: #fff;">{mark}</div>\n'
+            f'        <span class="eyebrow" style="color: {theme_color};">{eyebrow}</span>\n'
+            f'      </div>\n'
+            f'      <h1>{headline}</h1>\n'
+            f'      <p><code>{repo_name}</code> {description}</p>\n'
+            f'      <div class="cta">\n'
+            f'{buttons_joined}\n'
+            f'      </div>\n'
+            f'    </div>\n'
+            f'{canvas_html}\n'
+            f'  </section>\n'
+            f'  <!-- PYDEVICES-ABOVE-THE-FOLD: END -->'
+        )
+
     return (
         f'  <!-- PYDEVICES-ABOVE-THE-FOLD: START -->\n'
         f'  <div id="pydevices-site-header"></div>\n\n'
@@ -309,6 +367,7 @@ PAGE_SKELETON = '''<!doctype html>
   <script src="/vendor/pydevices-chrome/site-chrome.js"></script>
   <script src="/vendor/pydevices-chrome/theme-toggle.js"></script>
   <script src="/vendor/pydevices-chrome/tree-nav.js"></script>
+  <script src="/vendor/pydevices-chrome/hero-runtime.js"></script>
 </body>
 </html>
 '''
@@ -343,8 +402,8 @@ def _copy_chrome_into(site_root):
     os.makedirs(vendor_dir, exist_ok=True)
     os.makedirs(img_dir, exist_ok=True)
 
-    for fname in ('site.css', 'site-chrome.js', 'tree-nav.js', 'theme-toggle.js'):
-        src = os.path.join(ASSETS_DIR, 'js' if fname.endswith('.js') else 'css', fname)
+    for fname in ('site.css', 'site-chrome.js', 'tree-nav.js', 'theme-toggle.js', 'hero-runtime.js', 'mip.py'):
+        src = os.path.join(ASSETS_DIR, 'js' if fname.endswith(('.js', '.py')) else 'css', fname)
         if os.path.exists(src):
             shutil.copy2(src, os.path.join(vendor_dir, fname))
 
@@ -363,6 +422,15 @@ def sync_assets(db):
     every repo URL, so an out-of-date copy links to pages that no longer exist.
     """
     _copy_chrome_into(os.path.join(BASE_DIR, PORTAL_REPO))
+
+    # Sync static standalone apps into portal assets/apps/
+    apps_src = os.path.join(ASSETS_DIR, 'apps')
+    if os.path.exists(apps_src):
+        portal_apps = os.path.join(BASE_DIR, PORTAL_REPO, 'assets/apps')
+        os.makedirs(portal_apps, exist_ok=True)
+        for app_file in os.listdir(apps_src):
+            shutil.copy2(os.path.join(apps_src, app_file), os.path.join(portal_apps, app_file))
+
     for repo_name, data in repos(db).items():
         if page_destination(data) == 'self':
             _copy_chrome_into(os.path.join(BASE_DIR, repo_name, '.site'))

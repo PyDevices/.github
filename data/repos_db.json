@@ -505,6 +505,17 @@
     "eyebrow": "PyDevices Portal",
     "headline": "One display & hardware contract. 5 Python interpreters.",
     "description": "Cross-platform hardware driver engine, board contract specification, and display stack for MicroPython, CircuitPython, CPython, PyScript, and Android.",
+    "hero_canvas": {
+      "app": "watch",
+      "width": 240,
+      "height": 240,
+      "shape": "round",
+      "deps": [
+        "pydevices",
+        "pydevices-lvgl"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/watch.py"
+    },
     "buttons": [
       {
         "label": "GitHub Org",
