@@ -252,6 +252,18 @@
     "eyebrow": "lvgl-bindings",
     "headline": "lvgl-bindings — Automated C header parser & binding generator.",
     "description": "Automated binding generator parsing LVGL C headers into native CPython extensions, MicroPython usermods, and CircuitPython modules.",
+    "hero_canvas": {
+      "app": "ast_parser",
+      "width": 240,
+      "height": 240,
+      "shape": "square",
+      "deps": [
+        "pydevices",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/ast_parser.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -283,6 +295,17 @@
     "eyebrow": "lvgl-micropython",
     "headline": "lvgl-micropython — MicroPython C usermod for LVGL v9.",
     "description": "Native MicroPython C module integrating LVGL v9 graphics engine with displayif bus drivers across ESP32, RP2040, and i.MX RT targets.",
+    "hero_canvas": {
+      "app": "mp_console",
+      "width": 240,
+      "height": 240,
+      "shape": "round",
+      "deps": [
+        "pydevices",
+        "pydevices-lvgl"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/mp_console.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -356,6 +379,18 @@
     "eyebrow": "lvgl-circuitpython",
     "headline": "lvgl-circuitpython — CircuitPython native LVGL C module.",
     "description": "CircuitPython native C module providing LVGL v9 bindings and displayif integration for Adafruit Feather and SAMD51 / RP2040 boards.",
+    "hero_canvas": {
+      "app": "circuit_dial",
+      "width": 240,
+      "height": 240,
+      "shape": "round",
+      "deps": [
+        "pydevices",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/circuit_dial.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -430,6 +465,18 @@
     "eyebrow": "android-template",
     "headline": "android-template — Android APK Buildozer project.",
     "description": "Pre-configured python-for-android build recipes and Buildozer project template for packaging PyDevices applications into native Android APKs.",
+    "hero_canvas": {
+      "app": "mobile_pad",
+      "width": 240,
+      "height": 240,
+      "shape": "square",
+      "deps": [
+        "pydevices",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/mobile_pad.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -461,6 +508,18 @@
     "eyebrow": "mpftp",
     "headline": "mpftp — IDE serial FTP & REPL extension.",
     "description": "Dual-pane serial FTP file manager, in-editor REPL console, and board flasher extension for VS Code, Antigravity IDE, and Cursor.",
+    "hero_canvas": {
+      "app": "ftp_scope",
+      "width": 240,
+      "height": 240,
+      "shape": "square",
+      "deps": [
+        "pydevices",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/ftp_scope.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
