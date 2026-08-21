@@ -551,6 +551,18 @@
     "eyebrow": "mip",
     "headline": "mip — PyDevices MIP package index & distribution.",
     "description": "Single source of truth (SoT) for precompiled MicroPython .mpy bytecode packages and pure-Python library distributions across the PyDevices ecosystem.",
+    "hero_canvas": {
+      "app": "package_matrix",
+      "width": 240,
+      "height": 240,
+      "shape": "round",
+      "deps": [
+        "pydevices",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/package_matrix.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -625,6 +637,18 @@
     "eyebrow": "pydevices-examples",
     "headline": "pydevices-examples — Showcase, demos & PyScript runner.",
     "description": "Comprehensive example code, interactive PyScript browser demos, board configurations, and multi-interpreter showcase benchmarks.",
+    "hero_canvas": {
+      "app": "benchmark_deck",
+      "width": 240,
+      "height": 240,
+      "shape": "square",
+      "deps": [
+        "pydevices",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/benchmark_deck.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
