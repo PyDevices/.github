@@ -434,7 +434,7 @@ def _copy_chrome_into(site_root):
     os.makedirs(chrome_dir, exist_ok=True)
     os.makedirs(img_dir, exist_ok=True)
 
-    for fname in ('site.css', 'site-chrome.js', 'theme-toggle.js', 'hero-runtime.js'):
+    for fname in ('site.css', 'site-chrome.js', 'theme-toggle.js', 'hero-runtime.js', 'docs-runtime.js'):
         src = os.path.join(ASSETS_DIR, 'js' if fname.endswith('.js') else 'css', fname)
         if os.path.exists(src):
             shutil.copy2(src, os.path.join(chrome_dir, fname))
