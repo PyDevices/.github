@@ -70,8 +70,9 @@ class PortalRequestHandler(SimpleHTTPRequestHandler):
         self.send_header("X-PyDevices-Server", self.server_signature)
         if self.coi_enabled:
             self.send_header("Cross-Origin-Opener-Policy", "same-origin")
-            self.send_header("Cross-Origin-Embedder-Policy", "require-corp")
+            self.send_header("Cross-Origin-Embedder-Policy", "credentialless")
             self.send_header("Cross-Origin-Resource-Policy", "cross-origin")
+            self.send_header("Access-Control-Allow-Origin", "*")
         super().end_headers()
 
     def translate_path(self, path: str) -> str:
