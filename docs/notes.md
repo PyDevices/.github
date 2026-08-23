@@ -7,6 +7,10 @@ so it can sync with the org clone without being a product/docs surface.
 
 ## Todo
 
+### WebAssembly runtime
+
+- [ ] Evaluate worker execution for the direct MicroPython WebAssembly host after the main-thread bridge and browser migrations are stable. Define framebuffer, input, audio, timer, and Python-buffer ownership across the worker boundary before implementation. _(cmods, pydevices, dotgithub)_
+
 ### Frozen & standalone apps
 
 - [ ] Frozen self-installer for MicroPython (Unix + `micropython.exe`) — see [`docs/frozen-self-installer-notes.md`](frozen-self-installer-notes.md) *(pydevices-examples, micropython-lib)*

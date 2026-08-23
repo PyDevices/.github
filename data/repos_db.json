@@ -39,7 +39,7 @@
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "pydevices",
     "headline": "pydevices — Hardware Abstraction Layer & Core Contract.",
-    "description": "Unified pure-Python hardware abstraction layer and core device contract for MicroPython, CircuitPython, CPython, Pyodide WASM, and Android.",
+    "description": "Unified pure-Python hardware abstraction layer and core device contract for MicroPython, CircuitPython, CPython, direct WebAssembly, Pyodide, and Android.",
     "hero_canvas": {
       "app": "encoder",
       "width": 240,
@@ -62,8 +62,8 @@
         "tier_color": true
       },
       {
-        "label": "PyScript Demos",
-        "href": "https://pydevices.github.io/pydevices-examples/pyscript/",
+        "label": "WebAssembly Gallery",
+        "href": "https://pydevices.github.io/pydevices-examples/gallery/",
         "tier_color": true
       },
       {
@@ -360,8 +360,8 @@
         "tier_color": true
       },
       {
-        "label": "PyScript Demos",
-        "href": "https://pydevices.github.io/pydevices-examples/pyscript/",
+        "label": "WebAssembly Gallery",
+        "href": "https://pydevices.github.io/pydevices-examples/gallery/",
         "tier_color": true
       },
       {
@@ -635,8 +635,8 @@
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "pydevices-examples",
-    "headline": "pydevices-examples — Showcase, demos & PyScript runner.",
-    "description": "Comprehensive example code, interactive PyScript browser demos, board configurations, and multi-interpreter showcase benchmarks.",
+    "headline": "pydevices-examples — Showcase, demos & WebAssembly gallery.",
+    "description": "Comprehensive example code, direct MicroPython WebAssembly demos, board configurations, and multi-interpreter showcase benchmarks.",
     "hero_canvas": {
       "app": "benchmark_deck",
       "width": 240,
@@ -656,8 +656,8 @@
         "primary": true
       },
       {
-        "label": "PyScript Demos",
-        "href": "https://pydevices.github.io/pydevices-examples/pyscript/",
+        "label": "WebAssembly Gallery",
+        "href": "https://pydevices.github.io/pydevices-examples/gallery/",
         "tier_color": true
       },
       {
@@ -703,8 +703,8 @@
         "tier_color": true
       },
       {
-        "label": "PyScript Demos",
-        "href": "https://pydevices.github.io/pydevices-examples/pyscript/",
+        "label": "WebAssembly Gallery",
+        "href": "https://pydevices.github.io/pydevices-examples/gallery/",
         "tier_color": true
       },
       {
