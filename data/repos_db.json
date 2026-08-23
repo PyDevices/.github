@@ -19,7 +19,7 @@
         "hint": "Single-source LVGL C header binding generator and native interpreter modules."
       },
       "4": {
-        "name": "Target App Hosts & PWA Templates",
+        "name": "App Hosts & Mobile",
         "hint": "Deploy PyDevices apps directly to desktop browsers or mobile APKs."
       },
       "5": {
@@ -417,7 +417,7 @@
   "pyscript-template": {
     "tier": 4,
     "page": "portal-subdir",
-    "tier_name": "Target App Hosts & PWA Templates",
+    "tier_name": "App Hosts & Mobile",
     "theme_color": "var(--tier-4-purple)",
     "eyebrow": "pyscript-template",
     "headline": "pyscript-template — Offline PWA starter template.",
@@ -460,7 +460,7 @@
   "android-template": {
     "tier": 4,
     "page": "portal-subdir",
-    "tier_name": "Target App Hosts & PWA Templates",
+    "tier_name": "App Hosts & Mobile",
     "theme_color": "var(--tier-4-purple)",
     "eyebrow": "android-template",
     "headline": "android-template — Android APK Buildozer project.",

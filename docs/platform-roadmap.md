@@ -33,7 +33,7 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 | Bucket | Targets |
 |--------|---------|
 | **Pursue now** (parallel OK) | Linux KMS; Android TV / Fire OS; webOS / Tizen (PyScript only) |
-| **Docs only** | PWA (installable PyScript — **where they run**); iOS / iPadOS via PyScript |
+| **Docs only** | PWA (Simulator & template — **where they run**); iOS / iPadOS via PyScript |
 | **Not a platform track** | FreeRTOS board expansion; Zephyr |
 | **Ruled out** | Native iOS; watchOS; Switch / Vita / PS; native webOS / Tizen |
 
@@ -45,7 +45,7 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 | Android TV / Fire OS | Medium–High | **Pursue** | Phone Android treated as stable. Why-comments on new edits. |
 | LG webOS / Samsung Tizen (web) | Low–Medium | **Pursue** (web only) | PyScript TV examples + remote/key bridge; **no native SDL**. Why-comments on new edits. |
 | iOS / iPadOS via PyScript | Low–Medium | **Docs note only** | Position Mobile Safari / `PSDisplay` in platform docs; no dedicated smoke campaign. |
-| Progressive Web Apps (PyScript) | N/A (ships today) | **Docs only** | Major pydevices-examples feature — document **where PWAs run** (browser×OS×install UX) in platform docs; how-to already in `guides/pyscript-pwa.md`. |
+| Progressive Web Apps (PyScript) | N/A (ships today) | **Docs only** | Centralized in PyDevices Simulator & `pyscript-template` — document **where PWAs run** (browser×OS×install UX) in platform docs. |
 | Native iOS / iPadOS app | Low–Medium | **Ruled out** | Foreseeable roadmap: Apple path is PyScript-in-Safari (docs note) only. |
 | Apple watchOS | Very Low | **Ruled out** | Entirely. |
 | FreeRTOS / new MCU boards | Medium (via MP) | **Not a platform track** | Normal `displayif` + board_config product work. |
@@ -58,71 +58,35 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 
 ## Pursue workstreams
 
-### 1. Linux KMS / bare framebuffer (no WM)
+### Linux KMS (no window manager)
 
-**Goal:** Validated pydevices-examples on embedded Linux without X11/Wayland, reusing `SDLDisplay` first.
-
-**Phase 0 (do first):**
-
-- Document and validate `SDL_VIDEODRIVER=kmsdrm` with existing `SDLDisplay` + `usdl2` on a Pi/SBC (or equivalent) without a desktop.
-- Validate the canonical `pydevices/board_configs/desktop/` config under KMS; add a specialized host config there only if environment selection is insufficient.
-- ~~Platform doc notes~~ **Done 2026-08-18** — KMS, `SDL_VIDEODRIVER` selection, and the headless-CI variant are documented in [`pydevices/docs/install-workflows.md` § System prerequisites](https://github.com/PyDevices/pydevices/blob/main/docs/install-workflows.md).
-
-**Later (only if SDL KMS is insufficient):**
-
-- Native fbdev mmap or DRM/GBM path (`displayif` or new module) behind a DisplayDriver-compatible wrapper — do **not** start this until Phase 0 is tried.
-
-**Touchpoints:** `pydevices` (`displaydev`, desktop config, `pydevices-desktop`) and `pydevices-examples` (examples/docs).
-
-**Why-comments:** required on every KMS-enabling edit.
+- Primary test path: standard CPython venv on desktop Linux with `SDL_VIDEODRIVER=kmsdrm` (VT console or headless VM).
+- Validate displaydev / SDL2 initialization and frame loop under KMS.
+- Include why-comments on any KMS-specific workarounds.
 
 ---
 
-### 2. Android TV / Fire OS
+### Android TV / Fire OS
 
-**Goal:** Same CPython + SDL Android stack as phone, with TV launcher + remote/D-pad input. Phone Android is treated as **already stable** — do not block on phone work.
-
-**First steps:**
-
-- TV / leanback launcher intent category in `android-template` packaging (`buildozer.spec` / p4a as needed).
-- Android TV host settings (fullscreen assumptions, 10-foot scale hints); extend the canonical desktop config only if needed.
-- Map D-pad / enter / back through the neutral PyDevices input contracts in `pydevices` (why-comment each mapping).
-- ~~Document in `pydevices-examples`~~ **Done 2026-08-18** — [`pydevices/docs/android.md` § Android TV / Fire OS](https://github.com/PyDevices/pydevices/blob/main/docs/android.md) covers the leanback framebuffer and the remote → `keys` mapping.
-- Optional: Android TV emulator smoke under `android-template/scripts/`.
-
-**Touchpoints:** `android-template`, `pydevices` (portable input/config packages), and `pydevices-examples` (examples/docs); TestPyPI `pydevices-desktop` changes only if TV input/SDL gaps appear.
-
-**Why-comments:** required on every new edit for this track.
+- Validate remote D-pad navigation and key event mapping (`keys.K_UP`, `keys.K_DOWN`, `keys.K_SELECT`).
+- Ensure landscape orientation lock and overscan margins for TV displays.
 
 ---
 
-### 3. LG webOS / Samsung Tizen (web / PyScript only)
+### LG webOS / Samsung Tizen (web only)
 
-**Goal:** TV web story via existing `PSDisplay` — **no** native `SDLDisplay` / platform C++ shells.
-
-**First steps:**
-
-- PyScript TV-oriented examples under `pydevices-examples/web/pyscript/` (e.g. `tv/`): large fonts, remote-friendly layout.
-- JS key / remote bridge notes for webOS / Tizen key codes (why-comment bridge hooks).
-- Short platform doc note: webOS/Tizen = browser/PyScript only.
-
-**Touchpoints:** `pydevices-examples` (`web/pyscript`, examples/docs) and `pydevices` only if portable key normalization must change.
-
-**Why-comments:** required on every new edit for this track.
+- TV browsers run Chromium; leverage PyScript web stack.
+- Remote control input mapped to keyboard chords.
 
 ---
 
 ## Docs only
 
-### Progressive Web Apps (PWA) — major pydevices-examples feature
+### Progressive Web Apps (PWA)
 
-**Goal:** Treat installable / offline PyScript apps as a **first-class** platform story, documented as clearly as MCU / desktop / Android APK — especially **where** a pydevices-examples PWA actually runs.
+**Goal:** Treat installable / offline PyScript apps as a **first-class** platform story, documented as clearly as MCU / desktop / Android APK — especially **where** a PyDevices PWA actually runs.
 
-**Largely done as of 2026-08-18.** The how-to now lives with the repo that owns
-the subject: [`pyscript-template/docs/pwa-guide.md`](https://github.com/PyDevices/pyscript-template/blob/main/docs/pwa-guide.md)
-(manifest, service worker, COI, GitHub Pages), and the **where PWAs run** host
-matrix was folded into it from the retired `platforms/pwa.md` — so the gap below
-is closed. What remains is judgement about prominence, not missing content.
+The how-to lives with the repo that owns the subject: [`pyscript-template/docs/pwa-guide.md`](https://github.com/PyDevices/pyscript-template/blob/main/docs/pwa-guide.md) (manifest, service worker, COI, GitHub Pages), alongside the centralized offline [PyDevices Simulator](https://pydevices.github.io/simulator/).
 
 **Remaining:**
 
@@ -135,17 +99,14 @@ is closed. What remains is judgement about prominence, not missing content.
 - Clarify standalone vs tab behavior, offline/cache expectations, and install UX differences per host.
 - Keep implementation detail in the PWA how-to; **platform docs own “where it runs.”**
 
-**Touchpoints:** `pydevices-examples` (`docs/platforms/`, `docs/guides/pyscript-pwa.md`, optionally `platforms/index.md` matrix wording). Cross-link from Android TV / webOS / iOS docs-only notes so PWA is not reinvented per track.
+**Touchpoints:** `pyscript-template` (`docs/pwa-guide.md`) and `PyDevices.github.io` (`simulator/`). Cross-link from Android TV / webOS / iOS docs-only notes so PWA is not reinvented per track.
 
 **Not in this workstream:** new PWA interpreter features or native shells — documentation and positioning only.
 
----
-
 ### iOS / iPadOS via PyScript
 
-- Add a short note in `pydevices-examples` platform docs: Apple mobile = Mobile Safari + `PSDisplay` / PyScript gallery (browser and/or home-screen PWA — see PWA workstream above).
-- **No** dedicated iPhone/iPad smoke campaign as part of this roadmap.
-- Does **not** reopen native iOS packaging.
+- Apple mobile is supported via Mobile Safari + `PSDisplay` / PyScript (browser and/or home-screen PWA).
+- Does not reopen native iOS packaging.
 
 ---
 
