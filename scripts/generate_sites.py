@@ -458,6 +458,17 @@ def sync_assets(db):
         for app_file in os.listdir(apps_src):
             shutil.copy2(os.path.join(apps_src, app_file), os.path.join(portal_apps, app_file))
 
+    # The first-party PyScript template is intentionally Pyodide-only and is
+    # published beneath its generated portal landing page. Keep its complete
+    # offline PWA payload together, including the pinned vendored interpreter.
+    template_pwa = os.path.join(BASE_DIR, 'pyscript-template', 'pwa')
+    if os.path.isdir(template_pwa):
+        shutil.copytree(
+            template_pwa,
+            os.path.join(portal_root, 'pyscript-template', 'pwa'),
+            dirs_exist_ok=True,
+        )
+
 def update_html_section(content, marker_start, marker_end, new_html):
     # Consume any existing indentation before the start marker. The replacement
     # carries its own, so without this every run prepends another level and the
