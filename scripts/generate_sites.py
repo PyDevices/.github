@@ -194,23 +194,21 @@ def write_ecosystem_markdown(db):
 
 
 def build_head_tags_html(repo_name, data):
-    asset_root = asset_prefix(data)
     return (
         f'  <!-- PYDEVICES-HEAD-TAGS: START -->\n'
         f'  <title>PyDevices - {repo_name}</title>\n'
         f'  <meta name="description" content="{data.get("description", "")}">\n'
-        f'  <link rel="icon" type="image/svg+xml" href="{asset_root}img/logo.svg">\n'
+        f'  <link rel="icon" type="image/svg+xml" href="/assets/img/logo.svg">\n'
         f'  <!-- PYDEVICES-HEAD-TAGS: END -->'
     )
 
 def build_above_the_fold_html(repo_name, data):
-    asset_root = asset_prefix(data)
     # The hero shows the repo's own mark -- the same glyph as its portal card.
     # The portal keeps the org logo: it is the org's page, and get_card_icon
     # has no entry for it, so it would otherwise fall through to the generic
     # default. The glyphs are stroke="currentColor", hence color on the badge.
     mark = (
-        f'<img src="{asset_root}img/logo.svg" alt="PyDevices" width="112" height="112">'
+        f'<img src="/assets/img/logo.svg" alt="PyDevices" width="112" height="112">'
         if page_destination(data) == 'portal-root'
         else get_card_icon(repo_name)
     )
@@ -316,7 +314,7 @@ def build_portal_grids_html(db):
         cards_html = []
         for repo_name, data in tier_repos[tier]:
             cards_html.append(
-                f'      <a class="card card-tier-{tier}" href="https://pydevices.github.io/{repo_name}/">\n'
+                f'      <a class="card card-tier-{tier}" href="/{repo_name}/">\n'
                 f'        <div class="card-top">\n'
                 f'          <span class="icon">{get_card_icon(repo_name)}</span>\n'
                 f'          <span class="tag tag-tier-{tier}">{get_tag_label(repo_name)}</span>\n'
@@ -358,30 +356,21 @@ PAGE_SKELETON = '''<!doctype html>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- PYDEVICES-HEAD-TAGS: START -->
   <!-- PYDEVICES-HEAD-TAGS: END -->
-  <link rel="stylesheet" href="/vendor/pydevices-chrome/site.css">
+  <link rel="stylesheet" href="/assets/chrome/site.css">
 </head>
 <body>
   <!-- PYDEVICES-ABOVE-THE-FOLD: START -->
   <!-- PYDEVICES-ABOVE-THE-FOLD: END -->
   <div id="pydevices-site-footer"></div>
-  <script src="/vendor/pydevices-chrome/site-chrome.js"></script>
-  <script src="/vendor/pydevices-chrome/theme-toggle.js"></script>
-  <script src="/vendor/pydevices-chrome/tree-nav.js"></script>
-  <script src="/vendor/pydevices-chrome/hero-runtime.js"></script>
+  <script src="/assets/chrome/site-chrome.js"></script>
 </body>
 </html>
 '''
 
 
 def asset_prefix(data):
-    """Prefix for shared-asset URLs in this repo's page.
-
-    Portal pages -- root and subdirectories alike -- share the one copy at the
-    portal root, so they use '/'. A repo still publishing its own Pages is a
-    separate site: it must reference its own .site/ copies relatively, or its
-    logo would depend on the portal repository.
-    """
-    return '' if page_destination(data) == 'self' else '/'
+    """Prefix for shared-asset URLs in this repo's page."""
+    return '/'
 
 
 def page_destination(data):
@@ -397,43 +386,34 @@ def page_destination(data):
 
 
 def _copy_chrome_into(site_root):
-    vendor_dir = os.path.join(site_root, 'vendor/pydevices-chrome')
-    img_dir = os.path.join(site_root, 'img')
-    os.makedirs(vendor_dir, exist_ok=True)
+    chrome_dir = os.path.join(site_root, 'assets/chrome')
+    img_dir = os.path.join(site_root, 'assets/img')
+    os.makedirs(chrome_dir, exist_ok=True)
     os.makedirs(img_dir, exist_ok=True)
 
-    for fname in ('site.css', 'site-chrome.js', 'tree-nav.js', 'theme-toggle.js', 'hero-runtime.js', 'mip.py'):
-        src = os.path.join(ASSETS_DIR, 'js' if fname.endswith(('.js', '.py')) else 'css', fname)
+    for fname in ('site.css', 'site-chrome.js', 'theme-toggle.js', 'hero-runtime.js'):
+        src = os.path.join(ASSETS_DIR, 'js' if fname.endswith('.js') else 'css', fname)
         if os.path.exists(src):
-            shutil.copy2(src, os.path.join(vendor_dir, fname))
+            shutil.copy2(src, os.path.join(chrome_dir, fname))
 
-    src_logo = os.path.join(ASSETS_DIR, 'img/logo.svg')
-    if os.path.exists(src_logo):
-        shutil.copy2(src_logo, os.path.join(img_dir, 'logo.svg'))
+    for img_name in ('logo.svg', 'logo-512.png', 'logo-avatar.png'):
+        src_img = os.path.join(ASSETS_DIR, 'img', img_name)
+        if os.path.exists(src_img):
+            shutil.copy2(src_img, os.path.join(img_dir, img_name))
 
 
 def sync_assets(db):
-    """Copy the shared chrome to every site root that serves it.
-
-    Portal pages -- root and subdirectories -- share the one copy at the portal
-    root, which is why this no longer fans out into 15 repositories. But a repo
-    still publishing its own Pages is a separate site and needs its own copy,
-    or its chrome silently goes stale: the tree-nav in site-chrome.js hardcodes
-    every repo URL, so an out-of-date copy links to pages that no longer exist.
-    """
-    _copy_chrome_into(os.path.join(BASE_DIR, PORTAL_REPO))
+    """Copy the shared chrome and apps to the portal repository root (PyDevices.github.io)."""
+    portal_root = os.path.join(BASE_DIR, PORTAL_REPO)
+    _copy_chrome_into(portal_root)
 
     # Sync static standalone apps into portal assets/apps/
     apps_src = os.path.join(ASSETS_DIR, 'apps')
     if os.path.exists(apps_src):
-        portal_apps = os.path.join(BASE_DIR, PORTAL_REPO, 'assets/apps')
+        portal_apps = os.path.join(portal_root, 'assets/apps')
         os.makedirs(portal_apps, exist_ok=True)
         for app_file in os.listdir(apps_src):
             shutil.copy2(os.path.join(apps_src, app_file), os.path.join(portal_apps, app_file))
-
-    for repo_name, data in repos(db).items():
-        if page_destination(data) == 'self':
-            _copy_chrome_into(os.path.join(BASE_DIR, repo_name, '.site'))
 
 def update_html_section(content, marker_start, marker_end, new_html):
     # Consume any existing indentation before the start marker. The replacement

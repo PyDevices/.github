@@ -93,9 +93,8 @@ is the entry's `page` field: `portal-root`, `portal-subdir`, `self`, or `none`.
 There are no per-repo `deploy.yml` files and no `gh-pages` branches; thirteen of
 each were removed once the portal took over those paths.
 
-> A landing page is a single `index.html` referencing `/vendor/pydevices-chrome/`
-> and `/img/logo.svg` at the portal root. The chrome used to be copied into
-> fifteen repositories.
+> A landing page is a single `index.html` referencing `/assets/chrome/`
+> and `/assets/img/logo.svg` at the portal root.
 
 ## Documentation
 
