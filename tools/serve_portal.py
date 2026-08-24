@@ -40,6 +40,20 @@ MIP_DIR = ORG_DIR / "mip"
 DEBUG_PREFIX = "/__debug"
 
 
+def _mount_subpath(clean_path: str, prefix: str) -> str | None:
+    """Return the subpath under a mount point, matching the bare prefix too.
+
+    ``clean_path.startswith(prefix + "/")`` alone misses the bare mount point
+    (e.g. ``/mip`` with no trailing slash), sending it to the default portal
+    route instead of the standard directory redirect.
+    """
+    if clean_path == prefix:
+        return ""
+    if clean_path.startswith(prefix + "/"):
+        return clean_path[len(prefix) + 1 :]
+    return None
+
+
 def _stamp() -> str:
     now = datetime.datetime.now(datetime.UTC)
     return now.strftime("%H:%M:%S.") + f"{now.microsecond // 1000:03d}"
@@ -66,7 +80,9 @@ class PortalRequestHandler(SimpleHTTPRequestHandler):
     }
 
     def end_headers(self) -> None:
-        self.send_header("Cache-Control", "no-store, must-revalidate")
+        self.send_header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+        self.send_header("Pragma", "no-cache")
+        self.send_header("Expires", "0")
         self.send_header("X-PyDevices-Server", self.server_signature)
         if self.coi_enabled:
             self.send_header("Cross-Origin-Opener-Policy", "same-origin")
@@ -75,14 +91,24 @@ class PortalRequestHandler(SimpleHTTPRequestHandler):
             self.send_header("Access-Control-Allow-Origin", "*")
         super().end_headers()
 
+    def _strip_conditional_headers(self) -> None:
+        """Drop If-Modified-Since / If-None-Match so send_head() never 304s.
+
+        SimpleHTTPRequestHandler honors these regardless of the Cache-Control
+        header on the *response* it would otherwise send, so a client that
+        cached an earlier 200 keeps reusing it via conditional GETs.
+        """
+        for header in ("If-Modified-Since", "If-None-Match", "If-Unmodified-Since"):
+            del self.headers[header]
+
     def translate_path(self, path: str) -> str:
         """Translate a URL path into the appropriate org repository file system path."""
         parsed_url = urllib.parse.urlparse(path)
         clean_path = urllib.parse.unquote(parsed_url.path)
-        
-        # 1. Gallery routes: /pydevices-examples/...
-        if clean_path.startswith("/pydevices-examples/"):
-            subpath = clean_path.removeprefix("/pydevices-examples/")
+
+        # 1. Gallery routes: /pydevices-examples or /pydevices-examples/...
+        subpath = _mount_subpath(clean_path, "/pydevices-examples")
+        if subpath is not None:
             # Direct mapping to .site if it exists there
             target = EXAMPLES_DIR / ".site" / subpath
             if target.exists() or not subpath or subpath.endswith("/"):
@@ -93,9 +119,9 @@ class PortalRequestHandler(SimpleHTTPRequestHandler):
                 return str(target_lib)
             return str(target)
 
-        # 2. MIP package index routes: /mip/...
-        if clean_path.startswith("/mip/"):
-            subpath = clean_path.removeprefix("/mip/")
+        # 2. MIP package index routes: /mip or /mip/...
+        subpath = _mount_subpath(clean_path, "/mip")
+        if subpath is not None:
             target = MIP_DIR / ".site" / subpath
             if target.exists() or not subpath or subpath.endswith("/"):
                 return str(target)
@@ -140,12 +166,14 @@ class PortalRequestHandler(SimpleHTTPRequestHandler):
         if self._is_debug():
             self._send_cors(200)
             return
+        self._strip_conditional_headers()
         super().do_GET()
 
     def do_HEAD(self) -> None:
         if self._is_debug():
             self._send_cors(200)
             return
+        self._strip_conditional_headers()
         super().do_HEAD()
 
     def _log_debug(self, raw: bytes) -> None:
