@@ -44,7 +44,7 @@
       "app": "signal_gen",
       "width": 480,
       "height": 480,
-      "shape": "round",
+      "shape": "square",
       "deps": [
         "pydevices",
         "pydevices-lvgl"
