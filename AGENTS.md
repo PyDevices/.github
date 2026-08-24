@@ -144,6 +144,62 @@ ln -s ../lvgl-bindings/lvgl lvgl-python/lvgl
 4. MP/CP builds read `lvgl-bindings/lvgl` only. Initialize it with
    `git -C lvgl-bindings submodule update --init --depth 1 lvgl` (see above).
 
+## Org portal generator (`scripts/generate_sites.py`)
+
+Generates the 16 repo/org landing pages under `../PyDevices.github.io/`
+(plus `../mip/.site/` and `../pydevices-examples/.site/`) from
+`data/repos_db.json` and `assets/`. Run it after editing `assets/apps/`,
+`assets/css/site.css`, `assets/js/*.js`, or `repos_db.json`:
+
+```bash
+python3 scripts/generate_sites.py
+```
+
+**`assets/` is the only source of truth; deployed copies are pure sync
+targets.** `_copy_chrome_into()`/`sync_assets()` copy `assets/js/*.js`,
+`assets/css/site.css`, and `assets/apps/*.py` verbatim into
+`PyDevices.github.io/assets/chrome/` and `PyDevices.github.io/assets/apps/`
+every run. If you fix something by editing the *deployed* copy directly
+(faster to iterate against a running `serve_portal.py`), that fix is
+invisible to this repo and gets **silently reverted** the next time anyone
+regenerates — port it back into `assets/` before you're done. This has
+already happened once (a `.badge` CSS rule and a `hero-runtime.js` mip-install
+fix both lived only in the deployed copy and had to be recovered from there).
+
+**Marker-based rewrite, not merge**: every `<!-- SOMENAME: START -->` /
+`<!-- SOMENAME: END -->` pair in a generated page gets its *entire* contents
+replaced on each run by whatever `generate_sites.py` computes for that
+marker — there is no diffing or preservation of hand edits placed *inside*
+a recognized marker pair. Hand-authored content that must survive
+regeneration (e.g. the "Architecture & Layers" Mermaid diagram on the portal
+homepage) has to live **outside** any marker pair, not just outside the ones
+you intend to touch — a new marker added to the generator later would clobber
+it too if it happened to land inside. After adding hand content near a
+marker, rerun the generator and diff the result before trusting it.
+
+**Hero canvas apps** (`assets/apps/*.py`, one per repo's landing page,
+executed client-side by `assets/js/hero-runtime.js`) must use the same
+import shape as every other PyDevices example — `from board_config import
+display_drv` + `import appdev` for raw-display apps, or `import
+display_driver` + `import lvgl as lv` for LVGL apps — never construct
+`WasmDisplay(...)` / `appdev.App(displays=...)` by hand. `board_config`
+resolves canvas id and size from `PYDEVICES_CANVAS_ID`/`PYDEVICES_WIDTH`/
+`PYDEVICES_HEIGHT` env vars that `hero-runtime.js` sets before importing the
+module, and `pydevices-desktop` (the mip package `board_config` lives in) is
+**not frozen** into the WASM interpreter — `hero-runtime.js` has to
+`mip.install` it before the app module import can succeed. Also: both
+`hero-runtime.js` and `pydevices-examples`' `gallery-host.js` just
+`__import__()` the app module — there is no `main()` call — so app code must
+run at module scope, not behind `if __name__ == "__main__":`, or it silently
+never executes.
+
+The 3 RTD docs sites (`palettes`, `pdwidgets`, `pygraphics` — *not* generated
+by this script, see their own `docs/*.md`) embed live demos differently:
+`assets/js/docs-runtime.js` `exec()`s inline `<textarea class="code-editor">`
+source directly, with no `board_config` available (a docs reader has no
+board file), so those snippets correctly use `displaydev.auto.AutoDisplay`
+directly instead.
+
 ## Symlink safety
 
 When removing paths under `pydevices/` or `cmods/`, delete **symlinks only**
