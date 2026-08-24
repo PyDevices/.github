@@ -35,7 +35,10 @@ def get_card_icon(repo_name):
         'android-template': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 19h4"/></svg>',
         'mip': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg>',
         'cmods': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>',
-        'mpftp': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/><circle cx="15" cy="15" r="1"/><path d="M15 16v3M13 19h4"/></svg>'
+        'mpftp': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/><circle cx="15" cy="15" r="1"/><path d="M15 16v3M13 19h4"/></svg>',
+        # Same glyph as pydevices-examples -- these are sub-pages of that repo.
+        'pydevices-examples-gallery': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><circle cx="17" cy="15" r="1.5"/></svg>',
+        'pydevices-examples-pyscript': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><circle cx="17" cy="15" r="1.5"/></svg>',
     }
     return icons.get(repo_name, '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>')
 
@@ -97,7 +100,7 @@ def validate_db(db):
                 if app_name and not os.path.exists(app_path):
                     problems.append(f'{name}: hero_canvas app {app_name}.py not found in {os.path.relpath(app_path, BASE_DIR)}')
 
-    valid_pages = {'portal-root', 'portal-subdir', 'self', 'none'}
+    valid_pages = {'portal-root', 'portal-subdir', 'self', 'self-subpath', 'none'}
     roots = [n for n, d in repos(db).items() if page_destination(d) == 'portal-root']
     for name, data in repos(db).items():
         destination = page_destination(data)
@@ -110,6 +113,15 @@ def validate_db(db):
             os.path.join(BASE_DIR, name, '.site')
         ):
             problems.append(f'{name}: page=self but no .site/ directory')
+        if destination == 'self-subpath':
+            site_repo = data.get('site_repo')
+            site_subpath = data.get('site_subpath')
+            if not site_repo or not site_subpath:
+                problems.append(f'{name}: page=self-subpath needs site_repo and site_subpath')
+            elif not os.path.isdir(os.path.join(BASE_DIR, site_repo, '.site', site_subpath)):
+                problems.append(
+                    f'{name}: page=self-subpath but no {site_repo}/.site/{site_subpath}/ directory'
+                )
     if len(roots) != 1:
         problems.append(
             f'expected exactly one page=portal-root repo, found {roots or "none"}'
@@ -135,7 +147,7 @@ def build_ecosystem_markdown(db):
     meta = tier_meta(db)
     by_tier = {}
     for repo_name, data in repos(db).items():
-        if repo_name == 'PyDevices.github.io':
+        if repo_name == 'PyDevices.github.io' or not data.get('portal_grid', True):
             continue
         by_tier.setdefault(data.get('tier', 5), []).append((repo_name, data))
 
@@ -194,9 +206,10 @@ def write_ecosystem_markdown(db):
 
 
 def build_head_tags_html(repo_name, data):
+    title = data.get('title', f'PyDevices - {repo_name}')
     return (
         f'  <!-- PYDEVICES-HEAD-TAGS: START -->\n'
-        f'  <title>PyDevices - {repo_name}</title>\n'
+        f'  <title>{title}</title>\n'
         f'  <meta name="description" content="{data.get("description", "")}">\n'
         f'  <link rel="icon" type="image/svg+xml" href="/assets/img/logo.svg">\n'
         f'  <!-- PYDEVICES-HEAD-TAGS: END -->'
@@ -217,6 +230,16 @@ def build_above_the_fold_html(repo_name, data):
     eyebrow = data.get('eyebrow', repo_name)
     headline = data.get('headline', f'{repo_name} — PyDevices library.')
     description = data.get('description', '')
+    # The org homepage and repo sub-pages (e.g. a gallery) aren't "a repo among
+    # repos" -- skip the <code>reponame</code> prefix that every repo's own
+    # top-level landing page uses to name itself.
+    description_html = (
+        description
+        if page_destination(data) in ('portal-root', 'self-subpath')
+        else f'<code>{repo_name}</code> {description}'
+    )
+    # Optional second hero paragraph (e.g. gallery pages' "click a card" note).
+    hero_note = data.get('hero_note', '')
 
     button_html_list = []
     for btn in data.get('buttons', []):
@@ -258,6 +281,10 @@ def build_above_the_fold_html(repo_name, data):
             f'    </div>'
         )
 
+        hero_note_html = f'      <p>{hero_note}</p>\n' if hero_note else ''
+        cta_html = (
+            f'      <div class="cta">\n{buttons_joined}\n      </div>\n' if buttons_joined else ''
+        )
         return (
             f'  <!-- PYDEVICES-ABOVE-THE-FOLD: START -->\n'
             f'  <div id="pydevices-site-header"></div>\n\n'
@@ -269,16 +296,19 @@ def build_above_the_fold_html(repo_name, data):
             f'        <span class="eyebrow" style="color: {theme_color};">{eyebrow}</span>\n'
             f'      </div>\n'
             f'      <h1>{headline}</h1>\n'
-            f'      <p><code>{repo_name}</code> {description}</p>\n'
-            f'      <div class="cta">\n'
-            f'{buttons_joined}\n'
-            f'      </div>\n'
+            f'      <p>{description_html}</p>\n'
+            f'{hero_note_html}'
+            f'{cta_html}'
             f'    </div>\n'
             f'{canvas_html}\n'
             f'  </section>\n'
             f'  <!-- PYDEVICES-ABOVE-THE-FOLD: END -->'
         )
 
+    hero_note_html = f'    <p>{hero_note}</p>\n' if hero_note else ''
+    cta_html = (
+        f'    <div class="cta">\n{buttons_joined}\n    </div>\n' if buttons_joined else ''
+    )
     return (
         f'  <!-- PYDEVICES-ABOVE-THE-FOLD: START -->\n'
         f'  <div id="pydevices-site-header"></div>\n\n'
@@ -291,10 +321,9 @@ def build_above_the_fold_html(repo_name, data):
         f'      </div>\n'
         f'      <h1>{headline}</h1>\n'
         f'    </div>\n'
-        f'    <p><code>{repo_name}</code> {description}</p>\n'
-        f'    <div class="cta">\n'
-        f'{buttons_joined}\n'
-        f'    </div>\n'
+        f'    <p>{description_html}</p>\n'
+        f'{hero_note_html}'
+        f'{cta_html}'
         f'  </section>\n'
         f'  <!-- PYDEVICES-ABOVE-THE-FOLD: END -->'
     )
@@ -304,7 +333,7 @@ def build_portal_grids_html(db):
 
     tier_repos = {1: [], 2: [], 3: [], 4: [], 5: []}
     for repo_name, data in repos(db).items():
-        if repo_name != 'PyDevices.github.io':
+        if repo_name != 'PyDevices.github.io' and data.get('portal_grid', True):
             tier_repos[data.get('tier', 5)].append((repo_name, data))
 
     sections_html = []
@@ -381,6 +410,12 @@ def page_destination(data):
     'portal-subdir' PyDevices.github.io/<portal_path or repo>/index.html
     'self'          the repo's own .site/index.html, for repos that still
                     publish their own Pages because they serve real payload
+    'self-subpath'  <site_repo>/.site/<site_subpath>/index.html -- a
+                    sub-page of another repo's own Pages (e.g. a gallery),
+                    generated as a database entry but excluded from the
+                    portal grid/ecosystem map via portal_grid: false. The
+                    rest of that page (its own GEN:* marker blocks) stays
+                    owned by that repo's own generator.
     'none'          no generated page; the repo keeps only its portal card
     """
     return data.get('page', 'portal-subdir')
@@ -451,6 +486,8 @@ def get_site_html_path(repo_name, data):
         return os.path.join(portal, data.get('portal_path', repo_name), 'index.html')
     if destination == 'self':
         return os.path.join(BASE_DIR, repo_name, '.site/index.html')
+    if destination == 'self-subpath':
+        return os.path.join(BASE_DIR, data['site_repo'], '.site', data['site_subpath'], 'index.html')
     return None
 
 def main():
