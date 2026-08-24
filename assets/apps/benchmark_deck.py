@@ -8,14 +8,16 @@ Interactive multi-interpreter execution matrix and benchmark meter:
 """
 
 import math
-import sys
 import time
 from random import random
 
+from board_config import display_drv
+import board_config
 import appdev
 import events
-from displaydev.wasmdisplay import WasmDisplay
 import pygraphics
+
+app = appdev.App(board_config)
 
 
 def _color(value):
@@ -43,14 +45,12 @@ TARGETS = [
 
 
 class BenchmarkDeckHero:
-    def __init__(self, canvas_id="hero_canvas", size=240):
-        self.canvas_id = canvas_id
+    def __init__(self, size=240):
         self.size = size
         self.w = size
         self.h = size
 
-        self.drv = WasmDisplay(width=size, height=size, canvas_id=canvas_id)
-        self.app = appdev.App(displays=(self.drv,), host_read=self.drv.get_events)
+        self.drv = display_drv
 
         self.mode_idx = 0
         self.frame_cnt = 0
@@ -59,7 +59,7 @@ class BenchmarkDeckHero:
         self.draw()
         self._bind_events()
 
-        self._tick_subscription = self.app.every(33, self._timer_tick)
+        self._tick_subscription = app.every(33, self._timer_tick)
 
     def _timer_tick(self, _timer):
         self.tick()
@@ -70,7 +70,7 @@ class BenchmarkDeckHero:
             self.burst = 1.0
             self.draw()
 
-        self.app.on(events.MOUSEBUTTONDOWN, on_pointer_down)
+        app.on(events.MOUSEBUTTONDOWN, on_pointer_down)
 
     def tick(self):
         self.frame_cnt += 1
@@ -132,16 +132,4 @@ class BenchmarkDeckHero:
             self.drv.show()
 
 
-_bench_app = None
-
-
-def main(canvas_id="hero_canvas"):
-    global _bench_app
-    print(f"Initializing PyDevices Benchmark Deck on canvas '{canvas_id}'...")
-    _bench_app = BenchmarkDeckHero(canvas_id, size=240)
-    print("PyDevices Benchmark Deck running successfully!")
-
-
-if __name__ == "__main__":
-    cid = sys.argv[1] if len(sys.argv) > 1 else "hero_canvas"
-    main(cid)
+_bench_app = BenchmarkDeckHero(size=min(display_drv.width, display_drv.height))

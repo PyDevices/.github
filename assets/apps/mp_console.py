@@ -8,12 +8,11 @@ Interactive round LVGL v9 micro-benchmark console:
 """
 
 import math
-import sys
 import time
 
-import appdev
-from displaydev.wasmdisplay import WasmDisplay
+import display_driver  # wires LVGL display/input into the app
 import lvgl as lv
+from board_config import display_drv
 
 
 def _color(hex_val):
@@ -74,8 +73,7 @@ THEME_COLORS = [0x38BDF8, 0x10B981, 0xF59E0B, 0xEC4899, 0x8B5CF6]
 
 
 class MPConsoleHero:
-    def __init__(self, parent=None, size=240, canvas_id="hero_canvas"):
-        self.canvas_id = canvas_id
+    def __init__(self, parent=None, size=240):
         self.size = size
         self.theme_idx = 0
         self.heap_free_kb = 142
@@ -196,25 +194,5 @@ class MPConsoleHero:
         self.heap_free_kb = 120 + (self.tap_count * 7) % 60
         self.lbl_heap.set_text(f"GC HEAP: {self.heap_free_kb} KB")
 
-_mp_app = None
-_display_drv = None
-_app = None
-_display_driver = None
-
-
-def main(canvas_id="hero_canvas"):
-    global _mp_app, _display_drv, _app, _display_driver
-    print(f"Initializing PyDevices MP Console on canvas '{canvas_id}'...")
-    _display_drv = WasmDisplay(width=240, height=240, canvas_id=canvas_id)
-    _app = appdev.App(displays=(_display_drv,), host_read=_display_drv.get_events)
-    import display_driver as _driver
-
-    _display_driver = _driver
-    scr = lv.screen_active() if hasattr(lv, "screen_active") else lv.scr_act()
-    _mp_app = MPConsoleHero(scr, size=240, canvas_id=canvas_id)
-    print("PyDevices MP Console running successfully!")
-
-
-if __name__ == "__main__":
-    cid = sys.argv[1] if len(sys.argv) > 1 else "hero_canvas"
-    main(cid)
+_scr = lv.screen_active() if hasattr(lv, "screen_active") else lv.scr_act()
+_mp_app = MPConsoleHero(_scr, size=min(display_drv.width, display_drv.height))

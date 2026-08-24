@@ -8,14 +8,16 @@ Interactive dual-pane serial FTP and hex data transfer monitor:
 """
 
 import math
-import sys
 import time
 from random import randint, choice
 
+from board_config import display_drv
+import board_config
 import appdev
 import events
-from displaydev.wasmdisplay import WasmDisplay
 import pygraphics
+
+app = appdev.App(board_config)
 
 
 def _color(value):
@@ -39,14 +41,12 @@ SAMPLE_FILES = [
 
 
 class FtpScopeHero:
-    def __init__(self, canvas_id="hero_canvas", size=240):
-        self.canvas_id = canvas_id
+    def __init__(self, size=240):
         self.size = size
         self.w = size
         self.h = size
 
-        self.drv = WasmDisplay(width=size, height=size, canvas_id=canvas_id)
-        self.app = appdev.App(displays=(self.drv,), host_read=self.drv.get_events)
+        self.drv = display_drv
 
         self.file_idx = 0
         self.cur_file, self.cur_size = SAMPLE_FILES[self.file_idx]
@@ -57,7 +57,7 @@ class FtpScopeHero:
         self.draw()
         self._bind_events()
 
-        self._tick_subscription = self.app.every(33, self._timer_tick)
+        self._tick_subscription = app.every(33, self._timer_tick)
 
     def _timer_tick(self, _timer):
         self.tick()
@@ -70,7 +70,7 @@ class FtpScopeHero:
             self.hex_offset += 0x0040
             self.draw()
 
-        self.app.on(events.MOUSEBUTTONDOWN, on_pointer_down)
+        app.on(events.MOUSEBUTTONDOWN, on_pointer_down)
 
     def tick(self):
         if self.bytes_transferred < self.cur_size:
@@ -141,16 +141,4 @@ class FtpScopeHero:
             self.drv.show()
 
 
-_ftp_app = None
-
-
-def main(canvas_id="hero_canvas"):
-    global _ftp_app
-    print(f"Initializing PyDevices FTP Scope on canvas '{canvas_id}'...")
-    _ftp_app = FtpScopeHero(canvas_id, size=240)
-    print("PyDevices FTP Scope running successfully!")
-
-
-if __name__ == "__main__":
-    cid = sys.argv[1] if len(sys.argv) > 1 else "hero_canvas"
-    main(cid)
+_ftp_app = FtpScopeHero(size=min(display_drv.width, display_drv.height))

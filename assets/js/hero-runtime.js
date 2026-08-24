@@ -5,6 +5,9 @@
   async function launch(container) {
     const canvasId = container.dataset.heroCanvas || "hero_canvas";
     const appName = container.dataset.heroApp || "watch";
+    const canvas = container.querySelector("canvas");
+    const canvasWidth = (canvas && canvas.width) || 240;
+    const canvasHeight = (canvas && canvas.height) || 240;
     const status = container.querySelector(".hero-canvas-status");
     const setStatus = (text) => { if (status) status.textContent = text; };
     const record = { app: appName, canvas: canvasId, phase: "loading" };
@@ -25,10 +28,13 @@
 import os, sys
 from displaydev import env_set
 env_set("PYDEVICES_CANVAS_ID", ${JSON.stringify(canvasId)})
+env_set("PYDEVICES_WIDTH", ${JSON.stringify(String(canvasWidth))})
+env_set("PYDEVICES_HEIGHT", ${JSON.stringify(String(canvasHeight))})
 if "/" not in sys.path: sys.path.insert(0, "/")
 os.chdir("/")
-_hero = __import__(${JSON.stringify(appName)})
-if hasattr(_hero, "main"): _hero.main(${JSON.stringify(canvasId)})
+import mip
+mip.install("pydevices-desktop", index="https://PyDevices.github.io/mip", target="lib")
+__import__(${JSON.stringify(appName)})
 `);
       record.phase = "ready"; record.mp = mp;
       container.classList.add("active");

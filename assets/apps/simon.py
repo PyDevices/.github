@@ -5,15 +5,17 @@ Classic 4-color memory game rendered in pure Python directly on PyDevices PSDisp
 Features idle attract mode and full interactive touch/click gameplay.
 """
 
-import sys
 import time
 import math
 from random import getrandbits
 
+from board_config import display_drv
+import board_config
 import appdev
 import events
-from displaydev.wasmdisplay import WasmDisplay
 import pygraphics
+
+app = appdev.App(board_config)
 
 # Color definitions (RGB565)
 BLACK = 0x0000
@@ -29,8 +31,7 @@ IDLE, SHOW, INPUT, FAIL = 0, 1, 2, 3
 
 
 class SimonHero:
-    def __init__(self, canvas_id="hero_canvas", size=240):
-        self.canvas_id = canvas_id
+    def __init__(self, size=240):
         self.size = size
         self.w = size
         self.h = size
@@ -66,8 +67,7 @@ class SimonHero:
         )
 
         # Initialize PSDisplay
-        self.drv = WasmDisplay(width=size, height=size, canvas_id=canvas_id)
-        self.app = appdev.App(displays=(self.drv,), host_read=self.drv.get_events)
+        self.drv = display_drv
 
         # Game state
         self.state = IDLE
@@ -87,7 +87,7 @@ class SimonHero:
         self._bind_events()
 
         # Start the animation through the direct WebAssembly timer backend.
-        self._tick_subscription = self.app.every(33, self._timer_tick)
+        self._tick_subscription = app.every(33, self._timer_tick)
 
     def _timer_tick(self, _timer):
         self.tick()
@@ -97,7 +97,7 @@ class SimonHero:
             x, y = event.pos
             self.handle_touch(x, y)
 
-        self.app.on(events.MOUSEBUTTONDOWN, on_pointer_down)
+        app.on(events.MOUSEBUTTONDOWN, on_pointer_down)
 
     def draw_pad(self, pad_idx, is_lit=False):
         color = LIT_COLORS[pad_idx] if is_lit else DIM_COLORS[pad_idx]
@@ -255,11 +255,4 @@ class SimonHero:
                     self.next_action_time = now + 1.0
 
 
-_simon_app = None
-
-
-def main(canvas_id="hero_canvas"):
-    global _simon_app
-    print(f"Initializing PyDevices Simon on canvas '{canvas_id}'...")
-    _simon_app = SimonHero(canvas_id, size=240)
-    print("PyDevices Simon running successfully!")
+_simon_app = SimonHero(size=min(display_drv.width, display_drv.height))

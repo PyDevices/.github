@@ -346,48 +346,6 @@ def build_portal_grids_html(db):
     )
 
 
-def build_architecture_html():
-    """Architecture source for the portal; generated HTML is never hand-edited."""
-    layers = (
-        ("Application / framework", "LVGL · pdwidgets · pygraphics · application code"),
-        ("appdev", "Application lifecycle, event dispatch, and neutral coordination"),
-        ("Device contracts", "displaydev · audiodev · multimer"),
-        ("Direct WebAssembly backends", "WasmDisplay · WasmPCMInput/Output · wasm.Timer"),
-        ("_wasm_bridge", "Framebuffer, input, audio, timers, Fetch, and MIP"),
-        ("Browser APIs", "Canvas · Pointer/Gamepad · Web Audio · Timers · Fetch"),
-    )
-    direct = '\n'.join(
-        f'        <div class="architecture-layer"><strong>{title}</strong><span>{detail}</span></div>'
-        for title, detail in layers
-    )
-    return (
-        '  <!-- PYDEVICES-ARCHITECTURE: START -->\n'
-        '  <section class="section architecture" aria-labelledby="architecture-title">\n'
-        '    <div class="section-head"><h2 id="architecture-title">Browser architecture</h2>'
-        '<span class="hint">Direct MicroPython first, Pyodide retained</span></div>\n'
-        '    <div class="architecture-paths">\n'
-        '      <div class="architecture-stack"><h3>Direct MicroPython WebAssembly</h3>\n'
-        f'{direct}\n'
-        '      </div>\n'
-        '      <div class="architecture-alt"><h3>Alternative: PyScript / Pyodide</h3>'
-        '<p>Applications use the same device contracts through <code>PSDisplay</code>. '
-        'PyScript owns the Pyodide and DOM integration on this supported alternative path.</p></div>\n'
-        '    </div>\n'
-        '  </section>\n'
-        '  <!-- PYDEVICES-ARCHITECTURE: END -->'
-    )
-
-
-def ensure_architecture_section(content):
-    block = build_architecture_html()
-    start = '<!-- PYDEVICES-ARCHITECTURE: START -->'
-    if start in content:
-        return update_html_section(
-            content, start, '<!-- PYDEVICES-ARCHITECTURE: END -->', block
-        )
-    anchor = '<!-- PYDEVICES-PORTAL-GRIDS: END -->'
-    return content.replace(anchor, f'{anchor}\n\n{block}', 1)
-
 PORTAL_REPO = 'PyDevices.github.io'
 
 # Written only when a portal subdirectory has no page yet; every run then
@@ -545,7 +503,6 @@ def main():
 
         if repo_name == 'PyDevices.github.io':
             content = update_html_section(content, '<!-- PYDEVICES-PORTAL-GRIDS: START -->', '<!-- PYDEVICES-PORTAL-GRIDS: END -->', build_portal_grids_html(db))
-            content = ensure_architecture_section(content)
 
         # Remove a duplicate hero section left outside the marker block.
         marker = '<!-- PYDEVICES-ABOVE-THE-FOLD: END -->'
