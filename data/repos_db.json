@@ -115,6 +115,49 @@
       }
     ]
   },
+  "audioif": {
+    "tier": 1,
+    "page": "portal-subdir",
+    "tier_name": "Core Platform & Board Contract",
+    "theme_color": "var(--tier-1-amber)",
+    "eyebrow": "audioif",
+    "headline": "audioif — CircuitPython audio usermods for MicroPython.",
+    "description": "Native MicroPython usermods that keep CircuitPython import names and play/stop/pause/resume semantics: audiocore, audiomixer, synthio (including MidiTrack), effects, and audiomp3.",
+    "hero_canvas": {
+      "app": "audio_scope",
+      "width": 240,
+      "height": 240,
+      "shape": "square",
+      "deps": [
+        "pydevices",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/audio_scope.py"
+    },
+    "buttons": [
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/audioif",
+        "primary": true
+      },
+      {
+        "label": "Architecture",
+        "href": "https://github.com/PyDevices/audioif/blob/main/docs/porting-plan.md",
+        "tier_color": true
+      },
+      {
+        "label": "Audio contract",
+        "href": "https://github.com/PyDevices/pydevices/blob/main/docs/audio.md",
+        "tier_color": true
+      },
+      {
+        "label": "displayif",
+        "href": "https://pydevices.github.io/displayif/",
+        "tier_color": true
+      }
+    ]
+  },
   "pygraphics": {
     "tier": 2,
     "page": "portal-subdir",
@@ -507,8 +550,8 @@
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "mpftp",
-    "headline": "mpftp — IDE serial FTP & REPL extension.",
-    "description": "Dual-pane serial FTP file manager, in-editor REPL console, and board flasher extension for VS Code, Antigravity IDE, and Cursor.",
+    "headline": "mpftp — board tools for the editor, CLI, and agents.",
+    "description": "Connect MicroPython and CircuitPython boards from VS Code, Cursor, or the CLI: dual-pane file transfer, in-editor REPL, firmware flash, mip/circup, plus RPC, MCP, and an optional browser PWA.",
     "hero_canvas": {
       "app": "ftp_scope",
       "width": 240,
@@ -533,13 +576,13 @@
         "tier_color": true
       },
       {
-        "label": "MIP Index",
-        "href": "https://PyDevices.github.io/mip",
+        "label": "Agent guide",
+        "href": "https://github.com/PyDevices/mpftp/blob/main/docs/agent-guide.md",
         "tier_color": true
       },
       {
-        "label": "pydevices Core",
-        "href": "https://pydevices.github.io/pydevices/",
+        "label": "Integrations",
+        "href": "https://github.com/PyDevices/mpftp/tree/main/integrations",
         "tier_color": true
       }
     ]
@@ -576,7 +619,7 @@
         "tier_color": true
       },
       {
-        "label": "mpftp Workbench",
+        "label": "mpftp",
         "href": "https://pydevices.github.io/mpftp/",
         "tier_color": true
       },

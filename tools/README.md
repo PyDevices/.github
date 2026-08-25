@@ -16,7 +16,6 @@ python3 dotgithub/tools/serve_portal.py
 
 ### Route Dispatch:
 - `http://127.0.0.1:8000/` → `PyDevices.github.io/` (Org portal homepage & product landing pages)
-- `http://127.0.0.1:8000/simulator/` → `PyDevices.github.io/simulator/` (Interactive Simulator PWA)
 - `http://127.0.0.1:8000/vendor/micropython/` → `PyDevices.github.io/vendor/micropython/` (Centralized WebAssembly binary runtime)
 - `http://127.0.0.1:8000/pydevices-examples/pyscript/` → `pydevices-examples/.site/pyscript/` (PyScript gallery & demos)
 - `http://127.0.0.1:8000/mip/` → `mip/.site/` (MIP package index)

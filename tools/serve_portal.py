@@ -4,7 +4,7 @@
 serve_portal.py — Centralized local development server for the PyDevices org portal.
 
 Serves the entire PyDevices ecosystem locally with exact production path parity:
-  /                        → PyDevices.github.io/             (Org portal & /simulator/)
+  /                        → PyDevices.github.io/             (Org portal)
   /vendor/micropython/     → PyDevices.github.io/vendor/      (Centralized WASM runtime)
   /assets/                 → PyDevices.github.io/assets/      (Shared brand chrome & apps)
   /pydevices-examples/     → pydevices-examples/.site/        (PyScript gallery & demos)
@@ -221,7 +221,6 @@ def main(argv: list[str] | None = None) -> int:
     print(f"  base URL:               {base}/")
     print(f"  portal root:            {PORTAL_DIR}")
     print(f"  gallery mount:          {base}/pydevices-examples/pyscript/")
-    print(f"  simulator mount:        {base}/simulator/")
     print(f"  mip index mount:        {base}/mip/")
     print(f"  cross-origin isolation: {'on' if PortalRequestHandler.coi_enabled else 'off'}")
     print(f"  server signature:       X-PyDevices-Server: {PortalRequestHandler.server_signature}")

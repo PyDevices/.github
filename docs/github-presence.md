@@ -79,7 +79,7 @@ to the org root) from
 [PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io)'s
 `assets/css/site.css` and `assets/js/site-chrome.js`. Pages mount empty
 `#pydevices-site-header` / `#pydevices-site-footer` elements; the script injects
-identical markup (nav: Gallery, Examples, DisplayIF, Drivers, GitHub) and
+identical markup (nav: GitHub, Core Stack, DisplayIF, Workbench, Gallery) and
 `theme-toggle.js` binds `#theme-toggle`. The shared org site is the exception:
 [PyDevices/.github](https://github.com/PyDevices/.github)
 provides org metadata and docs, but it does not publish a product Pages site of
@@ -95,6 +95,7 @@ icons. Header brand stays on the shared org logo.
 | [lvgl-bindings](https://github.com/PyDevices/lvgl-bindings) | LVGL C→binding generator (source of truth for the native cmods) | [pydevices.github.io/lvgl-bindings](https://pydevices.github.io/lvgl-bindings/) |
 | [cmods](https://github.com/PyDevices/cmods) | Optional workspace for multi-usermod MicroPython/CircuitPython builds | *(no Pages site — org landing card links to the repo)* |
 | [displayif](https://github.com/PyDevices/displayif) | Native display bus/framebuffer modules | [pydevices.github.io/displayif](https://pydevices.github.io/displayif/) |
+| [audioif](https://github.com/PyDevices/audioif) | CircuitPython audio stack as MicroPython usermods (`audiocore`, `synthio`, mixer, effects, `audiomp3`) | [pydevices.github.io/audioif](https://pydevices.github.io/audioif/) |
 | [pygraphics](https://github.com/PyDevices/pygraphics) | Native + pure-Python FrameBuffer/Area (`import pygraphics`); docs on [RTD](https://pygraphics.readthedocs.io) | [pydevices.github.io/pygraphics](https://pydevices.github.io/pygraphics/) |
 | [lvgl-micropython](https://github.com/PyDevices/lvgl-micropython) | MicroPython user C module glue for LVGL | [pydevices.github.io/lvgl-micropython](https://pydevices.github.io/lvgl-micropython/) |
 | [lvgl-circuitpython](https://github.com/PyDevices/lvgl-circuitpython) | CircuitPython integration for LVGL | [pydevices.github.io/lvgl-circuitpython](https://pydevices.github.io/lvgl-circuitpython/) |
@@ -105,7 +106,7 @@ icons. Header brand stays on the shared org logo.
 | [.github](https://github.com/PyDevices/.github) | This repo — org profile README, issue templates, CONTRIBUTING.md, `docs/github-presence.md`, `docs/repo-layout.md` | *(no Pages site — org metadata only)* |
 | [micropython-lib](https://github.com/PyDevices/mip) | Fork carrying PyDevices' micropython-lib packages for `mip install` | *(no dedicated marketing site — it's a package index fork, not a product)* |
 | [pydevices](https://github.com/PyDevices/pydevices) | Canonical reusable product: cross-interpreter libraries, board configs, and hardware drivers published for pip and MIP | [pydevices.github.io/pydevices](https://pydevices.github.io/pydevices/) |
-| [mpftp](https://github.com/PyDevices/mpftp) | VS Code / Cursor board tools (REPL, file transfer, mip/circup, MicroPython firmware) | [pydevices.github.io/mpftp](https://pydevices.github.io/mpftp/) |
+| [mpftp](https://github.com/PyDevices/mpftp) | VS Code / Cursor / CLI board tools (REPL, file transfer, mip/circup, firmware, MCP) | [pydevices.github.io/mpftp](https://pydevices.github.io/mpftp/) |
 
 ## Licensing
 

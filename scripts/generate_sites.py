@@ -23,6 +23,7 @@ def get_card_icon(repo_name):
     icons = {
         'pydevices': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
         'displayif': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M7 16l1-4M17 16l-1-4"/></svg>',
+        'audioif': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4"/></svg>',
         'pydevices-examples': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><circle cx="17" cy="15" r="1.5"/></svg>',
         'pygraphics': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 0 1 0 18 13 13 0 0 1 0-18z"/></svg>',
         'pdwidgets': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h6M7 16h8"/></svg>',
@@ -46,6 +47,7 @@ def get_tag_label(repo_name):
     tags = {
         'pydevices': 'Core Flagship',
         'displayif': 'C Bus Usermod',
+        'audioif': 'C Audio Usermod',
         'pydevices-examples': 'Companion Showcase',
         'pygraphics': '0-Dependency',
         'pdwidgets': 'Pure-Python UI',
@@ -58,7 +60,7 @@ def get_tag_label(repo_name):
         'android-template': 'Android APK',
         'mip': 'MIP Index',
         'cmods': 'Build Tool',
-        'mpftp': 'Workbench Tool'
+        'mpftp': 'IDE Extension'
     }
     return tags.get(repo_name, repo_name)
 

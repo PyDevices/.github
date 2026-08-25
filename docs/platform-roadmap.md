@@ -86,7 +86,7 @@ Any non-obvious edit that exists **because** of Linux KMS, Android TV / Fire OS,
 
 **Goal:** Treat installable / offline PyScript apps as a **first-class** platform story, documented as clearly as MCU / desktop / Android APK — especially **where** a PyDevices PWA actually runs.
 
-The how-to lives with the repo that owns the subject: [`pyscript-template/docs/pwa-guide.md`](https://github.com/PyDevices/pyscript-template/blob/main/docs/pwa-guide.md) (manifest, service worker, COI, GitHub Pages), alongside the centralized offline [PyDevices Simulator](https://pydevices.github.io/simulator/).
+The how-to lives with the repo that owns the subject: [`pyscript-template/docs/pwa-guide.md`](https://github.com/PyDevices/pyscript-template/blob/main/docs/pwa-guide.md) (manifest, service worker, COI, GitHub Pages).
 
 **Remaining:**
 
@@ -99,7 +99,7 @@ The how-to lives with the repo that owns the subject: [`pyscript-template/docs/p
 - Clarify standalone vs tab behavior, offline/cache expectations, and install UX differences per host.
 - Keep implementation detail in the PWA how-to; **platform docs own “where it runs.”**
 
-**Touchpoints:** `pyscript-template` (`docs/pwa-guide.md`) and `PyDevices.github.io` (`simulator/`). Cross-link from Android TV / webOS / iOS docs-only notes so PWA is not reinvented per track.
+**Touchpoints:** `pyscript-template` (`docs/pwa-guide.md`). Cross-link from Android TV / webOS / iOS docs-only notes so PWA is not reinvented per track.
 
 **Not in this workstream:** new PWA interpreter features or native shells — documentation and positioning only.
 
