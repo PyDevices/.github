@@ -25,6 +25,10 @@ on:
         description: native-and-wasm only -- e.g. pydevices_pygraphics
         default: ""
         type: string
+      expected-wheel-count:
+        description: native-and-wasm only; zero accepts any non-empty wheel set
+        default: 0
+        type: number
       install-dependencies:
         description: pure-python only -- install deps before the smoke test
         default: false
@@ -84,6 +88,7 @@ jobs:
     with:
       distribution-name: ${{ inputs.distribution-name }}
       wheel-filename-prefix: ${{ inputs.wheel-filename-prefix }}
+      expected-wheel-count: ${{ inputs.expected-wheel-count }}
       checkout-submodules: ${{ inputs.checkout-submodules }}
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}

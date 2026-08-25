@@ -16,6 +16,7 @@ ORG="${PYDEVICES_GITHUB_ORG:-PyDevices}"
 # Sibling checkouts expected under $REPOS (names match GitHub repo names).
 SIBLINGS=(
     cmods
+    audioif
     displayif
     pygraphics
     lvgl-bindings
@@ -202,7 +203,7 @@ ensure_lv_cpython_lvgl_symlink() {
 
 verify_ready() {
     local name missing=0
-    for name in cmods displayif pygraphics lvgl-bindings pydevices pydevices-examples palettes pdwidgets; do
+    for name in cmods audioif displayif pygraphics lvgl-bindings pydevices pydevices-examples palettes pdwidgets; do
         if [[ ! -d "$REPOS/$name/.git" && ! -L "$REPOS/$name" ]]; then
             log "ERROR: required repo missing: $REPOS/$name"
             missing=1
@@ -246,7 +247,7 @@ link_pydevices android-template "$REPOS/android-template"
 # cmods must exist before interior sibling links
 [[ -d "$PD/cmods" ]] || die "cmods missing after link step ($PD/cmods)"
 
-for s in displayif pygraphics lvgl-bindings lvgl-circuitpython lvgl-python \
+for s in audioif displayif pygraphics lvgl-bindings lvgl-circuitpython lvgl-python \
     lvgl-micropython; do
     [[ -d "$REPOS/$s" || -L "$REPOS/$s" ]] && link_cmods_sibling "$s"
 done

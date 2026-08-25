@@ -2,7 +2,7 @@
 
 This is the organization-wide runbook for publishing a new package version, and
 it **lives here because it is org-wide**: it governs `palettes`, `pdwidgets`,
-`pygraphics`, `pydevices`, and `lvgl-python`, and it documents the reusable
+`pygraphics`, `audioif`, `pydevices`, and `lvgl-python`, and it documents the reusable
 workflows and shared secrets that this repository owns.
 
 Repository-specific publishing documents cover only what their own release
@@ -23,6 +23,7 @@ exact tag; it is not a way to publish an untagged branch or a different commit.
 | `palettes` | `pydevices-palettes` wheel and sdist | `palettes` |
 | `pdwidgets` | `pydevices-pdwidgets` wheel and sdist | `pdwidgets` |
 | `pygraphics` | `pydevices-pygraphics` Linux, Windows, Android, and PyEmscripten wheels | Pure-Python `pygraphics` |
+| `audioif` | `pydevices-audioif` Linux, Windows, Android, and Pyodide wheels | Nothing; firmware consumes the usermod source |
 | `pydevices` | `pydevices` (all of `lib/`) and `pydevices-desktop` | One package per `lib/` component, plus `pydevices` and `pydevices-desktop` |
 | `lvgl-python` | `pydevices-lvgl` Linux, Windows, Android, and PyEmscripten wheels | Nothing |
 
@@ -75,7 +76,7 @@ Each source repository has one coordinator:
 ```
 
 It validates `vX.Y.Z`, calls reusable workflows from
-`PyDevices/.github@publishing-v1`, publishes validated artifacts, and, where
+`PyDevices/.github@publishing-v3`, publishes validated artifacts, and, where
 applicable, requests a serialized MIP update.
 
 The following GitHub Actions secrets must already exist:
@@ -238,7 +239,7 @@ distribution name, and the MIP profile:
 ```yaml
 jobs:
   publish:
-    uses: PyDevices/.github/.github/workflows/reusable-publish-release-packages.yml@publishing-v2
+    uses: PyDevices/.github/.github/workflows/reusable-publish-release-packages.yml@publishing-v3
     with:
       build-kind: pure-python          # or native-and-wasm, pydevices-multi
       distribution-name: pydevices-palettes
@@ -252,7 +253,7 @@ That reusable resolves and validates the `vX.Y.Z` tag, runs the matching build,
 uploads to TestPyPI, and requests MIP publication. It replaced five copies of
 the same three jobs.
 
-**Callers pin `@publishing-v2`.** `publishing-v1` is left in place so a release
+**Current callers pin `@publishing-v3`.** Earlier tags remain so a release
 cut before the consolidation can still be retried against the contract it was
 built with.
 

@@ -4,12 +4,12 @@ What exists, in which repository, and why. Procedures live elsewhere:
 [publishing-automation.md](publishing-automation.md) for releases,
 [building-docs.md](building-docs.md) for documentation.
 
-**32 workflow files across 18 repositories.**
+The inventory includes the native `audioif` CPython release caller.
 
 ## Reusable workflows (`PyDevices/.github`)
 
 Callers pin a tag, not a branch, so a change here does not alter a release
-until the tag moves. **`publishing-v2` is current**; `publishing-v1` remains for
+until the tag moves. **`publishing-v3` is current**; earlier tags remain for
 retrying a release cut before the consolidation.
 
 | Workflow | Purpose |
@@ -23,7 +23,7 @@ retrying a release cut before the consolidation.
 | `reusable-validate-pyscript-filesystem-toml.yml` | Check a `*.toml` filesystem map against the tree it claims to mirror |
 
 The build workflows also check this repository out for its scripts, pinned by
-`publishing-tools-ref` — which defaults to `publishing-v2`, so workflows and
+`publishing-tools-ref` — which defaults to `publishing-v3`, so workflows and
 scripts always come from the same tag.
 
 ## Releasing
@@ -37,6 +37,7 @@ scripts always come from the same tag.
 | `palettes` | `pure-python` | `pydevices-palettes` | `palettes` |
 | `pdwidgets` | `pure-python` | `pydevices-pdwidgets` | `pdwidgets` |
 | `pygraphics` | `native-and-wasm` | `pydevices-pygraphics` | `pygraphics` |
+| `audioif` | `native-and-wasm` | `pydevices-audioif` | — none |
 | `lvgl-python` | `native-and-wasm` | `pydevices-lvgl` | — none |
 
 Triggered by a published GitHub Release, or by `workflow_dispatch` with an exact

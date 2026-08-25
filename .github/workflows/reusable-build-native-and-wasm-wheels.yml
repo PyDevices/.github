@@ -10,6 +10,9 @@ on:
         description: Normalized wheel filename prefix, such as pydevices_pygraphics
         required: true
         type: string
+      expected-wheel-count:
+        default: 0
+        type: number
       release-ref:
         required: true
         type: string
@@ -152,6 +155,7 @@ jobs:
 
       - name: Validate the complete wheel set
         env:
+          EXPECTED_COUNT: ${{ inputs.expected-wheel-count }}
           EXPECTED_PREFIX: ${{ inputs.wheel-filename-prefix }}
           EXPECTED_VERSION: ${{ inputs.version }}
         run: |
@@ -162,6 +166,9 @@ jobs:
           from packaging.utils import parse_wheel_filename
 
           wheels = sorted(Path("dist").glob("*.whl"))
+          expected_count = int(os.environ["EXPECTED_COUNT"])
+          if expected_count and len(wheels) != expected_count:
+              raise SystemExit(f"expected exactly {expected_count} wheels, found {len(wheels)}")
           if not wheels:
               raise SystemExit("No wheels were collected")
           expected_prefix = os.environ["EXPECTED_PREFIX"].replace("_", "-")

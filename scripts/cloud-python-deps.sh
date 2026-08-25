@@ -6,7 +6,7 @@
 #
 #   - installs system packages needed for venv + pygame-ce when missing
 #   - creates the repo-root `.venv` for runnable pure-Python products
-#   - pydevices-examples  (flagship)  -> requirements-dev.txt + pygame-ce + pydevices-lvgl
+#   - pydevices-examples  (flagship)  -> requirements-dev.txt + pygame-ce + native audio/LVGL bindings
 #   - palettes   pdwidgets   -> ruff
 #
 # Safe to run on every cloud VM boot (environment.json install). See AGENTS.md.
@@ -85,6 +85,16 @@ if bin="$(ensure_venv pydevices-examples)"; then
     # pygame-ce is the desktop fallback backend / Windows default (PGDisplay);
     # deliberately not in requirements-dev.txt (SDL2 is the documented primary).
     "$bin/pip" install -q pygame-ce || log "warn: pygame-ce install failed"
+    # Build the current audioif checkout into the workspace venv so CPython
+    # examples exercise the same source that MicroPython consumes.
+    if [[ -d "$REPOS/audioif" ]]; then
+        "$bin/pip" install -q -e "$REPOS/audioif" || \
+            log "warn: editable pydevices-audioif install failed; synthesis examples unavailable"
+    else
+        "$bin/pip" install -q -i https://test.pypi.org/simple/ \
+            --extra-index-url https://pypi.org/simple/ pydevices-audioif || \
+            log "warn: pydevices-audioif (TestPyPI) install skipped; synthesis examples unavailable"
+    fi
     # CPython LVGL binding (import name `lvgl`) from TestPyPI — optional; the
     # LVGL examples/timer kits need it. Best-effort so TestPyPI outages don't
     # break startup.
