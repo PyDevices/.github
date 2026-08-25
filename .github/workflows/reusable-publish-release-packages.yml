@@ -73,7 +73,7 @@ jobs:
   build-pure-python:
     if: inputs.build-kind == 'pure-python'
     needs: prepare-release
-    uses: PyDevices/.github/.github/workflows/reusable-build-pure-python-distribution.yml@publishing-v3
+    uses: PyDevices/.github/.github/workflows/reusable-build-pure-python-distribution.yml@publishing-v4
     with:
       distribution-name: ${{ inputs.distribution-name }}
       import-name: ${{ inputs.import-name }}
@@ -84,7 +84,7 @@ jobs:
   build-native-and-wasm:
     if: inputs.build-kind == 'native-and-wasm'
     needs: prepare-release
-    uses: PyDevices/.github/.github/workflows/reusable-build-native-and-wasm-wheels.yml@publishing-v3
+    uses: PyDevices/.github/.github/workflows/reusable-build-native-and-wasm-wheels.yml@publishing-v4
     with:
       distribution-name: ${{ inputs.distribution-name }}
       wheel-filename-prefix: ${{ inputs.wheel-filename-prefix }}
@@ -96,7 +96,7 @@ jobs:
   build-pydevices-multi:
     if: inputs.build-kind == 'pydevices-multi'
     needs: prepare-release
-    uses: PyDevices/.github/.github/workflows/reusable-build-pydevices-distributions.yml@publishing-v3
+    uses: PyDevices/.github/.github/workflows/reusable-build-pydevices-distributions.yml@publishing-v4
     with:
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}
@@ -142,7 +142,7 @@ jobs:
       - build-pure-python
       - build-native-and-wasm
       - build-pydevices-multi
-    uses: PyDevices/.github/.github/workflows/reusable-request-mip-publication.yml@publishing-v3
+    uses: PyDevices/.github/.github/workflows/reusable-request-mip-publication.yml@publishing-v4
     with:
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}

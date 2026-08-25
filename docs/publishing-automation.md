@@ -253,9 +253,12 @@ That reusable resolves and validates the `vX.Y.Z` tag, runs the matching build,
 uploads to TestPyPI, and requests MIP publication. It replaced five copies of
 the same three jobs.
 
-**Current callers pin `@publishing-v3`.** Earlier tags remain so a release
-cut before the consolidation can still be retried against the contract it was
-built with.
+**`audioif` pins `@publishing-v4`; every other caller pins `@publishing-v3`.**
+v4 adds the optional `expected-wheel-count` input, which defaults to `0` and
+accepts any non-empty wheel set, so the v3 callers need no change. Earlier tags
+remain so a release cut before the consolidation can still be retried against
+the contract it was built with. Each tag's nested `uses:` refs point at its own
+tag, so a caller on v3 runs an entirely v3 chain.
 
 ## Standard release procedure
 
