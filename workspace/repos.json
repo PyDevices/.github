@@ -1,0 +1,27 @@
+{
+  "org": "PyDevices",
+  "comment": "Single source of truth for the multi-repository workspace. Consumed by workspace/bootstrap.sh; .cursor/environment.json and scripts/cloud-workspace-install.sh carry older hardcoded copies of this list and should converge on this file (modernization roadmap, section 2.1 / Phase 0).",
+  "repos": [
+    {"name": ".github",             "local": "dotgithub",  "role": "org control plane",       "status": "active"},
+    {"name": "PyDevices.github.io", "role": "pages site + simulator + mip index host",        "status": "active"},
+    {"name": "pydevices",           "role": "core library",                                   "status": "active"},
+    {"name": "pydevices-examples",  "role": "examples + test matrix",                         "status": "active"},
+    {"name": "displayif",           "role": "native component",                               "status": "active"},
+    {"name": "audioif",             "role": "native component",                               "status": "active", "note": "in-flight instrument-library program; hands off until complete"},
+    {"name": "pygraphics",          "role": "library + native module",                        "status": "active"},
+    {"name": "palettes",            "role": "library",                                        "status": "active"},
+    {"name": "pdwidgets",           "role": "library",                                        "status": "active"},
+    {"name": "lvgl-bindings",       "role": "generated-bindings producer (single writer of the lvgl sync)", "status": "active"},
+    {"name": "lvgl-python",         "role": "generated-bindings consumer, publishes",         "status": "active", "note": "sync target: edit helpers only in lvgl-bindings"},
+    {"name": "lvgl-micropython",    "role": "generated-bindings consumer",                    "status": "active", "note": "sync target"},
+    {"name": "lvgl-circuitpython",  "role": "generated-bindings consumer",                    "status": "active", "note": "sync target"},
+    {"name": "mpftp",               "role": "tool",                                           "status": "active"},
+    {"name": "mip",                 "role": "package index",                                  "status": "active"},
+    {"name": "workbench",           "role": "IDE (ViperIDE fork)",                            "status": "active"},
+    {"name": "cmods",               "role": "maintainer orchestration (consumer of public contracts)", "status": "active"},
+    {"name": "android-template",    "role": "template",                                       "status": "active"},
+    {"name": "android-runner",      "role": "app",                                            "status": "active"},
+    {"name": "pyscript-template",   "role": "template",                                       "status": "active"},
+    {"name": "micropython-vst3",    "role": "app / instrument library",                       "status": "pending-publication", "note": "no GitHub remote yet; becomes active when published"}
+  ]
+}
