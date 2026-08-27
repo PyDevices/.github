@@ -1,0 +1,5 @@
+Read the attached “PyDevices Organization Modernization — Agent Execution Contract and Roadmap” in full.
+
+Treat it as authoritative. Do not inspect, edit, configure, publish, or otherwise begin work yet. Confirm that you understand the hard start condition, approval gates, prohibited actions, and canonical workspace.
+
+Reply with `READY` and wait. Do not start until I send the exact word `GO`.
