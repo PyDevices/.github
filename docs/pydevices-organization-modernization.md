@@ -6,9 +6,10 @@
 
 **Canonical workspace:** /home/brad/gh/pydevices
 
-**Revision:** 2026-08-27. This file supersedes the 2026-08-26 draft in full and
-is self-contained. No amendment files exist; any reference to "Amendment A" or
-"Amendment C" is stale and must be ignored.
+**Revision:** 2026-08-27, amended the same day for cloud execution (section
+2.1). This file supersedes the 2026-08-26 draft in full and is self-contained.
+No amendment files exist; any reference to "Amendment A" or "Amendment C" is
+stale and must be ignored.
 
 ## 1. Mission — the bar
 
@@ -59,18 +60,59 @@ never prerequisites.
 
 ## 2. Hard start condition
 
-The execution agent must not change repositories, GitHub settings, package
-registries, or other external state until:
+Execution is a cloud handoff: the executing agent runs in Claude cloud
+sessions (section 2.1), not on Brad's workstation. The agent must not change
+repositories, GitHub settings, package registries, or other external state
+until all of the following hold:
 
-1. `micropython-vst3` (currently the only workspace repository with no GitHub
-   remote, verified 2026-08-27) and any other repositories Brad wants in scope
-   have been published or explicitly excluded; and
-2. Brad gives the exact instruction:
+1. The in-flight instrument-library program on `audioif` and
+   `micropython-vst3` (rule 9) is completely finished, `micropython-vst3`
+   (currently the only workspace repository with no GitHub remote, verified
+   2026-08-27) has been published, and both repositories' remotes are in sync
+   with Brad's local checkouts.
+2. The pre-handoff checklist (section 2.2) is complete.
+3. Brad gives the exact instruction:
 
        GO
 
-Before GO, the agent may read this roadmap, read the workspace, and answer
-questions, but must not begin discovery probes or implementation.
+Before GO, the agent may read this roadmap, read the pushed repositories, and
+answer questions, but must not begin discovery probes or implementation.
+
+### 2.1 Execution environment
+
+- The executor is a Claude cloud session authenticated through the Claude
+  GitHub app, which Brad grants access to the in-scope PyDevices repositories
+  (including private ones such as `cmods` where applicable).
+- The canonical workspace is a manifest-defined multi-repository checkout —
+  `workspace/repos.json` + `workspace/bootstrap.sh` in the `.github`
+  repository — not a path on Brad's machine. Every session begins by
+  bootstrapping sibling checkouts from the manifest and reading this roadmap.
+- The cloud sees only what is pushed. Local working trees, uncommitted
+  changes, and workstation state are invisible; anything the program needs
+  must reach a remote first.
+- The proof surface is CI. GitHub Actions runs (including Windows runners)
+  are the clean-environment evidence for the scenarios; the browser simulator
+  may run headless in-session. On-hardware verification is owned by Brad or
+  an explicitly requested workstation session and is recorded as such
+  (scenario S4).
+- Work proceeds session by session: checkpoint packets land as PR
+  descriptions or issues; gates map to session boundaries; nothing may depend
+  on memory that is not in a repository.
+
+### 2.2 Pre-handoff checklist (workstation)
+
+Completed from the workstation before the handoff; the cloud agent verifies
+rather than performs these:
+
+1. Capture the uncommitted Adafruit_MP3 Windows patch — **done 2026-08-27**:
+   `cmods/patches/adafruit_mp3/0001-windows-msvc-inline-assembly.patch`.
+2. Push every in-scope repository so remotes match local. (`audioif` and
+   `micropython-vst3` sync is owned by the in-flight program's completion,
+   condition 1 above.)
+3. Grant the Claude GitHub app access to the in-scope repositories.
+4. Rebuild and commit the distributed interpreter binaries (`pydevices/bin`,
+   the site and workbench wasm) from merged, pushed sources only — never from
+   an unmerged branch.
 
 ## 3. Authority and safety rules
 
@@ -135,10 +177,10 @@ carried forward as fact.
    Releases attach none).
 7. **Retired PyDevices URLs 404** in search results. Add redirects; this is
    also the standing argument for the name freeze.
-8. **audioif resolves dependencies by sibling path** (ulab, Adafruit_MP3), and
-   the Windows compatibility patch to Adafruit_MP3 (`assembly.h`, ~line 60)
-   exists only as an uncommitted change in Brad's working tree. **First hour
-   after GO: capture that patch to a file before anything else.**
+8. **audioif resolves dependencies by sibling path** (ulab, Adafruit_MP3).
+   The Windows compatibility patch to Adafruit_MP3 (`assembly.h`) was captured
+   pre-handoff to `cmods/patches/adafruit_mp3/` (checklist 2.2); in Phase 2
+   its ownership moves to the native pilot's patch queue.
 9. **Runtime patches and variants live only in cmods**: MicroPython Windows
    networking/SSL/select mailbox patches applied by `build_mp.sh`, Windows FFI,
    WebAssembly port additions and the external wasm `variants` directory,
@@ -250,7 +292,8 @@ with no cmods present unless the scenario says otherwise.
   component repository's documentation, clone it plus upstream
   MicroPython/CircuitPython plus its declared dependencies; build the
   documented profile; run its tests. Missing dependencies fail early with a
-  useful message.
+  useful message. Evidence from a GitHub Actions run on a clean runner
+  (Linux or Windows) satisfies the clean-machine requirement.
 - **S2 — The patch reader** (rigor): Open the patch queue cold. Every patch
   states purpose, provenance, upstream-version range, and order; the series
   applies cleanly to the pinned upstream; each patch's effect is demonstrated
@@ -285,9 +328,11 @@ with no cmods present unless the scenario says otherwise.
 
 After GO:
 
-1. **First hour:** capture the uncommitted Adafruit_MP3 `assembly.h` patch
-   (finding 8) to a patch file. Read-only otherwise.
-2. Spot-check every section 4.1 finding; record deltas.
+1. Bootstrap the workspace from the manifest (section 2.1); report anything
+   the manifest missed as a finding, and extend it as the inventory
+   completes.
+2. Spot-check every section 4.1 finding; record deltas. Verify the
+   pre-handoff checklist (section 2.2) actually holds.
 3. Complete the inventory: every local and GitHub repository including the
    newly published one(s) — role, audience, archetype, lifecycle, release
    path, dependency set, cmods assumptions. Focus effort on what is *unknown*;
@@ -402,18 +447,23 @@ Present: the contract matrix (done / remaining / excepted), final ownership
 maps for patches and integration assets, cmods scope statement, dashboard
 showing the whole portfolio. Continue on `APPROVE GATE 5`.
 
-### Phase 5 — Cockpit and agents (optional; supports S7)
+### Phase 5 — Optional cockpit (supports S7)
 
-1. Devcontainer + multi-root workspace launched from the `.github`
-   repository; manifest-driven bootstrap for attaching a chosen subset of
-   repositories; health checks for missing tools, repos, credentials.
-2. Adapt the existing bootstrap assets (`refresh-pydevices-workspaces.sh`,
-   the Cursor cloud manifest) rather than maintaining parallel procedures.
-3. Document agent attachment (Claude Code, Codex, Copilot agents): what each
-   can see, what credentials are deliberately withheld, and how their output
-   enters review. Agents never hold release credentials.
-4. Local WSL/Linux use remains first-class. The cockpit is a convenience; if
-   a repository build works only inside it, that is a Phase 2 regression.
+With execution in the cloud, no agent needs a Codespace: the executor brings
+its own sandbox and bootstraps from the workspace manifest, which exists from
+Phase 0 (section 2.1). This phase covers only Brad's optional hands-on
+browser environment; his default cockpit is GitHub itself — PR review plus
+the Release Health dashboard.
+
+1. If wanted: a devcontainer that inherits the same workspace manifest — one
+   environment definition with two consumers, never a parallel procedure.
+2. Health checks for missing tools, repositories, and credentials.
+3. Document agent and credential boundaries: what each agent kind (cloud
+   executor, workstation session, review bots) can see, what is deliberately
+   withheld, and how its output enters review. Agents never hold release
+   credentials in any environment.
+4. Local WSL/Linux use remains first-class. If a repository build works only
+   inside the cockpit, that is a Phase 2 regression.
 
 #### Gate 6 — Cockpit approval
 
