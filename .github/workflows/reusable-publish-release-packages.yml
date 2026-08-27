@@ -47,6 +47,10 @@ on:
           a release event, where the tag comes from the event itself.
         default: ""
         type: string
+      working-directory:
+        description: Directory containing pyproject.toml (pure-python only)
+        default: "."
+        type: string
 
 permissions:
   contents: read
@@ -80,6 +84,7 @@ jobs:
       distribution-name: ${{ inputs.distribution-name }}
       import-name: ${{ inputs.import-name }}
       install-dependencies: ${{ inputs.install-dependencies }}
+      working-directory: ${{ inputs.working-directory }}
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}
 
