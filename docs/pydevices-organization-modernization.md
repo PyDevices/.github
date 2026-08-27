@@ -81,12 +81,17 @@ answer questions, but must not begin discovery probes or implementation.
 ### 2.1 Execution environment
 
 - The executor is a Claude cloud session authenticated through the Claude
-  GitHub app, which Brad grants access to the in-scope PyDevices repositories
-  (including private ones such as `cmods` where applicable).
-- The canonical workspace is a manifest-defined multi-repository checkout —
-  `workspace/repos.json` + `workspace/bootstrap.sh` in the `.github`
-  repository — not a path on Brad's machine. Every session begins by
-  bootstrapping sibling checkouts from the manifest and reading this roadmap.
+  GitHub app, installed org-wide with all-repository access (verified
+  2026-08-27) — covering the private `workspace` anchor repository; the rest
+  of the organization is public.
+- The session anchor is the private `workspace` repository: a session starts
+  there and runs its `bootstrap.sh`, which delegates to the public manifest
+  (`workspace/repos.json` + `workspace/bootstrap.sh` in the `.github`
+  repository) to clone or fetch every active repository into the anchor
+  checkout, git-ignored there. The anchor also holds private program
+  documents (gate packets, audit findings, in its `docs/`) and maintainer
+  tooling — and, by its boundary rule, never anything a public build needs.
+  Every session begins by bootstrapping and reading this roadmap.
 - The cloud sees only what is pushed. Local working trees, uncommitted
   changes, and workstation state are invisible; anything the program needs
   must reach a remote first.
@@ -96,8 +101,9 @@ answer questions, but must not begin discovery probes or implementation.
   an explicitly requested workstation session and is recorded as such
   (scenario S4).
 - Work proceeds session by session: checkpoint packets land as PR
-  descriptions or issues; gates map to session boundaries; nothing may depend
-  on memory that is not in a repository.
+  descriptions, issues, or the anchor repository's private `docs/`; gates map
+  to session boundaries; nothing may depend on memory that is not in a
+  repository.
 
 ### 2.2 Pre-handoff checklist (workstation)
 
