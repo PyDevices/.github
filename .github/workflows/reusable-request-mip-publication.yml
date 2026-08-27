@@ -12,7 +12,9 @@ on:
         required: true
         type: string
       profile:
-        description: Central MIP synchronization profile
+        description: >-
+          Central MIP synchronization profile, or a comma-separated list of
+          them for a repository that publishes more than one package.
         required: true
         type: string
 
@@ -32,17 +34,35 @@ jobs:
           owner: PyDevices
           repositories: mip
 
+      # One dispatch per profile. A repository with a single package sends one,
+      # exactly as before; audioif sends two. They are not raced: mip's
+      # process-mip-publication-request.yml holds them in the
+      # pydevices-mip-publication-queue concurrency group with
+      # cancel-in-progress false, so the second waits for the first and each
+      # run re-syncs every locked source anyway.
       - name: Dispatch the exact release to the MIP queue
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           SOURCE_REPOSITORY: ${{ github.repository }}
           SOURCE_REF: ${{ inputs.release-ref }}
           RELEASE_VERSION: ${{ inputs.version }}
-          PUBLICATION_PROFILE: ${{ inputs.profile }}
+          PUBLICATION_PROFILES: ${{ inputs.profile }}
         run: |
-          gh api --method POST repos/PyDevices/mip/dispatches \
-            -f event_type=publish-package-release \
-            -f client_payload[source_repository]="$SOURCE_REPOSITORY" \
-            -f client_payload[source_ref]="$SOURCE_REF" \
-            -f client_payload[version]="$RELEASE_VERSION" \
-            -f client_payload[profile]="$PUBLICATION_PROFILE"
+          set -euo pipefail
+          dispatched=0
+          while IFS= read -r profile; do
+              [[ -n "$profile" ]] || continue
+              echo "dispatching $profile @ $SOURCE_REF"
+              gh api --method POST repos/PyDevices/mip/dispatches \
+                -f event_type=publish-package-release \
+                -f client_payload[source_repository]="$SOURCE_REPOSITORY" \
+                -f client_payload[source_ref]="$SOURCE_REF" \
+                -f client_payload[version]="$RELEASE_VERSION" \
+                -f client_payload[profile]="$profile"
+              dispatched=$((dispatched + 1))
+          done < <(echo "$PUBLICATION_PROFILES" | tr ',' '\n' | sed 's/[[:space:]]//g' | grep -v '^$' || true)
+          if [[ "$dispatched" == 0 ]]; then
+              echo "no profile in '$PUBLICATION_PROFILES'" >&2
+              exit 1
+          fi
+          echo "dispatched $dispatched profile(s)"

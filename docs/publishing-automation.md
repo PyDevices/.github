@@ -23,7 +23,7 @@ exact tag; it is not a way to publish an untagged branch or a different commit.
 | `palettes` | `pydevices-palettes` wheel and sdist | `palettes` |
 | `pdwidgets` | `pydevices-pdwidgets` wheel and sdist | `pdwidgets` |
 | `pygraphics` | `pydevices-pygraphics` Linux, Windows, Android, and PyEmscripten wheels | Pure-Python `pygraphics` |
-| `audioif` | `pydevices-audioif` Linux, Windows, Android, and Pyodide wheels | Nothing; firmware consumes the usermod source |
+| `audioif` | `pydevices-audioif` Linux, Windows, Android, and Pyodide wheels | `audioinstruments` and `audioeffects` — the pure-Python tier only; the native modules are firmware, built from the usermod source |
 | `pydevices` | `pydevices` (all of `lib/`) and `pydevices-desktop` | One package per `lib/` component, plus `pydevices` and `pydevices-desktop` |
 | `lvgl-python` | `pydevices-lvgl` Linux, Windows, Android, and PyEmscripten wheels | Nothing |
 
@@ -245,6 +245,7 @@ jobs:
       distribution-name: pydevices-palettes
       import-name: palettes
       mip-profile: palettes            # omit to skip MIP, as lvgl-python does
+                                       # comma-separate for several, as audioif does
       release-ref: ${{ inputs.release-ref }}
     secrets: inherit
 ```
@@ -544,7 +545,7 @@ gh workflow run process-mip-publication-request.yml \
   -f source-repository=PyDevices/<repository> \
   -f source-ref=vX.Y.Z \
   -f version=X.Y.Z \
-  -f profile=<palettes|pdwidgets|pygraphics|pydevices>
+  -f profile=<palettes|pdwidgets|pygraphics|pydevices|audioinstruments|audioeffects>
 ```
 
 Use a direct central dispatch only for recovery after confirming that the

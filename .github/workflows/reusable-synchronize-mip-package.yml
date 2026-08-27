@@ -28,7 +28,11 @@ on:
         required: true
         type: string
       publishing-tools-ref:
-        default: publishing-v3
+        # publishing-v4 carries the audioinstruments and audioeffects profiles.
+        # The lockfile drives a re-sync of every locked package on each run, so
+        # the tools ref has to know every profile in it, not just the one being
+        # published.
+        default: publishing-v4
         type: string
 
 permissions:

@@ -37,7 +37,9 @@ on:
         default: false
         type: boolean
       mip-profile:
-        description: synchronize_mip_package.py profile; empty skips MIP
+        description: >-
+          synchronize_mip_package.py profile, or a comma-separated list where a
+          repository publishes more than one package; empty skips MIP
         default: ""
         type: string
       release-ref:

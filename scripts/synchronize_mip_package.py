@@ -46,6 +46,34 @@ PROFILES = {
         ),
         pypi_name=None,
     ),
+    # audioif is the first source repository with more than one publishable
+    # package, which is why mip-profile takes a list. Its native modules are
+    # firmware (a usermod, not MIP); these two are the pure-Python tier on top.
+    #
+    # Both carry pypi_name=None deliberately. They do reach PyPI, but inside
+    # the pydevices-audioif wheel rather than as distributions of their own, so
+    # claiming a pypi_publish here would advertise a name pip cannot resolve --
+    # the same reasoning as the PYPI_DISTRIBUTIONS note further down.
+    #
+    # No requirements either: audioinstruments and audioeffects both import
+    # audioif's native modules, which arrive with the firmware and are not MIP
+    # packages, so there is no edge for require() to express.
+    "audioinstruments": Profile(
+        package="audioinstruments",
+        description=(
+            "53 synthio instruments for PyDevices (drum machines and "
+            "synthesizers); import as audioinstruments"
+        ),
+        pypi_name=None,
+    ),
+    "audioeffects": Profile(
+        package="audioeffects",
+        description=(
+            "Effect classes for PyDevices audio (delay, drive, dynamics, eq, "
+            "modulation, pitch, reverb); import as audioeffects"
+        ),
+        pypi_name=None,
+    ),
 }
 
 PROFILE_REPOSITORIES = {
@@ -53,6 +81,8 @@ PROFILE_REPOSITORIES = {
     "pdwidgets": "PyDevices/pdwidgets",
     "pygraphics": "PyDevices/pygraphics",
     "pydevices": "PyDevices/pydevices",
+    "audioinstruments": "PyDevices/audioif",
+    "audioeffects": "PyDevices/audioif",
 }
 
 # No internal dependency table: lib/ ships as a single MIP package, so the graph
