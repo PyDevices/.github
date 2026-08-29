@@ -1,10 +1,12 @@
 # PyDevices Organization Modernization — Agent Execution Contract and Roadmap
 
-**Status:** COMPLETE PENDING HANDOFF ACCEPTANCE (2026-08-29). All seven
-gates passed; Phases 5 and 6 skipped by decision at Gate 5; Phase 7's
+**Status:** COMPLETE — HANDOFF ACCEPTED 2026-08-29. All seven gates
+passed; Phases 5 and 6 skipped by decision at Gate 5; Phase 7's
 runbooks, maintenance calendar, quarterly cold-eyes review, and final
 evidence pack are in place (evidence pack in the private workspace
-anchor). The program closes when Brad accepts the handoff.
+anchor). Brad accepted the handoff on 2026-08-29; the program is
+closed. Ongoing operation is governed by the operations runbook and
+maintenance calendar, not this document.
 
 **Owner:** Brad / PyDevices
 
