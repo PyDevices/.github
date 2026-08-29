@@ -18,7 +18,7 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Fold in the report and regenerate the page
         env:
           PAYLOAD: ${{ toJSON(github.event.client_payload) }}
@@ -46,7 +46,7 @@ jobs:
                   up=d.get("updated", "")))
           open("RELEASE_HEALTH.md", "w").write(
               "# Release health\n\nLatest publish run per distribution, reported by "
-              "publishing-v5's report-release-health job (link = the run).\n\n"
+              "publishing-v6's report-release-health job (link = the run).\n\n"
               "| Distribution | Version | TestPyPI | Assets | MIP | PyPI | Updated |\n"
               "|---|---|---|---|---|---|---|\n" + "\n".join(rows) + "\n")
           PY

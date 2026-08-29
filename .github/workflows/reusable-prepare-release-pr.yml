@@ -11,7 +11,7 @@ on:
   workflow_call:
     inputs:
       version:
-        description: Release version X.Y.Z[{a|b|rc}N|.devN]; empty = highest tag + 1 patch
+        description: Release version X.Y.Z[{a|b|rc}N|.devN]; empty = a SUGGESTED highest-tag+1-patch value the reviewer is expected to confirm or overwrite in the PR
         default: ""
         type: string
 
@@ -29,7 +29,7 @@ jobs:
           app-id: ${{ secrets.PYDEVICES_APP_ID }}
           private-key: ${{ secrets.PYDEVICES_APP_PRIVATE_KEY }}
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}

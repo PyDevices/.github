@@ -38,7 +38,7 @@
    "name": "audioif",
    "role": "native component",
    "status": "active",
-   "note": "in-flight instrument-library program; hands off until complete"
+   "note": "instrument-library program complete 2026-08-28"
   },
   {
    "name": "pygraphics",
@@ -116,8 +116,8 @@
   {
    "name": "micropython-vst3",
    "role": "app / instrument library",
-   "status": "pending-publication",
-   "note": "no GitHub remote yet; becomes active when published"
+   "status": "active",
+   "note": "public since 2026-08-28; publishes nothing, local ctest is the gate"
   },
   {
    "name": "micropython-pydevices",

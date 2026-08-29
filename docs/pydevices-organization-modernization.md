@@ -173,9 +173,11 @@ carried forward as fact.
 
 ### 4.1 Defects to fix
 
-1. **Workflow drift**: most publishing repositories call `publishing-v3`;
-   `audioif` and newer shared logic use `publishing-v4`. Consolidate on a new
-   immutable `publishing-v5` contract; leave existing v3/v4 tags untouched.
+1. **Workflow drift** — **DONE (2026-08-29)**: every caller now pins the
+   immutable `publishing-v6` contract (v5 lived hours before a live MIP
+   race fix superseded it; v3/v4/v5 tags untouched, now
+   ruleset-protected). Release PRs, tag-on-merge, assets, pre-releases,
+   and the health dashboard shipped with it.
 2. **workbench release contract broken**: its release workflow fires only on
    `mcp-v*` tags, but the repo carries `v0.6.x` tags — tags exist with no
    GitHub Releases.
@@ -190,8 +192,9 @@ carried forward as fact.
    on TestPyPI; the production names were free when checked. This is a
    name-squatting exposure and the most urgent external action in the program
    (Gate 1 decision).
-6. **Releases ship no assets** (six of the seven repositories with GitHub
-   Releases attach none).
+6. **Releases ship no assets** — **FIXED by publishing-v6** (every publish
+   attaches its distributions; interpreters ship as checksummed release
+   assets on pydevices releases).
 7. **Retired PyDevices URLs 404** in search results. Add redirects; this is
    also the standing argument for the name freeze.
 8. **audioif resolves dependencies by sibling path** (ulab, Adafruit_MP3).
@@ -239,9 +242,12 @@ stranger would otherwise misread it.
 - **The CircuitPython oracle stays pinned at 10.2.1** while audioif parity
   work is live. Moving it is a re-port and its own future phase, owned by the
   audioif plan, not this program.
-- **micropython-vst3 is remoteless on purpose** until Brad publishes it (its
-  lint runs as a ctest for exactly that reason). Publication is the GO
-  precondition, not this program's job.
+- **micropython-vst3 publishes nothing and carries no hosted CI, by
+  decision** (restated 2026-08-29, now that it is public: its gate is the
+  local 14-test ctest suite, lint included; hosted CI arrives with the
+  post-program rename/refactor of this repo, not before). Its engine
+  build also still routes through cmods — an accepted, documented §5.2
+  exception scoped to this repo until that same refactor.
 
 Additions to this ledger require Brad's approval and must state what a
 stranger will see and where the decision is documented.

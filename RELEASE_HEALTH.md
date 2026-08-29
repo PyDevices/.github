@@ -1,6 +1,6 @@
 # Release health
 
-Latest publish run per distribution, reported by publishing-v5's report-release-health job (link = the run).
+Latest publish run per distribution, reported by publishing-v6's report-release-health job (link = the run).
 
 | Distribution | Version | TestPyPI | Assets | MIP | PyPI | Updated |
 |---|---|---|---|---|---|---|
