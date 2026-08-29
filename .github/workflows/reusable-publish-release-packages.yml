@@ -217,7 +217,9 @@ jobs:
 
   report-release-health:
     # Feed the Release Health dashboard in PyDevices/.github regardless of
-    # outcome; the dashboard is only useful if failures report too.
+    # outcome; the dashboard is only useful if failures report too. A
+    # reporting failure must never fail the release itself.
+    continue-on-error: true
     needs:
       - prepare-release
       - build-pure-python
