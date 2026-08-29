@@ -12,7 +12,7 @@
       },
       "2": {
         "name": "Python Framebuffers & GUI Toolkits",
-        "hint": "Zero external native dependencies — runs on any Python 3 host."
+        "hint": "Zero external native dependencies \u2014 runs on any Python 3 host."
       },
       "3": {
         "name": "LVGL Native Extensions & Binding Generator",
@@ -38,7 +38,7 @@
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "pydevices",
-    "headline": "pydevices — Hardware Abstraction Layer & Core Contract.",
+    "headline": "pydevices \u2014 Hardware Abstraction Layer & Core Contract.",
     "description": "Unified pure-Python hardware abstraction layer and core device contract for MicroPython, CircuitPython, CPython, direct WebAssembly, Pyodide, and Android.",
     "hero_canvas": {
       "app": "signal_gen",
@@ -80,7 +80,7 @@
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "displayif",
-    "headline": "displayif — C hardware bus engine & usermod drivers.",
+    "headline": "displayif \u2014 C hardware bus engine & usermod drivers.",
     "description": "High-performance C hardware bus engines (SPI, I2C, Intel 8080, RGB/DPI, MIPI DSI) and native usermod display drivers for MicroPython and CircuitPython.",
     "hero_canvas": {
       "app": "bus_scope",
@@ -121,8 +121,8 @@
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audioif",
-    "headline": "audioif — CircuitPython-compatible audio for MicroPython and CPython.",
-    "description": "An audio synthesis stack with CircuitPython import names and play/stop/pause/resume semantics. MicroPython firmware includes audiomp3; pydevices-audioif 0.0.1 provides audiocore, synthio, the mixer, and effects for CPython, Android, and Pyodide.",
+    "headline": "audioif \u2014 CircuitPython-compatible audio for MicroPython and CPython.",
+    "description": "CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: 53 classic instruments (audioinstruments), 43 effects (audioeffects), dynamics, routing, convolution, and offline rendering. Ships as pydevices-audioif with pydevices-audioinstruments and pydevices-audioeffects.",
     "hero_canvas": {
       "app": "audio_scope",
       "width": 240,
@@ -169,7 +169,7 @@
     "tier_name": "Python Framebuffers & GUI Toolkits",
     "theme_color": "var(--tier-2-emerald)",
     "eyebrow": "pygraphics",
-    "headline": "pygraphics — 2D graphics engine & canvas framebuffer.",
+    "headline": "pygraphics \u2014 2D graphics engine & canvas framebuffer.",
     "description": "Pure-Python 2D graphics library with drawing primitives, anti-aliased font rendering, paletted surface blitting, and area-dirtying pipelines.",
     "hero_canvas": {
       "app": "simon",
@@ -212,7 +212,7 @@
     "tier_name": "Python Framebuffers & GUI Toolkits",
     "theme_color": "var(--tier-2-emerald)",
     "eyebrow": "pdwidgets",
-    "headline": "pdwidgets — Pure-Python UI widget toolkit.",
+    "headline": "pdwidgets \u2014 Pure-Python UI widget toolkit.",
     "description": "Lightweight object-oriented UI widget framework including buttons, sliders, progress bars, labels, and event routing for PyDevices screens.",
     "hero_canvas": {
       "app": "sensor_deck",
@@ -256,7 +256,7 @@
     "tier_name": "Python Framebuffers & GUI Toolkits",
     "theme_color": "var(--tier-2-emerald)",
     "eyebrow": "palettes",
-    "headline": "palettes — Color math, gradients & swatch palettes.",
+    "headline": "palettes \u2014 Color math, gradients & swatch palettes.",
     "description": "Color management library with RGB565 / RGB888 conversion, HSL / HSV color spaces, palette swatches, and smooth gradient generators.",
     "hero_canvas": {
       "app": "palette_orb",
@@ -299,7 +299,7 @@
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-bindings",
-    "headline": "lvgl-bindings — Automated C header parser & binding generator.",
+    "headline": "lvgl-bindings \u2014 Automated C header parser & binding generator.",
     "description": "Automated binding generator parsing LVGL C headers into native CPython extensions, MicroPython usermods, and CircuitPython modules.",
     "hero_canvas": {
       "app": "ast_parser",
@@ -342,7 +342,7 @@
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-micropython",
-    "headline": "lvgl-micropython — MicroPython C usermod for LVGL v9.",
+    "headline": "lvgl-micropython \u2014 MicroPython C usermod for LVGL v9.",
     "description": "Native MicroPython C module integrating LVGL v9 graphics engine with displayif bus drivers across ESP32, RP2040, and i.MX RT targets.",
     "hero_canvas": {
       "app": "mp_console",
@@ -384,7 +384,7 @@
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-python",
-    "headline": "lvgl-python — CPython & Pyodide WASM extension wheels.",
+    "headline": "lvgl-python \u2014 CPython & Pyodide WASM extension wheels.",
     "description": "Pre-built CPython extension wheels and Pyodide WASM packages bringing LVGL v9 to desktop Linux, macOS, Windows, and web browsers.",
     "hero_canvas": {
       "app": "thermostat",
@@ -426,7 +426,7 @@
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-circuitpython",
-    "headline": "lvgl-circuitpython — CircuitPython native LVGL C module.",
+    "headline": "lvgl-circuitpython \u2014 CircuitPython native LVGL C module.",
     "description": "CircuitPython native C module providing LVGL v9 bindings and displayif integration for Adafruit Feather and SAMD51 / RP2040 boards.",
     "hero_canvas": {
       "app": "circuit_dial",
@@ -469,7 +469,7 @@
     "tier_name": "App Hosts & Mobile",
     "theme_color": "var(--tier-4-purple)",
     "eyebrow": "pyscript-template",
-    "headline": "pyscript-template — Offline PWA starter template.",
+    "headline": "pyscript-template \u2014 Offline PWA starter template.",
     "description": "Progressive Web App starter template repository for deploying offline-capable client-side PyDevices applications on GitHub Pages.",
     "hero_canvas": {
       "app": "radar_scope",
@@ -512,7 +512,7 @@
     "tier_name": "App Hosts & Mobile",
     "theme_color": "var(--tier-4-purple)",
     "eyebrow": "android-template",
-    "headline": "android-template — Android APK Buildozer project.",
+    "headline": "android-template \u2014 Android APK Buildozer project.",
     "description": "Pre-configured python-for-android build recipes and Buildozer project template for packaging PyDevices applications into native Android APKs.",
     "hero_canvas": {
       "app": "mobile_pad",
@@ -555,7 +555,7 @@
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "mpftp",
-    "headline": "mpftp — board tools for the editor, CLI, and agents.",
+    "headline": "mpftp \u2014 board tools for the editor, CLI, and agents.",
     "description": "Connect MicroPython and CircuitPython boards from VS Code, Cursor, or the CLI: dual-pane file transfer, in-editor REPL, firmware flash, mip/circup, plus RPC, MCP, and an optional browser PWA.",
     "hero_canvas": {
       "app": "ftp_scope",
@@ -598,7 +598,7 @@
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "mip",
-    "headline": "mip — PyDevices MIP package index & distribution.",
+    "headline": "mip \u2014 PyDevices MIP package index & distribution.",
     "description": "Single source of truth (SoT) for precompiled MicroPython .mpy bytecode packages and pure-Python library distributions across the PyDevices ecosystem.",
     "hero_canvas": {
       "app": "package_matrix",
@@ -641,7 +641,7 @@
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "cmods",
-    "headline": "cmods — Multi-usermod C compilation workspace.",
+    "headline": "cmods \u2014 Multi-usermod C compilation workspace.",
     "description": "Out-of-tree C build workspace for compiling MicroPython and CircuitPython firmware binaries with displayif drivers and LVGL bindings.",
     "hero_canvas": {
       "app": "polyhedron",
@@ -684,7 +684,7 @@
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "pydevices-examples",
-    "headline": "pydevices-examples — Showcase, demos & WebAssembly gallery.",
+    "headline": "pydevices-examples \u2014 Showcase, demos & WebAssembly gallery.",
     "description": "Comprehensive example code, direct MicroPython WebAssembly demos, board configurations, and multi-interpreter showcase benchmarks.",
     "hero_canvas": {
       "app": "benchmark_deck",
@@ -728,9 +728,9 @@
     "site_repo": "pydevices-examples",
     "site_subpath": "gallery",
     "portal_grid": false,
-    "title": "pydevices-examples — WebAssembly Gallery",
+    "title": "pydevices-examples \u2014 WebAssembly Gallery",
     "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "PyDevices / pydevices-examples · WebAssembly Gallery",
+    "eyebrow": "PyDevices / pydevices-examples \u00b7 WebAssembly Gallery",
     "headline": "WebAssembly Gallery",
     "description": "Direct MicroPython WebAssembly demos that run the same PyDevices examples as MCUs and CPython. Explore drawing, input, widgets, and LVGL without flashing a board first.",
     "hero_note": "Click a card to launch the app. The first load may take a few seconds while the interpreter downloads; featured demos stay pinned at the top.",
@@ -743,11 +743,11 @@
     "site_repo": "pydevices-examples",
     "site_subpath": "pyscript",
     "portal_grid": false,
-    "title": "pydevices-examples — PyScript Gallery",
+    "title": "pydevices-examples \u2014 PyScript Gallery",
     "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "PyDevices / pydevices-examples · PyScript Gallery",
+    "eyebrow": "PyDevices / pydevices-examples \u00b7 PyScript Gallery",
     "headline": "PyScript Gallery",
-    "description": "Pyodide / PyScript demos that run full CPython in the browser — the same PyDevices examples as MCUs and the direct WebAssembly gallery. Explore drawing, input, widgets, and LVGL without flashing a board first.",
+    "description": "Pyodide / PyScript demos that run full CPython in the browser \u2014 the same PyDevices examples as MCUs and the direct WebAssembly gallery. Explore drawing, input, widgets, and LVGL without flashing a board first.",
     "hero_note": "Click a card to launch the app. The first load may take a few seconds while the interpreter downloads; featured demos stay pinned at the top.",
     "buttons": []
   },
@@ -757,8 +757,8 @@
     "tier_name": "Organization Portal",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "PyDevices Portal",
-    "headline": "One display & hardware contract for MicroPython, CircuitPython, and CPython — from bare metal to the browser.",
-    "description": "The same driver, event, and display code runs unmodified on bare-metal MicroPython and CircuitPython boards, as native CPython wheels on desktop and Android, and directly in a browser tab — no rewrites, no plugins.",
+    "headline": "One display & hardware contract for MicroPython, CircuitPython, and CPython \u2014 from bare metal to the browser.",
+    "description": "The same driver, event, and display code runs unmodified on bare-metal MicroPython and CircuitPython boards, as native CPython wheels on desktop and Android, and directly in a browser tab \u2014 no rewrites, no plugins.",
     "hero_canvas": {
       "app": "watch",
       "width": 240,
@@ -789,6 +789,49 @@
       {
         "label": "MIP Index",
         "href": "https://pydevices.github.io/mip/",
+        "tier_color": true
+      }
+    ]
+  },
+  "micropython-pydevices": {
+    "tier": 5,
+    "page": "none",
+    "tier_name": "Developer Tools & Infrastructure",
+    "theme_color": "var(--tier-5-steel)",
+    "eyebrow": "micropython-pydevices",
+    "headline": "micropython-pydevices \u2014 the versioned MicroPython runtime overlay.",
+    "description": "The PyDevices patch queue for MicroPython, kept like a distribution keeps one: an ordered, provenance-tracked patch series over a pinned upstream release, with profiles for Windows networking/FFI, desktop, and WebAssembly, plus the wasm bridge usermod and variant.",
+    "hero_canvas": {
+      "app": "radar_scope",
+      "width": 240,
+      "height": 240,
+      "shape": "round",
+      "deps": [
+        "pydevices",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/radar_scope.py"
+    },
+    "buttons": [
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/pyscript-template",
+        "primary": true
+      },
+      {
+        "label": "Live PWA Demo",
+        "href": "pwa/",
+        "tier_color": true
+      },
+      {
+        "label": "PWA Setup Guide",
+        "href": "https://github.com/PyDevices/pyscript-template/blob/main/README.md",
+        "tier_color": true
+      },
+      {
+        "label": "pydevices Core",
+        "href": "https://pydevices.github.io/pydevices/",
         "tier_color": true
       }
     ]
