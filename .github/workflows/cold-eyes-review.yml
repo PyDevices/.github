@@ -1,0 +1,39 @@
+# Phase 7 standing review: quarterly, open an issue with a rotating
+# sample of repositories and the scenario checklist. A human (or the
+# agent fleet, driven by one) performs the review; the issue is the file
+# of record.
+name: Quarterly cold-eyes review
+
+on:
+  schedule:
+    - cron: '13 7 1 1,4,7,10 *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  open-review-issue:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Open the review issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          Q=$((($(date +%-m)-1)/3+1))
+          Y=$(date +%Y)
+          REPOS=(pydevices palettes pdwidgets pygraphics mpftp audioif lvgl-bindings lvgl-python displayif workbench pydevices-examples pyscript-template android-template cmods mip micropython-pydevices)
+          N=${#REPOS[@]}
+          IDX=$(( ( (Y*4 + Q) * 3 ) % N ))
+          SAMPLE="${REPOS[$IDX]} ${REPOS[$(( (IDX+1)%N ))]} ${REPOS[$(( (IDX+2)%N ))]}"
+          gh issue create --repo "$GITHUB_REPOSITORY" \
+            --title "Cold-eyes review ${Y}Q${Q}: ${SAMPLE}" \
+            --body "Quarterly standing review (modernization Phase 7). Re-run with fresh eyes on: **${SAMPLE}**
+
+- [ ] S1 — clean clone builds per its README, no workspace assumptions
+- [ ] S4 — README → working example, first try, as a stranger
+- [ ] S5 — cut a .devN release; verify the full chain and dashboard row
+- [ ] S6 — walk the org front door: portal, cards, links, 404
+- [ ] File findings as issues on the affected repos; note fixes here
+
+Close when all boxes are checked and findings are filed."
