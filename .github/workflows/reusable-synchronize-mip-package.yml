@@ -33,7 +33,7 @@ on:
         # The lockfile drives a re-sync of every locked package on each run, so
         # the tools ref has to know every profile in it, not just the one being
         # published.
-        default: publishing-v5
+        default: publishing-v6
         type: string
 
 permissions:
