@@ -26,14 +26,16 @@ jobs:
           N=${#REPOS[@]}
           IDX=$(( ( (Y*4 + Q) * 3 ) % N ))
           SAMPLE="${REPOS[$IDX]} ${REPOS[$(( (IDX+1)%N ))]} ${REPOS[$(( (IDX+2)%N ))]}"
+          BODY=$(printf '%s\n' \
+            "Quarterly standing review (modernization Phase 7). Re-run with fresh eyes on: **${SAMPLE}**" \
+            "" \
+            "- [ ] S1 - clean clone builds per its README, no workspace assumptions" \
+            "- [ ] S4 - README to working example, first try, as a stranger" \
+            "- [ ] S5 - cut a .devN release; verify the full chain and dashboard row" \
+            "- [ ] S6 - walk the org front door: portal, cards, links, 404" \
+            "- [ ] File findings as issues on the affected repos; note fixes here" \
+            "" \
+            "Close when all boxes are checked and findings are filed.")
           gh issue create --repo "$GITHUB_REPOSITORY" \
             --title "Cold-eyes review ${Y}Q${Q}: ${SAMPLE}" \
-            --body "Quarterly standing review (modernization Phase 7). Re-run with fresh eyes on: **${SAMPLE}**
-
-- [ ] S1 — clean clone builds per its README, no workspace assumptions
-- [ ] S4 — README → working example, first try, as a stranger
-- [ ] S5 — cut a .devN release; verify the full chain and dashboard row
-- [ ] S6 — walk the org front door: portal, cards, links, 404
-- [ ] File findings as issues on the affected repos; note fixes here
-
-Close when all boxes are checked and findings are filed."
+            --body "$BODY"
