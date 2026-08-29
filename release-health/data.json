@@ -10,5 +10,17 @@
   "testpypi": "success",
   "updated": "2026-08-29 04:45 UTC",
   "version": "0.0.13.dev2"
+ },
+ "pydevices-pdwidgets": {
+  "assets": "success",
+  "distribution": "pydevices-pdwidgets",
+  "mip": "skipped",
+  "prerelease": true,
+  "pypi": "skipped",
+  "repo": "pdwidgets",
+  "run_url": "https://github.com/PyDevices/pdwidgets/actions/runs/33235590272",
+  "testpypi": "success",
+  "updated": "2026-08-29 05:13 UTC",
+  "version": "0.0.23.dev1"
  }
 }
