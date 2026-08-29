@@ -1,0 +1,52 @@
+# When a merged release PR lands on the default branch (the VERSION file
+# changed), create the vX.Y.Z tag and GitHub Release with the App token --
+# required so the created release triggers the publish workflow (a plain
+# GITHUB_TOKEN release does not trigger downstream workflows).
+name: Reusable tag on release merge
+
+on:
+  workflow_call: {}
+
+permissions:
+  contents: read
+
+jobs:
+  tag-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect a VERSION change
+        id: detect
+        run: |
+          if git diff --quiet HEAD^ HEAD -- VERSION 2>/dev/null; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          V=$(tr -d '[:space:]' < VERSION)
+          if git rev-parse -q --verify "refs/tags/v$V" >/dev/null; then
+            echo "Tag v$V already exists; nothing to do."
+            echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+
+      - name: Mint App token
+        if: steps.detect.outputs.changed == 'true'
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.PYDEVICES_APP_ID }}
+          private-key: ${{ secrets.PYDEVICES_APP_PRIVATE_KEY }}
+
+      - name: Create tag and Release
+        if: steps.detect.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          V: ${{ steps.detect.outputs.version }}
+        run: |
+          PRERELEASE=""
+          [[ "$V" =~ (a|b|rc)[0-9]+$|\.dev[0-9]+$ ]] && PRERELEASE="--prerelease"
+          gh release create "v$V" --target "$GITHUB_SHA" \
+            --title "v$V" --generate-notes $PRERELEASE

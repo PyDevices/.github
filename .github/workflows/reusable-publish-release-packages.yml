@@ -51,6 +51,14 @@ on:
         description: Directory containing pyproject.toml (pure-python only)
         default: "."
         type: string
+      pypi-publish:
+        description: >-
+          Also publish final releases to production PyPI via Trusted
+          Publishing (requires the repository's protected "pypi"
+          environment and a configured trusted publisher). Default off;
+          enabling it for a package is an explicit per-package decision.
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -61,6 +69,7 @@ jobs:
     outputs:
       release-ref: ${{ steps.release.outputs.release-ref }}
       version: ${{ steps.release.outputs.version }}
+      prerelease: ${{ steps.release.outputs.prerelease }}
     steps:
       - name: Resolve and validate the release tag
         id: release
@@ -69,17 +78,24 @@ jobs:
           # needs nothing from the caller; release-ref is only for retries.
           RELEASE_TAG: ${{ github.event.release.tag_name || inputs.release-ref }}
         run: |
-          if [[ ! "$RELEASE_TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
-            echo "Release ref must be an exact vX.Y.Z tag: $RELEASE_TAG" >&2
+          # v5: PEP 440 pre-releases (aN/bN/rcN/.devN) are accepted; they
+          # publish to TestPyPI only -- no MIP entry, no production PyPI.
+          if [[ ! "$RELEASE_TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+((a|b|rc)[0-9]+|\.dev[0-9]+)?)$ ]]; then
+            echo "Release ref must be a vX.Y.Z[{a|b|rc}N|.devN] tag: $RELEASE_TAG" >&2
             exit 1
           fi
           echo "release-ref=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
           echo "version=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
+          if [[ -n "${BASH_REMATCH[2]}" ]]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
 
   build-pure-python:
     if: inputs.build-kind == 'pure-python'
     needs: prepare-release
-    uses: PyDevices/.github/.github/workflows/reusable-build-pure-python-distribution.yml@publishing-v4
+    uses: PyDevices/.github/.github/workflows/reusable-build-pure-python-distribution.yml@publishing-v5
     with:
       distribution-name: ${{ inputs.distribution-name }}
       import-name: ${{ inputs.import-name }}
@@ -91,7 +107,7 @@ jobs:
   build-native-and-wasm:
     if: inputs.build-kind == 'native-and-wasm'
     needs: prepare-release
-    uses: PyDevices/.github/.github/workflows/reusable-build-native-and-wasm-wheels.yml@publishing-v4
+    uses: PyDevices/.github/.github/workflows/reusable-build-native-and-wasm-wheels.yml@publishing-v5
     with:
       distribution-name: ${{ inputs.distribution-name }}
       wheel-filename-prefix: ${{ inputs.wheel-filename-prefix }}
@@ -103,7 +119,7 @@ jobs:
   build-pydevices-multi:
     if: inputs.build-kind == 'pydevices-multi'
     needs: prepare-release
-    uses: PyDevices/.github/.github/workflows/reusable-build-pydevices-distributions.yml@publishing-v4
+    uses: PyDevices/.github/.github/workflows/reusable-build-pydevices-distributions.yml@publishing-v5
     with:
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}
@@ -137,6 +153,106 @@ jobs:
           repository-url: https://test.pypi.org/legacy/
           skip-existing: true
 
+  attach-release-assets:
+    # Finding 6: releases shipped no assets. Attach exactly what was
+    # published, to the release the tag already has.
+    needs:
+      - prepare-release
+      - build-pure-python
+      - build-native-and-wasm
+      - build-pydevices-multi
+    if: >-
+      always()
+      && needs.prepare-release.result == 'success'
+      && !contains(needs.*.result, 'failure')
+      && !contains(needs.*.result, 'cancelled')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download the validated distributions
+        uses: actions/download-artifact@v8
+        with:
+          name: testpypi-${{ inputs.distribution-name }}-${{ needs.prepare-release.outputs.version }}
+          path: dist
+      - name: Attach distributions to the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${{ needs.prepare-release.outputs.release-ref }}" dist/* \
+            --clobber --repo "$GITHUB_REPOSITORY"
+
+  publish-to-pypi:
+    # Production publication is opt-in per package (pypi-publish input),
+    # final releases only, through the protected "pypi" environment and
+    # PyPI Trusted Publishing (OIDC; no long-lived token).
+    needs:
+      - prepare-release
+      - build-pure-python
+      - build-native-and-wasm
+      - build-pydevices-multi
+      - publish-to-testpypi
+    if: >-
+      always()
+      && inputs.pypi-publish
+      && needs.prepare-release.outputs.prerelease == 'false'
+      && needs.prepare-release.result == 'success'
+      && needs.publish-to-testpypi.result == 'success'
+      && !contains(needs.*.result, 'failure')
+      && !contains(needs.*.result, 'cancelled')
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - name: Download the validated distributions
+        uses: actions/download-artifact@v8
+        with:
+          name: testpypi-${{ inputs.distribution-name }}-${{ needs.prepare-release.outputs.version }}
+          path: dist
+      - name: Publish to PyPI via Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
+
+  report-release-health:
+    # Feed the Release Health dashboard in PyDevices/.github regardless of
+    # outcome; the dashboard is only useful if failures report too.
+    needs:
+      - prepare-release
+      - build-pure-python
+      - build-native-and-wasm
+      - build-pydevices-multi
+      - publish-to-testpypi
+      - attach-release-assets
+      - request-mip-publication
+      - publish-to-pypi
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mint App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.PYDEVICES_APP_ID }}
+          private-key: ${{ secrets.PYDEVICES_APP_PRIVATE_KEY }}
+          owner: PyDevices
+          repositories: .github
+      - name: Dispatch health report
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          gh api repos/PyDevices/.github/dispatches -f event_type=release-health \
+            -F 'client_payload[repo]='"${GITHUB_REPOSITORY#*/}" \
+            -F 'client_payload[distribution]=${{ inputs.distribution-name }}' \
+            -F 'client_payload[version]=${{ needs.prepare-release.outputs.version }}' \
+            -F 'client_payload[prerelease]=${{ needs.prepare-release.outputs.prerelease }}' \
+            -F 'client_payload[testpypi]=${{ needs.publish-to-testpypi.result }}' \
+            -F 'client_payload[assets]=${{ needs.attach-release-assets.result }}' \
+            -F 'client_payload[mip]=${{ needs.request-mip-publication.result }}' \
+            -F 'client_payload[pypi]=${{ needs.publish-to-pypi.result }}' \
+            -F 'client_payload[run_url]='"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
   request-mip-publication:
     if: >-
       always()
@@ -149,7 +265,7 @@ jobs:
       - build-pure-python
       - build-native-and-wasm
       - build-pydevices-multi
-    uses: PyDevices/.github/.github/workflows/reusable-request-mip-publication.yml@publishing-v4
+    uses: PyDevices/.github/.github/workflows/reusable-request-mip-publication.yml@publishing-v5
     with:
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}

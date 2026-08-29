@@ -1,0 +1,59 @@
+# The Release Health dashboard. Every publishing-v5 run (success or failure)
+# dispatches a release-health event here; this regenerates RELEASE_HEALTH.md
+# from the accumulated per-distribution state.
+name: Release health
+
+on:
+  repository_dispatch:
+    types: [release-health]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-health
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fold in the report and regenerate the page
+        env:
+          PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+        run: |
+          python3 - <<'PY'
+          import json, os, datetime
+          p = json.loads(os.environ["PAYLOAD"])
+          path = "release-health/data.json"
+          os.makedirs("release-health", exist_ok=True)
+          data = json.load(open(path)) if os.path.exists(path) else {}
+          key = p.get("distribution") or p.get("repo")
+          p["updated"] = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+          data[key] = p
+          json.dump(data, open(path, "w"), indent=1, sort_keys=True)
+          def mark(v):
+              return {"success": "OK", "skipped": "--", "failure": "FAIL",
+                      "cancelled": "cancelled"}.get(v, v or "?")
+          rows = []
+          for k in sorted(data):
+              d = data[k]
+              ver = d.get("version", "?") + (" (pre)" if str(d.get("prerelease")) == "true" else "")
+              rows.append("| [{k}]({u}) | {v} | {t} | {a} | {m} | {y} | {up} |".format(
+                  k=k, u=d.get("run_url", ""), v=ver, t=mark(d.get("testpypi")),
+                  a=mark(d.get("assets")), m=mark(d.get("mip")), y=mark(d.get("pypi")),
+                  up=d.get("updated", "")))
+          open("RELEASE_HEALTH.md", "w").write(
+              "# Release health\n\nLatest publish run per distribution, reported by "
+              "publishing-v5's report-release-health job (link = the run).\n\n"
+              "| Distribution | Version | TestPyPI | Assets | MIP | PyPI | Updated |\n"
+              "|---|---|---|---|---|---|---|\n" + "\n".join(rows) + "\n")
+          PY
+      - name: Commit
+        run: |
+          git config user.name "pydevices-release-automation[bot]"
+          git config user.email "pydevices-release-automation[bot]@users.noreply.github.com"
+          git add RELEASE_HEALTH.md release-health/data.json
+          git diff --cached --quiet || git commit -m "release-health: ${{ github.event.client_payload.distribution }} ${{ github.event.client_payload.version }}"
+          git push
