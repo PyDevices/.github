@@ -26,10 +26,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out product source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Check out shared publishing tools
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: PyDevices/.github
           ref: ${{ inputs.publishing-tools-ref }}
