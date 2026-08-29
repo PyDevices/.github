@@ -63,11 +63,12 @@ jobs:
         run: |
           printf '%s\n' "$V" > VERSION
           LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
-          RANGE=${LAST_TAG:+$LAST_TAG..HEAD}
+          RANGE=()
+          [[ -n "$LAST_TAG" ]] && RANGE=("$LAST_TAG..HEAD")
           {
             echo "## v$V ($(date -u +%Y-%m-%d))"
             echo
-            git log --no-merges --format='- %s' $RANGE
+            git log --no-merges --format='- %s' "${RANGE[@]}"
             echo
           } > /tmp/section.md
           touch CHANGELOG.md

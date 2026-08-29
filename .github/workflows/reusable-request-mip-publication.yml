@@ -55,10 +55,10 @@ jobs:
               echo "dispatching $profile @ $SOURCE_REF"
               gh api --method POST repos/PyDevices/mip/dispatches \
                 -f event_type=publish-package-release \
-                -f client_payload[source_repository]="$SOURCE_REPOSITORY" \
-                -f client_payload[source_ref]="$SOURCE_REF" \
-                -f client_payload[version]="$RELEASE_VERSION" \
-                -f client_payload[profile]="$profile"
+                -f "client_payload[source_repository]=$SOURCE_REPOSITORY" \
+                -f "client_payload[source_ref]=$SOURCE_REF" \
+                -f "client_payload[version]=$RELEASE_VERSION" \
+                -f "client_payload[profile]=$profile"
               dispatched=$((dispatched + 1))
           done < <(echo "$PUBLICATION_PROFILES" | tr ',' '\n' | sed 's/[[:space:]]//g' | grep -v '^$' || true)
           if [[ "$dispatched" == 0 ]]; then
