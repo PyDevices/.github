@@ -39,7 +39,7 @@ jobs:
           rows = []
           for k in sorted(data):
               d = data[k]
-              ver = d.get("version", "?") + (" (pre)" if str(d.get("prerelease")) == "true" else "")
+              ver = d.get("version", "?") + (" (pre)" if str(d.get("prerelease")).lower() == "true" else "")
               rows.append("| [{k}]({u}) | {v} | {t} | {a} | {m} | {y} | {up} |".format(
                   k=k, u=d.get("run_url", ""), v=ver, t=mark(d.get("testpypi")),
                   a=mark(d.get("assets")), m=mark(d.get("mip")), y=mark(d.get("pypi")),

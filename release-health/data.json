@@ -15,7 +15,7 @@
   "assets": "success",
   "distribution": "pydevices-pdwidgets",
   "mip": "skipped",
-  "prerelease": true,
+  "prerelease": "true",
   "pypi": "skipped",
   "repo": "pdwidgets",
   "run_url": "https://github.com/PyDevices/pdwidgets/actions/runs/33235590272",
