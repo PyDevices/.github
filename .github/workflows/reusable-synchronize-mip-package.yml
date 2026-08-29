@@ -62,6 +62,13 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
+          # The BRANCH, not the dispatch-time SHA: a repository_dispatch run
+          # freezes github.sha when the event is created, so the second of
+          # two queued publications (audioif sends two) checked out a tree
+          # that predated the first one's lockfile commit and lost its push
+          # non-fast-forward - audioinstruments sat a release behind its
+          # sibling in the live index for two days.
+          ref: PyDevices
 
       - name: Check out shared publishing tools
         uses: actions/checkout@v7
@@ -171,7 +178,15 @@ jobs:
             echo "Lockfile already records ${SOURCE_REPOSITORY} v${RELEASE_VERSION}."
           else
             git commit -m "Publish ${SOURCE_REPOSITORY#*/} v${RELEASE_VERSION}"
-            git push origin HEAD
+            # The queue serializes runs, but a commit can still land between
+            # our checkout and push (or a future caller may race): rebase and
+            # retry instead of failing the publication.
+            for attempt in 1 2 3; do
+              if git push origin HEAD; then break; fi
+              echo "push rejected (attempt $attempt); rebasing onto origin"
+              git pull --rebase origin "$(git rev-parse --abbrev-ref HEAD)"
+              [ "$attempt" = 3 ] && { echo "push failed after 3 rebase attempts" >&2; exit 1; }
+            done
           fi
 
       - name: Assemble the GitHub Pages artifact
