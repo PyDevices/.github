@@ -35,9 +35,10 @@ Practice across the organization settled differently from this document's
 original ambition, and the convention below now describes what is real
 rather than what was hoped:
 
-- **READMEs are emoji-free.** Every repository README renders on GitHub
-  first, where restraint reads better; none uses landmark emoji, and that
-  consistency is the convention.
+- **READMEs are emoji-free.** A README renders on GitHub first, where
+  restraint reads better. This is the prescribed convention (a handful of
+  READMEs still carry stray emoji; Phase 4 removes them as each repo gets
+  its pass).
 - **Docs-site pages** (mkdocs/portal pages) may use the landmark set
   above, sparingly, on headings only — the original rules (one per
   heading, only the fixed set, never in body text or code) apply there.

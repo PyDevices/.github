@@ -179,12 +179,12 @@ carried forward as fact.
 2. **workbench release contract broken**: its release workflow fires only on
    `mcp-v*` tags, but the repo carries `v0.6.x` tags — tags exist with no
    GitHub Releases.
-3. **lvgl release race**: `lvgl-bindings` propagates helpers/bindings to
-   `lvgl-python` / `lvgl-micropython` / `lvgl-circuitpython` via a trigger
-   workflow; a parallel manual PR caused a non-fast-forward race and a
-   silently skipped release (2026-08-21). The sync must be serialized and the
-   single-writer rule (edit only in `lvgl-bindings`) enforced by convention
-   and documentation.
+3. **lvgl release race** — **FIXED by design (2026-08-28 generator
+   overhaul)**: the trigger workflow is retired; consumers sync via their
+   own scripts pinning the exact source commit in `LVGL_BINDINGS_COMMIT`
+   (branch refs rejected), and releases are explicit dispatches. The
+   single-writer rule (edit only in `lvgl-bindings`) still needs stating
+   in the READMEs where a contributor would trip (Phase 4).
 4. **No branch protection or rulesets** on the publishing repositories.
 5. **Production PyPI names unregistered.** All eight distributions exist only
    on TestPyPI; the production names were free when checked. This is a
@@ -232,9 +232,10 @@ stranger would otherwise misread it.
   reads, edits, and approves the version before merging.
 - **Only `pydevices`, `pydevices-desktop`, `pygraphics`, `palettes`, and
   `pdwidgets` publish.** The pydevices leaf distributions are retired.
-- **lvgl-python is a sync target.** Helpers are edited only in
-  `lvgl-bindings`; the trigger workflow owns propagation; a manual merge
-  suppresses the release by design. Only `lvgl-python` publishes.
+- **lvgl-python is a sync target.** Helpers and bindings are edited only
+  in `lvgl-bindings`; propagation is explicit consumer sync pinned by
+  `LVGL_BINDINGS_COMMIT` (since the 2026-08-28 overhaul — formerly a
+  trigger workflow). Only `lvgl-python` publishes.
 - **The CircuitPython oracle stays pinned at 10.2.1** while audioif parity
   work is live. Moving it is a re-port and its own future phase, owned by the
   audioif plan, not this program.
