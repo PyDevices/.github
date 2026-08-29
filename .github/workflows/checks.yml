@@ -1,0 +1,111 @@
+# This repository's own CI: lint the workflows it publishes to the rest of
+# the org, smoke-test that every reusable workflow is valid YAML, prove the
+# site generator's output matches what data/repos_db.json currently says it
+# should be, and lint scripts/.
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  actionlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Download actionlint
+        run: |
+          bash <(curl -sSL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+
+      - name: Lint every workflow
+        run: ./actionlint .github/workflows/*.yml
+
+  yaml-parse-reusables:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Parse every reusable workflow as YAML
+        run: |
+          python3 -c "
+          import glob
+          import sys
+
+          import yaml
+
+          failed = False
+          for path in sorted(glob.glob('.github/workflows/*.yml')):
+              try:
+                  with open(path) as f:
+                      yaml.safe_load(f)
+              except yaml.YAMLError as exc:
+                  failed = True
+                  print(f'FAILED to parse {path}: {exc}', file=sys.stderr)
+              else:
+                  print(f'OK {path}')
+          sys.exit(1 if failed else 0)
+          "
+
+  generator-idempotency:
+    # scripts/generate_sites.py writes into sibling repositories under a
+    # shared workspace root, keyed by data/repos_db.json. This checks the
+    # database and the generator still agree with what's actually published:
+    # check out this repo (as the generator's hardcoded 'dotgithub' sibling
+    # name) plus every repository the generator writes into, run it, and
+    # fail if it produces any diff. A diff here means the database and the
+    # published sites have drifted -- fix the database, not the sites.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this repository as the 'dotgithub' sibling
+        uses: actions/checkout@v7
+        with:
+          path: workspace-root/dotgithub
+
+      - name: Check out generator output targets
+        run: |
+          set -euo pipefail
+          for repo in PyDevices.github.io pydevices pydevices-examples mip; do
+            git clone --quiet --depth 1 "https://github.com/PyDevices/${repo}.git" \
+              "workspace-root/${repo}"
+          done
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Run the generator
+        run: python3 workspace-root/dotgithub/scripts/generate_sites.py
+
+      - name: Fail if generated output differs from what's checked in
+        run: |
+          set -euo pipefail
+          failed=0
+          for repo in PyDevices.github.io pydevices pydevices-examples mip; do
+            if ! git -C "workspace-root/${repo}" diff --exit-code; then
+              echo "::error::${repo} is out of date with data/repos_db.json -- edit the database and regenerate"
+              failed=1
+            fi
+          done
+          exit "$failed"
+
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - run: python3 -m pip install --disable-pip-version-check ruff
+
+      - run: ruff check scripts/

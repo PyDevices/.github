@@ -58,11 +58,12 @@ def find_ignored_paths(repository_root: Path, paths: list[Path]) -> set[Path]:
             text=True,
             cwd=repository_root,
             capture_output=True,
+            check=False,  # git check-ignore exits 1 when nothing matched; that's not an error
         )
-        if proc.returncode in (0, 1):
-            return {Path(line.strip()) for line in proc.stdout.splitlines() if line.strip()}
-    except Exception:
-        pass
+    except (OSError, subprocess.SubprocessError):
+        return set()  # no git available; treat as "nothing ignored"
+    if proc.returncode in (0, 1):
+        return {Path(line.strip()) for line in proc.stdout.splitlines() if line.strip()}
     return set()
 
 

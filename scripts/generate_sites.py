@@ -223,7 +223,7 @@ def build_above_the_fold_html(repo_name, data):
     # has no entry for it, so it would otherwise fall through to the generic
     # default. The glyphs are stroke="currentColor", hence color on the badge.
     mark = (
-        f'<img src="/assets/img/logo.svg" alt="PyDevices" width="112" height="112">'
+        '<img src="/assets/img/logo.svg" alt="PyDevices" width="112" height="112">'
         if page_destination(data) == 'portal-root'
         else get_card_icon(repo_name)
     )

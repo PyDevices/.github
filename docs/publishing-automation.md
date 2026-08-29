@@ -2,19 +2,43 @@
 
 This is the organization-wide runbook for publishing a new package version, and
 it **lives here because it is org-wide**: it governs `palettes`, `pdwidgets`,
-`pygraphics`, `audioif`, `pydevices`, and `lvgl-python`, and it documents the reusable
-workflows and shared secrets that this repository owns.
+`pygraphics`, `audioif`, `pydevices`, `lvgl-python`, and `mpftp`, and it
+documents the reusable workflows and shared credentials that this repository
+owns.
 
 Repository-specific publishing documents cover only what their own release
 produces — for example
 [pydevices/docs/publishing.md](https://github.com/PyDevices/pydevices/blob/main/docs/publishing.md)
-describes that repo's dynamically discovered package set. They add build or test
-details; they do not restate or replace the procedure below.
+describes that repo's dynamically discovered package set. They add build or
+test details; they do not restate or replace the procedure below.
 
 A **published GitHub Release named `vX.Y.Z` is the authoritative release
 event**. The source tag selects the exact files to build, and `X.Y.Z` becomes
 the package version. A manual workflow run is only a retry of an existing
-exact tag; it is not a way to publish an untagged branch or a different commit.
+exact tag; it is not a way to publish an untagged branch or a different
+commit.
+
+## The tag contract
+
+Every publishing repository's coordinators pin the reusable workflows in this
+repository at a tag, not a branch, so a change here does not alter a release
+until the tag moves:
+
+```yaml
+uses: PyDevices/.github/.github/workflows/reusable-publish-release-packages.yml@publishing-v6
+```
+
+**`publishing-v6` is current.** Tags `publishing-v1` through `publishing-v6`
+all still exist, so a release cut before a contract change can still be
+retried against the exact contract it was built with. Each tag's nested
+`uses:` refs point at its own tag, so a caller on `v3` runs an entirely `v3`
+chain.
+
+Publishing tags are **immutable by policy, and that policy is enforced**, not
+just documented: this repository has a tag ruleset named "publishing tags are
+immutable" (`target: tag`, `enforcement: active`) that blocks moving or
+deleting a `publishing-v*` tag. Cut a new tag for a new contract; never force-
+push an existing one.
 
 ## What each repository publishes
 
@@ -22,14 +46,18 @@ exact tag; it is not a way to publish an untagged branch or a different commit.
 |---|---|---|
 | `palettes` | `pydevices-palettes` wheel and sdist | `palettes` |
 | `pdwidgets` | `pydevices-pdwidgets` wheel and sdist | `pdwidgets` |
-| `pygraphics` | `pydevices-pygraphics` Linux, Windows, Android, and PyEmscripten wheels | Pure-Python `pygraphics` |
-| `audioif` | `pydevices-audioif` Linux, Windows, Android, and Pyodide wheels | `audioinstruments` and `audioeffects` — the pure-Python tier only; the native modules are firmware, built from the usermod source |
+| `pygraphics` | `pydevices-pygraphics` Linux, Windows, Android, and WASM wheels | Pure-Python `pygraphics` |
+| `audioif` | `pydevices-audioif` (native/WASM), plus `pydevices-audioinstruments` and `pydevices-audioeffects` (pure-Python) — three distributions from one repository | `audioinstruments` and `audioeffects` — the pure-Python tier only; the native modules are firmware, built from the usermod source |
 | `pydevices` | `pydevices` (all of `lib/`) and `pydevices-desktop` | One package per `lib/` component, plus `pydevices` and `pydevices-desktop` |
-| `lvgl-python` | `pydevices-lvgl` Linux, Windows, Android, and PyEmscripten wheels | Nothing |
+| `lvgl-python` | `pydevices-lvgl` Linux, Windows, Android, and WASM wheels | Nothing |
+| `mpftp` | `pydevices-mpftp` wheel and sdist | Nothing |
 
 The pip distribution names are prefixed with `pydevices-`; MIP package names
 are not. `pydevices` and `pydevices-desktop` keep the same name in both
-systems.
+systems. `mpftp` additionally has its own `publish-vsix.yml`, unrelated to
+this chain, which publishes the VS Code extension to the VS Marketplace and
+Open VSX using `VSCE_PAT` / `OVSX_PAT` (both optional; the steps skip when
+unset).
 
 ### The dynamic `pydevices` release
 
@@ -63,52 +91,379 @@ differently, because their constraints differ:
 
 Adding or removing a publishable entry under `lib/` or `utils/` therefore
 changes the next release automatically. Review the generated package set as
-part of release preparation. Committed root TOML files (such as `pydevices-desktop.toml`
-and `pydevices-examples.toml`) are PyScript filesystem mappings of the repository
-payloads, not package metadata; their CI validation must pass before release.
+part of release preparation. Committed root TOML files (such as
+`pydevices-desktop.toml` and `pydevices-examples.toml`) are PyScript
+filesystem mappings of the repository payloads, not package metadata; their
+CI validation must pass before release.
+
+## Standard release procedure: the release-PR flow
+
+Every one of the seven publishing repositories now uses the same three-
+workflow chain instead of hand-writing `VERSION` and tagging locally. It
+exists to keep the human choice of version — the org's one deliberate
+exception to full automation — while removing the manual tag/push/release
+sequence that used to precede it.
+
+```text
+Prepare release (workflow_dispatch, optional version)
+  -> bot opens a release PR carrying VERSION + CHANGELOG.md
+  -> a human confirms or edits the version on that PR
+  -> merge to main
+  -> Tag release creates the vX.Y.Z tag and GitHub Release (via the App)
+  -> Publish release packages: build -> TestPyPI -> assets attached
+     -> MIP (final releases only) -> health report
+```
+
+### 1. Dispatch "Prepare release"
+
+```bash
+gh workflow run prepare-release.yml --repo PyDevices/<repository>
+# or with a specific version:
+gh workflow run prepare-release.yml --repo PyDevices/<repository> -f version=X.Y.Z
+```
+
+This runs `reusable-prepare-release-pr.yml`. The `version` input is optional
+and is only ever a **suggestion**: leaving it empty computes the highest
+existing `vX.Y.Z` tag plus one patch, but that computed value — and any
+explicitly requested value — is not committed until a human confirms it. The
+workflow:
+
+1. Resolves the version (requested value, or the computed suggestion),
+   rejecting anything that doesn't match
+   `X.Y.Z[{a|b|rc}N|.devN]` or a tag that already exists.
+2. Writes that version to `VERSION` and prepends a new `## vX.Y.Z (date)`
+   section to `CHANGELOG.md`, built from `git log` since the last tag.
+3. Opens (or updates) a PR titled `Release X.Y.Z` from branch
+   `release/vX.Y.Z`, with an explicit note: **"The version is yours to
+   change — edit VERSION on this branch before merging if X.Y.Z is not the
+   right call. Merging tags the version in VERSION and triggers publication;
+   closing publishes nothing."**
+
+### 2. Review and merge the release PR
+
+This is the human checkpoint. Confirm the suggested version is correct (or
+push a commit to the PR branch changing `VERSION` to the right one),
+review the generated changelog section, confirm CI is green, then merge.
+Closing the PR without merging publishes nothing.
+
+### 3. Tag release fires automatically
+
+`reusable-tag-on-release-merge.yml` runs on every push to `main` that touches
+`VERSION`. It:
+
+1. Diffs `VERSION` against the previous commit; does nothing if unchanged or
+   if the tag already exists.
+2. Mints a GitHub App token (`PYDEVICES_APP_ID` / `PYDEVICES_APP_PRIVATE_KEY`)
+   and creates the `vX.Y.Z` tag and GitHub Release at that commit, marking it
+   `--prerelease` when the version has a `{a|b|rc}N` or `.devN` suffix.
+
+The App token is required here, not incidental: **a Release created with the
+default `GITHUB_TOKEN` does not trigger `on: release` workflows**, so the
+publish chain below would silently never fire.
+
+### 4. Publish release packages runs from the Release event
+
+`reusable-publish-release-packages.yml` resolves and validates the `vX.Y.Z`
+tag, builds (pure-Python, native-and-wasm, or pydevices-multi, per caller),
+publishes to TestPyPI, attaches the built artifacts to the GitHub Release,
+optionally publishes to production PyPI, requests MIP publication for final
+releases, and reports to the Release Health dashboard regardless of outcome.
+See "How the release chain is wired" below for the per-job detail.
+
+### Manual tag + release: the fallback
+
+The release-PR flow is the default, but a manual tag and Release remain a
+valid fallback — for a hotfix, a recovery, or any release where opening a PR
+is impractical. The one hard rule does not change: **the tag and the
+committed `VERSION` file must match exactly**, because the build jobs
+(`reusable-build-pure-python-distribution.yml`,
+`reusable-build-native-and-wasm-wheels.yml`,
+`reusable-build-pydevices-distributions.yml`) reject a mismatch outright.
+
+```bash
+cd <workspace-root>/<repository>
+git switch main && git pull --ff-only
+
+version=X.Y.Z
+printf '%s\n' "$version" > VERSION
+git add VERSION CHANGELOG.md
+git commit -m "Release ${version}"
+git push origin main
+
+release_commit="$(git rev-parse HEAD)"
+gh release create "v${version}" \
+  --repo PyDevices/<repository> \
+  --target "$release_commit" \
+  --title "v${version}" \
+  --generate-notes
+```
+
+`gh release create` with a user token triggers `on: release` normally (only
+the App-token requirement above is specific to the automated tag step, which
+runs with a plain `GITHUB_TOKEN` context). `gh release create` publishes
+immediately unless `--draft` is supplied; if a release is prepared in the
+GitHub web UI, select the exact version commit, create `vX.Y.Z`, and
+**Publish release** — merely pushing a tag or saving a draft does not trigger
+the coordinator.
 
 ## Automation and credentials
 
-Each source repository has one coordinator:
+Each publishing repository has three thin coordinators
+(`prepare-release.yml`, `tag-release.yml`, `publish-release-packages.yml`),
+each calling one reusable workflow from this repository and supplying only
+what differs:
 
-```text
-.github/workflows/publish-release-packages.yml
+```yaml
+jobs:
+  publish:
+    uses: PyDevices/.github/.github/workflows/reusable-publish-release-packages.yml@publishing-v6
+    with:
+      build-kind: pure-python          # or native-and-wasm, pydevices-multi
+      distribution-name: pydevices-palettes
+      import-name: palettes
+      mip-profile: palettes            # comma-separate for several, as audioif does; omit to skip MIP
+      release-ref: ${{ inputs.release-ref }}
+    secrets: inherit
 ```
 
-It validates `vX.Y.Z`, calls reusable workflows from
-`PyDevices/.github@publishing-v3`, publishes validated artifacts, and, where
-applicable, requests a serialized MIP update.
+`audioif` is the outlier: its `publish-release-packages.yml` runs a shared
+`parity` gate (the four `tests/parity/verify_*.py` scripts) and a
+`credentials` check job, then three separate calls into the reusable chain —
+one `native-and-wasm` build for `pydevices-audioif` with
+`mip-profile: audioinstruments,audioeffects`, and two `pure-python` builds
+(`pydevices-audioinstruments`, `pydevices-audioeffects`) from
+`lib/audioinstruments` and `lib/audioeffects`, each with no `mip-profile` of
+its own (their MIP publication rides on the first job's comma-separated
+profile list, since all three come from the same tag).
 
-The following GitHub Actions secrets must already exist:
+Required secrets:
 
 | Secret | Where needed | Purpose |
 |---|---|---|
-| `TESTPYPI_API_TOKEN` | Every repository that uploads to TestPyPI | API token currently owned by the `bdbarnett` TestPyPI account |
-| `MICROPYTHON_LIB_DEPLOY_TOKEN` | Source repositories that publish MIP packages, and `PyDevices/mip` | Dispatch the MIP request and commit the resulting index update |
-| `RELEASE_WORKFLOW_TOKEN` | **`lvgl-python` only** (`sync-and-release.yml`) | Create the GitHub Release. Not redundant with `GITHUB_TOKEN`: a Release created with `GITHUB_TOKEN` does **not** trigger `on: release` workflows, so publishing would silently never run. |
-| `LVCPYTHON_MOD_DISPATCH_TOKEN` | **`lvgl-bindings` only** (`trigger-lvgl-python-release.yml`, `check-dispatch-token.yml`) | Dispatch `lvgl-python`'s sync workflow across repositories |
-| `VSCE_PAT`, `OVSX_PAT` | **`mpftp` only** (`publish-vsix.yml`) | VS Marketplace and Open VSX. Both optional; the steps skip when unset |
+| `PYDEVICES_APP_ID`, `PYDEVICES_APP_PRIVATE_KEY` | Every publishing repository, `PyDevices/mip` | Mint short-lived GitHub App installation tokens: to open release PRs, to create tags/Releases (so `on: release` fires), to dispatch the MIP queue, and to dispatch the Release Health report |
+| `TESTPYPI_API_TOKEN` | Every repository that uploads to TestPyPI | API token for the `bdbarnett` TestPyPI account |
+| `VSCE_PAT`, `OVSX_PAT` | **`mpftp` only** (`publish-vsix.yml`, unrelated to this chain) | VS Marketplace and Open VSX. Both optional; the steps skip when unset |
 
-TestPyPI currently uses token authentication while the PyDevices TestPyPI
-organization request is pending. The upload action must receive:
+TestPyPI still uses token authentication (`user: __token__`, `password:
+${{ secrets.TESTPYPI_API_TOKEN }}`, `repository-url:
+https://test.pypi.org/legacy/`, `skip-existing: true`) — it is not Trusted
+Publishing, and that is deliberate: TestPyPI Trusted Publishing has its own
+per-repo/workflow/environment registration that has not been set up.
 
-```yaml
-user: __token__
-password: ${{ secrets.TESTPYPI_API_TOKEN }}
-repository-url: https://test.pypi.org/legacy/
-skip-existing: true
+### Production PyPI: opt-in, protected, Trusted Publishing
+
+Publishing to **production** PyPI (as opposed to TestPyPI, which every
+release always reaches) is a separate, explicit, per-package decision via the
+`pypi-publish: true` input on `reusable-publish-release-packages.yml`. As of
+this writing no caller sets it — every current release stops at TestPyPI plus
+MIP. When a package does opt in, `publish-to-pypi`:
+
+- runs only for a **final** release (`prerelease == 'false'`; a `.devN` or
+  `{a|b|rc}N` build never reaches PyPI),
+- runs through the repository's `pypi` **GitHub Environment**, which exists
+  in all seven publishing repositories and is configured with required
+  reviewers and a branch policy (confirmed via
+  `gh api repos/PyDevices/<repo>/environments/pypi`), and
+- authenticates via **PyPI Trusted Publishing** (OIDC, `id-token: write`,
+  `pypa/gh-action-pypi-publish@release/v1` with no token) — no long-lived
+  PyPI credential is stored anywhere.
+
+Enabling `pypi-publish` for a package therefore requires both flipping the
+input in that repository's coordinator *and* a matching Trusted Publisher
+already configured on the PyPI project for that repository/workflow/
+environment. Do one before the other and the run fails safely at the PyPI
+end, not silently.
+
+## The LVGL model
+
+`lvgl-python`, `lvgl-micropython`, and `lvgl-circuitpython` all consume
+generated bindings from `lvgl-bindings`, which is the **single writer** of
+the generated C, the `.pyi` stub, and the sync-relevant support files
+(`lv_conf.h`, `display_driver.py`, `fs_driver.py`, the `lvgl` submodule
+pointer). Hand-editing any of that in a consumer repo is overwritten by the
+next sync — see CONTRIBUTING.md.
+
+The trigger is explicit dispatch, not a webhook chain:
+
+```text
+lvgl-bindings: Release bindings (workflow_dispatch, bindings-ref, publish=true)
+  -> validates the exact ref, runs the linux-integration matrix,
+     runs the non-mutating release_dry_run.sh gate
+  -> if publish=true: mints a GitHub App token scoped to lvgl-python
+     and dispatches lvgl-python's sync-and-release.yml
+       -f lvgl_bindings_ref=<exact commit sha> -f mode=release
+
+lvgl-python: Sync and release (workflow_dispatch, lvgl_bindings_ref, mode)
+  -> ./scripts/sync_from_lvgl_bindings.sh --ref <ref>
+  -> writes/commits LVGL_BINDINGS_COMMIT, VERSION, generated/lvgl_python.c,
+     generated/lvgl.pyi, lv_conf.h, display_driver.py, fs_driver.py, lvgl
+  -> builds + runs its test suite + the lvgl-bindings smoke suite
+  -> mode=release: mints an App token, publishes vX.Y.Z (App token, same
+     reasoning as tag-release.yml -- GITHUB_TOKEN would not trigger
+     publish-release-packages.yml)
 ```
 
-This is different from Trusted Publishing. OIDC publishing requires a
-matching TestPyPI Trusted Publisher for the organization, repository,
-workflow, and optional environment. Do not add `id-token: write` or remove the
-password until the PyDevices organization and its Trusted Publishers have
-actually been configured.
+`mode` also accepts `dry-run` (validate only, nothing committed) and `sync`
+(commit the sync, no release) for exercising the pipeline without publishing.
+`lvgl-micropython` and `lvgl-circuitpython` each carry their own
+`scripts/sync_from_lvgl_bindings.sh` and an `LVGL_BINDINGS_COMMIT` file
+recording what they last synced, but neither has a `.github/workflows/`
+directory of its own — their sync is run by hand (or from the maintainer
+orchestration in `cmods`), not on a schedule or dispatch chain.
 
-Before every release, confirm that the coordinator still references the
-intended stable shared-workflow ref and that the required secrets are present.
-Do not move or replace a stable publishing ref as part of an ordinary package
-release.
+`lvgl-bindings/check-dispatch-token.yml` is a read-only diagnostic (does the
+App token reach `lvgl-python`?) kept until the App path has enough track
+record to retire it; it does not trigger anything.
+
+The previously documented `trigger-lvgl-python-release.yml` and
+`LVCPYTHON_MOD_DISPATCH_TOKEN` (a PAT-based dispatch mechanism) are
+**retired** — `lvgl-bindings` has no such workflow and no such secret
+reference today. The App-token dispatch above replaced it.
+
+Once `lvgl-python`'s Release publishes, `publish-release-packages.yml` there
+runs the ordinary `native-and-wasm` build for `pydevices-lvgl` with no
+`mip-profile` — `lvgl-python` does not publish to the MIP index.
+
+## The MIP publication queue
+
+Publishing to the MIP index is centralized in `PyDevices/mip` and
+**serialized**: `process-mip-publication-request.yml` runs in the
+`pydevices-mip-publication-queue` concurrency group with
+`cancel-in-progress: false`, so two releases that both want MIP entries never
+race — the second waits for the first to finish.
+
+### Request → queue → sync
+
+`reusable-request-mip-publication.yml` (called from a publishing repository
+with `secrets: inherit`) mints an App token scoped to `mip` and dispatches
+one `repository_dispatch` per profile in the (possibly comma-separated)
+`mip-profile` input — `audioif` sends two in the same release. This only
+happens for **final releases**: `request-mip-publication`'s `if:` requires
+`prerelease == 'false'`, so a `.devN`/`rcN` build never reaches the MIP
+index, only TestPyPI.
+
+The queue consumer, `reusable-synchronize-mip-package.yml`:
+
+1. Checks out `mip` at the **`PyDevices` branch tip**, not the SHA frozen at
+   dispatch time. This is deliberate: a `repository_dispatch` payload freezes
+   `github.sha` at creation time, so the second of two queued publications
+   (audioif's two profiles) would otherwise check out a tree that predates
+   the first one's lockfile commit and lose its push as a non-fast-forward —
+   this happened in practice and left `audioinstruments` a release behind
+   `audioeffects` in the live index for two days.
+2. Records the release in `pydevices-lock.json` — the source of truth for
+   "what version of each package is currently live." Every publishable
+   package must already have an entry in the lockfile; a new profile is
+   added there deliberately, not auto-created.
+3. **Re-synchronizes every locked source**, not just the one being released:
+   it clones each `{repository, ref}` pair from the (now-updated) lockfile
+   and runs `synchronize_mip_package.py` for each, because `build.py`
+   compiles every `manifest.py` in the tree at once — there is no way to
+   rebuild one package's index entry in isolation.
+4. Removes the temporary `.publication-sources` checkouts, builds the
+   complete latest-only index, and verifies every expected manifest produced
+   an index entry and that each locked package's index version matches the
+   lockfile.
+5. Commits the lockfile with **rebase-and-retry**, not fail-fast: up to 3
+   attempts of `git push` → on rejection, `git pull --rebase` → retry. The
+   concurrency group already serializes same-repo runs, but this covers a
+   push that lands from elsewhere between checkout and push.
+6. Assembles and uploads the GitHub Pages artifact; a separate
+   `deploy-complete-mip-index` job in the caller workflow deploys it via
+   `actions/deploy-pages@v4`.
+
+### Manual dispatch
+
+`process-mip-publication-request.yml` also accepts `workflow_dispatch` for
+recovery, with `profile` as a fixed choice input covering every current
+profile:
+
+```bash
+gh workflow run process-mip-publication-request.yml \
+  --repo PyDevices/mip \
+  -f source-repository=PyDevices/<repository> \
+  -f source-ref=vX.Y.Z \
+  -f version=X.Y.Z \
+  -f profile=<palettes|pdwidgets|pygraphics|pydevices|audioinstruments|audioeffects>
+```
+
+Use a direct central dispatch only for recovery after confirming the source
+tag and profile are correct. The normal entry point is always a publishing
+repository's own release, not this fallback.
+
+## Retrying an interrupted publication
+
+Never move the tag or rebuild the same version from a different commit.
+Retry the coordinator with the exact existing tag:
+
+```bash
+gh workflow run publish-release-packages.yml \
+  --repo PyDevices/<repository> \
+  -f release-ref=vX.Y.Z
+```
+
+The workflows check out that tag, revalidate it, and use
+`skip-existing: true` for TestPyPI. This safely completes a partial upload
+without replacing files that TestPyPI already accepted.
+
+If only the current MIP run or Pages deployment failed, retry its failed
+jobs:
+
+```bash
+gh run rerun <mip-run-id> --repo PyDevices/mip --failed
+```
+
+If the shared reusable-workflow ref changed after the failed run, GitHub's
+**rerun** operation may remain pinned to the reusable workflow commit
+selected by the original attempt. Start a fresh source exact-tag retry, or
+use the manual MIP dispatch above.
+
+## Correcting a bad release
+
+Published TestPyPI files and released source tags are immutable in practice.
+Deleting a GitHub Release does not remove registry files, and moving a tag
+would make the release irreproducible (and the tag ruleset would refuse the
+move on this repository's own `publishing-v*` tags in any case).
+
+To correct a release:
+
+1. Fix the source on `main`.
+2. Run "Prepare release" again for a new version.
+3. Repeat the release-PR flow (or the manual fallback).
+4. Yank an unusable TestPyPI version only when necessary and document why; do
+   not attempt to upload replacement files under the same version.
+
+Publishing the corrected MIP version replaces the affected package's `latest`
+entry when the central latest-only index is deployed.
+
+## The Release Health dashboard
+
+Every `publish-release-packages` run — success or failure — ends with a
+`report-release-health` job (`continue-on-error: true`, so a reporting
+failure never fails the release itself) that dispatches a
+`repository_dispatch` of type `release-health` to `PyDevices/.github`, with
+the run's outcome for each stage (TestPyPI, assets, MIP, PyPI). This
+repository's `release-health.yml` folds that payload into
+[`release-health/data.json`](../release-health/data.json) and regenerates
+[`RELEASE_HEALTH.md`](../RELEASE_HEALTH.md) at the repo root — one row per
+distribution, linking back to the run that produced it.
+
+## Troubleshooting
+
+| Symptom | Meaning and response |
+|---|---|
+| No publication run after pushing a tag | A tag alone is not the trigger. Publish the GitHub Release. |
+| `VERSION contains ... but the release tag is ...` | Fix and commit `VERSION`, then create a **new** tag/version via a fresh "Prepare release" run. Do not move a published tag. |
+| TestPyPI `invalid-publisher` | The job attempted OIDC Trusted Publishing without a matching publisher. TestPyPI still uses `__token__` + `TESTPYPI_API_TOKEN`. |
+| TestPyPI authentication failure | Confirm that `TESTPYPI_API_TOKEN` exists in that source repository, belongs to `bdbarnett`, has permission for the project, and has not expired or been revoked. |
+| TestPyPI duplicate-file response | Retry with the current coordinator, which sets `skip-existing: true`; otherwise publish a new version. |
+| Production PyPI publish did not run | Check three things: `pypi-publish: true` on the caller, the release is a final version (not `.devN`/`{a,b,rc}N`), and the `pypi` environment's required reviewers approved the run. |
+| MIP request is queued | Expected — the central concurrency group processes publication requests serially. |
+| MIP validation sees `.publication-sources/manifest.py` | The shared synchronization job did not remove temporary checkouts; start a fresh run on a current `publishing-v*` tag. |
+| Pages setup or action download returns 429/503/504 | Usually transient GitHub infrastructure trouble. Retry the failed MIP job and verify the live index afterward. |
+| Source workflow succeeds but MIP is still old | Inspect the downstream `PyDevices/mip` run and wait for the Pages deployment; source success only confirms dispatch. |
+| A native wheel platform is missing | Fix the wheel matrix and publish a new version. TestPyPI cannot accept a replacement with an existing filename. |
+| `RELEASE_HEALTH.md` shows a stale row | The reporting job runs `continue-on-error`; a real failure elsewhere in the chain does not block it, but a `PyDevices/.github` outage or a missing App installation would. Check the linked run URL directly. |
 
 ## Planned: real MIP dependencies instead of `require()` inclusion
 
@@ -232,378 +587,38 @@ inline types and stop looking for stubs.
 
 ## How the release chain is wired
 
-Each publishing repository has a ~26-line `publish-release-packages.yml` that
-calls one reusable workflow and supplies only what differs — the build kind, the
-distribution name, and the MIP profile:
-
-```yaml
-jobs:
-  publish:
-    uses: PyDevices/.github/.github/workflows/reusable-publish-release-packages.yml@publishing-v3
-    with:
-      build-kind: pure-python          # or native-and-wasm, pydevices-multi
-      distribution-name: pydevices-palettes
-      import-name: palettes
-      mip-profile: palettes            # omit to skip MIP, as lvgl-python does
-                                       # comma-separate for several, as audioif does
-      release-ref: ${{ inputs.release-ref }}
-    secrets: inherit
-```
-
-That reusable resolves and validates the `vX.Y.Z` tag, runs the matching build,
-uploads to TestPyPI, and requests MIP publication. It replaced five copies of
+`reusable-publish-release-packages.yml` is the whole per-repository release
+chain: it resolves the tag, dispatches the matching build (`build-pure-python`
+/ `build-native-and-wasm` / `build-pydevices-multi`, exactly one of which runs
+per invocation, selected by `build-kind`), publishes to TestPyPI, attaches
+release assets, requests MIP publication, optionally publishes to production
+PyPI, and reports to Release Health — all as jobs inside that one reusable
+workflow, not separate coordinators. It replaced five near-identical copies of
 the same three jobs.
 
-**`audioif` pins `@publishing-v4`; every other caller pins `@publishing-v3`.**
-v4 adds the optional `expected-wheel-count` input, which defaults to `0` and
-accepts any non-empty wheel set, so the v3 callers need no change. Earlier tags
-remain so a release cut before the consolidation can still be retried against
-the contract it was built with. Each tag's nested `uses:` refs point at its own
-tag, so a caller on v3 runs an entirely v3 chain.
-
-## Standard release procedure
-
-The commands below assume sibling repositories under your PyDevices
-workspace root (for example `~/gh/pydevices`). Substitute the repository
-and version being released.
-
-### 1. Start from synchronized `main`
-
-```bash
-cd <workspace-root>/<repository>
-git switch main
-git fetch origin --prune
-git pull --ff-only
-git status --short
-```
-
-The worktree must be clean. Confirm that all changes intended for the release
-are committed and that required CI checks pass. Follow the source repository's
-test instructions; native repositories may require substantially more build
-validation than pure-Python repositories.
-
-### 2. Choose a new version
-
-Use a version that has never been published for that distribution. TestPyPI
-files are immutable, and an uploaded filename cannot be replaced.
-
-```bash
-version=X.Y.Z
-tag="v${version}"
-
-git tag --list "$tag"
-gh release view "$tag" --repo PyDevices/<repository>
-```
-
-Both commands should report that the proposed release does not exist. Also
-check the TestPyPI project page when there is any doubt about previously
-uploaded versions.
-
-### 3. Commit the version
-
-For `palettes`, `pdwidgets`, `pygraphics`, and `pydevices`, write the exact
-version to the repository's `VERSION` file and commit it with the release
-changes:
-
-```bash
-printf '%s\n' "$version" > VERSION
-git diff --check
-git diff -- VERSION
-
-# Run the repository's tests here.
-
-git add VERSION <other-release-files>
-git commit -m "Release ${version}"
-git push origin main
-```
-
-Do not create the release until the version commit is on `origin/main` and CI
-has passed. The build workflows reject a tag whose `X.Y.Z` does not match the
-committed `VERSION`.
-
-`pydevices` uses this one `VERSION` value for every discovered leaf, both meta
-packages, and both publishing channels. Do not assign separate component
-versions.
-
-### 4. Publish the GitHub Release
-
-Record the exact commit before creating the release so a later push cannot
-change the intended target:
-
-```bash
-release_commit="$(git rev-parse HEAD)"
-test "$release_commit" = "$(git rev-parse origin/main)"
-
-gh release create "$tag" \
-  --repo PyDevices/<repository> \
-  --target "$release_commit" \
-  --title "$tag" \
-  --generate-notes
-```
-
-`gh release create` publishes immediately unless `--draft` is supplied. If a
-release is prepared in the GitHub web UI, select the exact version commit,
-create `vX.Y.Z`, and **Publish release**. Merely pushing a tag or saving a draft
-does not trigger the package coordinator.
-
-Verify the release target:
-
-```bash
-gh release view "$tag" \
-  --repo PyDevices/<repository> \
-  --json isDraft,isPrerelease,tagName,targetCommitish,url
-```
-
-### 5. Monitor the source publication
-
-Find and watch the run started by the release event:
-
-```bash
-gh run list \
-  --repo PyDevices/<repository> \
-  --workflow publish-release-packages.yml \
-  --limit 5
-
-gh run watch <run-id> \
-  --repo PyDevices/<repository> \
-  --exit-status
-```
-
-A successful source run means:
-
-1. The tag and committed version matched.
-2. All distributions or wheels built successfully.
-3. The complete artifact set passed package and filename validation.
-4. TestPyPI accepted the API-token upload, when the repository has a pip
-   product.
-5. The MIP request was dispatched, when the repository has a MIP product.
-
-The TestPyPI upload and MIP dispatch can run in parallel after the build. A
-successful source run means the MIP request was accepted, not necessarily that
-the central queue and Pages deployment have finished.
-
-### 6. Monitor the central MIP queue
-
-Skip this step for `lvgl-python`.
-
-```bash
-gh run list \
-  --repo PyDevices/mip \
-  --workflow process-mip-publication-request.yml \
-  --limit 10
-
-gh run watch <mip-run-id> \
-  --repo PyDevices/mip \
-  --exit-status
-```
-
-`PyDevices/mip` serializes requests so concurrent source releases cannot
-overwrite one another. For each request it:
-
-1. Checks out the exact source tag.
-2. Regenerates that repository's MIP packages.
-3. Removes temporary publishing checkouts before index validation.
-4. Validates and compiles the complete latest-only index.
-5. Creates one atomic bot commit under `micropython/` when content changed.
-6. Builds and deploys the complete GitHub Pages artifact to
-   `https://PyDevices.github.io/mip`.
-
-Wait for both the synchronization job and `deploy-complete-mip-index` to
-succeed.
-
-### 7. Verify the registries
-
-Check the exact TestPyPI version, not only the workflow status:
-
-```bash
-python - <<'PY'
-import json
-import urllib.request
-
-project = "<testpypi-project>"
-version = "X.Y.Z"
-with urllib.request.urlopen(
-    f"https://test.pypi.org/pypi/{project}/json", timeout=30
-) as response:
-    data = json.load(response)
-files = data["releases"].get(version, [])
-if not files:
-    raise SystemExit(f"{project} {version} is not published")
-print(f"{project} {version}: {len(files)} published files")
-PY
-```
-
-For native projects, inspect the returned filenames or the TestPyPI Files tab
-and confirm the expected Linux, Windows, Android, and PyEmscripten wheel set.
-For `pydevices`, verify every discovered leaf plus `pydevices` and
-`pydevices-desktop`, all at the same version.
-
-Check the live MIP index after Pages deployment:
-
-```bash
-python - <<'PY'
-import json
-import urllib.request
-
-package = "<mip-package>"
-version = "X.Y.Z"
-with urllib.request.urlopen(
-    "https://PyDevices.github.io/mip/index.json", timeout=30
-) as response:
-    index = json.load(response)
-matches = [entry for entry in index["packages"] if entry["name"] == package]
-if not matches or matches[0]["version"] != version:
-    raise SystemExit(f"{package} {version} is not live")
-print(f"{package} {version} is live")
-PY
-```
-
-Finally, retain the GitHub Release URL and both Actions run URLs in the release
-record or handoff.
-
-## LVGL release procedure
-
-`lvgl-python` normally receives generated bindings from `lvgl-bindings`; its
-version is not chosen with the generic `VERSION` edit above. The preferred
-flow is:
-
-```text
-lvgl-bindings generated-source change
-  -> Trigger lvgl-python release
-  -> lvgl-python Sync and release
-  -> write VERSION, commit main, publish vX.Y.Z
-  -> Publish release packages
-  -> build and upload the complete pydevices-lvgl wheel matrix
-```
-
-Start the sync explicitly when needed:
-
-```bash
-gh workflow run sync-and-release.yml --repo PyDevices/lvgl-python
-```
-
-Or select an exact `lvgl-bindings` ref:
-
-```bash
-gh workflow run sync-and-release.yml \
-  --repo PyDevices/lvgl-python \
-  -f lvgl_bindings_ref=<commit-or-tag>
-```
-
-The workflow derives the LVGL major/minor line and increments this repository's
-release counter, writes `VERSION`, commits, and publishes the GitHub Release.
-Then monitor `publish-release-packages.yml` and verify TestPyPI as described
-above. `lvgl-python` does not dispatch a MIP publication.
-
-Use `skip_publish=true` only to synchronize and commit without creating a
-release:
-
-```bash
-gh workflow run sync-and-release.yml \
-  --repo PyDevices/lvgl-python \
-  -f skip_publish=true
-```
-
-The detailed LVGL version derivation and local reproduction steps remain in
-`lvgl-python/docs/publishing.md`.
-
-## Retrying an interrupted publication
-
-Never move the tag or rebuild the same version from a different commit. Retry
-the coordinator with the exact existing tag:
-
-```bash
-gh workflow run publish-release-packages.yml \
-  --repo PyDevices/<repository> \
-  -f release-ref=vX.Y.Z
-
-gh run list \
-  --repo PyDevices/<repository> \
-  --workflow publish-release-packages.yml \
-  --limit 5
-```
-
-The workflows check out that tag, revalidate it, and use `skip-existing: true`
-for TestPyPI. This safely completes a partial upload without replacing files
-that TestPyPI already accepted.
-
-If only the current MIP run or Pages deployment failed, retry its failed jobs:
-
-```bash
-gh run rerun <mip-run-id> --repo PyDevices/mip --failed
-gh run watch <mip-run-id> --repo PyDevices/mip --exit-status
-```
-
-If the shared reusable-workflow ref changed after the failed run, GitHub's
-**rerun** operation may remain pinned to the reusable workflow commit selected
-by the original attempt. Start a fresh source exact-tag retry, or dispatch a
-fresh central MIP run:
-
-```bash
-gh workflow run process-mip-publication-request.yml \
-  --repo PyDevices/mip \
-  -f source-repository=PyDevices/<repository> \
-  -f source-ref=vX.Y.Z \
-  -f version=X.Y.Z \
-  -f profile=<palettes|pdwidgets|pygraphics|pydevices|audioinstruments|audioeffects>
-```
-
-Use a direct central dispatch only for recovery after confirming that the
-source tag and profile are correct. The normal entry point is always the
-source repository's release coordinator.
-
-## Correcting a bad release
-
-Published TestPyPI files and released source tags are immutable in practice.
-Deleting a GitHub Release does not remove registry files, and moving a tag
-would make the release irreproducible.
-
-To correct a release:
-
-1. Fix the source on `main`.
-2. Choose a new version.
-3. Repeat the complete standard release procedure.
-4. Yank an unusable TestPyPI version only when necessary and document why; do
-   not attempt to upload replacement files under the same version.
-
-Publishing the corrected MIP version replaces the affected package's `latest`
-entry when the central latest-only index is deployed.
-
-## Troubleshooting
-
-| Symptom | Meaning and response |
-|---|---|
-| No publication run after pushing a tag | A tag alone is not the trigger. Publish the GitHub Release. |
-| `VERSION contains ... but the release tag is ...` | Fix and commit `VERSION`, then create a **new** tag/version. Do not move a published tag. |
-| TestPyPI `invalid-publisher` | The job attempted OIDC Trusted Publishing without a matching publisher. The current contract must use `__token__` and `TESTPYPI_API_TOKEN`. |
-| TestPyPI authentication failure | Confirm that `TESTPYPI_API_TOKEN` exists in that source repository, belongs to `bdbarnett`, has permission for the project, and has not expired or been revoked. |
-| TestPyPI duplicate-file response | Retry with the current coordinator, which sets `skip-existing: true`; otherwise publish a new version. |
-| MIP request is queued | This is expected. The central concurrency group processes publication requests serially. |
-| MIP validation sees `.publication-source/manifest.py` | The shared synchronization job is stale and did not remove temporary checkouts. Start a fresh run that resolves the current stable shared workflow. |
-| Pages setup or action download returns 429/503/504 | This is usually transient GitHub infrastructure trouble. Retry the failed MIP job and verify the live index afterward. |
-| Source workflow succeeds but MIP is still old | Inspect the downstream `PyDevices/mip` run and wait for the Pages deployment; source success only confirms dispatch. |
-| A native wheel platform is missing | Fix the wheel matrix and publish a new version. TestPyPI cannot accept a replacement with an existing filename. |
+Changing a reusable workflow contract is an automation rollout, not a package
+release. Validate it independently, create a new stable publishing tag when
+the contract changes, update coordinators deliberately, and only then use
+that tag for future package versions.
 
 ## Shared implementation reference
 
-For the workflows *outside* this release chain — the Pages `deploy.yml` pipeline,
-test and lint jobs, validators, and the MIP index jobs — see
-[workflows.md](workflows.md).
+For the workflows *outside* this release chain — the Pages `deploy.yml`
+pipeline, test and lint jobs, and validators — see [workflows.md](workflows.md).
 
 | Workflow | Responsibility |
 |---|---|
+| `reusable-prepare-release-pr.yml` | Open the release PR: compute the version suggestion, write `VERSION` + `CHANGELOG.md`, push, open/update the PR |
+| `reusable-tag-on-release-merge.yml` | On a merged `VERSION` change, create the `vX.Y.Z` tag and GitHub Release with the App token |
+| `reusable-publish-release-packages.yml` | The whole release chain: resolve the tag, build, publish to TestPyPI, attach assets, request MIP publication, optionally publish to PyPI, report health |
 | `reusable-build-pure-python-distribution.yml` | Build, check, clean-install, and upload one wheel/sdist artifact |
-| `reusable-build-native-and-wasm-wheels.yml` | Build Linux, Windows, Android, and PyEmscripten wheels into one validated artifact |
+| `reusable-build-native-and-wasm-wheels.yml` | Build Linux, Windows, Android, and WASM (Pyodide) wheels into one validated artifact |
 | `reusable-build-pydevices-distributions.yml` | Discover `pydevices/lib` leaves and `utils` desktop payload; build every exact-version distribution |
-| `reusable-request-mip-publication.yml` | Dispatch the exact repository, ref, version, and profile to the central queue |
-| `reusable-synchronize-mip-package.yml` | Synchronize one source release, validate the complete latest-only index, create one source commit, and stage the Pages artifact |
+| `reusable-request-mip-publication.yml` | Dispatch the exact repository, ref, version, and profile(s) to the central MIP queue |
+| `reusable-synchronize-mip-package.yml` | Re-synchronize every locked source, validate the complete latest-only index, create one lockfile commit, and stage the Pages artifact |
 | `reusable-validate-pyscript-filesystem-toml.yml` | Reject stale generated PyScript filesystem mappings |
+| `release-health.yml` | Fold a `release-health` dispatch into `release-health/data.json` and regenerate `RELEASE_HEALTH.md` |
 
 The shared scripts use descriptive operation names and filesystem discovery;
 new publishable sources are picked up without an include list. PyScript TOMLs
 contain runtime filesystem mappings, not package metadata.
-
-Changing a reusable workflow contract is an automation rollout, not a package
-release. Validate it independently, create a new stable publishing ref when
-the contract changes, update coordinators deliberately, and only then use that
-ref for future package versions.
