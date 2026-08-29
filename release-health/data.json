@@ -50,13 +50,13 @@
  "pydevices-pygraphics": {
   "assets": "success",
   "distribution": "pydevices-pygraphics",
-  "mip": "skipped",
-  "prerelease": true,
+  "mip": "success",
+  "prerelease": false,
   "pypi": "skipped",
   "repo": "pygraphics",
-  "run_url": "https://github.com/PyDevices/pygraphics/actions/runs/33246400444",
+  "run_url": "https://github.com/PyDevices/pygraphics/actions/runs/33248633875",
   "testpypi": "success",
-  "updated": "2026-08-29 09:55 UTC",
-  "version": "0.0.38.dev1"
+  "updated": "2026-08-29 10:52 UTC",
+  "version": "0.0.38"
  }
 }
