@@ -45,12 +45,7 @@ jobs:
             LAST=$(git tag --list 'v[0-9]*' | sed 's/^v//' \
               | sort -t. -k1,1n -k2,2n -k3,3n | tail -1)
             if [[ -z "$LAST" ]]; then V="0.0.1"; else
-              V=$(python3 - "$LAST" <<'PY'
-import re, sys
-m = re.match(r"(\d+)\.(\d+)\.(\d+)", sys.argv[1])
-print(f"{m[1]}.{m[2]}.{int(m[3])+1}")
-PY
-              )
+              V=$(python3 -c 'import re,sys; m=re.match(r"(\d+)\.(\d+)\.(\d+)", sys.argv[1]); print(f"{m[1]}.{m[2]}.{int(m[3])+1}")' "$LAST")
             fi
           fi
           if [[ ! "$V" =~ ^[0-9]+\.[0-9]+\.[0-9]+((a|b|rc)[0-9]+|\.dev[0-9]+)?$ ]]; then
