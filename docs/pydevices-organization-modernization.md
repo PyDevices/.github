@@ -1,6 +1,9 @@
 # PyDevices Organization Modernization — Agent Execution Contract and Roadmap
 
-**Status:** Planning only. No implementation is authorized until GO (section 2).
+**Status:** EXECUTING. Brad gave GO on 2026-08-28 with every hard start
+condition met (audio program finished and audited; micropython-vst3
+published and merged; lvgl generator overhaul finished, audited, and
+released as lvgl-bindings v9.5.15 / lvgl-python v9.5.38).
 
 **Owner:** Brad / PyDevices
 
@@ -80,7 +83,15 @@ answer questions, but must not begin discovery probes or implementation.
 
 ### 2.1 Execution environment
 
-- The executor is a Claude cloud session authenticated through the Claude
+**Amended at GO (2026-08-28, per Brad):** the executor is a local Claude
+session on Brad's workstation, working in the canonical workspace — not a
+cloud session. The cloud-handoff design below is retained as an optional
+future mode; where it says "cloud session", read "executing session". The
+proof surface, checkpoint-packet, and gate rules are unchanged, except
+that on-hardware and workstation-only verification no longer needs a
+separate session.
+
+- The original design: a Claude cloud session authenticated through the Claude
   GitHub app, installed org-wide with all-repository access (verified
   2026-08-27) — covering the private `workspace` anchor repository; the rest
   of the organization is public.
