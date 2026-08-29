@@ -100,7 +100,7 @@
       },
       {
         "label": "Hardware Bring-up",
-        "href": "https://github.com/PyDevices/displayif/blob/main/docs/hardware.md",
+        "href": "https://github.com/PyDevices/displayif/blob/main/docs/soft-reset-and-bring-up.md",
         "tier_color": true
       },
       {
@@ -795,7 +795,7 @@
   },
   "micropython-pydevices": {
     "tier": 5,
-    "page": "none",
+    "page": "portal-subdir",
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "micropython-pydevices",
@@ -816,17 +816,88 @@
     "buttons": [
       {
         "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/pyscript-template",
+        "href": "https://github.com/PyDevices/micropython-pydevices",
         "primary": true
       },
       {
-        "label": "Live PWA Demo",
-        "href": "pwa/",
+        "label": "Patch series",
+        "href": "https://github.com/PyDevices/micropython-pydevices/tree/main/patches",
         "tier_color": true
       },
       {
-        "label": "PWA Setup Guide",
-        "href": "https://github.com/PyDevices/pyscript-template/blob/main/README.md",
+        "label": "pydevices Core",
+        "href": "https://pydevices.github.io/pydevices/",
+        "tier_color": true
+      }
+    ]
+  },
+  "workbench": {
+    "tier": 5,
+    "page": "portal-subdir",
+    "tier_name": "Developer Tools & Infrastructure",
+    "theme_color": "var(--tier-5-steel)",
+    "eyebrow": "workbench",
+    "headline": "workbench \u2014 the browser IDE and MicroPython simulator.",
+    "description": "A ViperIDE fork with a built-in WebAssembly MicroPython simulator: edit, run, and debug PyDevices code against a simulated board entirely in the browser, no hardware required.",
+    "hero_canvas": {
+      "app": "polyhedron",
+      "width": 240,
+      "height": 240,
+      "shape": "square",
+      "deps": [
+        "pydevices",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/polyhedron.py"
+    },
+    "buttons": [
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/workbench",
+        "primary": true
+      },
+      {
+        "label": "Live App",
+        "href": "https://pydevices.github.io/workbench/",
+        "tier_color": true
+      },
+      {
+        "label": "Releases",
+        "href": "https://github.com/PyDevices/workbench/releases",
+        "tier_color": true
+      }
+    ]
+  },
+  "micropython-vst3": {
+    "tier": 5,
+    "page": "portal-subdir",
+    "tier_name": "Developer Tools & Infrastructure",
+    "theme_color": "var(--tier-5-steel)",
+    "eyebrow": "micropython-vst3",
+    "headline": "micropython-vst3 \u2014 audio effects and instruments as a VST3 plug-in.",
+    "description": "A hardware-accurate MicroPython audio engine -- core, effects, and instruments -- packaged as a VST3 sidecar plug-in for building and auditioning racks inside a DAW.",
+    "hero_canvas": {
+      "app": "ftp_scope",
+      "width": 240,
+      "height": 240,
+      "shape": "square",
+      "deps": [
+        "pydevices",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/ftp_scope.py"
+    },
+    "buttons": [
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/micropython-vst3",
+        "primary": true
+      },
+      {
+        "label": "Releases",
+        "href": "https://github.com/PyDevices/micropython-vst3/releases",
         "tier_color": true
       },
       {
