@@ -1,4 +1,16 @@
 {
+ "pydevices-mpftp": {
+  "assets": "success",
+  "distribution": "pydevices-mpftp",
+  "mip": "skipped",
+  "prerelease": true,
+  "pypi": "skipped",
+  "repo": "mpftp",
+  "run_url": "https://github.com/PyDevices/mpftp/actions/runs/33236522993",
+  "testpypi": "success",
+  "updated": "2026-08-29 05:36 UTC",
+  "version": "0.0.4.dev1"
+ },
  "pydevices-palettes": {
   "assets": "success",
   "distribution": "pydevices-palettes",
