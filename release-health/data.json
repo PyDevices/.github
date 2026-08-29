@@ -1,0 +1,14 @@
+{
+ "pydevices-palettes": {
+  "assets": "success",
+  "distribution": "pydevices-palettes",
+  "mip": "skipped",
+  "prerelease": "true",
+  "pypi": "skipped",
+  "repo": "palettes",
+  "run_url": "https://github.com/PyDevices/palettes/actions",
+  "testpypi": "success",
+  "updated": "2026-08-29 04:45 UTC",
+  "version": "0.0.13.dev2"
+ }
+}
