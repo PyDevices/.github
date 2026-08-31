@@ -35,6 +35,13 @@ jobs:
         os:
           - ubuntu-latest
           - windows-latest
+          # publishing-v7: macOS runner added (org platform-support-tiers
+          # posture: ship everything CI can prove). Per-repo opt-in stays
+          # in each repo's [tool.cibuildwheel] skip list — a repo that
+          # skips *-macosx_* builds nothing here and wastes one no-op
+          # cell; a repo adopting macOS wheels must also raise its
+          # expected-wheel-count in the same change.
+          - macos-latest
     steps:
       - name: Check out exact release
         uses: actions/checkout@v7
