@@ -42,10 +42,10 @@
   "prerelease": false,
   "pypi": "skipped",
   "repo": "audioif",
-  "run_url": "https://github.com/PyDevices/audioif/actions/runs/33249056519",
+  "run_url": "https://github.com/PyDevices/audioif/actions/runs/33394213045",
   "testpypi": "success",
-  "updated": "2026-08-29 11:01 UTC",
-  "version": "0.0.5"
+  "updated": "2026-08-31 12:57 UTC",
+  "version": "0.1.1"
  },
  "pydevices-lvgl": {
   "assets": "success",
