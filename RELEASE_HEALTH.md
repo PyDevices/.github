@@ -5,7 +5,7 @@ Latest publish run per distribution, reported by publishing-v6's report-release-
 | Distribution | Version | TestPyPI | Assets | MIP | PyPI | Updated |
 |---|---|---|---|---|---|---|
 | [pydevices](https://github.com/PyDevices/pydevices/actions/runs/33248950545) | 0.3.8 | OK | OK | OK | -- | 2026-08-29 10:57 UTC |
-| [pydevices-audioeffects](https://github.com/PyDevices/audioif/actions/runs/33249056519) | 0.0.5 | OK | OK | -- | -- | 2026-08-29 11:01 UTC |
+| [pydevices-audioeffects](https://github.com/PyDevices/audioif/actions/runs/33392558969) | 0.1.0 | OK | OK | -- | -- | 2026-08-31 12:38 UTC |
 | [pydevices-audioif](https://github.com/PyDevices/audioif/actions/runs/33249056519) | 0.0.5 | OK | OK | OK | -- | 2026-08-29 11:05 UTC |
 | [pydevices-audioinstruments](https://github.com/PyDevices/audioif/actions/runs/33249056519) | 0.0.5 | OK | OK | -- | -- | 2026-08-29 11:01 UTC |
 | [pydevices-lvgl](https://github.com/PyDevices/lvgl-python/actions/runs/33260994064) | 9.5.44 | OK | OK | -- | -- | 2026-08-29 15:52 UTC |
