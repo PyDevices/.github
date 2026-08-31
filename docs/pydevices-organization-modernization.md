@@ -236,8 +236,11 @@ stranger would otherwise misread it.
 - **Versions are chosen by a human.** Nothing computes the next version.
   Release automation must preserve this: the release PR is where the human
   reads, edits, and approves the version before merging.
-- **Only `pydevices`, `pydevices-desktop`, `pygraphics`, `palettes`, and
-  `pdwidgets` publish.** The pydevices leaf distributions are retired.
+- **Only `pydevices`, `pydevices-desktop`, `pygraphics`, `palettes`,
+  `pdwidgets`, and `audioif` publish** (audioif ships three
+  distributions: `pydevices-audioif`, `-audioinstruments`,
+  `-audioeffects` — added post-handoff, 2026-08). The pydevices leaf
+  distributions are retired.
 - **lvgl-python is a sync target.** Helpers and bindings are edited only
   in `lvgl-bindings`; propagation is explicit consumer sync pinned by
   `LVGL_BINDINGS_COMMIT` (since the 2026-08-28 overhaul — formerly a
