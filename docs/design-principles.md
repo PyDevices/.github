@@ -44,7 +44,9 @@ Surfaces are as portable as the platforms allow, and honest about where
 they can't be: complete on the primary target, present everywhere it
 makes sense, and translated — not duplicated — where a sibling ecosystem
 already has its own excellent idioms. Exceptions are recorded in the
-design document, not assumed.
+design document, not assumed. Every platform claim carries its proof
+tier — bench-proven, CI-proven, or community-verified — as defined in
+[`platform-support-tiers.md`](platform-support-tiers.md).
 
 ---
 
