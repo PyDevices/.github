@@ -5,6 +5,13 @@ this doc covers what's shared across all of them. Each repo's own `README.md`
 (and `AGENTS.md`, where present) has project-specific setup, test, and lint
 instructions — read that first.
 
+## Design principles
+
+Org-wide standards every shipped design is measured against — starting
+with completeness ("any pairing the protocols permit that the design does
+not deliver is a defect in the design, not a feature request") — live in
+[`docs/design-principles.md`](docs/design-principles.md).
+
 ## Where things live
 
 Repo directory and root-file layout (`src/`, `lib/`, `tests/`,
