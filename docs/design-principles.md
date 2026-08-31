@@ -48,6 +48,25 @@ design document, not assumed. Every platform claim carries its proof
 tier — bench-proven, CI-proven, or community-verified — as defined in
 [`platform-support-tiers.md`](platform-support-tiers.md).
 
+## 3. Identity varies with capability, deterministically
+
+When software can change what a device *is* at runtime — the USB
+interface set a host enumerates, the BLE profile set a peer discovers —
+the device's advertised identity must change with it. Hosts cache
+associations (drivers, pairings, settings) against identity: two
+different capability sets sharing one identity poison that cache, and
+the failure lands on someone else's machine, later, unattributably.
+
+And the variation must be **deterministic** — the same capability set
+always yields the same identity — so a host's cached association stays
+correct across reboots and re-enumerations. Fifteen configurations,
+fifteen identities, the same fifteen every time.
+
+Proven in usbif's runtime function selection (2026-08-31), where
+TinyUSB's own source warns of exactly this; the obligation is inherited
+by every PyDevices surface that lets Python vary a device's capability
+set.
+
 ---
 
 *New principles are added here when they've been proven in a shipped
