@@ -833,7 +833,7 @@
   },
   "workbench": {
     "tier": 5,
-    "page": "portal-subdir",
+    "page": "none",
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "workbench",
