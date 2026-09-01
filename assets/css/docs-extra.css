@@ -28,10 +28,16 @@
 :root > * {
   /* Brand channels — the source of every orange in this file. */
   --doc-brand-rgb: 34 199 226;
+  /* Material paints the header bar with --md-primary-fg-color and sets its
+     label text in --md-primary-bg-color. The bright accent is far too
+     luminous to carry near-white text (1.95:1), so the header takes a deeper
+     cyan of the same family (5.4:1); the bright one stays for links, tints
+     and accents. */
+  --doc-header-rgb: 10 113 134;
   --doc-primary-bg-rgb: 240 253 255;
   --doc-accent-bg-rgb: 4 22 28;
 
-  --md-primary-fg-color: rgb(var(--doc-brand-rgb));
+  --md-primary-fg-color: rgb(var(--doc-header-rgb));
   --md-primary-fg-color--light: #5edcf0;
   --md-primary-fg-color--dark: #08657a;
   --md-primary-bg-color: rgb(var(--doc-primary-bg-rgb));
