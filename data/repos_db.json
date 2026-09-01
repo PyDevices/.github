@@ -755,7 +755,7 @@
     "tier": 0,
     "page": "portal-root",
     "tier_name": "Organization Portal",
-    "theme_color": "var(--tier-1-amber)",
+    "theme_color": "var(--accent)",
     "eyebrow": "PyDevices Portal",
     "headline": "One display & hardware contract for MicroPython, CircuitPython, and CPython \u2014 from bare metal to the browser.",
     "description": "The same driver, event, and display code runs unmodified on bare-metal MicroPython and CircuitPython boards, as native CPython wheels on desktop and Android, and directly in a browser tab \u2014 no rewrites, no plugins.",

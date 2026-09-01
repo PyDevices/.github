@@ -27,17 +27,17 @@
 
 :root > * {
   /* Brand channels — the source of every orange in this file. */
-  --doc-brand-rgb: 245 78 0;
-  --doc-primary-bg-rgb: 255 247 241;
-  --doc-accent-bg-rgb: 26 13 5;
+  --doc-brand-rgb: 34 199 226;
+  --doc-primary-bg-rgb: 240 253 255;
+  --doc-accent-bg-rgb: 4 22 28;
 
   --md-primary-fg-color: rgb(var(--doc-brand-rgb));
-  --md-primary-fg-color--light: #ff7a3d;
-  --md-primary-fg-color--dark: #c33f00;
+  --md-primary-fg-color--light: #5edcf0;
+  --md-primary-fg-color--dark: #08657a;
   --md-primary-bg-color: rgb(var(--doc-primary-bg-rgb));
   --md-primary-bg-color--light: rgb(var(--doc-primary-bg-rgb) / 0.7);
 
-  --md-accent-fg-color: #ff7a3d;
+  --md-accent-fg-color: #5edcf0;
   --md-accent-fg-color--transparent: rgb(var(--doc-brand-rgb) / 0.1);
   --md-accent-bg-color: rgb(var(--doc-accent-bg-rgb));
   --md-accent-bg-color--light: rgb(var(--doc-accent-bg-rgb) / 0.7);
@@ -59,47 +59,47 @@
      rather than the site chrome, so they stay fixed across schemes and need
      not follow a brand palette change. */
   --demo-canvas-bg: #000000;
-  --demo-canvas-frame: #241e17;
+  --demo-canvas-frame: #17222c;
   --demo-canvas-border: #333333;
 }
 
 [data-md-color-scheme="default"] {
-  --md-default-bg-color: #fbf9f5;
-  --md-default-bg-color--light: #f3eee6;
-  --md-default-bg-color--lighter: #f6f1e9;
+  --md-default-bg-color: #f5f9fb;
+  --md-default-bg-color--light: #e9f1f5;
+  --md-default-bg-color--lighter: #eff6f9;
   --md-default-bg-color--lightest: #ffffff;
-  --md-default-fg-color: #201c16;
-  --md-default-fg-color--light: #5b5347;
-  --md-default-fg-color--lighter: #8a8172;
-  --md-default-fg-color--lightest: #c9bfae;
-  --md-typeset-a-color: #c33f00;
-  --md-code-bg-color: #f6f1e9;
-  --md-code-fg-color: #201c16;
-  --md-footer-bg-color: #f3eee6;
-  --md-footer-bg-color--dark: #201c16;
-  --md-footer-fg-color: #201c16;
-  --md-footer-fg-color--light: #5b5347;
-  --md-footer-fg-color--lighter: #8a8172;
+  --md-default-fg-color: #0c161d;
+  --md-default-fg-color--light: #47606f;
+  --md-default-fg-color--lighter: #6f8695;
+  --md-default-fg-color--lightest: #a7bccc;
+  --md-typeset-a-color: #08657a;
+  --md-code-bg-color: #eff6f9;
+  --md-code-fg-color: #0c161d;
+  --md-footer-bg-color: #e9f1f5;
+  --md-footer-bg-color--dark: #0c161d;
+  --md-footer-fg-color: #0c161d;
+  --md-footer-fg-color--light: #47606f;
+  --md-footer-fg-color--lighter: #6f8695;
 }
 
 [data-md-color-scheme="slate"] {
-  --md-hue: 32;
-  --md-default-bg-color: #100e0b;
-  --md-default-bg-color--light: #17130f;
-  --md-default-bg-color--lighter: #1c1712;
-  --md-default-bg-color--lightest: #241e17;
-  --md-default-fg-color: #f3ecdf;
-  --md-default-fg-color--light: #c9bfae;
-  --md-default-fg-color--lighter: #8f8474;
-  --md-default-fg-color--lightest: #5b5347;
-  --md-typeset-a-color: #ff8a52;
-  --md-code-bg-color: #1c1712;
-  --md-code-fg-color: #f3ecdf;
-  --md-footer-bg-color: #17130f;
-  --md-footer-bg-color--dark: #100e0b;
-  --md-footer-fg-color: #f3ecdf;
-  --md-footer-fg-color--light: #c9bfae;
-  --md-footer-fg-color--lighter: #8f8474;
+  --md-hue: 205;
+  --md-default-bg-color: #080c10;
+  --md-default-bg-color--light: #0d131a;
+  --md-default-bg-color--lighter: #121a22;
+  --md-default-bg-color--lightest: #17222c;
+  --md-default-fg-color: #dfeaf2;
+  --md-default-fg-color--light: #a7bccc;
+  --md-default-fg-color--lighter: #6f8598;
+  --md-default-fg-color--lightest: #47606f;
+  --md-typeset-a-color: #7de8f7;
+  --md-code-bg-color: #121a22;
+  --md-code-fg-color: #dfeaf2;
+  --md-footer-bg-color: #0d131a;
+  --md-footer-bg-color--dark: #080c10;
+  --md-footer-fg-color: #dfeaf2;
+  --md-footer-fg-color--light: #a7bccc;
+  --md-footer-fg-color--lighter: #6f8598;
 }
 
 /* Hero & Feature Grid Cards */

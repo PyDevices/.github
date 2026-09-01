@@ -17,6 +17,7 @@ def get_gradient_dark(color_var):
     stays a single edit to that stylesheet's token block.
     """
     mapping = {
+        'var(--accent)': 'var(--accent-strong)',
         'var(--tier-1-amber)': 'var(--tier-1-deep)',
         'var(--tier-2-emerald)': 'var(--tier-2-deep)',
         'var(--tier-3-blue)': 'var(--tier-3-deep)',
@@ -235,6 +236,17 @@ def build_above_the_fold_html(repo_name, data):
     )
     theme_color = data.get('theme_color', 'var(--tier-5-steel)')
     dark_gradient = get_gradient_dark(theme_color)
+    # The org's own page shows the PyDevices mark free-standing on the ground.
+    # Every product page keeps a tier-coloured tile: that badge is what carries
+    # the repo's tier, so it stays even though the org mark no longer needs one.
+    if page_destination(data) == 'portal-root':
+        badge_html = f'<div class="logo-badge logo-badge--free">{mark}</div>'
+    else:
+        badge_html = (
+            f'<div class="logo-badge product-mark" style="background: '
+            f'linear-gradient(135deg, {theme_color}, {dark_gradient}); '
+            f'color: var(--on-accent);">{mark}</div>'
+        )
     eyebrow = data.get('eyebrow', repo_name)
     headline = data.get('headline', f'{repo_name} — PyDevices library.')
     description = data.get('description', '')
@@ -300,7 +312,7 @@ def build_above_the_fold_html(repo_name, data):
             f'  <section class="hero wrap has-hero-canvas">\n'
             f'    <div class="hero-main">\n'
             f'      <div class="hero-lead">\n'
-            f'        <div class="logo-badge product-mark" style="background: linear-gradient(135deg, {theme_color}, {dark_gradient}); color: var(--on-accent);">{mark}</div>\n'
+            f'        {badge_html}\n'
             f'        <span class="eyebrow" style="color: {theme_color};">{eyebrow}</span>\n'
             f'      </div>\n'
             f'      <h1>{headline}</h1>\n'
@@ -324,7 +336,7 @@ def build_above_the_fold_html(repo_name, data):
         f'  <section class="hero wrap">\n'
         f'    <div class="hero-lead">\n'
         f'      <div class="hero-brand">\n'
-        f'        <div class="logo-badge product-mark" style="background: linear-gradient(135deg, {theme_color}, {dark_gradient}); color: var(--on-accent);">{mark}</div>\n'
+        f'        {badge_html}\n'
         f'        <span class="eyebrow" style="color: {theme_color};">{eyebrow}</span>\n'
         f'      </div>\n'
         f'      <h1>{headline}</h1>\n'
