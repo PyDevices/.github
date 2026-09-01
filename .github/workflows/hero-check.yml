@@ -1,0 +1,88 @@
+# The hero demos fail silently: the page renders, the wasm runtime catches its
+# own exception, and nothing anywhere turns red. The /pydevices/ hero was dead
+# for a week before a human happened to open the page. This is the thing that
+# notices.
+#
+# Deliberately schedule-and-dispatch only, with no push trigger. A push here
+# does not change the published site — that needs generate_sites.py, a commit
+# to PyDevices.github.io, and a Pages deploy — so a push-triggered run would
+# check the *previous* site and report a stale answer confidently.
+name: Hero check
+
+on:
+  schedule:
+    - cron: '41 6 * * *'
+  workflow_dispatch:
+    inputs:
+      base:
+        description: Base URL to check
+        required: false
+        default: https://pydevices.github.io
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  heroes:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Install Playwright and Chromium
+        run: |
+          python -m pip install --quiet playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Check every declared hero
+        id: check
+        env:
+          HERO_BASE: ${{ inputs.base || 'https://pydevices.github.io' }}
+        run: |
+          set +e
+          python3 scripts/verify_wasm_heroes.py --json hero-results.json | tee hero-report.txt
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Upload the results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hero-results
+          path: |
+            hero-results.json
+            hero-report.txt
+
+      - name: Open or update the tracking issue
+        if: steps.check.outputs.status != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Hero check: one or more demos are not running"
+          BODY=$(printf '%s\n' \
+            "The scheduled hero check found demos that are not reaching \`phase: ready\`." \
+            "" \
+            "Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            "" '```' "$(cat hero-report.txt)" '```' \
+            "" \
+            "A hero fails invisibly — the page still renders. Check the attached" \
+            "\`hero-results.json\` artifact for the captured console errors." \
+            "" \
+            "Statuses: \`failed\` (runtime caught an exception), \`no-hero-on-page\`" \
+            "(the portal believes there is a hero but the served page has none —" \
+            "usually a repo enabling its own Pages and shadowing the portal path)," \
+            "\`never-ready\` (never finished booting), \`unreachable\` (navigation failed).")
+          EXISTING=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITLE\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --repo "$GITHUB_REPOSITORY" --body "$BODY"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --body "$BODY"
+          fi
+
+      - name: Fail the job if any hero is down
+        if: steps.check.outputs.status != '0'
+        run: exit 1
