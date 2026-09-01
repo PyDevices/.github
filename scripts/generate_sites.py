@@ -10,14 +10,20 @@ DB_PATH = os.path.join(DOTGITHUB_DIR, 'data/repos_db.json')
 ASSETS_DIR = os.path.join(DOTGITHUB_DIR, 'assets')
 
 def get_gradient_dark(color_var):
+    """The darker companion a tier's logo-badge gradient fades into.
+
+    The colours themselves live in assets/css/site.css as --tier-N-deep; this
+    only maps a repo's theme_color onto the matching token so a palette change
+    stays a single edit to that stylesheet's token block.
+    """
     mapping = {
-        'var(--tier-1-amber)': '#d97706',
-        'var(--tier-2-emerald)': '#059669',
-        'var(--tier-3-blue)': '#2563eb',
-        'var(--tier-4-purple)': '#7c3aed',
-        'var(--tier-5-steel)': '#0284c7'
+        'var(--tier-1-amber)': 'var(--tier-1-deep)',
+        'var(--tier-2-emerald)': 'var(--tier-2-deep)',
+        'var(--tier-3-blue)': 'var(--tier-3-deep)',
+        'var(--tier-4-purple)': 'var(--tier-4-deep)',
+        'var(--tier-5-steel)': 'var(--tier-5-deep)',
     }
-    return mapping.get(color_var, '#0284c7')
+    return mapping.get(color_var, 'var(--tier-5-deep)')
 
 def get_card_icon(repo_name):
     icons = {
@@ -248,7 +254,7 @@ def build_above_the_fold_html(repo_name, data):
         label, href = btn['label'], btn['href']
         if btn.get('primary', False):
             b_html = (
-                f'      <a class="btn primary" style="background: #24292e; color: #fff; border-color: #24292e;" href="{href}">\n'
+                f'      <a class="btn primary" style="background: var(--github-ink); color: var(--on-accent); border-color: var(--github-ink);" href="{href}">\n'
                 f'        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5 4.6 4.6 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.6 1.7 5.5 2 5.5 2a4.6 4.6 0 0 0-.1 3.5A5 5 0 0 0 4 9c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg>\n'
                 f'        {label}\n'
                 f'      </a>'
@@ -294,7 +300,7 @@ def build_above_the_fold_html(repo_name, data):
             f'  <section class="hero wrap has-hero-canvas">\n'
             f'    <div class="hero-main">\n'
             f'      <div class="hero-lead">\n'
-            f'        <div class="logo-badge product-mark" style="background: linear-gradient(135deg, {theme_color}, {dark_gradient}); color: #fff;">{mark}</div>\n'
+            f'        <div class="logo-badge product-mark" style="background: linear-gradient(135deg, {theme_color}, {dark_gradient}); color: var(--on-accent);">{mark}</div>\n'
             f'        <span class="eyebrow" style="color: {theme_color};">{eyebrow}</span>\n'
             f'      </div>\n'
             f'      <h1>{headline}</h1>\n'
@@ -318,7 +324,7 @@ def build_above_the_fold_html(repo_name, data):
         f'  <section class="hero wrap">\n'
         f'    <div class="hero-lead">\n'
         f'      <div class="hero-brand">\n'
-        f'        <div class="logo-badge product-mark" style="background: linear-gradient(135deg, {theme_color}, {dark_gradient}); color: #fff;">{mark}</div>\n'
+        f'        <div class="logo-badge product-mark" style="background: linear-gradient(135deg, {theme_color}, {dark_gradient}); color: var(--on-accent);">{mark}</div>\n'
         f'        <span class="eyebrow" style="color: {theme_color};">{eyebrow}</span>\n'
         f'      </div>\n'
         f'      <h1>{headline}</h1>\n'
