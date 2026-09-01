@@ -74,7 +74,7 @@ def check(page_url: str, browser) -> dict:
         if msg.type == "error":
             try:
                 errors.append(" ".join(str(a.json_value()) for a in msg.args)[:300])
-            except Exception:
+            except Exception:  # noqa: BLE001 - reading a console arg must never abort the check
                 errors.append(msg.text[:300])
 
     pg.on("console", on_console)
