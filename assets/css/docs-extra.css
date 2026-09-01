@@ -1,0 +1,289 @@
+/*
+ * PyDevices brand design tokens & UI components for Material for MkDocs.
+ *
+ * MASTER COPY. This file is the source of truth for the documentation
+ * theme; scripts/generate_sites.py copies it verbatim into every repo that
+ * publishes a docs site (pygraphics, pdwidgets, palettes) as
+ * docs/stylesheets/extra.css. Edit it here, run the generator, and commit
+ * the synced copies -- a fix made in a repo's copy is silently reverted on
+ * the next run.
+ *
+ * Its palette deliberately mirrors the website chrome's, assets/css/site.css
+ * (deployed as PyDevices.github.io/assets/chrome/site.css). The two files
+ * use different token *names* because Material for MkDocs dictates its own
+ * (--md-*); the underlying colour values are meant to match. Change one,
+ * change the other.
+ *
+ * EVERY color in this file is defined in one of the three token blocks
+ * below. The component rules further down reference tokens only — never a
+ * literal — so a palette change is a single edit to this token area.
+ *
+ * Channel tokens follow the website convention: `--<name>-rgb: R G B;`
+ * (space-separated channels), consumed as `rgb(var(--name-rgb))` for the
+ * solid color and `rgb(var(--name-rgb) / 0.12)` for an alpha variant. A
+ * color gets an `-rgb` token only when something actually composes alpha
+ * over it; opaque-only colors are plain hex.
+ */
+
+:root > * {
+  /* Brand channels — the source of every orange in this file. */
+  --doc-brand-rgb: 245 78 0;
+  --doc-primary-bg-rgb: 255 247 241;
+  --doc-accent-bg-rgb: 26 13 5;
+
+  --md-primary-fg-color: rgb(var(--doc-brand-rgb));
+  --md-primary-fg-color--light: #ff7a3d;
+  --md-primary-fg-color--dark: #c33f00;
+  --md-primary-bg-color: rgb(var(--doc-primary-bg-rgb));
+  --md-primary-bg-color--light: rgb(var(--doc-primary-bg-rgb) / 0.7);
+
+  --md-accent-fg-color: #ff7a3d;
+  --md-accent-fg-color--transparent: rgb(var(--doc-brand-rgb) / 0.1);
+  --md-accent-bg-color: rgb(var(--doc-accent-bg-rgb));
+  --md-accent-bg-color--light: rgb(var(--doc-accent-bg-rgb) / 0.7);
+
+  /* Semantic status colors. Scheme-independent by design: the badges read
+     the same in light and dark. */
+  --doc-success-rgb: 46 125 50;
+  --doc-success: rgb(var(--doc-success-rgb));
+  --doc-error: #d32f2f;
+
+  /* Neutral black used only at low alpha, for drop shadows and the hairline
+     outline on a color swatch. */
+  --doc-shade-rgb: 0 0 0;
+
+  /* Label color on a filled brand-colored button. */
+  --doc-on-primary: #fff;
+
+  /* Live WebAssembly demo canvas. These describe the emulated device screen
+     rather than the site chrome, so they stay fixed across schemes and need
+     not follow a brand palette change. */
+  --demo-canvas-bg: #000000;
+  --demo-canvas-frame: #241e17;
+  --demo-canvas-border: #333333;
+}
+
+[data-md-color-scheme="default"] {
+  --md-default-bg-color: #fbf9f5;
+  --md-default-bg-color--light: #f3eee6;
+  --md-default-bg-color--lighter: #f6f1e9;
+  --md-default-bg-color--lightest: #ffffff;
+  --md-default-fg-color: #201c16;
+  --md-default-fg-color--light: #5b5347;
+  --md-default-fg-color--lighter: #8a8172;
+  --md-default-fg-color--lightest: #c9bfae;
+  --md-typeset-a-color: #c33f00;
+  --md-code-bg-color: #f6f1e9;
+  --md-code-fg-color: #201c16;
+  --md-footer-bg-color: #f3eee6;
+  --md-footer-bg-color--dark: #201c16;
+  --md-footer-fg-color: #201c16;
+  --md-footer-fg-color--light: #5b5347;
+  --md-footer-fg-color--lighter: #8a8172;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-hue: 32;
+  --md-default-bg-color: #100e0b;
+  --md-default-bg-color--light: #17130f;
+  --md-default-bg-color--lighter: #1c1712;
+  --md-default-bg-color--lightest: #241e17;
+  --md-default-fg-color: #f3ecdf;
+  --md-default-fg-color--light: #c9bfae;
+  --md-default-fg-color--lighter: #8f8474;
+  --md-default-fg-color--lightest: #5b5347;
+  --md-typeset-a-color: #ff8a52;
+  --md-code-bg-color: #1c1712;
+  --md-code-fg-color: #f3ecdf;
+  --md-footer-bg-color: #17130f;
+  --md-footer-bg-color--dark: #100e0b;
+  --md-footer-fg-color: #f3ecdf;
+  --md-footer-fg-color--light: #c9bfae;
+  --md-footer-fg-color--lighter: #8f8474;
+}
+
+/* Hero & Feature Grid Cards */
+.hero-banner {
+  background: linear-gradient(135deg, rgb(var(--doc-brand-rgb) / 0.08) 0%, rgb(var(--doc-brand-rgb) / 0.02) 100%);
+  border: 1px solid rgb(var(--doc-brand-rgb) / 0.2);
+  border-radius: 12px;
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.hero-banner h1 {
+  margin-top: 0;
+  color: var(--md-primary-fg-color);
+}
+
+.grid.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.grid.cards > div, .grid.cards > a {
+  display: flex;
+  flex-direction: column;
+  background: var(--md-default-bg-color--light);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 8px;
+  padding: 1.25rem;
+  text-decoration: none;
+  color: var(--md-default-fg-color);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.grid.cards > div:hover, .grid.cards > a:hover {
+  transform: translateY(-2px);
+  border-color: var(--md-primary-fg-color);
+  box-shadow: 0 4px 12px rgb(var(--doc-brand-rgb) / 0.12);
+}
+
+/* Badge and Swatch utilities */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  background: var(--md-default-bg-color--lighter);
+  color: var(--md-default-fg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.badge-orange {
+  background: rgb(var(--doc-brand-rgb) / 0.12);
+  color: var(--md-primary-fg-color);
+  border-color: rgb(var(--doc-brand-rgb) / 0.3);
+}
+
+.badge-green {
+  background: rgb(var(--doc-success-rgb) / 0.12);
+  color: var(--doc-success);
+  border-color: rgb(var(--doc-success-rgb) / 0.3);
+}
+
+/* Live direct MicroPython WebAssembly demos */
+.pydevices-live-demo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  background: var(--md-code-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgb(var(--doc-shade-rgb) / 0.05);
+}
+
+.demo-editor-pane {
+  flex: 1 1 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 280px;
+}
+
+.code-editor {
+  font-family: var(--md-code-font-family, monospace);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-radius: 6px;
+  padding: 0.75rem;
+  height: 230px;
+  resize: vertical;
+  tab-size: 4;
+}
+
+.code-editor:focus {
+  outline: none;
+  border-color: var(--md-primary-fg-color);
+  box-shadow: 0 0 0 2px rgb(var(--doc-brand-rgb) / 0.2);
+}
+
+.demo-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.run-btn {
+  background: var(--md-primary-fg-color);
+  color: var(--doc-on-primary);
+  border: none;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.run-btn:hover:not(:disabled) {
+  background: var(--md-primary-fg-color--dark);
+}
+
+.run-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.reset-btn {
+  background: var(--md-default-bg-color--lighter);
+  color: var(--md-default-fg-color);
+  border: 1px solid var(--md-default-fg-color--lighter);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reset-btn:hover {
+  background: var(--md-default-bg-color--light);
+}
+
+.demo-status {
+  font-size: 0.78rem;
+  color: var(--md-default-fg-color--lighter);
+  margin-left: auto;
+  font-weight: 500;
+}
+
+.demo-output {
+  font-family: var(--md-code-font-family, monospace);
+  font-size: 0.78rem;
+  color: var(--doc-error);
+  margin: 0;
+  max-height: 80px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+.demo-canvas-pane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--demo-canvas-bg);
+  border: 1px solid var(--demo-canvas-frame);
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+.demo-canvas-pane canvas {
+  image-rendering: pixelated;
+  border: 1px solid var(--demo-canvas-border);
+  outline: none;
+  background: var(--demo-canvas-bg);
+}
+
+.demo-canvas-pane canvas:focus {
+  border-color: var(--md-primary-fg-color);
+}

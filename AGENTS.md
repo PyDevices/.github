@@ -149,14 +149,22 @@ ln -s ../lvgl-bindings/lvgl lvgl-python/lvgl
 Generates the 16 repo/org landing pages under `../PyDevices.github.io/`
 (plus `../mip/.site/` and `../pydevices-examples/.site/`) from
 `data/repos_db.json` and `assets/`. Run it after editing `assets/apps/`,
-`assets/css/site.css`, `assets/js/*.js`, or `repos_db.json`:
+`assets/css/site.css`, `assets/css/docs-extra.css`, `assets/js/*.js`, or
+`repos_db.json`:
 
 ```bash
 python3 scripts/generate_sites.py
 ```
 
 **`assets/` is the only source of truth; deployed copies are pure sync
-targets.** `_copy_chrome_into()`/`sync_assets()` copy `assets/js/*.js`,
+targets.** `sync_docs_theme()` extends that rule past the portal:
+`assets/css/docs-extra.css` is the master for the Material for MkDocs
+theme and is copied verbatim into `pygraphics`, `pdwidgets`, and
+`palettes` as `docs/stylesheets/extra.css`. Read the Docs builds those
+repos independently, so after a palette change the synced copies must be
+committed **in their own repositories** for the published docs to follow.
+
+`_copy_chrome_into()`/`sync_assets()` copy `assets/js/*.js`,
 `assets/css/site.css`, and `assets/apps/*.py` verbatim into
 `PyDevices.github.io/assets/chrome/` and `PyDevices.github.io/assets/apps/`
 every run. If you fix something by editing the *deployed* copy directly

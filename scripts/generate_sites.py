@@ -446,6 +446,31 @@ def _copy_chrome_into(site_root):
             shutil.copy2(src_img, os.path.join(img_dir, img_name))
 
 
+DOCS_THEME_REPOS = ('pygraphics', 'pdwidgets', 'palettes')
+
+
+def sync_docs_theme():
+    """Copy the shared Material for MkDocs stylesheet into the repos that publish docs sites.
+
+    assets/css/docs-extra.css is the master; each repo's
+    docs/stylesheets/extra.css is a pure sync target, exactly like the
+    chrome under PyDevices.github.io/assets/. Read the Docs builds those
+    repos independently, so the synced copies must be committed in their
+    own repositories for a palette change to reach the published docs.
+    """
+    src = os.path.join(ASSETS_DIR, 'css', 'docs-extra.css')
+    if not os.path.exists(src):
+        print("[SKIP] docs theme: assets/css/docs-extra.css is missing")
+        return
+    for repo in DOCS_THEME_REPOS:
+        dest_dir = os.path.join(BASE_DIR, repo, 'docs', 'stylesheets')
+        if not os.path.isdir(dest_dir):
+            print(f"[SKIP] {repo}: no docs/stylesheets (checkout missing)")
+            continue
+        shutil.copy2(src, os.path.join(dest_dir, 'extra.css'))
+        print(f"[SYNC] {repo}/docs/stylesheets/extra.css")
+
+
 def sync_assets(db):
     """Copy the shared chrome and apps to the portal repository root (PyDevices.github.io)."""
     portal_root = os.path.join(BASE_DIR, PORTAL_REPO)
@@ -509,6 +534,7 @@ def main():
     updated_sites = 0
 
     sync_assets(db)
+    sync_docs_theme()
 
     for repo_name, data in repos(db).items():
         site_html_path = get_site_html_path(repo_name, data)

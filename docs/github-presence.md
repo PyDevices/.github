@@ -77,7 +77,9 @@ Every product and module repo below ships a GitHub Pages site sharing the same
 chrome (dark-default theme, light toggle in the header, PyDevices brand linking
 to the org root) from
 [PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io)'s
-`assets/css/site.css` and `assets/js/site-chrome.js`. Pages mount empty
+`assets/chrome/site.css` and `assets/chrome/site-chrome.js` — themselves
+sync targets of this repo's `assets/css/site.css` and `assets/js/site-chrome.js`,
+which are the master copies. Pages mount empty
 `#pydevices-site-header` / `#pydevices-site-footer` elements; the script injects
 identical markup (nav: GitHub, Core Stack, DisplayIF, Workbench, Gallery) and
 `theme-toggle.js` binds `#theme-toggle`. The shared org site is the exception:
