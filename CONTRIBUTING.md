@@ -43,19 +43,16 @@ instead of opening an issue.
 3. Keep PRs focused — one change per PR is easier to review and revert.
 4. Describe *why* the change is needed, not just what changed.
 
-## Regenerating LVGL bindings
+## Generated files and sync targets
 
-`lvgl-bindings` is the **single writer** of the generated LVGL bindings.
-`lvgl-python`, `lvgl-micropython`, and `lvgl-circuitpython` are sync
-**targets**: each has a `scripts/sync_from_lvgl_bindings.sh` that overwrites
-`generated/*.c`, `generated/lvgl.pyi`, `lv_conf.h`, the driver shims, and the
-`lvgl` submodule pointer with whatever `lvgl-bindings` last produced. A hand
-edit to any of those files in a consumer repo is not preserved — the next
-sync overwrites it. If your change touches `lvgl-bindings/binding/`,
-`lv_conf.h`, or the `lvgl` submodule, make it in `lvgl-bindings` and
-regenerate there — see
-[lvgl-bindings' README](https://github.com/PyDevices/lvgl-bindings#generate-bindings)
-for the exact commands. Don't hand-edit generated files anywhere else.
+Some repositories are the **single writer** of files that other
+repositories carry as **sync targets**: a generator produces them, and a
+sync script in each consumer overwrites its copies with whatever the
+generator last produced. A hand edit to a synced file in a consumer is not
+preserved — the next sync overwrites it. Each repository's `README.md` /
+`AGENTS.md` says which of its files are generated, where they come from,
+and how to regenerate them. Make the change in the generator and
+regenerate; don't hand-edit generated files anywhere else.
 
 ## Doc style: emoji
 
