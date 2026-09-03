@@ -24,7 +24,8 @@ Standard hardware driver engine and companion reference code.
 
 - [`pydevices`](https://github.com/PyDevices/pydevices) — Unified pure-Python hardware abstraction layer and core device contract for MicroPython, CircuitPython, CPython, direct WebAssembly, Pyodide, and Android.
 - [`displayif`](https://github.com/PyDevices/displayif) — High-performance C hardware bus engines (SPI, I2C, Intel 8080, RGB/DPI, MIPI DSI) and native usermod display drivers for MicroPython and CircuitPython.
-- [`audioif`](https://github.com/PyDevices/audioif) — CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: 53 classic instruments (audioinstruments), 43 effects (audioeffects), dynamics, routing, convolution, and offline rendering. Ships as pydevices-audioif with pydevices-audioinstruments and pydevices-audioeffects.
+- [`audioif`](https://github.com/PyDevices/audioif) — CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. Ships as pydevices-audioif; the instrument and effect libraries built on it ship from audiocomponents.
+- [`audiocomponents`](https://github.com/PyDevices/audiocomponents) — The instrument and effect libraries for audioif: audioinstruments (53 modelled classics, from the TR-808 to the DX7) and audioeffects (46 effect classes and racks), pure Python on MicroPython and CPython. Ships as pydevices-audioinstruments and pydevices-audioeffects, each a standalone distribution and a MIP package.
 - [`pydevices-examples`](https://github.com/PyDevices/pydevices-examples) — Comprehensive example code, direct MicroPython WebAssembly demos, board configurations, and multi-interpreter showcase benchmarks.
 
 ### Tier 2: Python Framebuffers & GUI Toolkits

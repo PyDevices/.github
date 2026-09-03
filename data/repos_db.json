@@ -122,7 +122,7 @@
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audioif",
     "headline": "audioif \u2014 CircuitPython-compatible audio for MicroPython and CPython.",
-    "description": "CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: 53 classic instruments (audioinstruments), 43 effects (audioeffects), dynamics, routing, convolution, and offline rendering. Ships as pydevices-audioif with pydevices-audioinstruments and pydevices-audioeffects.",
+    "description": "CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. Ships as pydevices-audioif; the instrument and effect libraries built on it ship from audiocomponents.",
     "hero_canvas": {
       "app": "audio_scope",
       "width": 240,
@@ -157,8 +157,61 @@
         "tier_color": true
       },
       {
+        "label": "audiocomponents",
+        "href": "https://pydevices.github.io/audiocomponents/",
+        "tier_color": true
+      },
+      {
         "label": "displayif",
         "href": "https://pydevices.github.io/displayif/",
+        "tier_color": true
+      }
+    ]
+  },
+  "audiocomponents": {
+    "tier": 1,
+    "page": "portal-subdir",
+    "tier_name": "Core Platform & Board Contract",
+    "theme_color": "var(--tier-1-amber)",
+    "eyebrow": "audiocomponents",
+    "headline": "audiocomponents \u2014 53 classic instruments and 46 effects, in pure Python, on audioif.",
+    "description": "The instrument and effect libraries for audioif: audioinstruments (53 modelled classics, from the TR-808 to the DX7) and audioeffects (46 effect classes and racks), pure Python on MicroPython and CPython. Ships as pydevices-audioinstruments and pydevices-audioeffects, each a standalone distribution and a MIP package.",
+    "hero_canvas": {
+      "app": "audio_scope",
+      "width": 240,
+      "height": 240,
+      "shape": "square",
+      "deps": [
+        "pydevices",
+        "pydevices-pygraphics",
+        "pydevices-palettes"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/audio_scope.py"
+    },
+    "buttons": [
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/audiocomponents",
+        "primary": true
+      },
+      {
+        "label": "Component API",
+        "href": "https://github.com/PyDevices/audiocomponents/blob/main/docs/audio-component-api.md",
+        "tier_color": true
+      },
+      {
+        "label": "TestPyPI: instruments",
+        "href": "https://test.pypi.org/project/pydevices-audioinstruments/",
+        "tier_color": true
+      },
+      {
+        "label": "TestPyPI: effects",
+        "href": "https://test.pypi.org/project/pydevices-audioeffects/",
+        "tier_color": true
+      },
+      {
+        "label": "audioif",
+        "href": "https://pydevices.github.io/audioif/",
         "tier_color": true
       }
     ]
