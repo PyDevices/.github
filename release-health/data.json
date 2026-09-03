@@ -26,14 +26,14 @@
  "pydevices-audioif": {
   "assets": "success",
   "distribution": "pydevices-audioif",
-  "mip": "success",
+  "mip": "skipped",
   "prerelease": false,
   "pypi": "skipped",
   "repo": "audioif",
-  "run_url": "https://github.com/PyDevices/audioif/actions/runs/33394213045",
+  "run_url": "https://github.com/PyDevices/audioif/actions/runs/33805941801",
   "testpypi": "success",
-  "updated": "2026-08-31 13:06 UTC",
-  "version": "0.1.1"
+  "updated": "2026-09-03 21:10 UTC",
+  "version": "0.2.0"
  },
  "pydevices-audioinstruments": {
   "assets": "success",
