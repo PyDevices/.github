@@ -38,14 +38,14 @@
  "pydevices-audioinstruments": {
   "assets": "success",
   "distribution": "pydevices-audioinstruments",
-  "mip": "skipped",
+  "mip": "success",
   "prerelease": false,
   "pypi": "skipped",
-  "repo": "audioif",
-  "run_url": "https://github.com/PyDevices/audioif/actions/runs/33394213045",
+  "repo": "audiocomponents",
+  "run_url": "https://github.com/PyDevices/audiocomponents/actions/runs/33814443026",
   "testpypi": "success",
-  "updated": "2026-08-31 12:57 UTC",
-  "version": "0.1.1"
+  "updated": "2026-09-03 22:46 UTC",
+  "version": "0.2.0"
  },
  "pydevices-lvgl": {
   "assets": "success",
