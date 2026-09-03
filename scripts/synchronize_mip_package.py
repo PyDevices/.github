@@ -81,8 +81,10 @@ PROFILE_REPOSITORIES = {
     "pdwidgets": "PyDevices/pdwidgets",
     "pygraphics": "PyDevices/pygraphics",
     "pydevices": "PyDevices/pydevices",
-    "audioinstruments": "PyDevices/audioif",
-    "audioeffects": "PyDevices/audioif",
+    # Moved from PyDevices/audioif in the audioif/audiocomponents split
+    # (audiocomponents#2, 2026-09-03); audioif publishes the core only now.
+    "audioinstruments": "PyDevices/audiocomponents",
+    "audioeffects": "PyDevices/audiocomponents",
 }
 
 # No internal dependency table: lib/ ships as a single MIP package, so the graph
