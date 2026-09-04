@@ -41,15 +41,16 @@
     "headline": "pydevices \u2014 Hardware Abstraction Layer & Core Contract.",
     "description": "Unified pure-Python hardware abstraction layer and core device contract for MicroPython, CircuitPython, CPython, direct WebAssembly, Pyodide, and Android.",
     "hero_canvas": {
-      "app": "signal_gen",
-      "width": 480,
-      "height": 480,
+      "app": "audio_scope",
+      "width": 240,
+      "height": 240,
       "shape": "square",
       "deps": [
         "pydevices",
-        "pydevices-lvgl"
+        "pydevices-pygraphics",
+        "pydevices-palettes"
       ],
-      "app_url": "https://PyDevices.github.io/assets/apps/signal_gen.py"
+      "app_url": "https://PyDevices.github.io/assets/apps/audio_scope.py"
     },
     "buttons": [
       {
@@ -124,16 +125,15 @@
     "headline": "audioif \u2014 CircuitPython-compatible audio for MicroPython and CPython.",
     "description": "CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. Ships as pydevices-audioif; the instrument and effect libraries built on it ship from audiocomponents.",
     "hero_canvas": {
-      "app": "audio_scope",
-      "width": 240,
-      "height": 240,
+      "app": "signal_gen",
+      "width": 480,
+      "height": 480,
       "shape": "square",
       "deps": [
         "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
+        "pydevices-lvgl"
       ],
-      "app_url": "https://PyDevices.github.io/assets/apps/audio_scope.py"
+      "app_url": "https://PyDevices.github.io/assets/apps/signal_gen.py"
     },
     "buttons": [
       {
