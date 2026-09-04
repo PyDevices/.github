@@ -9,8 +9,8 @@ the answer from scratch.
 
 | I want to... | Go here |
 |---|---|
-| Ask a question / propose an idea / show something I built | [pydevices-examples Discussions](https://github.com/PyDevices/pydevices-examples/discussions) |
-| Find or share a one-off example that's too narrow for the official examples | [pydevices-examples Discussions → Recipes](https://github.com/PyDevices/pydevices-examples/discussions/categories/recipes) |
+| Ask a question / propose an idea / show something I built / reach the maintainer | [pydevices Discussions](https://github.com/PyDevices/pydevices/discussions) — the organization's one Discussions board |
+| Find or share a one-off example that's too narrow for the official examples | [pydevices Discussions](https://github.com/PyDevices/pydevices/discussions) (a *Recipes* category there, once created) |
 | Report a bug or request a feature | Issues on the **specific repo** it affects (see [repo map](#repos--pages-sites)); use the Bug report / Feature request templates |
 | Find contribution guidelines shared across repos | [PyDevices/.github CONTRIBUTING.md](https://github.com/PyDevices/.github/blob/main/CONTRIBUTING.md) |
 | Read the org's public-facing "about us" | [PyDevices/.github profile README](https://github.com/PyDevices/.github/blob/main/profile/README.md) (rendered on [github.com/PyDevices](https://github.com/PyDevices)) |
@@ -24,9 +24,12 @@ the answer from scratch.
 
 ## Getting help: Discussions vs. Issues
 
-- **Discussions** are enabled only on **pydevices-examples** and **lvgl-bindings** (the
-  two repos most likely to get open-ended questions). Everything else routes
-  through pydevices-examples Discussions — see the org's pinned "get help" pointer.
+- **Discussions** are enabled on **one** repository only: **pydevices**
+  ([github.com/PyDevices/pydevices/discussions](https://github.com/PyDevices/pydevices/discussions)).
+  It is the organization's contact point — questions, ideas, show-and-tell, and
+  reaching the maintainer. Every other repository has Discussions turned off
+  (2026-09-03) so there is exactly one place to look; SUPPORT.md, CONTRIBUTING.md
+  and the design docs all point there.
 - **Issues** are enabled on every owned repo (bug reports / feature requests).
   Default issue *templates* (`bug.yml`, `feature.yml`) live in the org's
   [`.github`](https://github.com/PyDevices/.github/tree/main/.github/ISSUE_TEMPLATE)
@@ -34,7 +37,7 @@ the answer from scratch.
 - If you're not sure which repo an issue belongs to, open it on
   [pydevices-examples](https://github.com/PyDevices/pydevices-examples/issues) — per
   CONTRIBUTING.md, that's the routing point.
-- **Recipes** ([pydevices-examples Discussions → Recipes](https://github.com/PyDevices/pydevices-examples/discussions/categories/recipes),
+- **Recipes** ([pydevices Discussions](https://github.com/PyDevices/pydevices/discussions), *Recipes* category once created,
   open-ended format, not answerable) is for one-off examples/how-tos that
   answer a specific question well but are too narrow to promote into
   `src/examples/`. If one gets enough traction, promote it into a real
