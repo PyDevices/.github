@@ -403,10 +403,12 @@ MIP_PACKAGES_END = '<!-- PYDEVICES-MIP-PACKAGES: END -->'
 def build_mip_packages_html(packages_path):
     """The "Packages in this index" section of the mip landing page.
 
-    Reads mip/packages.json, which mip's scripts/update_package_list.py
-    regenerates from the index itself on every deploy (never from PyPI or
-    TestPyPI). Returns None when the sibling checkout has no packages.json so
-    the caller can leave the marker block alone rather than blank it.
+    Reads mip/packages.json, which mip's refresh-package-list workflow
+    regenerates (scripts/update_package_list.py) from the index itself after
+    every deploy, never from PyPI or TestPyPI. Returns None when the sibling
+    checkout has no packages.json so the caller can leave the marker block
+    alone rather than blank it. The page itself moves only when this
+    generator is rerun and mip/.site is committed.
     """
     if not os.path.exists(packages_path):
         return None
