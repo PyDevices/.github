@@ -263,6 +263,48 @@
         }
       ]
     },
+    "cameraif": {
+      "tier": 1,
+      "page": "portal-subdir",
+      "tier_name": "Core Platform & Board Contract",
+      "theme_color": "var(--tier-1-amber)",
+      "eyebrow": "cameraif",
+      "headline": "cameraif \u2014 a MIPI-CSI camera as a MicroPython object.",
+      "description": "Point the board at something and read the frame. The sensor is found by probing rather than named in code, so a different camera is a build-time option away, not a rewrite. Hardware JPEG, zero-copy frames and hardware scaling straight into a display's scanout buffer, with every rate in its README measured on the board it names.",
+      "hero_canvas": {
+        "app": "encoder",
+        "width": 480,
+        "height": 480,
+        "shape": "square",
+        "deps": [
+          "pydevices",
+          "pydevices-lvgl"
+        ],
+        "app_url": "https://PyDevices.github.io/assets/apps/encoder.py"
+      },
+      "buttons": [
+        {
+          "label": "GitHub Repo",
+          "href": "https://github.com/PyDevices/cameraif",
+          "primary": true
+        },
+        {
+          "label": "Examples",
+          "href": "https://github.com/PyDevices/cameraif/tree/main/examples",
+          "tier_color": true
+        },
+        {
+          "label": "displayif",
+          "href": "https://pydevices.github.io/displayif/",
+          "tier_color": true
+        },
+        {
+          "label": "usbif",
+          "href": "https://pydevices.github.io/usbif/",
+          "tier_color": true
+        }
+      ]
+    },
   "pygraphics": {
     "tier": 2,
     "page": "portal-subdir",
