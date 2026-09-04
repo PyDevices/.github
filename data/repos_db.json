@@ -216,6 +216,53 @@
       }
     ]
   },
+    "usbif": {
+      "tier": 1,
+      "page": "portal-subdir",
+      "tier_name": "Core Platform & Board Contract",
+      "theme_color": "var(--tier-1-amber)",
+      "eyebrow": "usbif",
+      "headline": "usbif \u2014 native USB for MicroPython: device, host, and both at once.",
+      "description": "A board a computer sees as a sound card, a MIDI instrument, a keyboard, a drive or a webcam \u2014 and, on the same board, a USB host that a keyboard, thumb drive, MIDI controller or camera plugs into. The third PyDevices *if module after displayif and audioif: a native C module with a thin, stable Python surface that runs unchanged on a workstation.",
+      "hero_canvas": {
+        "app": "encoder",
+        "width": 480,
+        "height": 480,
+        "shape": "square",
+        "deps": [
+          "pydevices",
+          "pydevices-lvgl"
+        ],
+        "app_url": "https://PyDevices.github.io/assets/apps/encoder.py"
+      },
+      "buttons": [
+        {
+          "label": "GitHub Repo",
+          "href": "https://github.com/PyDevices/usbif",
+          "primary": true
+        },
+        {
+          "label": "Portable API",
+          "href": "https://github.com/PyDevices/usbif/blob/main/lib/usbif/README.md",
+          "tier_color": true
+        },
+        {
+          "label": "Examples",
+          "href": "https://github.com/PyDevices/usbif/tree/main/examples",
+          "tier_color": true
+        },
+        {
+          "label": "audioif",
+          "href": "https://pydevices.github.io/audioif/",
+          "tier_color": true
+        },
+        {
+          "label": "displayif",
+          "href": "https://pydevices.github.io/displayif/",
+          "tier_color": true
+        }
+      ]
+    },
   "pygraphics": {
     "tier": 2,
     "page": "portal-subdir",
