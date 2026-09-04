@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import html
 import json
 import os
 import re
@@ -395,6 +396,69 @@ def build_portal_grids_html(db):
     )
 
 
+MIP_PACKAGES_START = '<!-- PYDEVICES-MIP-PACKAGES: START -->'
+MIP_PACKAGES_END = '<!-- PYDEVICES-MIP-PACKAGES: END -->'
+
+
+def build_mip_packages_html(packages_path):
+    """The "Packages in this index" section of the mip landing page.
+
+    Reads mip/packages.json, which mip's scripts/update_package_list.py
+    regenerates from the index itself on every deploy (never from PyPI or
+    TestPyPI). Returns None when the sibling checkout has no packages.json so
+    the caller can leave the marker block alone rather than blank it.
+    """
+    if not os.path.exists(packages_path):
+        return None
+    with open(packages_path, 'r', encoding='utf-8') as f:
+        doc = json.load(f)
+    packages = doc.get('packages', [])
+    esc = html.escape
+
+    rows = []
+    for p in packages:
+        source = f'{p["repository"]} @ {p["ref"]}'
+        rows.append(
+            f'          <tr>\n'
+            f'            <td><code>{esc(p["name"])}</code></td>\n'
+            f'            <td>{esc(p["version"])}</td>\n'
+            f'            <td>{esc(p["description"])}</td>\n'
+            f'            <td><a href="{esc(p["release_url"])}">{esc(source)}</a></td>\n'
+            f'          </tr>'
+        )
+    installs = '\n'.join(esc(p['install']) for p in packages)
+    hint = (
+        f'{len(packages)} packages, each built from the source tag pinned in '
+        f'pydevices-lock.json.'
+    )
+    return (
+        f'    {MIP_PACKAGES_START}\n'
+        f'    <div class="section-head" style="margin-top: 40px;">\n'
+        f'      <h2>Packages in this index</h2>\n'
+        f'      <span class="hint">{esc(hint)}</span>\n'
+        f'    </div>\n'
+        f'    <div class="spec-block">\n'
+        f'      <p>These are the PyDevices packages this index publishes; the\n'
+        f'      micropython-lib packages the index also carries are upstream\'s.</p>\n'
+        f'      <table class="matrix-table">\n'
+        f'        <thead>\n'
+        f'          <tr><th>Package</th><th>Version</th><th>Description</th><th>Source</th></tr>\n'
+        f'        </thead>\n'
+        f'        <tbody>\n'
+        f'{chr(10).join(rows)}\n'
+        f'        </tbody>\n'
+        f'      </table>\n'
+        f'    </div>\n'
+        f'    <div class="spec-block" style="margin-top: 24px;">\n'
+        f'      <h3>Install</h3>\n'
+        f'      <pre><code>import mip\n'
+        f'\n'
+        f'{installs}</code></pre>\n'
+        f'    </div>\n'
+        f'    {MIP_PACKAGES_END}'
+    )
+
+
 PORTAL_REPO = 'PyDevices.github.io'
 
 # Written only when a portal subdirectory has no page yet; every run then
@@ -586,6 +650,19 @@ def main():
 
         if repo_name == 'PyDevices.github.io':
             content = update_html_section(content, '<!-- PYDEVICES-PORTAL-GRIDS: START -->', '<!-- PYDEVICES-PORTAL-GRIDS: END -->', build_portal_grids_html(db))
+
+        # mip's below-the-fold package list, from the sibling checkout's
+        # packages.json. Absent file or absent markers: log and leave the
+        # block as it is -- never blank a list that was there.
+        if repo_name == 'mip':
+            packages_path = os.path.join(BASE_DIR, 'mip', 'packages.json')
+            packages_html = build_mip_packages_html(packages_path)
+            if packages_html is None:
+                print(f"[SKIP] mip: no {os.path.relpath(packages_path, BASE_DIR)} -- package list not written")
+            elif MIP_PACKAGES_START not in content:
+                print("[WARN] mip: no PYDEVICES-MIP-PACKAGES marker block -- package list not written")
+            else:
+                content = update_html_section(content, MIP_PACKAGES_START, MIP_PACKAGES_END, packages_html)
 
         # Remove a duplicate hero section left outside the marker block.
         marker = '<!-- PYDEVICES-ABOVE-THE-FOLD: END -->'
