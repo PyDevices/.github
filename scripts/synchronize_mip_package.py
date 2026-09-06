@@ -9,6 +9,8 @@ import shutil
 from dataclasses import dataclass
 from pathlib import Path
 
+from pydevices_package_metadata import PYDEVICES_DESCRIPTIONS
+
 
 @dataclass(frozen=True)
 class Profile:
@@ -172,9 +174,13 @@ PYPI_DISTRIBUTIONS = {"pydevices", "pydevices-desktop"}
 
 
 def render_pydevices_manifest(name: str, version: str, requirements: tuple[str, ...], payloads: tuple[str, ...] = ()) -> str:
+    try:
+        description = PYDEVICES_DESCRIPTIONS[name]
+    except KeyError:
+        raise SystemExit(f"no shared description for {name!r}") from None
     lines = [
         "metadata(",
-        f'    description="PyDevices {name}",',
+        f"    description={description!r},",
         f'    version="{version}",',
         '    author="Brad Barnett",',
         '    license="MIT",',
