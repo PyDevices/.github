@@ -4,9 +4,12 @@
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 from dataclasses import dataclass
 from pathlib import Path
+
+from pydevices_package_metadata import PYDEVICES_DESCRIPTIONS
 
 
 @dataclass(frozen=True)
@@ -76,16 +79,12 @@ PROFILES = {
     ),
 }
 
-PROFILE_REPOSITORIES = {
-    "palettes": "PyDevices/palettes",
-    "pdwidgets": "PyDevices/pdwidgets",
-    "pygraphics": "PyDevices/pygraphics",
-    "pydevices": "PyDevices/pydevices",
-    # Moved from PyDevices/audioif in the audioif/audiocomponents split
-    # (audiocomponents#2, 2026-09-03); audioif publishes the core only now.
-    "audioinstruments": "PyDevices/audiocomponents",
-    "audioeffects": "PyDevices/audiocomponents",
-}
+# The source repository for each profile is pydevices-lock.json in the MIP
+# checkout, not a second map in this script. reusable-synchronize-mip-package.yml
+# already keeps that lockfile on the runner; a hardcoded PROFILE_REPOSITORIES
+# table disagreed with it after the audioif/audiocomponents split and blocked
+# every publication until a new publishing-tools tag (#35).
+LOCKFILE_NAME = "pydevices-lock.json"
 
 # No internal dependency table: lib/ ships as a single MIP package, so the graph
 # between its components is imports rather than package requirements. It was
@@ -96,6 +95,26 @@ PROFILE_REPOSITORIES = {
 # boarddev.py used to be listed here too, before it moved into lib/ and became
 # a package of its own.
 PYDEVICES_DESKTOP_DIR = "board_configs/desktop"
+
+
+def lockfile_repository(mip_root: Path, profile: str) -> str:
+    """Return the GitHub repository the MIP lockfile names for *profile*.
+
+    A new profile is added to the lockfile deliberately, not auto-created.
+    """
+    lockfile = mip_root / LOCKFILE_NAME
+    if not lockfile.is_file():
+        raise SystemExit(f"{lockfile} is missing; add {profile!r} to {LOCKFILE_NAME} before publishing")
+    try:
+        lock = json.loads(lockfile.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise SystemExit(f"{lockfile} is not valid JSON: {exc}") from exc
+    if not isinstance(lock, dict) or profile not in lock:
+        raise SystemExit(f"{profile!r} is not in {lockfile}; add it before publishing")
+    entry = lock[profile]
+    if not isinstance(entry, dict) or not entry.get("repository"):
+        raise SystemExit(f"{profile!r} in {lockfile} has no repository")
+    return str(entry["repository"])
 
 
 def ignore_debris(_directory: str, names: list[str]) -> set[str]:
@@ -155,9 +174,13 @@ PYPI_DISTRIBUTIONS = {"pydevices", "pydevices-desktop"}
 
 
 def render_pydevices_manifest(name: str, version: str, requirements: tuple[str, ...], payloads: tuple[str, ...] = ()) -> str:
+    try:
+        description = PYDEVICES_DESCRIPTIONS[name]
+    except KeyError:
+        raise SystemExit(f"no shared description for {name!r}") from None
     lines = [
         "metadata(",
-        f'    description="PyDevices {name}",',
+        f"    description={description!r},",
         f'    version="{version}",',
         '    author="Brad Barnett",',
         '    license="MIT",',
@@ -223,15 +246,14 @@ def main() -> None:
     parser.add_argument("--version", required=True)
     args = parser.parse_args()
 
-    expected_repository = PROFILE_REPOSITORIES[args.profile]
+    source_repository = args.source_repository.resolve()
+    mip_root = args.mip_repository.resolve()
+    expected_repository = lockfile_repository(mip_root, args.profile)
     if args.source_repository_name != expected_repository:
         raise SystemExit(
             f"profile {args.profile!r} requires {expected_repository}, "
             f"not {args.source_repository_name}"
         )
-
-    source_repository = args.source_repository.resolve()
-    mip_root = args.mip_repository.resolve()
     if args.profile == "pydevices":
         synchronize_pydevices(source_repository, mip_root, args.version)
         return

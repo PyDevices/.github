@@ -9,6 +9,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from pydevices_package_metadata import PYDEVICES_DESCRIPTIONS
+
 DEBRIS = {"__pycache__", "README.md", "build", "dist"}
 # No internal dependency table here: with lib/ shipped as one distribution the
 # graph between its components is internal imports, not package requirements.
@@ -114,7 +116,7 @@ def build(root: Path, output: Path, version: str) -> None:
         meta,
         "pydevices",
         version,
-        "Portable display, audio, event, and timing foundations for PyDevices",
+        PYDEVICES_DESCRIPTIONS["pydevices"],
         [],
     )
     stages.append(meta)
@@ -129,7 +131,7 @@ def build(root: Path, output: Path, version: str) -> None:
         desktop,
         "pydevices-desktop",
         version,
-        "Complete PyDevices desktop stack and board configuration",
+        PYDEVICES_DESCRIPTIONS["pydevices-desktop"],
         [f"pydevices=={version}"],
     )
     stages.append(desktop)
