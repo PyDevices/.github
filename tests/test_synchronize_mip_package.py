@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Tests for scripts/synchronize_mip_package.py."""
 
 from __future__ import annotations
