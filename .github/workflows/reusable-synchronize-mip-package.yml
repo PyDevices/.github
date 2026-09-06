@@ -90,10 +90,15 @@ jobs:
           profile = os.environ["PUBLICATION_PROFILE"]
           if profile not in lock:
               raise SystemExit(f"{profile!r} is not in {path}; add it before publishing")
-          lock[profile] = {
-              "repository": os.environ["SOURCE_REPOSITORY"],
-              "ref": os.environ["SOURCE_REF"],
-          }
+          entry = lock[profile]
+          expected = entry["repository"]
+          got = os.environ["SOURCE_REPOSITORY"]
+          if expected != got:
+              raise SystemExit(
+                  f"profile {profile!r} is locked to {expected}, not {got}; "
+                  f"edit pydevices-lock.json on the PyDevices branch to move the profile"
+              )
+          entry["ref"] = os.environ["SOURCE_REF"]
           path.write_text(json.dumps(lock, indent=2) + "\n")
           print(f"{profile} -> {lock[profile]['ref']}")
           PY

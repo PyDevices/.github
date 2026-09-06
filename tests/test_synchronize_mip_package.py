@@ -4,15 +4,18 @@ from __future__ import annotations
 
 import importlib
 import json
+import os
 import subprocess
 import sys
 import tempfile
+import textwrap
 import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 SCRIPTS = REPO / "scripts"
 SYNC_SCRIPT = SCRIPTS / "synchronize_mip_package.py"
+SYNC_WORKFLOW = REPO / ".github/workflows/reusable-synchronize-mip-package.yml"
 
 
 def _load_module(name: str):
@@ -118,7 +121,10 @@ class LockfileRepositoryTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertTrue((mip / "micropython" / "audioeffects" / "manifest.py").is_file())
 
-    def test_stale_audioif_caller_is_rejected_when_lockfile_names_audiocomponents(self) -> None:
+    def test_script_in_isolation_rejects_source_repository_name_that_disagrees_with_lockfile(self) -> None:
+        # Defence in depth only. The publication workflow never presents this
+        # mismatch: Record this release refuses a repository move before the
+        # sync loop runs synchronize_mip_package.py.
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             source = root / "source"
@@ -188,6 +194,82 @@ class LockfileRepositoryTests(unittest.TestCase):
                 sync.lockfile_repository(mip, "audioinstruments"),
                 "PyDevices/audiocomponents",
             )
+
+
+def record_release_python() -> str:
+    text = SYNC_WORKFLOW.read_text(encoding="utf-8")
+    start = text.index("- name: Record this release in the lockfile")
+    block = text[start:]
+    begin = block.index("python3 - <<'PY'\n") + len("python3 - <<'PY'\n")
+    end = block.index("\n          PY\n", begin)
+    return textwrap.dedent(block[begin:end])
+
+
+def run_record_step(
+    lockfile: Path,
+    *,
+    profile: str,
+    repository: str,
+    ref: str,
+) -> subprocess.CompletedProcess[str]:
+    with tempfile.TemporaryDirectory() as tmp:
+        script = Path(tmp) / "record_release.py"
+        script.write_text(record_release_python(), encoding="utf-8")
+        env = os.environ.copy()
+        env.update(
+            {
+                "LOCKFILE": str(lockfile),
+                "PUBLICATION_PROFILE": profile,
+                "SOURCE_REPOSITORY": repository,
+                "SOURCE_REF": ref,
+            }
+        )
+        return subprocess.run(
+            [sys.executable, str(script)],
+            capture_output=True,
+            text=True,
+            env=env,
+            check=False,
+        )
+
+
+class RecordLockfileReleaseTests(unittest.TestCase):
+    def test_matching_repository_updates_ref_only(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            mip = Path(tmp)
+            write_lockfile(mip, {"audioinstruments": "PyDevices/audiocomponents"})
+            lockfile = mip / "pydevices-lock.json"
+            before = json.loads(lockfile.read_text(encoding="utf-8"))
+            result = run_record_step(
+                lockfile,
+                profile="audioinstruments",
+                repository="PyDevices/audiocomponents",
+                ref="v0.3.0",
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            after = json.loads(lockfile.read_text(encoding="utf-8"))
+            self.assertEqual(after["audioinstruments"]["repository"], "PyDevices/audiocomponents")
+            self.assertEqual(after["audioinstruments"]["ref"], "v0.3.0")
+            self.assertEqual(before["audioinstruments"]["repository"], after["audioinstruments"]["repository"])
+
+    def test_mismatched_repository_fails_without_writing(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            mip = Path(tmp)
+            write_lockfile(mip, {"audioinstruments": "PyDevices/audiocomponents"})
+            lockfile = mip / "pydevices-lock.json"
+            before = lockfile.read_text(encoding="utf-8")
+            result = run_record_step(
+                lockfile,
+                profile="audioinstruments",
+                repository="PyDevices/audioif",
+                ref="v0.3.0",
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("PyDevices/audiocomponents", result.stderr)
+            self.assertIn("PyDevices/audioif", result.stderr)
+            self.assertIn("pydevices-lock.json", result.stderr)
+            self.assertIn("PyDevices branch", result.stderr)
+            self.assertEqual(lockfile.read_text(encoding="utf-8"), before)
 
 
 class SharedDescriptionTests(unittest.TestCase):
