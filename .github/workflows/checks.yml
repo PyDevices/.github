@@ -1,7 +1,7 @@
 # This repository's own CI: lint the workflows it publishes to the rest of
 # the org, smoke-test that every reusable workflow is valid YAML, prove the
 # site generator's output matches what data/repos_db.json currently says it
-# should be, and lint scripts/.
+# should be, lint scripts/, and run publishing-script unit tests.
 name: Checks
 
 on:
@@ -110,4 +110,16 @@ jobs:
 
       - run: python3 -m pip install --disable-pip-version-check ruff
 
-      - run: ruff check scripts/
+      - run: ruff check scripts/ tests/
+
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Run publishing-script unit tests
+        run: python3 -m unittest discover -s tests -v
