@@ -48,6 +48,8 @@ the parts they'd otherwise duplicate.
   **Edit the database, not the generated markup** — run the generator by hand
   from a full workspace checkout (`python3 dotgithub/scripts/generate_sites.py`)
   after editing it; it validates the database first and is idempotent.
+- **History** — [`docs/history.md`](docs/history.md): how the organization
+  came to be, and a dated chronology of every repository.
 - **Org docs** — [`docs/`](docs/) covers repo layout, doc style and
   docstring conventions, how the ReadTheDocs sites build, GitHub presence
   (Discussions/Issues/Pages/licensing), the platform roadmap, and the public
