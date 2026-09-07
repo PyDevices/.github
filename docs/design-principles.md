@@ -34,7 +34,8 @@ What this demands in practice:
   stranger could watch. A matrix cell nobody has exercised is a claim,
   not a capability.
 
-This standard was first written down in the `btif` vision (2026-08-31)
+This standard was first written down in a Bluetooth-interface vision
+(2026-08-31, a project since retired)
 and applies retroactively to everything the organization ships: when a
 gap in an existing surface is found, it is triaged as a defect.
 
