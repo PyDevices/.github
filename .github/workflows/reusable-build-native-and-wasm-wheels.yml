@@ -61,7 +61,7 @@ jobs:
           fi
 
       - name: Build native wheels
-        uses: pypa/cibuildwheel@v4.2.0
+        uses: pypa/cibuildwheel@v4.2.1
 
       - name: Upload native wheels
         uses: actions/upload-artifact@v7
@@ -99,7 +99,7 @@ jobs:
         uses: android-actions/setup-android@v4
 
       - name: Build Android wheels
-        uses: pypa/cibuildwheel@v4.2.0
+        uses: pypa/cibuildwheel@v4.2.1
         env:
           CIBW_PLATFORM: android
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
@@ -135,7 +135,7 @@ jobs:
       # cp313/pyemscripten_2025_0 and cp314/pyemscripten_2026_0. The retired
       # scripts/build_pyodide_wheel.sh produced only the latter.
       - name: Build WASM wheels
-        uses: pypa/cibuildwheel@v4.2.0
+        uses: pypa/cibuildwheel@v4.2.1
         env:
           CIBW_PLATFORM: pyodide
 
