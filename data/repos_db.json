@@ -12,7 +12,7 @@
       },
       "2": {
         "name": "Python Framebuffers & GUI Toolkits",
-        "hint": "Zero external native dependencies \u2014 runs on any Python 3 host."
+        "hint": "Zero external native dependencies — runs on any Python 3 host."
       },
       "3": {
         "name": "LVGL Native Extensions & Binding Generator",
@@ -38,7 +38,7 @@
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "pydevices",
-    "headline": "pydevices \u2014 Hardware Abstraction Layer & Core Contract.",
+    "headline": "pydevices — Hardware Abstraction Layer & Core Contract.",
     "description": "Unified pure-Python hardware abstraction layer and core device contract for MicroPython, CircuitPython, CPython, direct WebAssembly, Pyodide, and Android.",
     "hero_canvas": {
       "app": "audio_scope",
@@ -81,7 +81,7 @@
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "displayif",
-    "headline": "displayif \u2014 C hardware bus engine & usermod drivers.",
+    "headline": "displayif — C hardware bus engine & usermod drivers.",
     "description": "High-performance C hardware bus engines (SPI, I2C, Intel 8080, RGB/DPI, MIPI DSI) and native usermod display drivers for MicroPython and CircuitPython.",
     "hero_canvas": {
       "app": "bus_scope",
@@ -122,7 +122,7 @@
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audioif",
-    "headline": "audioif \u2014 CircuitPython-compatible audio for MicroPython and CPython.",
+    "headline": "audioif — CircuitPython-compatible audio for MicroPython and CPython.",
     "description": "CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. Ships as pydevices-audioif; the instrument and effect libraries built on it ship from audiocomponents.",
     "hero_canvas": {
       "app": "signal_gen",
@@ -174,7 +174,7 @@
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audiocomponents",
-    "headline": "audiocomponents \u2014 53 classic instruments and 46 effects, in pure Python, on audioif.",
+    "headline": "audiocomponents — 53 classic instruments and 46 effects, in pure Python, on audioif.",
     "description": "The instrument and effect libraries for audioif: audioinstruments (53 modelled classics, from the TR-808 to the DX7) and audioeffects (46 effect classes and racks), pure Python on MicroPython and CPython. Ships as pydevices-audioinstruments and pydevices-audioeffects, each a standalone distribution and a MIP package.",
     "hero_canvas": {
       "app": "audio_scope",
@@ -216,102 +216,102 @@
       }
     ]
   },
-    "usbif": {
-      "tier": 1,
-      "page": "portal-subdir",
-      "tier_name": "Core Platform & Board Contract",
-      "theme_color": "var(--tier-1-amber)",
-      "eyebrow": "usbif",
-      "headline": "usbif \u2014 native USB for MicroPython: device, host, and both at once.",
-      "description": "A board a computer sees as a sound card, a MIDI instrument, a keyboard, a drive or a webcam \u2014 and, on the same board, a USB host that a keyboard, thumb drive, MIDI controller or camera plugs into. The third PyDevices *if module after displayif and audioif: a native C module with a thin, stable Python surface that runs unchanged on a workstation.",
-      "hero_canvas": {
-        "app": "encoder",
-        "width": 480,
-        "height": 480,
-        "shape": "square",
-        "deps": [
-          "pydevices",
-          "pydevices-lvgl"
-        ],
-        "app_url": "https://PyDevices.github.io/assets/apps/encoder.py"
-      },
-      "buttons": [
-        {
-          "label": "GitHub Repo",
-          "href": "https://github.com/PyDevices/usbif",
-          "primary": true
-        },
-        {
-          "label": "Portable API",
-          "href": "https://github.com/PyDevices/usbif/blob/main/lib/usbif/README.md",
-          "tier_color": true
-        },
-        {
-          "label": "Examples",
-          "href": "https://github.com/PyDevices/usbif/tree/main/examples",
-          "tier_color": true
-        },
-        {
-          "label": "audioif",
-          "href": "https://pydevices.github.io/audioif/",
-          "tier_color": true
-        },
-        {
-          "label": "displayif",
-          "href": "https://pydevices.github.io/displayif/",
-          "tier_color": true
-        }
-      ]
+  "usbif": {
+    "tier": 1,
+    "page": "portal-subdir",
+    "tier_name": "Core Platform & Board Contract",
+    "theme_color": "var(--tier-1-amber)",
+    "eyebrow": "usbif",
+    "headline": "usbif — native USB for MicroPython: device, host, and both at once.",
+    "description": "A board a computer sees as a sound card, a MIDI instrument, a keyboard, a drive or a webcam — and, on the same board, a USB host that a keyboard, thumb drive, MIDI controller or camera plugs into. The third PyDevices *if module after displayif and audioif: a native C module with a thin, stable Python surface that runs unchanged on a workstation.",
+    "hero_canvas": {
+      "app": "encoder",
+      "width": 480,
+      "height": 480,
+      "shape": "square",
+      "deps": [
+        "pydevices",
+        "pydevices-lvgl"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/encoder.py"
     },
-    "cameraif": {
-      "tier": 1,
-      "page": "portal-subdir",
-      "tier_name": "Core Platform & Board Contract",
-      "theme_color": "var(--tier-1-amber)",
-      "eyebrow": "cameraif",
-      "headline": "cameraif \u2014 a MIPI-CSI camera as a MicroPython object.",
-      "description": "Point the board at something and read the frame. The sensor is found by probing rather than named in code, so a different camera is a build-time option away, not a rewrite. Hardware JPEG, zero-copy frames and hardware scaling straight into a display's scanout buffer, with every rate in its README measured on the board it names.",
-      "hero_canvas": {
-        "app": "encoder",
-        "width": 480,
-        "height": 480,
-        "shape": "square",
-        "deps": [
-          "pydevices",
-          "pydevices-lvgl"
-        ],
-        "app_url": "https://PyDevices.github.io/assets/apps/encoder.py"
+    "buttons": [
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/usbif",
+        "primary": true
       },
-      "buttons": [
-        {
-          "label": "GitHub Repo",
-          "href": "https://github.com/PyDevices/cameraif",
-          "primary": true
-        },
-        {
-          "label": "Examples",
-          "href": "https://github.com/PyDevices/cameraif/tree/main/examples",
-          "tier_color": true
-        },
-        {
-          "label": "displayif",
-          "href": "https://pydevices.github.io/displayif/",
-          "tier_color": true
-        },
-        {
-          "label": "usbif",
-          "href": "https://pydevices.github.io/usbif/",
-          "tier_color": true
-        }
-      ]
+      {
+        "label": "Portable API",
+        "href": "https://github.com/PyDevices/usbif/blob/main/lib/usbif/README.md",
+        "tier_color": true
+      },
+      {
+        "label": "Examples",
+        "href": "https://github.com/PyDevices/usbif/tree/main/examples",
+        "tier_color": true
+      },
+      {
+        "label": "audioif",
+        "href": "https://pydevices.github.io/audioif/",
+        "tier_color": true
+      },
+      {
+        "label": "displayif",
+        "href": "https://pydevices.github.io/displayif/",
+        "tier_color": true
+      }
+    ]
+  },
+  "cameraif": {
+    "tier": 1,
+    "page": "portal-subdir",
+    "tier_name": "Core Platform & Board Contract",
+    "theme_color": "var(--tier-1-amber)",
+    "eyebrow": "cameraif",
+    "headline": "cameraif — a MIPI-CSI camera as a MicroPython object.",
+    "description": "Point the board at something and read the frame. The sensor is found by probing rather than named in code, so a different camera is a build-time option away, not a rewrite. Hardware JPEG, zero-copy frames and hardware scaling straight into a display's scanout buffer, with every rate in its README measured on the board it names.",
+    "hero_canvas": {
+      "app": "encoder",
+      "width": 480,
+      "height": 480,
+      "shape": "square",
+      "deps": [
+        "pydevices",
+        "pydevices-lvgl"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/encoder.py"
     },
+    "buttons": [
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/cameraif",
+        "primary": true
+      },
+      {
+        "label": "Examples",
+        "href": "https://github.com/PyDevices/cameraif/tree/main/examples",
+        "tier_color": true
+      },
+      {
+        "label": "displayif",
+        "href": "https://pydevices.github.io/displayif/",
+        "tier_color": true
+      },
+      {
+        "label": "usbif",
+        "href": "https://pydevices.github.io/usbif/",
+        "tier_color": true
+      }
+    ]
+  },
   "pygraphics": {
     "tier": 2,
     "page": "portal-subdir",
     "tier_name": "Python Framebuffers & GUI Toolkits",
     "theme_color": "var(--tier-2-emerald)",
     "eyebrow": "pygraphics",
-    "headline": "pygraphics \u2014 2D graphics engine & canvas framebuffer.",
+    "headline": "pygraphics — 2D graphics engine & canvas framebuffer.",
     "description": "Pure-Python 2D graphics library with drawing primitives, anti-aliased font rendering, paletted surface blitting, and area-dirtying pipelines.",
     "hero_canvas": {
       "app": "simon",
@@ -354,7 +354,7 @@
     "tier_name": "Python Framebuffers & GUI Toolkits",
     "theme_color": "var(--tier-2-emerald)",
     "eyebrow": "pdwidgets",
-    "headline": "pdwidgets \u2014 Pure-Python UI widget toolkit.",
+    "headline": "pdwidgets — Pure-Python UI widget toolkit.",
     "description": "Lightweight object-oriented UI widget framework including buttons, sliders, progress bars, labels, and event routing for PyDevices screens.",
     "hero_canvas": {
       "app": "sensor_deck",
@@ -398,7 +398,7 @@
     "tier_name": "Python Framebuffers & GUI Toolkits",
     "theme_color": "var(--tier-2-emerald)",
     "eyebrow": "palettes",
-    "headline": "palettes \u2014 Color math, gradients & swatch palettes.",
+    "headline": "palettes — Color math, gradients & swatch palettes.",
     "description": "Color management library with RGB565 / RGB888 conversion, HSL / HSV color spaces, palette swatches, and smooth gradient generators.",
     "hero_canvas": {
       "app": "palette_orb",
@@ -441,7 +441,7 @@
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-bindings",
-    "headline": "lvgl-bindings \u2014 Automated C header parser & binding generator.",
+    "headline": "lvgl-bindings — Automated C header parser & binding generator.",
     "description": "Automated binding generator parsing LVGL C headers into native CPython extensions, MicroPython usermods, and CircuitPython modules.",
     "hero_canvas": {
       "app": "ast_parser",
@@ -484,7 +484,7 @@
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-micropython",
-    "headline": "lvgl-micropython \u2014 MicroPython C usermod for LVGL v9.",
+    "headline": "lvgl-micropython — MicroPython C usermod for LVGL v9.",
     "description": "Native MicroPython C module integrating LVGL v9 graphics engine with displayif bus drivers across ESP32, RP2040, and i.MX RT targets.",
     "hero_canvas": {
       "app": "mp_console",
@@ -526,7 +526,7 @@
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-python",
-    "headline": "lvgl-python \u2014 CPython & Pyodide WASM extension wheels.",
+    "headline": "lvgl-python — CPython & Pyodide WASM extension wheels.",
     "description": "Pre-built CPython extension wheels and Pyodide WASM packages bringing LVGL v9 to desktop Linux, macOS, Windows, and web browsers.",
     "hero_canvas": {
       "app": "thermostat",
@@ -568,7 +568,7 @@
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-circuitpython",
-    "headline": "lvgl-circuitpython \u2014 CircuitPython native LVGL C module.",
+    "headline": "lvgl-circuitpython — CircuitPython native LVGL C module.",
     "description": "CircuitPython native C module providing LVGL v9 bindings and displayif integration for Adafruit Feather and SAMD51 / RP2040 boards.",
     "hero_canvas": {
       "app": "circuit_dial",
@@ -611,7 +611,7 @@
     "tier_name": "App Hosts & Mobile",
     "theme_color": "var(--tier-4-purple)",
     "eyebrow": "pyscript-template",
-    "headline": "pyscript-template \u2014 Offline PWA starter template.",
+    "headline": "pyscript-template — Offline PWA starter template.",
     "description": "Progressive Web App starter template repository for deploying offline-capable client-side PyDevices applications on GitHub Pages.",
     "hero_canvas": {
       "app": "radar_scope",
@@ -654,7 +654,7 @@
     "tier_name": "App Hosts & Mobile",
     "theme_color": "var(--tier-4-purple)",
     "eyebrow": "android-template",
-    "headline": "android-template \u2014 Android APK Buildozer project.",
+    "headline": "android-template — Android APK Buildozer project.",
     "description": "Pre-configured python-for-android build recipes and Buildozer project template for packaging PyDevices applications into native Android APKs.",
     "hero_canvas": {
       "app": "mobile_pad",
@@ -697,7 +697,7 @@
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "mpftp",
-    "headline": "mpftp \u2014 board tools for the editor, CLI, and agents.",
+    "headline": "mpftp — board tools for the editor, CLI, and agents.",
     "description": "Connect MicroPython and CircuitPython boards from VS Code, Cursor, or the CLI: dual-pane file transfer, in-editor REPL, firmware flash, mip/circup, plus RPC, MCP, and an optional browser PWA.",
     "hero_canvas": {
       "app": "ftp_scope",
@@ -740,7 +740,7 @@
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "mip",
-    "headline": "mip \u2014 PyDevices MIP package index & distribution.",
+    "headline": "mip — PyDevices MIP package index & distribution.",
     "description": "Single source of truth (SoT) for precompiled MicroPython .mpy bytecode packages and pure-Python library distributions across the PyDevices ecosystem.",
     "hero_canvas": {
       "app": "package_matrix",
@@ -783,7 +783,7 @@
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "cmods",
-    "headline": "cmods \u2014 Multi-usermod C compilation workspace.",
+    "headline": "cmods — Multi-usermod C compilation workspace.",
     "description": "Out-of-tree C build workspace for compiling MicroPython and CircuitPython firmware binaries with displayif drivers and LVGL bindings.",
     "hero_canvas": {
       "app": "polyhedron",
@@ -826,7 +826,7 @@
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "pydevices-examples",
-    "headline": "pydevices-examples \u2014 Showcase, demos & WebAssembly gallery.",
+    "headline": "pydevices-examples — Showcase, demos & WebAssembly gallery.",
     "description": "Comprehensive example code, direct MicroPython WebAssembly demos, board configurations, and multi-interpreter showcase benchmarks.",
     "hero_canvas": {
       "app": "benchmark_deck",
@@ -870,9 +870,9 @@
     "site_repo": "pydevices-examples",
     "site_subpath": "gallery",
     "portal_grid": false,
-    "title": "pydevices-examples \u2014 WebAssembly Gallery",
+    "title": "pydevices-examples — WebAssembly Gallery",
     "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "PyDevices / pydevices-examples \u00b7 WebAssembly Gallery",
+    "eyebrow": "PyDevices / pydevices-examples · WebAssembly Gallery",
     "headline": "WebAssembly Gallery",
     "description": "Direct MicroPython WebAssembly demos that run the same PyDevices examples as MCUs and CPython. Explore drawing, input, widgets, and LVGL without flashing a board first.",
     "hero_note": "Click a card to launch the app. The first load may take a few seconds while the interpreter downloads; featured demos stay pinned at the top.",
@@ -885,11 +885,11 @@
     "site_repo": "pydevices-examples",
     "site_subpath": "pyscript",
     "portal_grid": false,
-    "title": "pydevices-examples \u2014 PyScript Gallery",
+    "title": "pydevices-examples — PyScript Gallery",
     "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "PyDevices / pydevices-examples \u00b7 PyScript Gallery",
+    "eyebrow": "PyDevices / pydevices-examples · PyScript Gallery",
     "headline": "PyScript Gallery",
-    "description": "Pyodide / PyScript demos that run full CPython in the browser \u2014 the same PyDevices examples as MCUs and the direct WebAssembly gallery. Explore drawing, input, widgets, and LVGL without flashing a board first.",
+    "description": "Pyodide / PyScript demos that run full CPython in the browser — the same PyDevices examples as MCUs and the direct WebAssembly gallery. Explore drawing, input, widgets, and LVGL without flashing a board first.",
     "hero_note": "Click a card to launch the app. The first load may take a few seconds while the interpreter downloads; featured demos stay pinned at the top.",
     "buttons": []
   },
@@ -899,8 +899,8 @@
     "tier_name": "Organization Portal",
     "theme_color": "var(--accent)",
     "eyebrow": "PyDevices Portal",
-    "headline": "One display & hardware contract for MicroPython, CircuitPython, and CPython \u2014 from bare metal to the browser.",
-    "description": "The same driver, event, and display code runs unmodified on bare-metal MicroPython and CircuitPython boards, as native CPython wheels on desktop and Android, and directly in a browser tab \u2014 no rewrites, no plugins.",
+    "headline": "One display & hardware contract for MicroPython, CircuitPython, and CPython — from bare metal to the browser.",
+    "description": "The same driver, event, and display code runs unmodified on bare-metal MicroPython and CircuitPython boards, as native CPython wheels on desktop and Android, and directly in a browser tab — no rewrites, no plugins.",
     "hero_canvas": {
       "app": "watch",
       "width": 240,
@@ -941,7 +941,7 @@
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "micropython-pydevices",
-    "headline": "micropython-pydevices \u2014 the versioned MicroPython runtime overlay.",
+    "headline": "micropython-pydevices — the versioned MicroPython runtime overlay.",
     "description": "The PyDevices patch queue for MicroPython, kept like a distribution keeps one: an ordered, provenance-tracked patch series over a pinned upstream release, with profiles for Windows networking/FFI, desktop, and WebAssembly, plus the wasm bridge usermod and variant.",
     "hero_canvas": {
       "app": "radar_scope",
@@ -979,7 +979,7 @@
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "workbench",
-    "headline": "workbench \u2014 the browser IDE and MicroPython simulator.",
+    "headline": "workbench — the browser IDE and MicroPython simulator.",
     "description": "A ViperIDE fork with a built-in WebAssembly MicroPython simulator: edit, run, and debug PyDevices code against a simulated board entirely in the browser, no hardware required.",
     "hero_canvas": {
       "app": "polyhedron",
@@ -1011,13 +1011,13 @@
       }
     ]
   },
-  "micropython-vst3": {
+  "mpvst": {
     "tier": 5,
     "page": "portal-subdir",
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
-    "eyebrow": "micropython-vst3",
-    "headline": "micropython-vst3 \u2014 audio effects and instruments as a VST3 plug-in.",
+    "eyebrow": "mpvst",
+    "headline": "MPVST — audio effects and instruments as a VST3 plug-in.",
     "description": "A hardware-accurate MicroPython audio engine -- core, effects, and instruments -- packaged as a VST3 sidecar plug-in for building and auditioning racks inside a DAW.",
     "hero_canvas": {
       "app": "ftp_scope",
@@ -1034,12 +1034,12 @@
     "buttons": [
       {
         "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/micropython-vst3",
+        "href": "https://github.com/PyDevices/mpvst",
         "primary": true
       },
       {
         "label": "Releases",
-        "href": "https://github.com/PyDevices/micropython-vst3/releases",
+        "href": "https://github.com/PyDevices/mpvst/releases",
         "tier_color": true
       },
       {

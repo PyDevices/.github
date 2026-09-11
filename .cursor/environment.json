@@ -23,7 +23,7 @@
     "github.com/PyDevices/android-template",
     "github.com/PyDevices/android-runner",
     "github.com/PyDevices/pyscript-template",
-    "github.com/PyDevices/micropython-vst3",
+    "github.com/PyDevices/mpvst",
     "github.com/PyDevices/micropython-pydevices"
   ]
 }

@@ -114,7 +114,7 @@
    "status": "active"
   },
   {
-   "name": "micropython-vst3",
+   "name": "mpvst",
    "role": "app / instrument library",
    "status": "active",
    "note": "public since 2026-08-28; publishes nothing, local ctest is the gate"
