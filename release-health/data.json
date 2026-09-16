@@ -6,10 +6,10 @@
   "prerelease": false,
   "pypi": "skipped",
   "repo": "pydevices",
-  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/33248950545",
+  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/35058485807",
   "testpypi": "success",
-  "updated": "2026-08-29 10:57 UTC",
-  "version": "0.3.8"
+  "updated": "2026-09-16 05:12 UTC",
+  "version": "0.4.0"
  },
  "pydevices-audioeffects": {
   "assets": "success",
