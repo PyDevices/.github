@@ -46,7 +46,7 @@ the build kind, the distribution name, and the MIP profile:
 | `palettes` | `pure-python` | `pydevices-palettes` | `palettes` |
 | `pdwidgets` | `pure-python` | `pydevices-pdwidgets` | `pdwidgets` |
 | `pygraphics` | `native-and-wasm` | `pydevices-pygraphics` | `pygraphics` |
-| `audiodsp` | `native-and-wasm` + 2× `pure-python` | `pydevices-audioif`, `pydevices-audioinstruments`, `pydevices-audioeffects` | `audioinstruments,audioeffects` (on the native job only) |
+| `audiodsp` | `native-and-wasm` + 2× `pure-python` | `pydevices-audiodsp`, `pydevices-audioinstruments`, `pydevices-audioeffects` | `audioinstruments,audioeffects` (on the native job only) |
 | `lvgl-python` | `native-and-wasm` | `pydevices-lvgl` | — none |
 | `mpftp` | `pure-python` | `pydevices-mpftp` | — none |
 

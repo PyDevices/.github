@@ -123,7 +123,7 @@
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audiodsp",
     "headline": "audiodsp — CircuitPython-compatible audio for MicroPython and CPython.",
-    "description": "CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. Ships as pydevices-audioif; the instrument and effect libraries built on it ship from audiocomponents.",
+    "description": "CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. Ships as pydevices-audiodsp; the instrument and effect libraries built on it ship from audiocomponents.",
     "hero_canvas": {
       "app": "signal_gen",
       "width": 480,
@@ -148,7 +148,7 @@
       },
       {
         "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/pydevices-audioif/",
+        "href": "https://test.pypi.org/project/pydevices-audiodsp/",
         "tier_color": true
       },
       {

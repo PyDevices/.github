@@ -54,7 +54,7 @@ PROFILES = {
     # firmware (a usermod, not MIP); these two are the pure-Python tier on top.
     #
     # Both carry pypi_name=None deliberately. They do reach PyPI, but inside
-    # the pydevices-audioif wheel rather than as distributions of their own, so
+    # the pydevices-audiodsp wheel rather than as distributions of their own, so
     # claiming a pypi_publish here would advertise a name pip cannot resolve --
     # the same reasoning as the PYPI_DISTRIBUTIONS note further down.
     #
