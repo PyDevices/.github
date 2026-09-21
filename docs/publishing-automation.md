@@ -47,7 +47,8 @@ push an existing one.
 | `palettes` | `pydevices-palettes` wheel and sdist | `palettes` |
 | `pdwidgets` | `pydevices-pdwidgets` wheel and sdist | `pdwidgets` |
 | `pygraphics` | `pydevices-pygraphics` Linux, Windows, Android, and WASM wheels | Pure-Python `pygraphics` |
-| `audiodsp` | `pydevices-audioif` (native/WASM), plus `pydevices-audioinstruments` and `pydevices-audioeffects` (pure-Python) — three distributions from one repository | `audioinstruments` and `audioeffects` — the pure-Python tier only; the native modules are firmware, built from the usermod source |
+| `audiodsp` | `pydevices-audiodsp` Linux, Windows, macOS, Android, and WASM wheels | Nothing — the native modules are firmware, built from the usermod source |
+| `audiocomponents` | `pydevices-audioinstruments` and `pydevices-audioeffects` (pure-Python) — two distributions from one repository | `audioinstruments` and `audioeffects` |
 | `pydevices` | `pydevices` (all of `lib/`) and `pydevices-desktop` | One package per `lib/` component, plus `pydevices` and `pydevices-desktop` |
 | `lvgl-python` | `pydevices-lvgl` Linux, Windows, Android, and WASM wheels | Nothing |
 | `mpftp` | `pydevices-mpftp` wheel and sdist | Nothing |
@@ -221,20 +222,22 @@ jobs:
       build-kind: pure-python          # or native-and-wasm, pydevices-multi
       distribution-name: pydevices-palettes
       import-name: palettes
-      mip-profile: palettes            # comma-separate for several, as audiodsp does; omit to skip MIP
+      mip-profile: palettes            # comma-separate for several, as audiocomponents does; omit to skip MIP
       release-ref: ${{ inputs.release-ref }}
     secrets: inherit
 ```
 
-`audiodsp` is the outlier: its `publish-release-packages.yml` runs a shared
-`parity` gate (the four `tests/parity/verify_*.py` scripts) and a
-`credentials` check job, then three separate calls into the reusable chain —
-one `native-and-wasm` build for `pydevices-audioif` with
-`mip-profile: audioinstruments,audioeffects`, and two `pure-python` builds
-(`pydevices-audioinstruments`, `pydevices-audioeffects`) from
-`lib/audioinstruments` and `lib/audioeffects`, each with no `mip-profile` of
-its own (their MIP publication rides on the first job's comma-separated
-profile list, since all three come from the same tag).
+Two repositories wrap the reusable chain in more than one job.
+`audiodsp`'s `publish-release-packages.yml` runs a `parity` gate (the
+`tests/parity/verify_*.py` scripts and every DSP probe) and a `credentials`
+check, then one `native-and-wasm` build for `pydevices-audiodsp` with no
+`mip-profile`, and an `expected-wheel-count` that has to follow
+`requires-python` by hand — it did not once, and the release that found out
+published nothing (audiodsp#122). `audiocomponents` runs its own gates against
+the core it pins, then two `pure-python` builds (`pydevices-audioinstruments`,
+`pydevices-audioeffects`) from `lib/audioinstruments` and `lib/audioeffects`;
+both MIP entries ride on the first job's comma-separated
+`mip-profile: audioinstruments,audioeffects`, since both come from one tag.
 
 Required secrets:
 
@@ -337,7 +340,7 @@ race — the second waits for the first to finish.
 `reusable-request-mip-publication.yml` (called from a publishing repository
 with `secrets: inherit`) mints an App token scoped to `mip` and dispatches
 one `repository_dispatch` per profile in the (possibly comma-separated)
-`mip-profile` input — `audiodsp` sends two in the same release. This only
+`mip-profile` input — `audiocomponents` sends two in the same release. This only
 happens for **final releases**: `request-mip-publication`'s `if:` requires
 `prerelease == 'false'`, so a `.devN`/`rcN` build never reaches the MIP
 index, only TestPyPI.
@@ -347,7 +350,7 @@ The queue consumer, `reusable-synchronize-mip-package.yml`:
 1. Checks out `mip` at the **`PyDevices` branch tip**, not the SHA frozen at
    dispatch time. This is deliberate: a `repository_dispatch` payload freezes
    `github.sha` at creation time, so the second of two queued publications
-   (audiodsp's two profiles) would otherwise check out a tree that predates
+   (audiocomponents' two profiles) would otherwise check out a tree that predates
    the first one's lockfile commit and lose its push as a non-fast-forward —
    this happened in practice and left `audioinstruments` a release behind
    `audioeffects` in the live index for two days.
