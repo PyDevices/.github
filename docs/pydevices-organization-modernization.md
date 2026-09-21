@@ -99,9 +99,8 @@ separate session.
   2026-08-27) — covering the private `workspace` anchor repository; the rest
   of the organization is public.
 - The session anchor is the private `workspace` repository: a session starts
-  there and runs its `bootstrap.sh`, which delegates to the public manifest
-  (`workspace/repos.json` + `workspace/bootstrap.sh` in the `.github`
-  repository) to clone or fetch every active repository into the anchor
+  there and runs its `bootstrap.sh`, which carries the list of every
+  PyDevices repository itself and clones or fetches each into the anchor
   checkout, git-ignored there. The anchor also holds private program
   documents (gate packets, audit findings, in its `docs/`) and maintainer
   tooling — and, by its boundary rule, never anything a public build needs.
@@ -358,9 +357,9 @@ with no cmods present unless the scenario says otherwise.
 
 After GO:
 
-1. Bootstrap the workspace from the manifest (section 2.1); report anything
-   the manifest missed as a finding, and extend it as the inventory
-   completes.
+1. Bootstrap the workspace with the anchor's `bootstrap.sh` (section 2.1);
+   report anything its list missed as a finding, and extend the list as the
+   inventory completes.
 2. Spot-check every section 4.1 finding; record deltas. Verify the
    pre-handoff checklist (section 2.2) actually holds.
 3. Complete the inventory: every local and GitHub repository including the
@@ -480,12 +479,12 @@ showing the whole portfolio. Continue on `APPROVE GATE 5`.
 ### Phase 5 — Optional cockpit (supports S7)
 
 With execution in the cloud, no agent needs a Codespace: the executor brings
-its own sandbox and bootstraps from the workspace manifest, which exists from
-Phase 0 (section 2.1). This phase covers only Brad's optional hands-on
-browser environment; his default cockpit is GitHub itself — PR review plus
-the Release Health dashboard.
+its own sandbox and bootstraps from the workspace anchor's `bootstrap.sh`,
+which exists from Phase 0 (section 2.1). This phase covers only Brad's
+optional hands-on browser environment; his default cockpit is GitHub itself —
+PR review plus the Release Health dashboard.
 
-1. If wanted: a devcontainer that inherits the same workspace manifest — one
+1. If wanted: a devcontainer that runs the same `bootstrap.sh` — one
    environment definition with two consumers, never a parallel procedure.
 2. Health checks for missing tools, repositories, and credentials.
 3. Document agent and credential boundaries: what each agent kind (cloud
@@ -497,7 +496,7 @@ the Release Health dashboard.
 
 #### Gate 6 — Cockpit approval
 
-Present: rebuild-from-manifest evidence, local-parity evidence, credential
+Present: rebuild-from-bootstrap evidence, local-parity evidence, credential
 boundary documentation, recurring cost estimate. Continue on `APPROVE GATE 6`.
 
 ### Phase 6 — Optional public changes

@@ -1,5 +1,5 @@
 {
-  "_comment": "Repo list source of truth is workspace/repos.json (every 'active' entry except the 'workspace' anchor itself, which is never cloned as a sibling). This file is static JSON consumed by Cursor's cloud environment setup before 'install' runs, so it cannot be generated at environment-init time -- keep it converged by hand when workspace/repos.json changes.",
+  "_comment": "Repositories Cursor's cloud environment checks out beside this one. The reference list is REPOS in the private workspace anchor's bootstrap.sh (PyDevices/workspace), which never lists the anchor itself. This file is static JSON consumed by Cursor's cloud environment setup before 'install' runs, so it cannot be generated at environment-init time -- keep it converged by hand when REPOS changes.",
   "install": "bash scripts/cloud-workspace-install.sh && bash scripts/cloud-python-deps.sh && bash scripts/cloud-pydevices-examples-dev-env.sh",
   "start": "true",
   "repositoryDependencies": [

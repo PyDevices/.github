@@ -31,13 +31,11 @@ the parts they'd otherwise duplicate.
   from [`release-health/data.json`](release-health/data.json) every time a
   publishing repository's release chain reports in. Don't hand-edit either
   file.
-- **The workspace manifest** — [`workspace/repos.json`](workspace/repos.json)
-  is the single source of truth for the multi-repository local workspace
-  (every PyDevices repo, its local checkout name, role, and status);
-  [`workspace/bootstrap.sh`](workspace/bootstrap.sh) clones or updates every
-  `active` entry as siblings on disk. Other copies of this list (see
-  [`.cursor/environment.json`](.cursor/environment.json)) are meant to
-  converge on it, not fork from it.
+- **The multi-repository workspace** is defined by the private `workspace`
+  anchor repository, whose own `bootstrap.sh` carries the list of every
+  PyDevices repository and clones them as siblings on disk. The list in
+  [`.cursor/environment.json`](.cursor/environment.json) is Cursor's cloud
+  copy of it, kept by hand.
 - **The repository database and site generator** —
   [`data/repos_db.json`](data/repos_db.json) is the single source of truth
   for the repository map: tier, description, buttons, and where each repo's
