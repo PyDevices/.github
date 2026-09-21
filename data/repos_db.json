@@ -168,6 +168,48 @@
       }
     ]
   },
+  "audioif": {
+    "tier": 1,
+    "page": "portal-subdir",
+    "tier_name": "Core Platform & Board Contract",
+    "theme_color": "var(--tier-1-amber)",
+    "eyebrow": "audioif",
+    "headline": "audioif — the audio hardware layer: the platform drivers under the audio pump.",
+    "description": "The part of the audio stack that knows what a thread is, where the clock comes from and where the sound goes: a pinned task and the I2S peripheral on ESP32, a native thread on unix and Windows, and a CircuitPython-shaped audiobusio.I2SOut over all of it. With it in a firmware, a graph keeps an exact clock while a screen redraws and a USB stack runs, and audiodev plays through it without being asked. The portable half of the pump, and every DSP node, is audiodsp.",
+    "hero_canvas": {
+      "app": "signal_gen",
+      "width": 480,
+      "height": 480,
+      "shape": "square",
+      "deps": [
+        "pydevices",
+        "pydevices-lvgl"
+      ],
+      "app_url": "https://PyDevices.github.io/assets/apps/signal_gen.py"
+    },
+    "buttons": [
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/audioif",
+        "primary": true
+      },
+      {
+        "label": "audiodsp",
+        "href": "https://pydevices.github.io/audiodsp/",
+        "tier_color": true
+      },
+      {
+        "label": "audiocomponents",
+        "href": "https://pydevices.github.io/audiocomponents/",
+        "tier_color": true
+      },
+      {
+        "label": "Audio in pydevices",
+        "href": "https://github.com/PyDevices/pydevices/blob/main/docs/audio.md",
+        "tier_color": true
+      }
+    ]
+  },
   "audiocomponents": {
     "tier": 1,
     "page": "portal-subdir",
@@ -223,7 +265,7 @@
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "usbif",
     "headline": "usbif — native USB for MicroPython: device, host, and both at once.",
-    "description": "A board a computer sees as a sound card, a MIDI instrument, a keyboard, a drive or a webcam — and, on the same board, a USB host that a keyboard, thumb drive, MIDI controller or camera plugs into. The third PyDevices *if module after displayif and audiodsp: a native C module with a thin, stable Python surface that runs unchanged on a workstation.",
+    "description": "A board a computer sees as a sound card, a MIDI instrument, a keyboard, a drive or a webcam — and, on the same board, a USB host that a keyboard, thumb drive, MIDI controller or camera plugs into. One of the PyDevices *if modules, with displayif, audioif and cameraif: a native C module with a thin, stable Python surface that runs unchanged on a workstation.",
     "hero_canvas": {
       "app": "encoder",
       "width": 480,
