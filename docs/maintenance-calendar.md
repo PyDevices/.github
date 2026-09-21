@@ -29,4 +29,4 @@
   release health, S6 the org walk). The bar decays without enforcement;
   this is the enforcement.
 - CircuitPython oracle stance review: 10.2.1 stays pinned until moving
-  it is chartered as its own re-port (audioif's call, not routine).
+  it is chartered as its own re-port (audiodsp's call, not routine).

@@ -134,12 +134,12 @@ class LockfileRepositoryTests(unittest.TestCase):
             result = run_sync(
                 source,
                 mip,
-                source_name="PyDevices/audioif",
+                source_name="PyDevices/audiodsp",
                 profile="audioinstruments",
             )
             self.assertNotEqual(result.returncode, 0)
             self.assertIn(
-                "profile 'audioinstruments' requires PyDevices/audiocomponents, not PyDevices/audioif",
+                "profile 'audioinstruments' requires PyDevices/audiocomponents, not PyDevices/audiodsp",
                 result.stderr,
             )
 
@@ -261,12 +261,12 @@ class RecordLockfileReleaseTests(unittest.TestCase):
             result = run_record_step(
                 lockfile,
                 profile="audioinstruments",
-                repository="PyDevices/audioif",
+                repository="PyDevices/audiodsp",
                 ref="v0.3.0",
             )
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("PyDevices/audiocomponents", result.stderr)
-            self.assertIn("PyDevices/audioif", result.stderr)
+            self.assertIn("PyDevices/audiodsp", result.stderr)
             self.assertIn("pydevices-lock.json", result.stderr)
             self.assertIn("PyDevices branch", result.stderr)
             self.assertEqual(lockfile.read_text(encoding="utf-8"), before)

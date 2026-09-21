@@ -49,7 +49,7 @@ PROFILES = {
         ),
         pypi_name=None,
     ),
-    # audioif is the first source repository with more than one publishable
+    # audiodsp is the first source repository with more than one publishable
     # package, which is why mip-profile takes a list. Its native modules are
     # firmware (a usermod, not MIP); these two are the pure-Python tier on top.
     #
@@ -59,7 +59,7 @@ PROFILES = {
     # the same reasoning as the PYPI_DISTRIBUTIONS note further down.
     #
     # No requirements either: audioinstruments and audioeffects both import
-    # audioif's native modules, which arrive with the firmware and are not MIP
+    # audiodsp's native modules, which arrive with the firmware and are not MIP
     # packages, so there is no edge for require() to express.
     "audioinstruments": Profile(
         package="audioinstruments",
@@ -82,7 +82,7 @@ PROFILES = {
 # The source repository for each profile is pydevices-lock.json in the MIP
 # checkout, not a second map in this script. reusable-synchronize-mip-package.yml
 # already keeps that lockfile on the runner; a hardcoded PROFILE_REPOSITORIES
-# table disagreed with it after the audioif/audiocomponents split and blocked
+# table disagreed with it after the audiodsp/audiocomponents split and blocked
 # every publication until a new publishing-tools tag (#35).
 LOCKFILE_NAME = "pydevices-lock.json"
 

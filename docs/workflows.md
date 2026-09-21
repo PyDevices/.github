@@ -4,7 +4,7 @@ What exists, in which repository, and why. Procedures live elsewhere:
 [publishing-automation.md](publishing-automation.md) for releases,
 [building-docs.md](building-docs.md) for documentation.
 
-The inventory includes the native `audioif` CPython release caller.
+The inventory includes the native `audiodsp` CPython release caller.
 
 ## Reusable workflows (`PyDevices/.github`)
 
@@ -46,7 +46,7 @@ the build kind, the distribution name, and the MIP profile:
 | `palettes` | `pure-python` | `pydevices-palettes` | `palettes` |
 | `pdwidgets` | `pure-python` | `pydevices-pdwidgets` | `pdwidgets` |
 | `pygraphics` | `native-and-wasm` | `pydevices-pygraphics` | `pygraphics` |
-| `audioif` | `native-and-wasm` + 2× `pure-python` | `pydevices-audioif`, `pydevices-audioinstruments`, `pydevices-audioeffects` | `audioinstruments,audioeffects` (on the native job only) |
+| `audiodsp` | `native-and-wasm` + 2× `pure-python` | `pydevices-audioif`, `pydevices-audioinstruments`, `pydevices-audioeffects` | `audioinstruments,audioeffects` (on the native job only) |
 | `lvgl-python` | `native-and-wasm` | `pydevices-lvgl` | — none |
 | `mpftp` | `pure-python` | `pydevices-mpftp` | — none |
 
@@ -56,7 +56,7 @@ the build kind, the distribution name, and the MIP profile:
 `version` input). `tag-release.yml` triggers on `push` to `main` touching
 `VERSION`.
 
-`audioif` additionally runs a `parity` job (the four
+`audiodsp` additionally runs a `parity` job (the four
 `tests/parity/verify_*.py` acceptance/effects/streaming/biquad gates) and a
 `credentials` job (confirms `TESTPYPI_API_TOKEN` is visible) before any of
 its three publish jobs.
@@ -99,7 +99,7 @@ but neither has a `.github/workflows/` directory — their sync from
 | `pydevices` | `tests.yml` | Also validates board MIP installers |
 | `palettes`, `pdwidgets` | `tests.yml` | Sparse-checkout of sibling repos onto `PYTHONPATH` (`pdwidgets` needs four) |
 | `pygraphics` | `tests.yml` | Runs the suite twice — pure Python, then the native extension via `PYGRAPHICS_TEST_NATIVE=1` |
-| `audioif` | `tests.yml` | Also the source of the `parity` gate `publish-release-packages.yml` reruns at release time |
+| `audiodsp` | `tests.yml` | Also the source of the `parity` gate `publish-release-packages.yml` reruns at release time |
 | `pydevices-examples` | `tests.yml`, `manifests.yml` | Gallery and install-manifest freshness |
 | `pydevices`, `pygraphics` | `validate-pyscript-filesystem-toml.yml` | Standalone callers of the reusable validator. `pdwidgets` and `palettes` call the same reusable as a job inside `tests.yml` |
 | `.github` (this repo) | `checks.yml` | actionlint over `.github/workflows`, a YAML-parse smoke test of every reusable, a site-generator idempotency check against checked-out siblings, and `ruff` over `scripts/` |

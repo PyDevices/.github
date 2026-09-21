@@ -17,8 +17,8 @@
   "mip": "skipped",
   "prerelease": false,
   "pypi": "skipped",
-  "repo": "audioif",
-  "run_url": "https://github.com/PyDevices/audioif/actions/runs/33394213045",
+  "repo": "audiodsp",
+  "run_url": "https://github.com/PyDevices/audiodsp/actions/runs/33394213045",
   "testpypi": "success",
   "updated": "2026-08-31 12:57 UTC",
   "version": "0.1.1"
@@ -29,8 +29,8 @@
   "mip": "skipped",
   "prerelease": false,
   "pypi": "skipped",
-  "repo": "audioif",
-  "run_url": "https://github.com/PyDevices/audioif/actions/runs/34441714768",
+  "repo": "audiodsp",
+  "run_url": "https://github.com/PyDevices/audiodsp/actions/runs/34441714768",
   "testpypi": "success",
   "updated": "2026-09-10 05:41 UTC",
   "version": "0.4.0"

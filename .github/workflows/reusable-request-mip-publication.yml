@@ -35,7 +35,7 @@ jobs:
           repositories: mip
 
       # One dispatch per profile. A repository with a single package sends one,
-      # exactly as before; audioif sends two. They are not raced: mip's
+      # exactly as before; audiodsp sends two. They are not raced: mip's
       # process-mip-publication-request.yml holds them in the
       # pydevices-mip-publication-queue concurrency group with
       # cancel-in-progress false, so the second waits for the first and each

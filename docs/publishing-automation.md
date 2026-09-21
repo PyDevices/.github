@@ -2,7 +2,7 @@
 
 This is the organization-wide runbook for publishing a new package version, and
 it **lives here because it is org-wide**: it governs `palettes`, `pdwidgets`,
-`pygraphics`, `audioif`, `pydevices`, `lvgl-python`, and `mpftp`, and it
+`pygraphics`, `audiodsp`, `pydevices`, `lvgl-python`, and `mpftp`, and it
 documents the reusable workflows and shared credentials that this repository
 owns.
 
@@ -47,7 +47,7 @@ push an existing one.
 | `palettes` | `pydevices-palettes` wheel and sdist | `palettes` |
 | `pdwidgets` | `pydevices-pdwidgets` wheel and sdist | `pdwidgets` |
 | `pygraphics` | `pydevices-pygraphics` Linux, Windows, Android, and WASM wheels | Pure-Python `pygraphics` |
-| `audioif` | `pydevices-audioif` (native/WASM), plus `pydevices-audioinstruments` and `pydevices-audioeffects` (pure-Python) — three distributions from one repository | `audioinstruments` and `audioeffects` — the pure-Python tier only; the native modules are firmware, built from the usermod source |
+| `audiodsp` | `pydevices-audioif` (native/WASM), plus `pydevices-audioinstruments` and `pydevices-audioeffects` (pure-Python) — three distributions from one repository | `audioinstruments` and `audioeffects` — the pure-Python tier only; the native modules are firmware, built from the usermod source |
 | `pydevices` | `pydevices` (all of `lib/`) and `pydevices-desktop` | One package per `lib/` component, plus `pydevices` and `pydevices-desktop` |
 | `lvgl-python` | `pydevices-lvgl` Linux, Windows, Android, and WASM wheels | Nothing |
 | `mpftp` | `pydevices-mpftp` wheel and sdist | Nothing |
@@ -221,12 +221,12 @@ jobs:
       build-kind: pure-python          # or native-and-wasm, pydevices-multi
       distribution-name: pydevices-palettes
       import-name: palettes
-      mip-profile: palettes            # comma-separate for several, as audioif does; omit to skip MIP
+      mip-profile: palettes            # comma-separate for several, as audiodsp does; omit to skip MIP
       release-ref: ${{ inputs.release-ref }}
     secrets: inherit
 ```
 
-`audioif` is the outlier: its `publish-release-packages.yml` runs a shared
+`audiodsp` is the outlier: its `publish-release-packages.yml` runs a shared
 `parity` gate (the four `tests/parity/verify_*.py` scripts) and a
 `credentials` check job, then three separate calls into the reusable chain —
 one `native-and-wasm` build for `pydevices-audioif` with
@@ -337,7 +337,7 @@ race — the second waits for the first to finish.
 `reusable-request-mip-publication.yml` (called from a publishing repository
 with `secrets: inherit`) mints an App token scoped to `mip` and dispatches
 one `repository_dispatch` per profile in the (possibly comma-separated)
-`mip-profile` input — `audioif` sends two in the same release. This only
+`mip-profile` input — `audiodsp` sends two in the same release. This only
 happens for **final releases**: `request-mip-publication`'s `if:` requires
 `prerelease == 'false'`, so a `.devN`/`rcN` build never reaches the MIP
 index, only TestPyPI.
@@ -347,7 +347,7 @@ The queue consumer, `reusable-synchronize-mip-package.yml`:
 1. Checks out `mip` at the **`PyDevices` branch tip**, not the SHA frozen at
    dispatch time. This is deliberate: a `repository_dispatch` payload freezes
    `github.sha` at creation time, so the second of two queued publications
-   (audioif's two profiles) would otherwise check out a tree that predates
+   (audiodsp's two profiles) would otherwise check out a tree that predates
    the first one's lockfile commit and lose its push as a non-fast-forward —
    this happened in practice and left `audioinstruments` a release behind
    `audioeffects` in the live index for two days.

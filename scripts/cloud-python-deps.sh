@@ -85,10 +85,10 @@ if bin="$(ensure_venv pydevices-examples)"; then
     # pygame-ce is the desktop fallback backend / Windows default (PGDisplay);
     # deliberately not in requirements-dev.txt (SDL2 is the documented primary).
     "$bin/pip" install -q pygame-ce || log "warn: pygame-ce install failed"
-    # Build the current audioif checkout into the workspace venv so CPython
+    # Build the current audiodsp checkout into the workspace venv so CPython
     # examples exercise the same source that MicroPython consumes.
-    if [[ -d "$REPOS/audioif" ]]; then
-        "$bin/pip" install -q -e "$REPOS/audioif" || \
+    if [[ -d "$REPOS/audiodsp" ]]; then
+        "$bin/pip" install -q -e "$REPOS/audiodsp" || \
             log "warn: editable pydevices-audioif install failed; synthesis examples unavailable"
     else
         "$bin/pip" install -q -i https://test.pypi.org/simple/ \

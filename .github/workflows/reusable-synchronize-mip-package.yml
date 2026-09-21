@@ -64,7 +64,7 @@ jobs:
           fetch-depth: 0
           # The BRANCH, not the dispatch-time SHA: a repository_dispatch run
           # freezes github.sha when the event is created, so the second of
-          # two queued publications (audioif sends two) checked out a tree
+          # two queued publications (audiodsp sends two) checked out a tree
           # that predated the first one's lockfile commit and lost its push
           # non-fast-forward - audioinstruments sat a release behind its
           # sibling in the live index for two days.

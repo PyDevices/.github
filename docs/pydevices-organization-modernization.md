@@ -71,7 +71,7 @@ sessions (section 2.1), not on Brad's workstation. The agent must not change
 repositories, GitHub settings, package registries, or other external state
 until all of the following hold:
 
-1. The in-flight instrument-library program on `audioif` and
+1. The in-flight instrument-library program on `audiodsp` and
    `micropython-vst3` (rule 9) is completely finished, `micropython-vst3`
    (currently the only workspace repository with no GitHub remote, verified
    2026-08-27) has been published, and both repositories' remotes are in sync
@@ -125,7 +125,7 @@ rather than performs these:
 
 1. Capture the uncommitted Adafruit_MP3 Windows patch — **done 2026-08-27**:
    `cmods/patches/adafruit_mp3/0001-windows-msvc-inline-assembly.patch`.
-2. Push every in-scope repository so remotes match local. (`audioif` and
+2. Push every in-scope repository so remotes match local. (`audiodsp` and
    `micropython-vst3` sync is owned by the in-flight program's completion,
    condition 1 above.)
 3. Grant the Claude GitHub app access to the in-scope repositories.
@@ -152,8 +152,8 @@ rather than performs these:
    repositories per approval batch.
 9. Preserve user work and unrelated local changes. **In-flight work outranks
    this program**: repositories with an active plan or feature branch (at
-   revision time: `audioif` on `instrument-library-tier`, `micropython-vst3`
-   on `instrument-library-cutover`, per the audioif instrument-library
+   revision time: `audiodsp` on `instrument-library-tier`, `micropython-vst3`
+   on `instrument-library-cutover`, per the audiodsp instrument-library
    refactor) must not be modified without checking with Brad first.
 10. Prefer reversible changes: draft PRs, dry runs, previews, TestPyPI.
 11. Use least-privilege credentials and pinned GitHub Action revisions.
@@ -199,7 +199,7 @@ carried forward as fact.
    assets on pydevices releases).
 7. **Retired PyDevices URLs 404** in search results. Add redirects; this is
    also the standing argument for the name freeze.
-8. **audioif resolves dependencies by sibling path** (ulab, Adafruit_MP3).
+8. **audiodsp resolves dependencies by sibling path** (ulab, Adafruit_MP3).
    The Windows compatibility patch to Adafruit_MP3 (`assembly.h`) was captured
    pre-handoff to `cmods/patches/adafruit_mp3/` (checklist 2.2); in Phase 2
    its ownership moves to the native pilot's patch queue.
@@ -236,7 +236,7 @@ stranger would otherwise misread it.
   Release automation must preserve this: the release PR is where the human
   reads, edits, and approves the version before merging.
 - **Only `pydevices`, `pydevices-desktop`, `pygraphics`, `palettes`,
-  `pdwidgets`, and `audioif` publish** (audioif ships three
+  `pdwidgets`, and `audiodsp` publish** (audiodsp ships three
   distributions: `pydevices-audioif`, `-audioinstruments`,
   `-audioeffects` — added post-handoff, 2026-08). The pydevices leaf
   distributions are retired.
@@ -244,9 +244,9 @@ stranger would otherwise misread it.
   in `lvgl-bindings`; propagation is explicit consumer sync pinned by
   `LVGL_BINDINGS_COMMIT` (since the 2026-08-28 overhaul — formerly a
   trigger workflow). Only `lvgl-python` publishes.
-- **The CircuitPython oracle stays pinned at 10.2.1** while audioif parity
+- **The CircuitPython oracle stays pinned at 10.2.1** while audiodsp parity
   work is live. Moving it is a re-port and its own future phase, owned by the
-  audioif plan, not this program.
+  audiodsp plan, not this program.
 - **micropython-vst3 publishes nothing and carries no hosted CI, by
   decision** (restated 2026-08-29, now that it is public: its gate is the
   local 14-test ctest suite, lint included; hosted CI arrives with the
@@ -285,10 +285,10 @@ A meticulously maintained downstream patch queue — mailbox format, provenance,
 compatible-version range, ordered series, a test per patch, scheduled
 application checks against upstream — is rarer and more persuasive to the
 rigor lens than upstream PRs. Upstreaming becomes an explicit per-patch
-decision made from strength. (audioif has already found and fixed real
+decision made from strength. (audiodsp has already found and fixed real
 upstream bugs — the synthio oscillator wrap, the Mixer reset, the biquad
 peaking sign — documented in its `docs/upstream-diff.md`; reporting those
-upstream proceeds on the audioif plan's own schedule.)
+upstream proceeds on the audiodsp plan's own schedule.)
 
 ### 5.4 Automation reduces maintenance, not conceals it
 
@@ -305,9 +305,9 @@ of complying badly or deviating silently.
 
 ### 5.6 Portfolio, not showcase
 
-Roughly twenty repositories need attention. audioif and the runtime patches
+Roughly twenty repositories need attention. audiodsp and the runtime patches
 are *evidence* of portfolio-wide problems, not the center of the program. The
-pilot set is chosen at Gate 1 for archetype coverage; audioif may be in it on
+pilot set is chosen at Gate 1 for archetype coverage; audiodsp may be in it on
 merit, but nothing is designed around any single repository.
 
 ## 6. Inspection scenarios
@@ -404,7 +404,7 @@ the overlay name/boundary. Continue on `APPROVE GATE 1`.
    single-writer rule where a contributor would trip on it. Label or clean up
    the stale TestPyPI leaves (finding 13).
 8. Roll out to the remaining publishers (`pdwidgets`, `pygraphics`,
-   `pydevices` + `pydevices-desktop`, `mpftp`, `audioif` — the last only in
+   `pydevices` + `pydevices-desktop`, `mpftp`, `audiodsp` — the last only in
    coordination with its in-flight plan, rule 9) in batches of at most five.
 
 #### Gate 2 — Release approval
@@ -431,7 +431,7 @@ Continue on `APPROVE GATE 2`.
    separate approval from publishing the overlay source.
 3. Declare the CircuitPython oracle pin in a checked-in location with an
    `apply_cp_patches.sh --status` mismatch warning (finding 10) — without
-   moving the pin (section 4.2) and in coordination with the audioif plan.
+   moving the pin (section 4.2) and in coordination with the audiodsp plan.
 4. Add drift checks for committed generated artifacts (finding 11).
 5. Present the interpreter-binary distribution proposal (finding 12); execute
    only Brad's decision.
