@@ -5,10 +5,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import shutil
 from dataclasses import dataclass
 from pathlib import Path
 
+import tomllib
 from pydevices_package_metadata import PYDEVICES_DESCRIPTIONS
 
 
@@ -194,6 +196,77 @@ def render_pydevices_manifest(name: str, version: str, requirements: tuple[str, 
     return "\n".join(lines)
 
 
+#: Declares which modules of lib/ cannot run on a microcontroller. Its own
+#: header says why and what the rules are; this reads it.
+MIP_SPLIT_FILE = "mip-split.toml"
+
+
+def read_host_only(source_root: Path) -> dict[str, frozenset[str]]:
+    """{package: host-only module stems}, checked against what is on disk."""
+    split_path = source_root / MIP_SPLIT_FILE
+    if not split_path.exists():
+        return {}
+    with split_path.open("rb") as handle:
+        declared = tomllib.load(handle)
+
+    host_only: dict[str, frozenset[str]] = {}
+    for package, section in declared.items():
+        package_dir = source_root / "lib" / package
+        if not package_dir.is_dir():
+            raise SystemExit(
+                f"{MIP_SPLIT_FILE} names package {package!r}, which is not in lib/"
+            )
+        present = {path.stem for path in package_dir.glob("*.py")}
+        names = frozenset(section.get("host-only", ()))
+        # A stale name is the way this file rots: the module gets renamed, the
+        # entry stops matching anything, and it silently ships to the MCU again.
+        missing = sorted(names - present)
+        if missing:
+            raise SystemExit(
+                f"{MIP_SPLIT_FILE} [{package}] names modules that no longer "
+                f"exist: {', '.join(missing)}"
+            )
+        if "auto" in names or "__init__" in names:
+            raise SystemExit(
+                f"{MIP_SPLIT_FILE} [{package}] would move __init__ or auto to the "
+                f"host package, which would leave the MCU unable to import {package}"
+            )
+        host_only[package] = names
+    return host_only
+
+
+def check_no_host_imports(package_dir: Path, host_only: frozenset[str]) -> None:
+    """Refuse to ship an MCU module that imports a host-only one at module scope.
+
+    Inside a function is fine and is how every ``auto`` module works; at module
+    scope it would make the package unimportable on a board, which is the one
+    way this split can break something.
+    """
+    package = package_dir.name
+    pattern = re.compile(
+        rf"^(?:from\s+(?:{package}|\.)\s+import\s+(\w+)"
+        rf"|from\s+{package}\.(\w+)\s+import"
+        rf"|import\s+{package}\.(\w+))"
+    )
+    for path in sorted(package_dir.glob("*.py")):
+        if path.stem in host_only:
+            continue
+        for lineno, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            if not line or line[:1].isspace():
+                continue
+            match = pattern.match(line.strip())
+            if match is None:
+                continue
+            name = next((group for group in match.groups() if group), None)
+            if name in host_only:
+                raise SystemExit(
+                    f"{package}/{path.name}:{lineno} imports the host-only module "
+                    f"{name!r} at module scope, so it would not import on a "
+                    f"microcontroller. Move the import inside the function, or "
+                    f"drop {name!r} from {MIP_SPLIT_FILE}."
+                )
+
+
 def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> None:
     destination_root = mip_root / "micropython" / "pydevices"
     if destination_root.parent != mip_root / "micropython":
@@ -211,10 +284,32 @@ def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> No
     package.mkdir()
     payloads: list[str] = []
     names: list[str] = []
+    # What a microcontroller cannot run does not go on one. Declared in the
+    # source repository's mip-split.toml and shipped by pydevices-desktop
+    # instead, which already require()s this package -- so a host installs one
+    # thing and gets what it always got (pydevices#30).
+    host_only = read_host_only(source_root)
+    host_components: list[tuple[Path, frozenset[str]]] = []
     for source in sorted(filter(publishable, (source_root / "lib").iterdir()), key=lambda path: path.name):
         names.append(source.stem if source.is_file() else source.name)
-        copy_component(source, package / source.name)
-        payloads.append(f'module("{source.name}")' if source.is_file() else f'package("{source.name}")')
+        split = host_only.get(source.name, frozenset()) if source.is_dir() else frozenset()
+        if not split:
+            copy_component(source, package / source.name)
+            payloads.append(f'module("{source.name}")' if source.is_file() else f'package("{source.name}")')
+            continue
+        check_no_host_imports(source, split)
+        device_files = sorted(
+            path.name for path in source.glob("*.py") if path.stem not in split
+        )
+        destination = package / source.name
+        destination.mkdir(parents=True)
+        for name in device_files:
+            shutil.copy2(source / name, destination / name)
+        # Named file by file rather than as a whole package, so the install
+        # list is the manifest and nothing else decides it.
+        listed = ", ".join(f'"{name}"' for name in device_files)
+        payloads.append(f'package("{source.name}", files=({listed},))')
+        host_components.append((source, split))
 
     if len(names) != len(set(names)):
         raise SystemExit("lib/ contains colliding module and package names")
@@ -226,6 +321,15 @@ def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> No
     desktop = destination_root / "pydevices-desktop"
     desktop.mkdir()
     desktop_payloads: list[str] = []
+    # The other half of the split: every backend the device package left out.
+    for source, split in host_components:
+        host_files = sorted(path.name for path in source.glob("*.py") if path.stem in split)
+        destination = desktop / source.name
+        destination.mkdir(parents=True)
+        for name in host_files:
+            shutil.copy2(source / name, destination / name)
+        listed = ", ".join(f'"{name}"' for name in host_files)
+        desktop_payloads.append(f'package("{source.name}", files=({listed},))')
     for source in sorted(filter(publishable, (source_root / "utils").iterdir()), key=lambda path: path.name):
         copy_component(source, desktop / source.name)
         desktop_payloads.append(f'module("{source.name}")' if source.is_file() else f'package("{source.name}")')
