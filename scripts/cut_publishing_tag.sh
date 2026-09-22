@@ -24,15 +24,21 @@ git rev-parse -q --verify "refs/tags/$TAG" >/dev/null && { echo "$TAG already ex
 if grep -nE '^\s*uses:\s*\./' .github/workflows/reusable-*.yml; then
     echo "a reusable calls a sibling by ./ path; fix that first (.github#47)" >&2; exit 1
 fi
+# Two kinds of ref name a publishing tag inside the reusables: the coordinator's
+# `uses:` lines, and the `publishing-tools-ref` input defaults through which a
+# reusable checks out this repository's scripts/. Both must name the tag being
+# cut, or the tag runs another tag's tools (the v6 tools under the v11
+# coordinator, found by the 0.5.0 verification).
 sed -i -E "s#(PyDevices/\.github/\.github/workflows/[a-z-]+\.yml@)publishing-v[0-9]+#\1$TAG#g" "$COORD"
-refs=$(grep -oE 'workflows/[a-z-]+\.yml@publishing-v[0-9]+' "$COORD" | sort -u)
+sed -i -E "s#^(\s*default: )publishing-v[0-9]+\$#\1$TAG#" .github/workflows/reusable-*.yml
+refs=$(grep -ohE '(\.yml@|default: )publishing-v[0-9]+' .github/workflows/reusable-*.yml | sed 's/.*publishing-/publishing-/' | sort -u)
 echo "$refs"
-[[ "$(echo "$refs" | sed 's/.*@//' | sort -u | wc -l)" == "1" ]] || { echo "sibling refs disagree after rewrite" >&2; exit 1; }
+[[ "$(echo "$refs" | wc -l)" == "1" && "$refs" == "$TAG" ]] || { echo "refs disagree after rewrite: $(echo $refs | tr '\n' ' ')" >&2; exit 1; }
 if git diff --quiet; then
-    echo "coordinator already names $TAG; tagging HEAD"
+    echo "every ref already names $TAG; tagging HEAD"
 else
-    git add "$COORD"
-    git commit -qm "$TAG: the coordinator's sibling refs name their own tag"
+    git add .github/workflows/reusable-*.yml
+    git commit -qm "$TAG: every sibling ref and tools-ref default names its own tag"
 fi
 git tag -a "$TAG" -m "$TAG, cut by scripts/cut_publishing_tag.sh at $(git rev-parse --short HEAD)"
 git push -q origin main "$TAG"

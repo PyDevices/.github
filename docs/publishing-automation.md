@@ -34,9 +34,12 @@ repository: a consumer's publish run dies at startup with zero jobs
 (pydevices v0.5.0, [.github#47](https://github.com/PyDevices/.github/issues/47)).
 `publishing-v11` is the fix: the siblings are named by full path at the tag's
 own name, and [`scripts/cut_publishing_tag.sh`](../scripts/cut_publishing_tag.sh)
-is the only way a tag is cut from now on — it rewrites those refs and tags
-the same commit, and the `sibling-refs` check refuses a tree where they
-disagree or use `./`.
+is the only way a tag is cut from now on — it rewrites those refs *and* the
+`publishing-tools-ref` input defaults (through which three reusables check
+out this repository's `scripts/`) and tags the same commit, and the
+`sibling-refs` check refuses a tree where any of them disagree or use `./`.
+(v11 itself still carries v6 tools-ref defaults — harmless, the scripts are
+identical — and is the last tag cut before the script covered them.)
 
 **There is no single "current" pin — a repository is on whatever tag it was
 last moved to.** As of 2026-09-22:
