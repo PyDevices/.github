@@ -99,6 +99,37 @@ jobs:
           done
           exit "$failed"
 
+  sibling-refs:
+    # A reusable workflow that calls another reusable by `./` path resolves it
+    # against the CONSUMER's repository, not this one, and the consumer's run
+    # dies at startup with zero jobs (publishing-v10, .github#47). So no
+    # reusable here may use `./`, and every nested PyDevices/.github ref in
+    # the coordinator must name one and the same publishing tag -- the one
+    # scripts/cut_publishing_tag.sh writes when it cuts it.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: No local-path calls in any reusable workflow
+        run: |
+          set -euo pipefail
+          if grep -nE '^\s*uses:\s*\./' .github/workflows/reusable-*.yml; then
+            echo "::error::a reusable workflow calls a sibling by ./ path; that resolves against the consumer's repo (.github#47)"
+            exit 1
+          fi
+          echo "OK: no ./ calls"
+      - name: The coordinator's sibling refs all name one tag
+        run: |
+          set -euo pipefail
+          tags=$(grep -oE 'PyDevices/\.github/\.github/workflows/[a-z-]+\.yml@publishing-v[0-9]+' \
+                   .github/workflows/reusable-publish-release-packages.yml \
+                 | sed 's/.*@//' | sort -u)
+          count=$(printf '%s\n' "$tags" | grep -c .)
+          if [ "$count" -ne 1 ]; then
+            echo "::error::the coordinator's sibling refs name $count tags: $(echo "$tags" | tr '\n' ' ')"
+            exit 1
+          fi
+          echo "OK: every sibling ref is @$tags"
+
   ruff:
     runs-on: ubuntu-latest
     steps:

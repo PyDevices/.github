@@ -5,14 +5,15 @@
 # workflow_dispatch retry contract, and the TestPyPI upload existed once per
 # repo; only the build kind and a few names actually differed.
 #
-# The four sibling workflows below are called by local `./` path, not by tag.
-# A local reference resolves against the repository and ref of the file that
-# contains it -- so when a consumer calls this at @publishing-vN, the siblings
-# come from publishing-vN too, and a tag is self-consistent by construction.
-# Pinning them by tag is what let publishing-v7 ship a wheel matrix that never
-# ran, and what has publishing-v9 quietly running v8's builders today
-# (.github#26). Cutting publishing-vN+1 is now a tag with no ref edits.
-name: Reusable publish release packages
+# The four sibling workflows below are pinned to THIS file's own tag, by full
+# path. A local `./` reference does not do what .github#26 hoped: when a
+# consumer calls this coordinator at @publishing-vN, `./` resolves against the
+# CONSUMER's repository, and the run dies at startup with zero jobs
+# (publishing-v10, pydevices v0.5.0, .github#47). So the refs are literal and
+# the tag name is repeated below, and `scripts/cut_publishing_tag.sh` is the
+# only way a tag is cut: it rewrites these four refs to the new tag in the
+# same commit it tags, and the `sibling-refs` job in checks.yml refuses a
+# tree where they disagree with each other or use `./`.
 
 on:
   workflow_call:
@@ -103,7 +104,7 @@ jobs:
   build-pure-python:
     if: inputs.build-kind == 'pure-python'
     needs: prepare-release
-    uses: ./.github/workflows/reusable-build-pure-python-distribution.yml
+    uses: PyDevices/.github/.github/workflows/reusable-build-pure-python-distribution.yml@publishing-v11
     with:
       distribution-name: ${{ inputs.distribution-name }}
       import-name: ${{ inputs.import-name }}
@@ -115,7 +116,7 @@ jobs:
   build-native-and-wasm:
     if: inputs.build-kind == 'native-and-wasm'
     needs: prepare-release
-    uses: ./.github/workflows/reusable-build-native-and-wasm-wheels.yml
+    uses: PyDevices/.github/.github/workflows/reusable-build-native-and-wasm-wheels.yml@publishing-v11
     with:
       distribution-name: ${{ inputs.distribution-name }}
       wheel-filename-prefix: ${{ inputs.wheel-filename-prefix }}
@@ -127,7 +128,7 @@ jobs:
   build-pydevices-multi:
     if: inputs.build-kind == 'pydevices-multi'
     needs: prepare-release
-    uses: ./.github/workflows/reusable-build-pydevices-distributions.yml
+    uses: PyDevices/.github/.github/workflows/reusable-build-pydevices-distributions.yml@publishing-v11
     with:
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}
@@ -277,7 +278,7 @@ jobs:
       - build-pure-python
       - build-native-and-wasm
       - build-pydevices-multi
-    uses: ./.github/workflows/reusable-request-mip-publication.yml
+    uses: PyDevices/.github/.github/workflows/reusable-request-mip-publication.yml@publishing-v11
     with:
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}

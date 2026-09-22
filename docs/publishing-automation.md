@@ -28,27 +28,34 @@ until the tag moves:
 uses: PyDevices/.github/.github/workflows/reusable-publish-release-packages.yml@publishing-vN
 ```
 
-**`publishing-v10` is the newest tag (cut 2026-09-22 at `60e2ab9`), but there
-is no single "current" pin — a repository is on whatever tag it was last
-moved to.** As of 2026-09-22:
+**Never pin `publishing-v10`.** It was cut 2026-09-22 with the coordinator
+calling its siblings by `./` path, which resolves against the *consumer's*
+repository: a consumer's publish run dies at startup with zero jobs
+(pydevices v0.5.0, [.github#47](https://github.com/PyDevices/.github/issues/47)).
+`publishing-v11` is the fix: the siblings are named by full path at the tag's
+own name, and [`scripts/cut_publishing_tag.sh`](../scripts/cut_publishing_tag.sh)
+is the only way a tag is cut from now on — it rewrites those refs and tags
+the same commit, and the `sibling-refs` check refuses a tree where they
+disagree or use `./`.
+
+**There is no single "current" pin — a repository is on whatever tag it was
+last moved to.** As of 2026-09-22:
 
 | Reusable | Pinned at | By |
 |---|---|---|
-| every reusable it calls | `publishing-v10` | `pydevices` (moved for v0.5.0, the tag's first real run) |
+| every reusable it calls | `publishing-v11` | `pydevices` (moved for v0.5.0; v10 burned the first attempt) |
 | `reusable-publish-release-packages` | `publishing-v8` | `audiodsp`, `audiocomponents` |
 | `reusable-publish-release-packages` | `publishing-v6` | `palettes`, `pdwidgets`, `pygraphics`, `lvgl-python`, `mpftp` |
 | `reusable-prepare-release-pr`, `reusable-tag-on-release-merge` | `publishing-v6` | every publishing repository except `pydevices` |
 | `reusable-validate-pyscript-filesystem-toml` | `publishing-v6` | `palettes`, `pdwidgets`, `pygraphics` |
 | `reusable-synchronize-mip-package` | `publishing-v9` | `mip` |
 
-`publishing-v10` is the first tag that contains the workflows it runs: the
-coordinator calls its siblings by `./` path, so the nested-ref check below is
-history from v10 on. Its input contracts are unchanged from `publishing-v6`
-for every reusable a consumer calls, so moving a pin is a one-word change per
-workflow file. What it adds: the VERSION grammar guard before tagging, the
-`## Unreleased` heading converted rather than orphaned by the release PR, a
-release-health push that re-folds instead of losing a report, and the MCU
-mip split (host-only modules routed to `pydevices-desktop`).
+What `publishing-v11` carries beyond `publishing-v6`, with input contracts
+unchanged for every reusable a consumer calls: the VERSION grammar guard
+before tagging, the `## Unreleased` heading converted rather than orphaned by
+the release PR (proven on pydevices v0.5.0's release PR), a release-health
+push that re-folds instead of losing a report, and the MCU mip split
+(host-only modules routed to `pydevices-desktop`).
 
 Every tag from `publishing-v1` still exists, so a release cut before a
 contract change can still be retried against the contract it was built with.
@@ -59,9 +66,11 @@ hand when a tag is cut — which has been missed twice. `publishing-v7` shipped 
 macOS wheel matrix that never ran, costing `audioif` v0.1.0 its tag; and
 `publishing-v9`'s copy of the coordinator still names `@publishing-v8`, so a
 caller on v9 runs v8's builders today. [`.github#26`](https://github.com/PyDevices/.github/issues/26)
-fixed that by calling the siblings by local `./` path, which resolves
-against the tag the caller asked for — in `publishing-v10` and later. For a
-retry against v9 or earlier, **check the nested refs first**.
+tried to fix that with local `./` paths, and #47 showed they resolve against
+the consumer. The fix that holds is procedural: `scripts/cut_publishing_tag.sh`
+writes the tag's own name into the sibling refs in the commit it tags, so a
+tag cut that way cannot skew. For a retry against v9 or earlier, **check the
+nested refs first**.
 
 Publishing tags are **immutable by policy, and that policy is enforced**, not
 just documented: this repository has a tag ruleset named "publishing tags are
