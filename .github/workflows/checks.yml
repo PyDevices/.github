@@ -125,7 +125,7 @@ jobs:
                  | sed 's/.*@//' | sort -u)
           count=$(printf '%s\n' "$tags" | grep -c .)
           if [ "$count" -ne 1 ]; then
-            echo "::error::the coordinator's sibling refs name $count tags: $(printf '%s ' $tags)"
+            echo "::error::the coordinator's sibling refs name $count tags: $(echo "$tags" | tr '\n' ' ')"
             exit 1
           fi
           echo "OK: every sibling ref is @$tags"
