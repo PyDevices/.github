@@ -95,6 +95,19 @@ differently, because their constraints differ:
 - The trade is real but bounded: a display-only board installs about 232 KiB
   more source than `displaydev` alone used to pull. Revisit if that starts to
   matter on a target.
+- **A microcontroller gets only what can run on one.** `displaydev`, `audiodev`
+  and `multimer` each carry a full set of platform backends, and about twenty of
+  them are desktop, browser or Android code. The source repository's
+  `mip-split.toml` names those per package; they ship in `pydevices-desktop`
+  instead, and `pydevices` names its files one by one so the install list is the
+  manifest. An MCU install went from 51 files to 31, and `pydevices-desktop`
+  stayed at 58 — byte for byte the same set, because it already requires
+  `pydevices` (pydevices#30).
+  Two rules keep that file from rotting: a name in it that no longer exists
+  fails the sync, and so does an MCU-side module that imports a host-only one at
+  module scope. A *new* backend nobody classifies ships to the device, so the
+  cost of forgetting is one file too many on a board, never a missing import on
+  a host.
 - Every publishable entry under `utils/`, plus everything publishable in
   `board_configs/desktop/`, is bundled into `pydevices-desktop`.
 - `pydevices-desktop` depends on `pydevices`, so one install gets the complete
