@@ -60,20 +60,82 @@ jobs:
         id: prep
         env:
           V: ${{ steps.version.outputs.version }}
+          CHANGELOG: CHANGELOG.md
+          BULLETS: /tmp/bullets.md
         run: |
           printf '%s\n' "$V" > VERSION
           LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
           RANGE=()
           [[ -n "$LAST_TAG" ]] && RANGE=("$LAST_TAG..HEAD")
-          {
-            echo "## v$V ($(date -u +%Y-%m-%d))"
-            echo
-            git log --no-merges --format='- %s' "${RANGE[@]}"
-            echo
-          } > /tmp/section.md
-          touch CHANGELOG.md
-          cat /tmp/section.md CHANGELOG.md > /tmp/changelog.md
-          mv /tmp/changelog.md CHANGELOG.md
+          git log --no-merges --format='- %s' "${RANGE[@]}" > "$BULLETS"
+          RELEASE_DATE="$(date -u +%Y-%m-%d)" python3 - <<'PY'
+          import os
+
+          # Where the release section goes depends on what the changelog already
+          # says. A repository that accumulates notes under "## Unreleased"
+          # between releases means that block: the release being cut IS those
+          # notes, so the heading becomes the version and the git log joins the
+          # section. Inserting above it instead would strand the block below a
+          # released version and file this release's own notes under
+          # "Unreleased" in the published artifact (.github#40).
+          version = os.environ["V"]
+          date = os.environ["RELEASE_DATE"]
+          changelog = os.environ["CHANGELOG"]
+          heading = f"## v{version} ({date})"
+
+          try:
+              with open(changelog, encoding="utf-8") as handle:
+                  lines = handle.read().splitlines()
+          except FileNotFoundError:
+              lines = []
+
+          with open(os.environ["BULLETS"], encoding="utf-8") as handle:
+              bullets = [line for line in handle.read().splitlines() if line.strip()]
+
+          # The first level-2 heading is where the released history starts;
+          # anything above it is the file's title and preamble and stays put.
+          first = next(
+              (i for i, line in enumerate(lines) if line.startswith("## ")),
+              len(lines),
+          )
+          unreleased = (
+              first < len(lines)
+              and lines[first][3:].strip().lower().rstrip(":").startswith("unreleased")
+          )
+
+          if unreleased:
+              # Convert the block: its heading becomes this version, and the
+              # generated bullets are appended after the notes already written.
+              end = next(
+                  (
+                      i
+                      for i in range(first + 1, len(lines))
+                      if lines[i].startswith("## ")
+                  ),
+                  len(lines),
+              )
+              body = lines[first + 1 : end]
+              while body and not body[0].strip():
+                  body.pop(0)
+              while body and not body[-1].strip():
+                  body.pop()
+              section = [heading, ""] + body
+              if bullets:
+                  if body:
+                      section.append("")
+                  section.extend(bullets)
+              lines[first:end] = section + [""]
+          else:
+              section = [heading, ""] + bullets + [""]
+              lines[first:first] = section
+
+          # A preamble must keep its blank line before the section that follows.
+          if first and lines[first - 1].strip():
+              lines.insert(first, "")
+
+          with open(changelog, "w", encoding="utf-8") as handle:
+              handle.write("\n".join(lines).rstrip("\n") + "\n")
+          PY
 
       - name: Open the release PR
         env:
