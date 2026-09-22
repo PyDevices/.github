@@ -7,10 +7,10 @@ import argparse
 import json
 import re
 import shutil
-import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 
+import tomllib
 from pydevices_package_metadata import PYDEVICES_DESCRIPTIONS
 
 
@@ -244,9 +244,9 @@ def check_no_host_imports(package_dir: Path, host_only: frozenset[str]) -> None:
     """
     package = package_dir.name
     pattern = re.compile(
-        r"^(?:from\s+(?:%s|\.)\s+import\s+(\w+)"
-        r"|from\s+%s\.(\w+)\s+import"
-        r"|import\s+%s\.(\w+))" % (package, package, package)
+        rf"^(?:from\s+(?:{package}|\.)\s+import\s+(\w+)"
+        rf"|from\s+{package}\.(\w+)\s+import"
+        rf"|import\s+{package}\.(\w+))"
     )
     for path in sorted(package_dir.glob("*.py")):
         if path.stem in host_only:
