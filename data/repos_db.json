@@ -354,7 +354,7 @@
     "theme_color": "var(--tier-2-emerald)",
     "eyebrow": "pygraphics",
     "headline": "pygraphics — 2D graphics engine & canvas framebuffer.",
-    "description": "Pure-Python 2D graphics library with drawing primitives, anti-aliased font rendering, paletted surface blitting, and area-dirtying pipelines.",
+    "description": "Native C and pure-Python 2D graphics library with drawing primitives, bitmap font rendering, paletted surface blitting, and area-dirtying pipelines.",
     "hero_canvas": {
       "app": "simon",
       "width": 240,
@@ -440,8 +440,8 @@
     "tier_name": "Python Framebuffers & GUI Toolkits",
     "theme_color": "var(--tier-2-emerald)",
     "eyebrow": "palettes",
-    "headline": "palettes — Color math, gradients & swatch palettes.",
-    "description": "Color management library with RGB565 / RGB888 conversion, HSL / HSV color spaces, palette swatches, and smooth gradient generators.",
+    "headline": "palettes — Color math, wheels, cubes & swatch palettes.",
+    "description": "Color management library with RGB565 / RGB888 output, an HSV color wheel, RGB color cubes, Material Design swatches, and Win16 color names.",
     "hero_canvas": {
       "app": "palette_orb",
       "width": 240,
