@@ -9,9 +9,12 @@ The inventory includes the native `audiodsp` CPython release caller.
 ## Reusable workflows (`PyDevices/.github`)
 
 Callers pin a tag, not a branch, so a change here does not alter a release
-until the tag moves. **`publishing-v6` is current**; earlier tags
-(`publishing-v1`–`publishing-v5`) remain so a release cut before a contract
-change can still be retried against the exact contract it was built with.
+until the tag moves. **`publishing-v9` is the newest tag, but there is no one
+"current" pin** — repositories sit on v6, v8 and v9, and
+[publishing-automation.md](publishing-automation.md#the-tag-contract) has the
+map and the nested-ref trap that goes with it. Earlier tags all remain, so a
+release cut before a contract change can still be retried against the exact
+contract it was built with.
 `publishing-v*` tags are immutable by policy and by an active tag ruleset on
 this repository ("publishing tags are immutable") that blocks moving or
 deleting them.

@@ -2,9 +2,9 @@
 
 This is the organization-wide runbook for publishing a new package version, and
 it **lives here because it is org-wide**: it governs `palettes`, `pdwidgets`,
-`pygraphics`, `audiodsp`, `pydevices`, `lvgl-python`, and `mpftp`, and it
-documents the reusable workflows and shared credentials that this repository
-owns.
+`pygraphics`, `audiodsp`, `audiocomponents`, `pydevices`, `lvgl-python`, and
+`mpftp`, and it documents the reusable workflows and shared credentials that
+this repository owns.
 
 Repository-specific publishing documents cover only what their own release
 produces — for example
@@ -25,14 +25,32 @@ repository at a tag, not a branch, so a change here does not alter a release
 until the tag moves:
 
 ```yaml
-uses: PyDevices/.github/.github/workflows/reusable-publish-release-packages.yml@publishing-v6
+uses: PyDevices/.github/.github/workflows/reusable-publish-release-packages.yml@publishing-vN
 ```
 
-**`publishing-v6` is current.** Tags `publishing-v1` through `publishing-v6`
-all still exist, so a release cut before a contract change can still be
-retried against the exact contract it was built with. Each tag's nested
-`uses:` refs point at its own tag, so a caller on `v3` runs an entirely `v3`
-chain.
+**`publishing-v9` is the newest tag, but there is no single "current" pin —
+a repository is on whatever tag it was last moved to.** As of 2026-09-22:
+
+| Reusable | Pinned at | By |
+|---|---|---|
+| `reusable-publish-release-packages` | `publishing-v8` | `audiodsp`, `audiocomponents` |
+| `reusable-publish-release-packages` | `publishing-v6` | `palettes`, `pdwidgets`, `pygraphics`, `pydevices`, `lvgl-python`, `mpftp` |
+| `reusable-prepare-release-pr`, `reusable-tag-on-release-merge` | `publishing-v6` | every publishing repository |
+| `reusable-validate-pyscript-filesystem-toml` | `publishing-v6` | `palettes`, `pdwidgets`, `pygraphics`, `pydevices` |
+| `reusable-synchronize-mip-package` | `publishing-v9` | `mip` |
+
+Every tag from `publishing-v1` still exists, so a release cut before a
+contract change can still be retried against the contract it was built with.
+
+**A tag does not yet contain the workflows it runs.** The coordinator pins its
+own four sibling workflows by tag as well, and those pins have to be bumped by
+hand when a tag is cut — which has been missed twice. `publishing-v7` shipped a
+macOS wheel matrix that never ran, costing `audioif` v0.1.0 its tag; and
+`publishing-v9`'s copy of the coordinator still names `@publishing-v8`, so a
+caller on v9 runs v8's builders today. [`.github#26`](https://github.com/PyDevices/.github/issues/26)
+is fixing that by calling the siblings by local `./` path, which resolves
+against the tag the caller asked for. Until a tag is cut with that change in
+it, **check the nested refs when you cut a tag**.
 
 Publishing tags are **immutable by policy, and that policy is enforced**, not
 just documented: this repository has a tag ruleset named "publishing tags are
@@ -217,7 +235,8 @@ what differs:
 ```yaml
 jobs:
   publish:
-    uses: PyDevices/.github/.github/workflows/reusable-publish-release-packages.yml@publishing-v6
+    # The tag each repository is on differs; see The tag contract above.
+    uses: PyDevices/.github/.github/workflows/reusable-publish-release-packages.yml@publishing-v8
     with:
       build-kind: pure-python          # or native-and-wasm, pydevices-multi
       distribution-name: pydevices-palettes
@@ -357,7 +376,17 @@ The queue consumer, `reusable-synchronize-mip-package.yml`:
 2. Records the release in `pydevices-lock.json` — the source of truth for
    "what version of each package is currently live." Every publishable
    package must already have an entry in the lockfile; a new profile is
-   added there deliberately, not auto-created.
+   added there deliberately, not auto-created. The entry's `repository` key
+   is also a **guard**: a dispatch whose source repository disagrees is
+   refused (`profile 'audioinstruments' is locked to PyDevices/audioif, not
+   PyDevices/audiocomponents`).
+
+   That guard is what you meet when a package **moves repositories**, and it
+   fails in a place you are not watching: the releasing repository's
+   `request-mip-publication` job reports success, and only `mip`'s own run
+   goes red. The order is: tag in the new repository, then repoint
+   `repository` and `ref` in `pydevices-lock.json` on `mip`'s `PyDevices`
+   branch, then re-run the failed `mip` runs.
 3. **Re-synchronizes every locked source**, not just the one being released:
    it clones each `{repository, ref}` pair from the (now-updated) lockfile
    and runs `synchronize_mip_package.py` for each, because `build.py`
