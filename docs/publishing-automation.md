@@ -48,7 +48,7 @@ last moved to.** As of 2026-09-22:
 | `reusable-publish-release-packages` | `publishing-v6` | `palettes`, `pdwidgets`, `pygraphics`, `lvgl-python`, `mpftp` |
 | `reusable-prepare-release-pr`, `reusable-tag-on-release-merge` | `publishing-v6` | every publishing repository except `pydevices` |
 | `reusable-validate-pyscript-filesystem-toml` | `publishing-v6` | `palettes`, `pdwidgets`, `pygraphics` |
-| `reusable-synchronize-mip-package` | `publishing-v9` | `mip` |
+| `reusable-synchronize-mip-package` (and its `publishing-tools-ref`) | `publishing-v11` | `mip` (moved 2026-09-22, mip#2, so the MCU split reaches the index at the next publication) |
 
 What `publishing-v11` carries beyond `publishing-v6`, with input contracts
 unchanged for every reusable a consumer calls: the VERSION grammar guard
