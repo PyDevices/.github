@@ -569,7 +569,7 @@
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-python",
     "headline": "lvgl-python — CPython & Pyodide WASM extension wheels.",
-    "description": "Pre-built CPython extension wheels and Pyodide WASM packages bringing LVGL v9 to desktop Linux, macOS, Windows, and web browsers.",
+    "description": "Pre-built CPython extension wheels and Pyodide WASM packages bringing LVGL v9 to Linux, Windows, Android, and web browsers.",
     "hero_canvas": {
       "app": "thermostat",
       "width": 240,
