@@ -25,6 +25,17 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
           fi
           V=$(tr -d '[:space:]' < VERSION)
+          # VERSION is tagged verbatim, and any string that is a legal git ref
+          # would become a tag and a GitHub Release. Versions are named by hand
+          # everywhere in this org, so a placeholder sitting in VERSION between
+          # releases is the normal state, not an edge case -- and a burned tag
+          # cannot be reused. Refuse anything that is not a release version,
+          # using the same grammar the prepare-release PR and the publish chain
+          # accept (.github#32).
+          if [[ ! "$V" =~ ^[0-9]+\.[0-9]+\.[0-9]+((a|b|rc)[0-9]+|\.dev[0-9]+)?$ ]]; then
+            echo "::error::VERSION is '$V', not a release version X.Y.Z[{a|b|rc}N|.devN]; refusing to tag."
+            exit 1
+          fi
           if git rev-parse -q --verify "refs/tags/v$V" >/dev/null; then
             echo "Tag v$V already exists; nothing to do."
             echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
