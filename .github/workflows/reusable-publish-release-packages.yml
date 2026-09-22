@@ -4,6 +4,14 @@
 # Callers were five near-identical copies of this. The tag regex, the
 # workflow_dispatch retry contract, and the TestPyPI upload existed once per
 # repo; only the build kind and a few names actually differed.
+#
+# The four sibling workflows below are called by local `./` path, not by tag.
+# A local reference resolves against the repository and ref of the file that
+# contains it -- so when a consumer calls this at @publishing-vN, the siblings
+# come from publishing-vN too, and a tag is self-consistent by construction.
+# Pinning them by tag is what let publishing-v7 ship a wheel matrix that never
+# ran, and what has publishing-v9 quietly running v8's builders today
+# (.github#26). Cutting publishing-vN+1 is now a tag with no ref edits.
 name: Reusable publish release packages
 
 on:
@@ -95,7 +103,7 @@ jobs:
   build-pure-python:
     if: inputs.build-kind == 'pure-python'
     needs: prepare-release
-    uses: PyDevices/.github/.github/workflows/reusable-build-pure-python-distribution.yml@publishing-v8
+    uses: ./.github/workflows/reusable-build-pure-python-distribution.yml
     with:
       distribution-name: ${{ inputs.distribution-name }}
       import-name: ${{ inputs.import-name }}
@@ -107,7 +115,7 @@ jobs:
   build-native-and-wasm:
     if: inputs.build-kind == 'native-and-wasm'
     needs: prepare-release
-    uses: PyDevices/.github/.github/workflows/reusable-build-native-and-wasm-wheels.yml@publishing-v8
+    uses: ./.github/workflows/reusable-build-native-and-wasm-wheels.yml
     with:
       distribution-name: ${{ inputs.distribution-name }}
       wheel-filename-prefix: ${{ inputs.wheel-filename-prefix }}
@@ -119,7 +127,7 @@ jobs:
   build-pydevices-multi:
     if: inputs.build-kind == 'pydevices-multi'
     needs: prepare-release
-    uses: PyDevices/.github/.github/workflows/reusable-build-pydevices-distributions.yml@publishing-v8
+    uses: ./.github/workflows/reusable-build-pydevices-distributions.yml
     with:
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}
@@ -269,7 +277,7 @@ jobs:
       - build-pure-python
       - build-native-and-wasm
       - build-pydevices-multi
-    uses: PyDevices/.github/.github/workflows/reusable-request-mip-publication.yml@publishing-v8
+    uses: ./.github/workflows/reusable-request-mip-publication.yml
     with:
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}
