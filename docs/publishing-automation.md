@@ -28,16 +28,27 @@ until the tag moves:
 uses: PyDevices/.github/.github/workflows/reusable-publish-release-packages.yml@publishing-vN
 ```
 
-**`publishing-v9` is the newest tag, but there is no single "current" pin —
-a repository is on whatever tag it was last moved to.** As of 2026-09-22:
+**`publishing-v10` is the newest tag (cut 2026-09-22 at `60e2ab9`), but there
+is no single "current" pin — a repository is on whatever tag it was last
+moved to.** As of 2026-09-22:
 
 | Reusable | Pinned at | By |
 |---|---|---|
+| every reusable it calls | `publishing-v10` | `pydevices` (moved for v0.5.0, the tag's first real run) |
 | `reusable-publish-release-packages` | `publishing-v8` | `audiodsp`, `audiocomponents` |
-| `reusable-publish-release-packages` | `publishing-v6` | `palettes`, `pdwidgets`, `pygraphics`, `pydevices`, `lvgl-python`, `mpftp` |
-| `reusable-prepare-release-pr`, `reusable-tag-on-release-merge` | `publishing-v6` | every publishing repository |
-| `reusable-validate-pyscript-filesystem-toml` | `publishing-v6` | `palettes`, `pdwidgets`, `pygraphics`, `pydevices` |
+| `reusable-publish-release-packages` | `publishing-v6` | `palettes`, `pdwidgets`, `pygraphics`, `lvgl-python`, `mpftp` |
+| `reusable-prepare-release-pr`, `reusable-tag-on-release-merge` | `publishing-v6` | every publishing repository except `pydevices` |
+| `reusable-validate-pyscript-filesystem-toml` | `publishing-v6` | `palettes`, `pdwidgets`, `pygraphics` |
 | `reusable-synchronize-mip-package` | `publishing-v9` | `mip` |
+
+`publishing-v10` is the first tag that contains the workflows it runs: the
+coordinator calls its siblings by `./` path, so the nested-ref check below is
+history from v10 on. Its input contracts are unchanged from `publishing-v6`
+for every reusable a consumer calls, so moving a pin is a one-word change per
+workflow file. What it adds: the VERSION grammar guard before tagging, the
+`## Unreleased` heading converted rather than orphaned by the release PR, a
+release-health push that re-folds instead of losing a report, and the MCU
+mip split (host-only modules routed to `pydevices-desktop`).
 
 Every tag from `publishing-v1` still exists, so a release cut before a
 contract change can still be retried against the contract it was built with.
@@ -48,9 +59,9 @@ hand when a tag is cut — which has been missed twice. `publishing-v7` shipped 
 macOS wheel matrix that never ran, costing `audioif` v0.1.0 its tag; and
 `publishing-v9`'s copy of the coordinator still names `@publishing-v8`, so a
 caller on v9 runs v8's builders today. [`.github#26`](https://github.com/PyDevices/.github/issues/26)
-is fixing that by calling the siblings by local `./` path, which resolves
-against the tag the caller asked for. Until a tag is cut with that change in
-it, **check the nested refs when you cut a tag**.
+fixed that by calling the siblings by local `./` path, which resolves
+against the tag the caller asked for — in `publishing-v10` and later. For a
+retry against v9 or earlier, **check the nested refs first**.
 
 Publishing tags are **immutable by policy, and that policy is enforced**, not
 just documented: this repository has a tag ruleset named "publishing tags are
