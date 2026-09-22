@@ -19,11 +19,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Fold in the report and regenerate the page
+      - name: Fold in the report, regenerate the page, and commit
         env:
           PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+          DISTRIBUTION: ${{ github.event.client_payload.distribution }}
+          RELEASE_VERSION: ${{ github.event.client_payload.version }}
         run: |
-          python3 - <<'PY'
+          # The fold goes in a file because it has to be re-runnable: one
+          # release reports several distributions, each dispatching its own
+          # event, and a repository_dispatch freezes github.sha at creation
+          # time -- so a second run checks out a tip that predates the first
+          # run's commit and its push is rejected (.github#34). A plain rebase
+          # is not enough here: RELEASE_HEALTH.md is regenerated whole and
+          # data.json is one sorted object, so replaying our diff onto the new
+          # tip conflicts or drops the other distribution's row. Instead,
+          # discard our commit, take the branch tip, and fold this payload in
+          # again -- the fold is idempotent, so the result carries both rows.
+          cat > "$RUNNER_TEMP/fold.py" <<'PY'
           import json, os, datetime
           p = json.loads(os.environ["PAYLOAD"])
           path = "release-health/data.json"
@@ -50,10 +62,25 @@ jobs:
               "| Distribution | Version | TestPyPI | Assets | MIP | PyPI | Updated |\n"
               "|---|---|---|---|---|---|---|\n" + "\n".join(rows) + "\n")
           PY
-      - name: Commit
-        run: |
+
           git config user.name "pydevices-release-automation[bot]"
           git config user.email "pydevices-release-automation[bot]@users.noreply.github.com"
-          git add RELEASE_HEALTH.md release-health/data.json
-          git diff --cached --quiet || git commit -m "release-health: ${{ github.event.client_payload.distribution }} ${{ github.event.client_payload.version }}"
-          git push
+          BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+          for attempt in 1 2 3; do
+            python3 "$RUNNER_TEMP/fold.py"
+            git add RELEASE_HEALTH.md release-health/data.json
+            if git diff --cached --quiet; then
+              echo "Nothing to record for $DISTRIBUTION $RELEASE_VERSION."
+              exit 0
+            fi
+            git commit -q -m "release-health: $DISTRIBUTION $RELEASE_VERSION"
+            if git push origin "HEAD:$BRANCH"; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt); re-folding onto the branch tip"
+            git fetch --quiet origin "$BRANCH"
+            git reset --quiet --hard FETCH_HEAD
+          done
+          echo "::error::release-health could not push after 3 attempts"
+          exit 1
