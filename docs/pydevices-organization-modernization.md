@@ -237,7 +237,7 @@ stranger would otherwise misread it.
   reads, edits, and approves the version before merging.
 - **Only `pydevices`, `pydevices-desktop`, `pygraphics`, `palettes`,
   `pdwidgets`, and `audiodsp` publish** (audiodsp ships three
-  distributions: `pydevices-audioif`, `-audioinstruments`,
+  distributions: `pydevices-audiodsp`, `-audioinstruments`,
   `-audioeffects` — added post-handoff, 2026-08). The pydevices leaf
   distributions are retired.
 - **lvgl-python is a sync target.** Helpers and bindings are edited only

@@ -89,11 +89,11 @@ if bin="$(ensure_venv pydevices-examples)"; then
     # examples exercise the same source that MicroPython consumes.
     if [[ -d "$REPOS/audiodsp" ]]; then
         "$bin/pip" install -q -e "$REPOS/audiodsp" || \
-            log "warn: editable pydevices-audioif install failed; synthesis examples unavailable"
+            log "warn: editable pydevices-audiodsp install failed; synthesis examples unavailable"
     else
         "$bin/pip" install -q -i https://test.pypi.org/simple/ \
-            --extra-index-url https://pypi.org/simple/ pydevices-audioif || \
-            log "warn: pydevices-audioif (TestPyPI) install skipped; synthesis examples unavailable"
+            --extra-index-url https://pypi.org/simple/ pydevices-audiodsp || \
+            log "warn: pydevices-audiodsp (TestPyPI) install skipped; synthesis examples unavailable"
     fi
     # CPython LVGL binding (import name `lvgl`) from TestPyPI — optional; the
     # LVGL examples/timer kits need it. Best-effort so TestPyPI outages don't
