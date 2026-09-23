@@ -54,10 +54,10 @@
   "prerelease": false,
   "pypi": "skipped",
   "repo": "audiocomponents",
-  "run_url": "https://github.com/PyDevices/audiocomponents/actions/runs/33814443026",
+  "run_url": "https://github.com/PyDevices/audiocomponents/actions/runs/35933578412",
   "testpypi": "success",
-  "updated": "2026-09-03 22:46 UTC",
-  "version": "0.2.0"
+  "updated": "2026-09-23 23:42 UTC",
+  "version": "0.3.0"
  },
  "pydevices-lvgl": {
   "assets": "success",
