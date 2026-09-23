@@ -24,16 +24,16 @@
   "version": "0.6.0"
  },
  "pydevices-audioeffects": {
-  "assets": "success",
+  "assets": "skipped",
   "distribution": "pydevices-audioeffects",
   "mip": "skipped",
   "prerelease": false,
   "pypi": "skipped",
-  "repo": "audiodsp",
-  "run_url": "https://github.com/PyDevices/audiodsp/actions/runs/33394213045",
-  "testpypi": "success",
-  "updated": "2026-08-31 12:57 UTC",
-  "version": "0.1.1"
+  "repo": "audiocomponents",
+  "run_url": "https://github.com/PyDevices/audiocomponents/actions/runs/35933578412",
+  "testpypi": "skipped",
+  "updated": "2026-09-23 23:41 UTC",
+  "version": "0.3.0"
  },
  "pydevices-audioif": {
   "assets": "success",
