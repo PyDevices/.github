@@ -546,11 +546,6 @@
         "primary": true
       },
       {
-        "label": "cmods Workspace",
-        "href": "https://pydevices.github.io/cmods/",
-        "tier_color": true
-      },
-      {
         "label": "lvgl-bindings",
         "href": "https://pydevices.github.io/lvgl-bindings/",
         "tier_color": true
@@ -629,11 +624,6 @@
         "label": "GitHub Repo",
         "href": "https://github.com/PyDevices/lvgl-circuitpython",
         "primary": true
-      },
-      {
-        "label": "cmods Workspace",
-        "href": "https://pydevices.github.io/cmods/",
-        "tier_color": true
       },
       {
         "label": "lvgl-bindings",
@@ -803,56 +793,8 @@
         "primary": true
       },
       {
-        "label": "cmods Workspace",
-        "href": "https://pydevices.github.io/cmods/",
-        "tier_color": true
-      },
-      {
         "label": "mpftp",
         "href": "https://pydevices.github.io/mpftp/",
-        "tier_color": true
-      },
-      {
-        "label": "pydevices Core",
-        "href": "https://pydevices.github.io/pydevices/",
-        "tier_color": true
-      }
-    ]
-  },
-  "cmods": {
-    "tier": 5,
-    "page": "portal-subdir",
-    "tier_name": "Developer Tools & Infrastructure",
-    "theme_color": "var(--tier-5-steel)",
-    "eyebrow": "cmods",
-    "headline": "cmods — Multi-usermod C compilation workspace.",
-    "description": "Out-of-tree C build workspace for compiling MicroPython and CircuitPython firmware binaries with displayif drivers and LVGL bindings.",
-    "hero_canvas": {
-      "app": "polyhedron",
-      "width": 240,
-      "height": 240,
-      "shape": "square",
-      "deps": [
-        "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
-      "app_url": "https://PyDevices.github.io/assets/apps/polyhedron.py"
-    },
-    "buttons": [
-      {
-        "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/cmods",
-        "primary": true
-      },
-      {
-        "label": "displayif Usermods",
-        "href": "https://pydevices.github.io/displayif/",
-        "tier_color": true
-      },
-      {
-        "label": "lvgl-bindings",
-        "href": "https://pydevices.github.io/lvgl-bindings/",
         "tier_color": true
       },
       {

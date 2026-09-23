@@ -51,7 +51,10 @@ handing work from Cursor desktop to Cloud Agents.
 ```
 /home/ubuntu/gh/
 └── pydevices/
-    ├── cmods                 -> /agent/repos/cmods
+    ├── micropython           a clone at the tag micropython-pydevices pins, the patch series applied
+    ├── circuitpython         a clone at the pinned CircuitPython tag
+    ├── micropython-pydevices -> /agent/repos/micropython-pydevices
+    ├── audiodsp, displayif, pygraphics, lvgl-* ...  -> /agent/repos/<name>
     ├── dotgithub             -> /agent/repos/.github   (this repo)
     ├── pydevices  -> /agent/repos/pydevices
     ├── mpftp                 -> /agent/repos/mpftp
@@ -67,150 +70,40 @@ handing work from Cursor desktop to Cloud Agents.
 release there; agents should not add it to this workspace unless explicitly
 asked.
 
-## `cmods` workspace interior
+## Workspace interior
 
-`pydevices/cmods` is the LVGL / native-module build workspace. Sibling repos
-that also exist under `/agent/repos/` are linked in, not duplicated:
-
-```
-cmods/
-├── micropython/           shallow clone @ latest stable tag (e.g. v1.28.0)
-├── circuitpython/       shallow clone @ latest stable tag (e.g. 10.2.1)
-├── displayif            -> /agent/repos/displayif
-├── pygraphics           -> /agent/repos/pygraphics
-├── lvgl-bindings          -> /agent/repos/lvgl-bindings
-├── lvgl-circuitpython -> /agent/repos/lvgl-circuitpython
-├── lvgl-python       -> /agent/repos/lvgl-python
-└── lvgl-micropython  -> /agent/repos/lvgl-micropython
-```
+Every repository is a sibling at the workspace root, linked in from
+`/agent/repos/`, not duplicated, and the two interpreter checkouts sit beside
+them. That is the layout micropython-pydevices' presets assume (their paths
+resolve two levels up from `manifests/`), and the one every build script in
+the org defaults to: from `micropython/ports/<port>`, upstream's own `make`
+with `VARIANT_DIR=`, `BOARD_DIR=` and `FROZEN_MANIFEST=` pointing into
+`micropython-pydevices`; for CircuitPython, each C-carrying repo's
+`apply_cp_patches.sh` and then upstream's `make`. The workspace anchor's
+`docs/retool-build-draft.md` carries the commands.
 
 Upstream trees (`micropython/`, `circuitpython/`) are **read-only clones** in
-this workspace — do not commit inside them (see cmods
-`AGENTS.md` / `.cursor/rules/cmods-upstream-no-commit.mdc`).
+this workspace. The MicroPython one carries a single local commit, the
+PyDevices overlay, written by `micropython-pydevices/tools/prepare-micropython.sh`;
+do not commit anything else inside them.
 
-### Shallow upstream clones
+### Upstream clones
 
-MicroPython and CircuitPython are intentionally small on disk until a full
-build needs submodules:
-
-```bash
-git clone --depth 1 --filter=blob:none --branch <tag> --single-branch \
-  https://github.com/micropython/micropython.git micropython
-
-git clone --depth 1 --filter=blob:none --branch <tag> --single-branch \
-  https://github.com/adafruit/circuitpython.git circuitpython
-```
-
-Deepen later with `git fetch --unshallow` and port-specific submodule
-steps (e.g. `git -C micropython submodule update --init --recursive`,
-`make -C circuitpython fetch-all-submodules` before a CP unix build).
-
-## LVGL — one copy on disk
-
-LVGL must be available in two places for different consumers:
-
-| Path | Role |
-|------|------|
-| `lvgl-bindings/lvgl` | Binding generator (`regenerate_*.sh`); MicroPython & CircuitPython builds (`micropython.mk`, `circuitpython.mk`) |
-| `lvgl-python/lvgl` | CPython extension sources (`setup.py` / TestPyPI wheels) |
-
-**Do not maintain two separate LVGL checkouts.** Use one real tree and a
-symlink:
-
-```
-lvgl-bindings/lvgl/              ← canonical (git submodule; pin lives here)
-lvgl-python/lvgl  ->  ../lvgl-bindings/lvgl
-```
-
-Initialize the canonical copy once:
+`scripts/cloud-workspace-install.sh` clones both at the pinned tags (blob-filtered,
+so `git apply` still works) and runs `prepare-micropython.sh`. The lvgl-bindings
+`lvgl` submodule is initialised there too, and `lvgl-python/lvgl` is a symlink to
+it (one LVGL tree, never two):
 
 ```bash
-cd /home/ubuntu/gh/pydevices/cmods
+cd /home/ubuntu/gh/pydevices
 git -C lvgl-bindings submodule update --init --depth 1 lvgl
 rm -rf lvgl-python/lvgl          # only if empty placeholder
 ln -s ../lvgl-bindings/lvgl lvgl-python/lvgl
 ```
 
-### LVGL reminders for agents
-
-1. **Bump the pin in `lvgl-bindings` only** — `lvgl-python/lvgl` follows via
-   the symlink.
-2. **Do not run** `git submodule update --init lvgl` inside `lvgl-python`
-   after symlinking — Git would replace the symlink with a second submodule
-   checkout.
-3. **Do not commit** the `lvgl-python/lvgl` symlink as a substitute for the
-   submodule gitlink; it is a local workspace convenience. CI still records
-   `lvgl` as a submodule in that repo.
-4. MP/CP builds read `lvgl-bindings/lvgl` only. Initialize it with
-   `git -C lvgl-bindings submodule update --init --depth 1 lvgl` (see above).
-
-## Org portal generator (`scripts/generate_sites.py`)
-
-Generates the 16 repo/org landing pages under `../PyDevices.github.io/`
-(plus `../mip/.site/` and `../pydevices-examples/.site/`) from
-`data/repos_db.json` and `assets/`. Run it after editing `assets/apps/`,
-`assets/css/site.css`, `assets/css/docs-extra.css`, `assets/js/*.js`, or
-`repos_db.json`:
-
-```bash
-python3 scripts/generate_sites.py
-```
-
-**`assets/` is the only source of truth; deployed copies are pure sync
-targets.** `sync_docs_theme()` extends that rule past the portal:
-`assets/css/docs-extra.css` is the master for the Material for MkDocs
-theme and is copied verbatim into `pygraphics`, `pdwidgets`, and
-`palettes` as `docs/stylesheets/extra.css`. Read the Docs builds those
-repos independently, so after a palette change the synced copies must be
-committed **in their own repositories** for the published docs to follow.
-
-`_copy_chrome_into()`/`sync_assets()` copy `assets/js/*.js`,
-`assets/css/site.css`, and `assets/apps/*.py` verbatim into
-`PyDevices.github.io/assets/chrome/` and `PyDevices.github.io/assets/apps/`
-every run. If you fix something by editing the *deployed* copy directly
-(faster to iterate against a running `serve_portal.py`), that fix is
-invisible to this repo and gets **silently reverted** the next time anyone
-regenerates — port it back into `assets/` before you're done. This has
-already happened once (a `.badge` CSS rule and a `hero-runtime.js` mip-install
-fix both lived only in the deployed copy and had to be recovered from there).
-
-**Marker-based rewrite, not merge**: every `<!-- SOMENAME: START -->` /
-`<!-- SOMENAME: END -->` pair in a generated page gets its *entire* contents
-replaced on each run by whatever `generate_sites.py` computes for that
-marker — there is no diffing or preservation of hand edits placed *inside*
-a recognized marker pair. Hand-authored content that must survive
-regeneration (e.g. the "Architecture & Layers" Mermaid diagram on the portal
-homepage) has to live **outside** any marker pair, not just outside the ones
-you intend to touch — a new marker added to the generator later would clobber
-it too if it happened to land inside. After adding hand content near a
-marker, rerun the generator and diff the result before trusting it.
-
-**Hero canvas apps** (`assets/apps/*.py`, one per repo's landing page,
-executed client-side by `assets/js/hero-runtime.js`) must use the same
-import shape as every other PyDevices example — `from board_config import
-display_drv` + `import appdev` for raw-display apps, or `import
-display_driver` + `import lvgl as lv` for LVGL apps — never construct
-`WasmDisplay(...)` / `appdev.App(displays=...)` by hand. `board_config`
-resolves canvas id and size from `PYDEVICES_CANVAS_ID`/`PYDEVICES_WIDTH`/
-`PYDEVICES_HEIGHT` env vars that `hero-runtime.js` sets before importing the
-module, and `pydevices-desktop` (the mip package `board_config` lives in) is
-**not frozen** into the WASM interpreter — `hero-runtime.js` has to
-`mip.install` it before the app module import can succeed. Also: both
-`hero-runtime.js` and `pydevices-examples`' `gallery-host.js` just
-`__import__()` the app module — there is no `main()` call — so app code must
-run at module scope, not behind `if __name__ == "__main__":`, or it silently
-never executes.
-
-The 3 RTD docs sites (`palettes`, `pdwidgets`, `pygraphics` — *not* generated
-by this script, see their own `docs/*.md`) embed live demos differently:
-`assets/js/docs-runtime.js` `exec()`s inline `<textarea class="code-editor">`
-source directly, with no `board_config` available (a docs reader has no
-board file), so those snippets correctly use `displaydev.auto.AutoDisplay`
-directly instead.
-
 ## Symlink safety
 
-When removing paths under `pydevices/` or `cmods/`, delete **symlinks only**
+When removing paths under `pydevices/`, delete **symlinks only**
 (`rm path` on the link), never `rm -rf` through a symlink into
 `/agent/repos/*` unless the intent is to destroy an owned repo.
 
@@ -233,7 +126,7 @@ at the workspace root — the single home for this rule.
 
 ## Related docs
 
-- [cmods AGENTS.md](https://github.com/PyDevices/cmods/blob/main/AGENTS.md) —
-  workspace build scripts
+- [micropython-pydevices](https://github.com/PyDevices/micropython-pydevices) —
+  presets, variants, boards and the patch series the builds use
 - [lvgl-bindings releasing-bindings.md](https://github.com/PyDevices/lvgl-bindings/blob/main/docs/releasing-bindings.md) —
   binding regeneration and `lvgl-python` release dispatch

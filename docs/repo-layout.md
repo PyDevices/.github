@@ -95,7 +95,7 @@ Examples:
 - Do not put non-unit developer tests in `tests/` — those belong in `tools/`.
 - Root build glue may stay at the repo root when discovery requires it
   (e.g. `micropython.mk`, `setup.py`, `apply_*.sh` entry points).
-- Meta / workspace repos (this `.github` org repo, `PyDevices.github.io`, `cmods`, `mip`) are not package trees; they follow their own roles and need not mirror every directory above.
+- Meta / workspace repos (this `.github` org repo, `PyDevices.github.io`, `micropython-pydevices`, `mip`) are not package trees; they follow their own roles and need not mirror every directory above.
 
 ## Preferred search paths (`MICROPYPATH` / `PYTHONPATH`)
 
@@ -124,7 +124,7 @@ MicroPython because `.frozen` resolves first.
 
 ## Optional by design
 
-The workflow helpers — [cmods](https://github.com/PyDevices/cmods),
+The workflow helpers — [micropython-pydevices](https://github.com/PyDevices/micropython-pydevices)' presets,
 [mpftp](https://github.com/PyDevices/mpftp), and the custom
 [MIP index](https://github.com/PyDevices/mip) — are **all optional**. Stock
 `make USER_C_MODULES=...`, `mpremote`, `circup`, and any standalone IDE work

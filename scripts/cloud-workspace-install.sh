@@ -15,8 +15,11 @@ ORG="${PYDEVICES_GITHUB_ORG:-PyDevices}"
 
 # Sibling checkouts expected under $REPOS (names match GitHub repo names).
 SIBLINGS=(
-    cmods
+    micropython-pydevices
     audiodsp
+    audioif
+    usbif
+    cameraif
     displayif
     pygraphics
     lvgl-bindings
@@ -143,32 +146,18 @@ link_pydevices() {
     ln -s "$target" "$path"
 }
 
-link_cmods_sibling() {
-    local name=$1
-    local path="$PD/cmods/$name"
-    if [[ -L "$path" ]]; then
-        return 0
-    fi
-    if [[ -e "$path" ]]; then
-        log "skip $path (exists, not a symlink)"
-        return 0
-    fi
-    log "link $path -> $REPOS/$name"
-    ln -s "$REPOS/$name" "$path"
-}
-
 shallow_clone_if_missing() {
     local dir=$1 url=$2 branch=$3
-    local path="$PD/cmods/$dir"
+    local path="$PD/$dir"
     if [[ -d "$path/.git" ]]; then
-        log "present: cmods/$dir"
+        log "present: $dir"
         return 0
     fi
     if [[ -e "$path" ]]; then
-        log "skip cmods/$dir (path exists but is not a git checkout)"
+        log "skip $dir (path exists but is not a git checkout)"
         return 0
     fi
-    log "clone $url @ $branch -> cmods/$dir"
+    log "clone $url @ $branch -> $dir"
     git clone --depth 1 --filter=blob:none --branch "$branch" --single-branch \
         "$url" "$path"
 }
@@ -181,8 +170,8 @@ is_empty_lvgl_placeholder() {
 }
 
 ensure_lv_cpython_lvgl_symlink() {
-    local lvcp_lvgl="$PD/cmods/lvgl-python/lvgl"
-    [[ -d "$PD/cmods/lvgl-python" ]] || return 0
+    local lvcp_lvgl="$PD/lvgl-python/lvgl"
+    [[ -d "$PD/lvgl-python" ]] || return 0
 
     if [[ -L "$lvcp_lvgl" ]]; then
         return 0
@@ -203,7 +192,7 @@ ensure_lv_cpython_lvgl_symlink() {
 
 verify_ready() {
     local name missing=0
-    for name in cmods audiodsp displayif pygraphics lvgl-bindings pydevices pydevices-examples palettes pdwidgets; do
+    for name in micropython-pydevices audiodsp displayif pygraphics lvgl-bindings pydevices pydevices-examples palettes pdwidgets; do
         if [[ ! -d "$REPOS/$name/.git" && ! -L "$REPOS/$name" ]]; then
             log "ERROR: required repo missing: $REPOS/$name"
             missing=1
@@ -213,15 +202,15 @@ verify_ready() {
         log "ERROR: displayif port matrix doc missing under $REPOS/displayif"
         missing=1
     fi
-    if [[ ! -d "$PD/cmods/micropython/.git" ]]; then
-        log "ERROR: cmods/micropython shallow clone missing"
+    if [[ ! -d "$PD/micropython/.git" ]]; then
+        log "ERROR: micropython clone missing"
         missing=1
     fi
-    if [[ ! -e "$PD/cmods/lvgl-bindings/lvgl/src" && ! -e "$REPOS/lvgl-bindings/lvgl/src" ]]; then
+    if [[ ! -e "$REPOS/lvgl-bindings/lvgl/src" ]]; then
         log "ERROR: lvgl-bindings/lvgl submodule not initialized"
         missing=1
     fi
-    if [[ ! -L "$PD/cmods/lvgl-python/lvgl" ]]; then
+    if [[ ! -L "$PD/lvgl-python/lvgl" ]]; then
         log "ERROR: lvgl-python/lvgl is not a symlink to lvgl-bindings/lvgl"
         missing=1
     fi
@@ -234,7 +223,6 @@ ensure_repos_root
 ensure_dotgithub
 clone_missing_siblings || die "one or more sibling clones failed"
 
-link_pydevices cmods "$REPOS/cmods"
 link_pydevices dotgithub "$REPOS/.github"
 link_pydevices PyDevices.github.io "$REPOS/PyDevices.github.io"
 link_pydevices pydevices "$REPOS/pydevices"
@@ -244,22 +232,29 @@ link_pydevices pdwidgets "$REPOS/pdwidgets"
 link_pydevices pydevices-examples "$REPOS/pydevices-examples"
 link_pydevices android-template "$REPOS/android-template"
 
-# cmods must exist before interior sibling links
-[[ -d "$PD/cmods" ]] || die "cmods missing after link step ($PD/cmods)"
-
-for s in audiodsp displayif pygraphics lvgl-bindings lvgl-circuitpython lvgl-python \
-    lvgl-micropython; do
-    [[ -d "$REPOS/$s" || -L "$REPOS/$s" ]] && link_cmods_sibling "$s"
+# Every module repository is a sibling at the workspace root: that is the
+# layout micropython-pydevices' presets assume (paths two levels up from its
+# manifests/), and the one every build script in the org defaults to.
+for s in micropython-pydevices audiodsp audioif usbif cameraif displayif pygraphics \
+    lvgl-bindings lvgl-circuitpython lvgl-python lvgl-micropython; do
+    [[ -d "$REPOS/$s" || -L "$REPOS/$s" ]] && link_pydevices "$s" "$REPOS/$s"
 done
 
-MP_TAG="${PYDEVICES_MP_TAG:-v1.28.0}"
-CP_TAG="${PYDEVICES_CP_TAG:-10.2.1}"
+# The interpreter checkouts, beside the repositories. The MicroPython tag is
+# the one micropython-pydevices pins, and tools/prepare-micropython.sh there
+# applies the patch series once.
+MP_TAG="${PYDEVICES_MP_TAG:-$(tr -d '[:space:]' < "$REPOS/micropython-pydevices/UPSTREAM" 2>/dev/null || echo v1.29.0)}"
+CP_TAG="${PYDEVICES_CP_TAG:-10.3.0}"
 shallow_clone_if_missing micropython https://github.com/micropython/micropython.git "$MP_TAG"
 shallow_clone_if_missing circuitpython https://github.com/adafruit/circuitpython.git "$CP_TAG"
+if [[ -x "$REPOS/micropython-pydevices/tools/prepare-micropython.sh" ]]; then
+    "$REPOS/micropython-pydevices/tools/prepare-micropython.sh" "$PD/micropython" \
+        || log "WARNING: prepare-micropython.sh failed; the checkout is unpatched"
+fi
 
-if [[ -d "$PD/cmods/lvgl-bindings/.git" ]]; then
+if [[ -d "$REPOS/lvgl-bindings/.git" ]]; then
     log "init lvgl-bindings/lvgl submodule"
-    git -C "$PD/cmods/lvgl-bindings" submodule update --init --depth 1 lvgl
+    git -C "$REPOS/lvgl-bindings" submodule update --init --depth 1 lvgl
 fi
 
 ensure_lv_cpython_lvgl_symlink
