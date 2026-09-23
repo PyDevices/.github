@@ -366,8 +366,8 @@ lvgl-python: Sync and release (workflow_dispatch, lvgl_bindings_ref, mode)
 `lvgl-micropython` and `lvgl-circuitpython` each carry their own
 `scripts/sync_from_lvgl_bindings.sh` and an `LVGL_BINDINGS_COMMIT` file
 recording what they last synced, but neither has a `.github/workflows/`
-directory of its own — their sync is run by hand (or from the maintainer
-orchestration in `cmods`), not on a schedule or dispatch chain.
+directory of its own — their sync is run by hand, not on a schedule or
+dispatch chain.
 
 `lvgl-bindings/check-dispatch-token.yml` is a read-only diagnostic (does the
 App token reach `lvgl-python`?) kept until the App path has enough track

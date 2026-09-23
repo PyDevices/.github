@@ -1,7 +1,7 @@
 # Personal notes
 
 Brad's personal working notes for PyDevices work across sibling repos
-(`pydevices-examples`, `cmods`, `mip`, app templates, etc.).
+(`pydevices-examples`, `micropython-pydevices`, `mip`, app templates, etc.).
 Not contributor-facing and not published via Pages or RTD — lives here
 so it can sync with the org clone without being a product/docs surface.
 

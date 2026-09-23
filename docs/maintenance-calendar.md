@@ -2,7 +2,6 @@
 
 ## Continuous (automated)
 - Release Health dashboard: every publish run reports, pass or fail.
-- cmods mirror-drift + shellcheck: every push to cmods.
 - dotgithub self-checks (actionlint, YAML, generator idempotency, ruff):
   every push/PR here.
 - Per-repo publish/test CI: every push per repo.
