@@ -7,6 +7,7 @@ import argparse
 import shutil
 import subprocess
 import sys
+import tomllib
 from pathlib import Path
 
 from pydevices_package_metadata import PYDEVICES_DESCRIPTIONS
@@ -48,10 +49,45 @@ def copy_component(source: Path, destination: Path) -> None:
         shutil.copy2(source, destination)
 
 
-def project_text(name: str, version: str, description: str, dependencies: list[str], source: Path) -> str:
+def pypi_extras(root: Path) -> dict[str, list[str]]:
+    """Optional dependencies declared in the source repository's mip-split.toml.
+
+    A lib/ package can name a PyPI extra for a library only some hosts need,
+    e.g. bledev's ``pypi-extras = { ble = ["bleak>=1.0"] }``, which becomes
+    ``pip install "pydevices[ble]"``. Two packages naming the same extra
+    must agree.
+    """
+    split_path = root / "mip-split.toml"
+    if not split_path.exists():
+        return {}
+    with split_path.open("rb") as handle:
+        declared = tomllib.load(handle)
+    extras: dict[str, list[str]] = {}
+    for package, section in declared.items():
+        for extra, requirements in section.get("pypi-extras", {}).items():
+            requirements = list(requirements)
+            if extra in extras and extras[extra] != requirements:
+                raise SystemExit(f"mip-split.toml: extra {extra!r} is declared twice, differently ([{package}])")
+            extras[extra] = requirements
+    return extras
+
+
+def project_text(
+    name: str,
+    version: str,
+    description: str,
+    dependencies: list[str],
+    source: Path,
+    extras: dict[str, list[str]] | None = None,
+) -> str:
     modules = sorted(path.stem for path in source.glob("*.py") if path.name != "__init__.py")
     module_line = f"py-modules = {modules!r}\n" if modules else ""
     dependency_lines = "\n".join(f'  "{dependency}",' for dependency in dependencies)
+    extras_block = ""
+    if extras:
+        extras_block = "\n[project.optional-dependencies]\n" + "".join(
+            f"{extra} = {requirements!r}\n".replace("'", '"') for extra, requirements in sorted(extras.items())
+        )
     return f'''[build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
@@ -67,7 +103,7 @@ authors = [{{ name = "Brad Barnett" }}]
 dependencies = [
 {dependency_lines}
 ]
-
+{extras_block}
 [project.urls]
 Homepage = "https://github.com/PyDevices/pydevices"
 Repository = "https://github.com/PyDevices/pydevices"
@@ -80,12 +116,19 @@ where = ["src"]
 '''
 
 
-def write_project(stage: Path, name: str, version: str, description: str, dependencies: list[str]) -> None:
+def write_project(
+    stage: Path,
+    name: str,
+    version: str,
+    description: str,
+    dependencies: list[str],
+    extras: dict[str, list[str]] | None = None,
+) -> None:
     stage.mkdir(parents=True, exist_ok=True)
     (stage / "src").mkdir(exist_ok=True)
     (stage / "README.md").write_text(f"# {name}\n\n{description}.\n", encoding="utf-8")
     (stage / "pyproject.toml").write_text(
-        project_text(name, version, description, dependencies, stage / "src"), encoding="utf-8"
+        project_text(name, version, description, dependencies, stage / "src", extras), encoding="utf-8"
     )
 
 
@@ -118,6 +161,7 @@ def build(root: Path, output: Path, version: str) -> None:
         version,
         PYDEVICES_DESCRIPTIONS["pydevices"],
         [],
+        pypi_extras(root),
     )
     stages.append(meta)
 
