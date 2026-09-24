@@ -33,6 +33,12 @@ def get_card_icon(repo_name):
         'displayif': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M7 16l1-4M17 16l-1-4"/></svg>',
         'audiodsp': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4"/></svg>',
         'audioif': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4"/></svg>',
+        'audiocomponents': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>',
+        'usbif': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v14"/><path d="M9 5l3-3 3 3"/><path d="M12 12l-5-3V7M12 14l5-3V9"/><circle cx="12" cy="19" r="3"/></svg>',
+        'cameraif': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></svg>',
+        'micropython-pydevices': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>',
+        'workbench': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 10l-2 2 2 2M14 10l2 2-2 2"/></svg>',
+        'mpvst': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
         'pydevices-examples': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><circle cx="17" cy="15" r="1.5"/></svg>',
         'pygraphics': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 0 1 0 18 13 13 0 0 1 0-18z"/></svg>',
         'pdwidgets': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h6M7 16h8"/></svg>',
@@ -56,6 +62,13 @@ def get_tag_label(repo_name):
         'pydevices': 'Core Flagship',
         'displayif': 'C Bus Usermod',
         'audiodsp': 'C Audio Usermod',
+        'audioif': 'C Audio Driver',
+        'audiocomponents': 'Pure-Python Audio',
+        'usbif': 'C USB Usermod',
+        'cameraif': 'C Camera Usermod',
+        'micropython-pydevices': 'Runtime Overlay',
+        'workbench': 'Browser IDE',
+        'mpvst': 'VST3 Plug-in',
         'pydevices-examples': 'Companion Showcase',
         'pygraphics': '0-Dependency',
         'pdwidgets': 'Pure-Python UI',
@@ -131,6 +144,13 @@ def validate_db(db):
                 problems.append(
                     f'{name}: page=self-subpath but no {site_repo}/.site/{site_subpath}/ directory'
                 )
+        # Every landing page carries exactly four CTA buttons: the house shape
+        # (repo, docs, release or index, one neighbour). Gallery sub-pages
+        # carry none, and page=none renders no hero at all.
+        if destination in ('portal-root', 'portal-subdir', 'self'):
+            count = len(data.get('buttons') or [])
+            if count != 4:
+                problems.append(f'{name}: {count} CTA buttons; a landing page has exactly 4')
     if len(roots) != 1:
         problems.append(
             f'expected exactly one page=portal-root repo, found {roots or "none"}'

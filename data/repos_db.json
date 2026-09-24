@@ -64,8 +64,8 @@
         "tier_color": true
       },
       {
-        "label": "Gallery",
-        "href": "https://pydevices.github.io/pydevices-examples/gallery/",
+        "label": "TestPyPI",
+        "href": "https://test.pypi.org/project/pydevices-desktop/",
         "tier_color": true
       },
       {
@@ -123,7 +123,7 @@
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audiodsp",
     "headline": "audiodsp — CircuitPython-compatible audio for MicroPython and CPython.",
-    "description": "CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. Ships as pydevices-audiodsp; the instrument and effect libraries built on it ship from audiocomponents.",
+    "description": "CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. On PyPI as pydevices-audiodsp; the instrument and effect libraries built on it ship from audiocomponents.",
     "hero_canvas": {
       "app": "signal_gen",
       "width": 480,
@@ -142,28 +142,18 @@
         "primary": true
       },
       {
+        "label": "PyPI",
+        "href": "https://pypi.org/project/pydevices-audiodsp/",
+        "tier_color": true
+      },
+      {
         "label": "Architecture",
         "href": "https://github.com/PyDevices/audiodsp/blob/main/docs/porting-plan.md",
         "tier_color": true
       },
       {
-        "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/pydevices-audiodsp/",
-        "tier_color": true
-      },
-      {
-        "label": "Audio contract",
-        "href": "https://github.com/PyDevices/pydevices/blob/main/docs/audio.md",
-        "tier_color": true
-      },
-      {
         "label": "audiocomponents",
         "href": "https://pydevices.github.io/audiocomponents/",
-        "tier_color": true
-      },
-      {
-        "label": "displayif",
-        "href": "https://pydevices.github.io/displayif/",
         "tier_color": true
       }
     ]
@@ -194,13 +184,13 @@
         "primary": true
       },
       {
-        "label": "audiodsp",
-        "href": "https://pydevices.github.io/audiodsp/",
+        "label": "Releases",
+        "href": "https://github.com/PyDevices/audioif/releases/latest",
         "tier_color": true
       },
       {
-        "label": "audiocomponents",
-        "href": "https://pydevices.github.io/audiocomponents/",
+        "label": "audiodsp",
+        "href": "https://pydevices.github.io/audiodsp/",
         "tier_color": true
       },
       {
@@ -216,8 +206,8 @@
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audiocomponents",
-    "headline": "audiocomponents — 53 classic instruments and 46 effects, in pure Python, on audiodsp.",
-    "description": "The instrument and effect libraries for audiodsp: audioinstruments (53 modelled classics, from the TR-808 to the DX7) and audioeffects (46 effect classes and racks), pure Python on MicroPython and CPython. Ships as pydevices-audioinstruments and pydevices-audioeffects, each a standalone distribution and a MIP package.",
+    "headline": "audiocomponents — 55 classic instruments and 45 effects, in pure Python, on audiodsp.",
+    "description": "The instrument and effect libraries for audiodsp: audioinstruments (55 modelled classics, from the TR-808 to the DX7) and audioeffects (45 effect classes and racks), pure Python on MicroPython and CPython. Ships as pydevices-audioinstruments and pydevices-audioeffects, each a standalone distribution and a MIP package.",
     "hero_canvas": {
       "app": "audio_scope",
       "width": 240,
@@ -249,11 +239,6 @@
       {
         "label": "TestPyPI: effects",
         "href": "https://test.pypi.org/project/pydevices-audioeffects/",
-        "tier_color": true
-      },
-      {
-        "label": "audiodsp",
-        "href": "https://pydevices.github.io/audiodsp/",
         "tier_color": true
       }
     ]
@@ -296,11 +281,6 @@
       {
         "label": "audiodsp",
         "href": "https://pydevices.github.io/audiodsp/",
-        "tier_color": true
-      },
-      {
-        "label": "displayif",
-        "href": "https://pydevices.github.io/displayif/",
         "tier_color": true
       }
     ]
@@ -546,6 +526,11 @@
         "primary": true
       },
       {
+        "label": "Newcomer's guide",
+        "href": "https://github.com/PyDevices/lvgl-micropython/blob/main/docs/newcomers.md",
+        "tier_color": true
+      },
+      {
         "label": "lvgl-bindings",
         "href": "https://pydevices.github.io/lvgl-bindings/",
         "tier_color": true
@@ -583,8 +568,8 @@
         "primary": true
       },
       {
-        "label": "PyPI Package",
-        "href": "https://pypi.org/project/pydevices-lvgl/",
+        "label": "TestPyPI",
+        "href": "https://test.pypi.org/project/pydevices-lvgl/",
         "tier_color": true
       },
       {
@@ -624,6 +609,11 @@
         "label": "GitHub Repo",
         "href": "https://github.com/PyDevices/lvgl-circuitpython",
         "primary": true
+      },
+      {
+        "label": "Newcomer's guide",
+        "href": "https://github.com/PyDevices/lvgl-circuitpython/blob/main/docs/newcomers.md",
+        "tier_color": true
       },
       {
         "label": "lvgl-bindings",
@@ -730,7 +720,7 @@
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "mpftp",
     "headline": "mpftp — board tools for the editor, CLI, and agents.",
-    "description": "Connect MicroPython and CircuitPython boards from VS Code, Cursor, or the CLI: dual-pane file transfer, in-editor REPL, firmware flash, mip/circup, plus RPC, MCP, and an optional browser PWA.",
+    "description": "Connect MicroPython and CircuitPython boards from VS Code, Cursor, or the CLI, over USB or Wi-Fi: dual-pane file transfer, in-editor REPL, firmware builds and flashing, mip/circup, plus RPC, MCP, and an optional browser PWA.",
     "hero_canvas": {
       "app": "ftp_scope",
       "width": 240,
@@ -760,8 +750,8 @@
         "tier_color": true
       },
       {
-        "label": "Integrations",
-        "href": "https://github.com/PyDevices/mpftp/tree/main/integrations",
+        "label": "Releases",
+        "href": "https://github.com/PyDevices/mpftp/releases/latest",
         "tier_color": true
       }
     ]
@@ -791,6 +781,11 @@
         "label": "GitHub Repo",
         "href": "https://github.com/PyDevices/mip",
         "primary": true
+      },
+      {
+        "label": "Board bring-up",
+        "href": "https://github.com/PyDevices/pydevices/blob/main/docs/board-bringup.md",
+        "tier_color": true
       },
       {
         "label": "mpftp",
@@ -926,7 +921,7 @@
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "micropython-pydevices",
     "headline": "micropython-pydevices — the versioned MicroPython runtime overlay.",
-    "description": "The PyDevices patch queue for MicroPython, kept like a distribution keeps one: an ordered, provenance-tracked patch series over a pinned upstream release, with profiles for Windows networking/FFI, desktop, and WebAssembly, plus the wasm bridge usermod and variant.",
+    "description": "The PyDevices patch queue for MicroPython, kept like a distribution keeps one: an ordered, provenance-tracked patch series over the pinned upstream release (v1.29.0), with presets, boards and variants that build PyDevices modules into firmware with upstream's own make.",
     "hero_canvas": {
       "app": "radar_scope",
       "width": 240,
@@ -948,6 +943,11 @@
       {
         "label": "Patch series",
         "href": "https://github.com/PyDevices/micropython-pydevices/tree/main/patches",
+        "tier_color": true
+      },
+      {
+        "label": "Newcomer's guide",
+        "href": "https://github.com/PyDevices/micropython-pydevices/blob/main/docs/newcomers.md",
         "tier_color": true
       },
       {
@@ -1002,7 +1002,7 @@
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "mpvst",
     "headline": "MPVST — audio effects and instruments as a VST3 plug-in.",
-    "description": "A hardware-accurate MicroPython audio engine -- core, effects, and instruments -- packaged as a VST3 sidecar plug-in for building and auditioning racks inside a DAW.",
+    "description": "Programmable VST3 instruments and effects: every audiocomponents instrument and effect as a named plug-in, each instance running its Python in a sidecar process. Installers for Windows and Linux; nothing has to be built.",
     "hero_canvas": {
       "app": "ftp_scope",
       "width": 240,
@@ -1023,12 +1023,17 @@
       },
       {
         "label": "Releases",
-        "href": "https://github.com/PyDevices/mpvst/releases",
+        "href": "https://github.com/PyDevices/mpvst/releases/latest",
         "tier_color": true
       },
       {
-        "label": "pydevices Core",
-        "href": "https://pydevices.github.io/pydevices/",
+        "label": "Getting Started",
+        "href": "https://github.com/PyDevices/mpvst/blob/main/docs/getting-started.md",
+        "tier_color": true
+      },
+      {
+        "label": "audiocomponents",
+        "href": "https://pydevices.github.io/audiocomponents/",
         "tier_color": true
       }
     ]
