@@ -102,10 +102,10 @@
   "prerelease": false,
   "pypi": "skipped",
   "repo": "pdwidgets",
-  "run_url": "https://github.com/PyDevices/pdwidgets/actions/runs/33248560614",
+  "run_url": "https://github.com/PyDevices/pdwidgets/actions/runs/35952308530",
   "testpypi": "success",
-  "updated": "2026-08-29 10:46 UTC",
-  "version": "0.0.23"
+  "updated": "2026-09-24 03:39 UTC",
+  "version": "0.0.24"
  },
  "pydevices-pygraphics": {
   "assets": "success",
