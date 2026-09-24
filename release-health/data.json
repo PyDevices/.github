@@ -6,10 +6,10 @@
   "prerelease": false,
   "pypi": "skipped",
   "repo": "pydevices",
-  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/35730485891",
+  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/35946293368",
   "testpypi": "success",
-  "updated": "2026-09-22 12:59 UTC",
-  "version": "0.5.0"
+  "updated": "2026-09-24 02:15 UTC",
+  "version": "0.5.1"
  },
  "pydevices-audiodsp": {
   "assets": "success",
