@@ -90,10 +90,10 @@
   "prerelease": false,
   "pypi": "skipped",
   "repo": "palettes",
-  "run_url": "https://github.com/PyDevices/palettes/actions/runs/33248486808",
+  "run_url": "https://github.com/PyDevices/palettes/actions/runs/35952269091",
   "testpypi": "success",
-  "updated": "2026-08-29 10:44 UTC",
-  "version": "0.0.13"
+  "updated": "2026-09-24 03:38 UTC",
+  "version": "0.0.14"
  },
  "pydevices-pdwidgets": {
   "assets": "success",
