@@ -66,7 +66,7 @@ PROFILES = {
     "audioinstruments": Profile(
         package="audioinstruments",
         description=(
-            "53 synthio instruments for PyDevices (drum machines and "
+            "55 synthio instruments for PyDevices (drum machines and "
             "synthesizers); import as audioinstruments"
         ),
         pypi_name=None,
