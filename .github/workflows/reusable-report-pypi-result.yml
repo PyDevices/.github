@@ -1,0 +1,68 @@
+# Report a caller-side PyPI upload to the Release Health dashboard.
+#
+# reusable-publish-release-packages.yml cannot upload to production PyPI
+# itself (Trusted Publishing matches the workflow that runs the upload job,
+# and a called workflow is never the caller's). So a caller with
+# pypi-publish: true runs its own pypi job, and this reports how it went. The
+# coordinator's own report has already gone out by then with pypi "pending";
+# this sends a partial report that release-health.yml folds into that row.
+#
+# A caller uses it as a job after its pypi job:
+#
+#   report-pypi:
+#     needs: [publish, pypi]
+#     if: >-
+#       !cancelled() && needs.publish.outputs.pypi-publish == 'true'
+#     uses: PyDevices/.github/.github/workflows/reusable-report-pypi-result.yml@publishing-vN
+#     with:
+#       distribution-name: pydevices-audiodsp
+#       version: ${{ needs.publish.outputs.version }}
+#       pypi-result: ${{ needs.pypi.result }}
+#     secrets: inherit
+
+on:
+  workflow_call:
+    inputs:
+      distribution-name:
+        description: The distribution the coordinator reported, e.g. pydevices-audiodsp
+        required: true
+        type: string
+      version:
+        description: The release version, X.Y.Z
+        required: true
+        type: string
+      pypi-result:
+        description: The caller's pypi job result (success, failure, cancelled, skipped)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    # Like the coordinator's report: a reporting failure never fails a release.
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mint App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.PYDEVICES_APP_ID }}
+          private-key: ${{ secrets.PYDEVICES_APP_PRIVATE_KEY }}
+          owner: PyDevices
+          repositories: .github
+      - name: Dispatch the PyPI result
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          DISTRIBUTION: ${{ inputs.distribution-name }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          PYPI_RESULT: ${{ inputs.pypi-result }}
+        run: |
+          gh api repos/PyDevices/.github/dispatches -f event_type=release-health \
+            -F 'client_payload[partial]=true' \
+            -F 'client_payload[repo]='"${GITHUB_REPOSITORY#*/}" \
+            -F 'client_payload[distribution]='"$DISTRIBUTION" \
+            -F 'client_payload[version]='"$RELEASE_VERSION" \
+            -F 'client_payload[pypi]='"$PYPI_RESULT"

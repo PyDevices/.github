@@ -43,6 +43,13 @@ jobs:
           data = json.load(open(path)) if os.path.exists(path) else {}
           key = p.get("distribution") or p.get("repo")
           p["updated"] = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+          # A partial report (reusable-report-pypi-result.yml) carries one
+          # stage's outcome, sent after the coordinator's full report: the
+          # caller-side PyPI upload. It updates that row in place, as long as
+          # the row is for the same version; otherwise it stands alone.
+          old = data.get(key, {})
+          if str(p.pop("partial", "")).lower() == "true" and old.get("version") == p.get("version"):
+              p = {**old, **p}
           data[key] = p
           json.dump(data, open(path, "w"), indent=1, sort_keys=True)
           def mark(v):

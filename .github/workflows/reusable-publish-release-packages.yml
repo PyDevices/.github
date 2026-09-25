@@ -62,12 +62,29 @@ on:
         type: string
       pypi-publish:
         description: >-
-          Also publish final releases to production PyPI via Trusted
-          Publishing (requires the repository's protected "pypi"
-          environment and a configured trusted publisher). Default off;
+          Mark final releases for production PyPI. This workflow does not
+          upload them: PyPI matches a Trusted Publisher against the workflow
+          that runs the upload job, and here that would be this file, not the
+          caller's publish-release-packages.yml. It sets the pypi-publish
+          output instead, and the caller's own pypi job uploads. Default off;
           enabling it for a package is an explicit per-package decision.
         default: false
         type: boolean
+    outputs:
+      # What a caller's own PyPI job needs; see "Production PyPI" in
+      # docs/publishing-automation.md for the job that reads them.
+      pypi-publish:
+        description: >-
+          'true' when the caller should upload to production PyPI: pypi-publish
+          was set, the release is final, and the build and TestPyPI succeeded.
+          Empty otherwise.
+        value: ${{ jobs.pypi-gate.outputs.publish }}
+      dist-artifact:
+        description: Name of the artifact holding the validated distributions
+        value: ${{ jobs.prepare-release.outputs.dist-artifact }}
+      version:
+        description: The release version, X.Y.Z without the v
+        value: ${{ jobs.prepare-release.outputs.version }}
 
 permissions:
   contents: read
@@ -79,6 +96,7 @@ jobs:
       release-ref: ${{ steps.release.outputs.release-ref }}
       version: ${{ steps.release.outputs.version }}
       prerelease: ${{ steps.release.outputs.prerelease }}
+      dist-artifact: testpypi-${{ inputs.distribution-name }}-${{ steps.release.outputs.version }}
     steps:
       - name: Resolve and validate the release tag
         id: release
@@ -191,10 +209,15 @@ jobs:
           gh release upload "${{ needs.prepare-release.outputs.release-ref }}" dist/* \
             --clobber --repo "$GITHUB_REPOSITORY"
 
-  publish-to-pypi:
-    # Production publication is opt-in per package (pypi-publish input),
-    # final releases only, through the protected "pypi" environment and
-    # PyPI Trusted Publishing (OIDC; no long-lived token).
+  pypi-gate:
+    # Production PyPI is opt-in per package (pypi-publish input) and final
+    # releases only. The upload itself is NOT here: PyPI's Trusted Publishing
+    # matches the publisher against job_workflow_ref, the workflow that runs
+    # the job, and in a called workflow that is this file at a publishing tag,
+    # which no repository's PyPI publisher can name (audiodsp v0.6.1,
+    # "invalid-publisher"; pypa/gh-action-pypi-publish#166). So this job only
+    # decides, and the caller's own pypi job (environment pypi, id-token:
+    # write) downloads the dist-artifact output and uploads.
     needs:
       - prepare-release
       - build-pure-python
@@ -210,24 +233,20 @@ jobs:
       && !contains(needs.*.result, 'failure')
       && !contains(needs.*.result, 'cancelled')
     runs-on: ubuntu-latest
-    environment: pypi
-    permissions:
-      id-token: write
+    outputs:
+      publish: ${{ steps.decide.outputs.publish }}
     steps:
-      - name: Download the validated distributions
-        uses: actions/download-artifact@v8
-        with:
-          name: testpypi-${{ inputs.distribution-name }}-${{ needs.prepare-release.outputs.version }}
-          path: dist
-      - name: Publish to PyPI via Trusted Publishing
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          skip-existing: true
+      - name: Hand production PyPI to the caller
+        id: decide
+        run: echo "publish=true" >> "$GITHUB_OUTPUT"
 
   report-release-health:
     # Feed the Release Health dashboard in PyDevices/.github regardless of
     # outcome; the dashboard is only useful if failures report too. A
-    # reporting failure must never fail the release itself.
+    # reporting failure must never fail the release itself. The PyPI upload
+    # happens after this, in the caller, so a release headed there reports
+    # pypi as "pending" here and the caller's report-pypi job (the
+    # reusable-report-pypi-result workflow) fills in the outcome.
     continue-on-error: true
     needs:
       - prepare-release
@@ -237,7 +256,7 @@ jobs:
       - publish-to-testpypi
       - attach-release-assets
       - request-mip-publication
-      - publish-to-pypi
+      - pypi-gate
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -261,7 +280,7 @@ jobs:
             -F 'client_payload[testpypi]=${{ needs.publish-to-testpypi.result }}' \
             -F 'client_payload[assets]=${{ needs.attach-release-assets.result }}' \
             -F 'client_payload[mip]=${{ needs.request-mip-publication.result }}' \
-            -F 'client_payload[pypi]=${{ needs.publish-to-pypi.result }}' \
+            -F 'client_payload[pypi]=${{ needs.pypi-gate.result == 'success' && 'pending' || needs.pypi-gate.result }}' \
             -F 'client_payload[run_url]='"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
 
   request-mip-publication:

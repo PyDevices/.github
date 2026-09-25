@@ -230,8 +230,8 @@ publish chain below would silently never fire.
 `reusable-publish-release-packages.yml` resolves and validates the `vX.Y.Z`
 tag, builds (pure-Python, native-and-wasm, or pydevices-multi, per caller),
 publishes to TestPyPI, attaches the built artifacts to the GitHub Release,
-optionally publishes to production PyPI, requests MIP publication for final
-releases, and reports to the Release Health dashboard regardless of outcome.
+requests MIP publication for final releases, tells a caller that opted in to
+upload to production PyPI (the upload runs in the caller's workflow), and reports to the Release Health dashboard regardless of outcome.
 See "How the release chain is wired" below for the per-job detail.
 
 ### Manual tag + release: the fallback
@@ -319,27 +319,70 @@ per-repo/workflow/environment registration that has not been set up.
 
 ### Production PyPI: opt-in, protected, Trusted Publishing
 
-Publishing to **production** PyPI (as opposed to TestPyPI, which every
-release always reaches) is a separate, explicit, per-package decision via the
-`pypi-publish: true` input on `reusable-publish-release-packages.yml`. As of
-this writing no caller sets it — every current release stops at TestPyPI plus
-MIP. When a package does opt in, `publish-to-pypi`:
+Production PyPI (as opposed to TestPyPI, which every release reaches) is an
+explicit per-package decision: `pypi-publish: true` on the coordinator call.
+`audiodsp` is the only repository that sets it.
 
-- runs only for a **final** release (`prerelease == 'false'`; a `.devN` or
-  `{a|b|rc}N` build never reaches PyPI),
-- runs through the repository's `pypi` **GitHub Environment**, which exists
-  in all seven publishing repositories and is configured with required
-  reviewers and a branch policy (confirmed via
-  `gh api repos/PyDevices/<repo>/environments/pypi`), and
-- authenticates via **PyPI Trusted Publishing** (OIDC, `id-token: write`,
-  `pypa/gh-action-pypi-publish@release/v1` with no token) — no long-lived
-  PyPI credential is stored anywhere.
+**The upload runs in the caller's own workflow, not in the reusable one.**
+PyPI matches a Trusted Publisher against the workflow that runs the upload job
+(`job_workflow_ref`). Inside a called workflow that is
+`PyDevices/.github/.github/workflows/reusable-publish-release-packages.yml`
+at a publishing tag, which no repository's publisher can name, so an upload
+from there always fails with `invalid-publisher` (audiodsp v0.6.1;
+[pypa/gh-action-pypi-publish#166](https://github.com/pypa/gh-action-pypi-publish/issues/166),
+[PyPI's note on reusable workflows](https://docs.pypi.org/trusted-publishers/troubleshooting/#reusable-workflows-on-github)).
+From the tag that carries this change, the coordinator only decides: its
+`pypi-gate` job sets the `pypi-publish` output to `true` for a final release
+whose build and TestPyPI upload succeeded, and the caller uploads:
 
-Enabling `pypi-publish` for a package therefore requires both flipping the
-input in that repository's coordinator *and* a matching Trusted Publisher
-already configured on the PyPI project for that repository/workflow/
-environment. Do one before the other and the run fails safely at the PyPI
-end, not silently.
+```yaml
+  pypi:
+    needs: publish
+    if: >-
+      !cancelled() && needs.publish.outputs.pypi-publish == 'true'
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ needs.publish.outputs.dist-artifact }}
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
+
+  report-pypi:
+    needs: [publish, pypi]
+    if: >-
+      !cancelled() && needs.publish.outputs.pypi-publish == 'true'
+    uses: PyDevices/.github/.github/workflows/reusable-report-pypi-result.yml@publishing-vN
+    with:
+      distribution-name: pydevices-audiodsp
+      version: ${{ needs.publish.outputs.version }}
+      pypi-result: ${{ needs.pypi.result }}
+    secrets: inherit
+```
+
+The `pypi` job runs through the repository's `pypi` **GitHub Environment**
+(required reviewer Brad, deployment limited to `v*` tags; check with
+`gh api repos/PyDevices/<repo>/environments/pypi`) and authenticates with
+**Trusted Publishing** (OIDC, no stored PyPI credential). The PyPI project's
+publisher is owner `PyDevices`, the repository, workflow
+`publish-release-packages.yml`, environment `pypi`.
+
+Because the `v*` tag rule applies, a `workflow_dispatch` retry from `main`
+cannot reach the `pypi` environment; a retry that needs PyPI dispatches on the
+tag, and so runs the caller file as it was at that tag.
+
+Turning on `pypi-publish` for a package therefore takes three things: the
+input, the two caller jobs above, and a matching Trusted Publisher on the PyPI
+project. Miss one and the run fails at the PyPI end or skips the upload, never
+silently publishes somewhere else.
+
+TestPyPI is unaffected: it authenticates with `TESTPYPI_API_TOKEN`, not
+Trusted Publishing, so its upload stays in the coordinator.
 
 ## The LVGL model
 
@@ -519,7 +562,11 @@ Every `publish-release-packages` run — success or failure — ends with a
 `report-release-health` job (`continue-on-error: true`, so a reporting
 failure never fails the release itself) that dispatches a
 `repository_dispatch` of type `release-health` to `PyDevices/.github`, with
-the run's outcome for each stage (TestPyPI, assets, MIP, PyPI). This
+the run's outcome for each stage (TestPyPI, assets, MIP, PyPI). A release
+headed for production PyPI reports `pypi` as `pending` there, because that
+upload runs later, in the caller; the caller's `report-pypi` job then sends a
+partial report (`reusable-report-pypi-result.yml`) that fills in the outcome on
+the same row. This
 repository's `release-health.yml` folds that payload into
 [`release-health/data.json`](../release-health/data.json) and regenerates
 [`RELEASE_HEALTH.md`](../RELEASE_HEALTH.md) at the repo root — one row per
@@ -534,7 +581,8 @@ distribution, linking back to the run that produced it.
 | TestPyPI `invalid-publisher` | The job attempted OIDC Trusted Publishing without a matching publisher. TestPyPI still uses `__token__` + `TESTPYPI_API_TOKEN`. |
 | TestPyPI authentication failure | Confirm that `TESTPYPI_API_TOKEN` exists in that source repository, belongs to `bdbarnett`, has permission for the project, and has not expired or been revoked. |
 | TestPyPI duplicate-file response | Retry with the current coordinator, which sets `skip-existing: true`; otherwise publish a new version. |
-| Production PyPI publish did not run | Check three things: `pypi-publish: true` on the caller, the release is a final version (not `.devN`/`{a,b,rc}N`), and the `pypi` environment's required reviewers approved the run. |
+| Production PyPI publish did not run | Check four things: `pypi-publish: true` on the caller, the caller's own `pypi` job (see "Production PyPI" above), the release is a final version (not `.devN`/`{a,b,rc}N`), and the `pypi` environment's required reviewers approved the run. |
+| PyPI `invalid-publisher` with `job_workflow_ref` naming `PyDevices/.github` | The upload ran inside the reusable workflow, which PyPI cannot match. Move it to the caller's `pypi` job on a publishing tag that has `pypi-gate` ("Production PyPI" above). |
 | MIP request is queued | Expected — the central concurrency group processes publication requests serially. |
 | MIP validation sees `.publication-sources/manifest.py` | The shared synchronization job did not remove temporary checkouts; start a fresh run on a current `publishing-v*` tag. |
 | Pages setup or action download returns 429/503/504 | Usually transient GitHub infrastructure trouble. Retry the failed MIP job and verify the live index afterward. |
@@ -668,9 +716,10 @@ inline types and stop looking for stubs.
 chain: it resolves the tag, dispatches the matching build (`build-pure-python`
 / `build-native-and-wasm` / `build-pydevices-multi`, exactly one of which runs
 per invocation, selected by `build-kind`), publishes to TestPyPI, attaches
-release assets, requests MIP publication, optionally publishes to production
-PyPI, and reports to Release Health — all as jobs inside that one reusable
-workflow, not separate coordinators. It replaced five near-identical copies of
+release assets, requests MIP publication, decides whether production PyPI
+should follow, and reports to Release Health — all as jobs inside that one
+reusable workflow, not separate coordinators. The production PyPI upload
+itself is the one step that has to live in the caller (see "Production PyPI"). It replaced five near-identical copies of
 the same three jobs.
 
 Changing a reusable workflow contract is an automation rollout, not a package
@@ -687,7 +736,8 @@ pipeline, test and lint jobs, and validators — see [workflows.md](workflows.md
 |---|---|
 | `reusable-prepare-release-pr.yml` | Open the release PR: compute the version suggestion, write `VERSION` + `CHANGELOG.md`, push, open/update the PR |
 | `reusable-tag-on-release-merge.yml` | On a merged `VERSION` change, create the `vX.Y.Z` tag and GitHub Release with the App token |
-| `reusable-publish-release-packages.yml` | The whole release chain: resolve the tag, build, publish to TestPyPI, attach assets, request MIP publication, optionally publish to PyPI, report health |
+| `reusable-publish-release-packages.yml` | The whole release chain: resolve the tag, build, publish to TestPyPI, attach assets, request MIP publication, tell the caller whether to publish to PyPI, report health |
+| `reusable-report-pypi-result.yml` | Report a caller-side PyPI upload's outcome to Release Health |
 | `reusable-build-pure-python-distribution.yml` | Build, check, clean-install, and upload one wheel/sdist artifact |
 | `reusable-build-native-and-wasm-wheels.yml` | Build Linux, Windows, Android, and WASM (Pyodide) wheels into one validated artifact |
 | `reusable-build-pydevices-distributions.yml` | Discover `pydevices/lib` leaves and `utils` desktop payload; build every exact-version distribution |
