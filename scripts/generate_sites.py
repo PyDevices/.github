@@ -1,4 +1,13 @@
 #!/usr/bin/env python3
+"""Generate every PyDevices landing page from data/repos_db.json.
+
+Run with no arguments from a full workspace to rewrite every page, the shared
+chrome, the docs theme and the ecosystem maps. `--only REPO` rewrites that one
+repository's page and nothing else. mip's refresh-package-list workflow uses
+`--only mip` to regenerate its page in the same commit as packages.json
+(.github#51, #54), with only mip and this repository checked out.
+"""
+import argparse
 import html
 import json
 import os
@@ -84,11 +93,13 @@ def get_tag_label(repo_name):
     }
     return tags.get(repo_name, repo_name)
 
-def validate_db(db):
+def validate_db(db, only=None):
     """Fail fast on a malformed database.
 
     The generator is run by hand, so this is where the check belongs -- it runs
-    exactly when someone edits the database and regenerates.
+    exactly when someone edits the database and regenerates. With `only`, the
+    checks that need a sibling checkout on disk look at that repo alone: the
+    rest of the workspace is not expected to be there.
     """
     if '_meta' not in db:
         raise SystemExit('repos_db.json is missing its _meta block')
@@ -126,16 +137,17 @@ def validate_db(db):
     roots = [n for n, d in repos(db).items() if page_destination(d) == 'portal-root']
     for name, data in repos(db).items():
         destination = page_destination(data)
+        on_disk = only is None or name == only
         if destination not in valid_pages:
             problems.append(
                 f'{name}: page {destination!r} is not one of {sorted(valid_pages)}'
             )
         # A repo keeping its own Pages must still have somewhere to publish from.
-        if destination == 'self' and not os.path.isdir(
+        if on_disk and destination == 'self' and not os.path.isdir(
             os.path.join(BASE_DIR, name, '.site')
         ):
             problems.append(f'{name}: page=self but no .site/ directory')
-        if destination == 'self-subpath':
+        if on_disk and destination == 'self-subpath':
             site_repo = data.get('site_repo')
             site_subpath = data.get('site_subpath')
             if not site_repo or not site_subpath:
@@ -426,8 +438,9 @@ def build_mip_packages_html(packages_path):
     regenerates (scripts/update_package_list.py) from the index itself after
     every deploy, never from PyPI or TestPyPI. Returns None when the sibling
     checkout has no packages.json so the caller can leave the marker block
-    alone rather than blank it. The page itself moves only when this
-    generator is rerun and mip/.site is committed.
+    alone rather than blank it. mip's refresh workflow reruns this generator
+    with `--only mip` and commits mip/.site with packages.json, then redeploys
+    Pages, so the page moves with the list.
     """
     if not os.path.exists(packages_path):
         return None
@@ -620,20 +633,37 @@ def get_site_html_path(repo_name, data):
         return os.path.join(BASE_DIR, data['site_repo'], '.site', data['site_subpath'], 'index.html')
     return None
 
-def main():
+def parse_args(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        '--only', metavar='REPO',
+        help="rewrite only this repository's page; skip the shared assets, "
+             "the docs theme and the ecosystem maps",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv=None):
+    args = parse_args(argv)
     print("=== Pure Harmonized PyDevices Site Generator (.github) ===")
     
     with open(DB_PATH, 'r', encoding='utf-8') as f:
         db = json.load(f)
 
-    validate_db(db)
+    validate_db(db, only=args.only)
+
+    if args.only is not None and args.only not in repos(db):
+        raise SystemExit(f"--only {args.only}: not in data/repos_db.json")
 
     updated_sites = 0
 
-    sync_assets(db)
-    sync_docs_theme()
+    if args.only is None:
+        sync_assets(db)
+        sync_docs_theme()
 
     for repo_name, data in repos(db).items():
+        if args.only is not None and repo_name != args.only:
+            continue
         site_html_path = get_site_html_path(repo_name, data)
         if site_html_path is None:
             print(f"[SKIP] {repo_name}: no generated page (page=none)")
@@ -697,6 +727,14 @@ def main():
 
         updated_sites += 1
         print(f"[OK] Generated & Updated {repo_name} ({os.path.relpath(site_html_path, BASE_DIR)})")
+
+    if args.only is not None:
+        # A page asked for by name and not written is a failure: the caller
+        # commits whatever is on disk and would otherwise commit a stale page.
+        if updated_sites != 1:
+            raise SystemExit(f"--only {args.only}: page not written")
+        print(f"=== Complete! Processed {args.only} only ===")
+        return
 
     written = write_ecosystem_markdown(db)
 
