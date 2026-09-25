@@ -66,7 +66,7 @@ class OnlyMipTests(unittest.TestCase):
     def _run(self, *args: str) -> subprocess.CompletedProcess:
         return subprocess.run(
             [sys.executable, str(self.script), *args],
-            capture_output=True, text=True,
+            capture_output=True, text=True, check=False,
         )
 
     def test_page_follows_packages_json(self) -> None:
