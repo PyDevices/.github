@@ -201,13 +201,54 @@ def render_pydevices_manifest(name: str, version: str, requirements: tuple[str, 
 MIP_SPLIT_FILE = "mip-split.toml"
 
 
-def read_host_only(source_root: Path) -> dict[str, frozenset[str]]:
-    """{package: host-only module stems}, checked against what is on disk."""
+#: Every key a mip-split.toml section may use. An unknown key fails the sync,
+#: so a misspelt `own-package` can't quietly ship a package inside pydevices.
+MIP_SPLIT_KEYS = frozenset({"host-only", "own-package", "requires", "pypi-extras"})
+
+
+def read_split(source_root: Path) -> dict[str, dict]:
+    """The source repository's mip-split.toml, or {} when it has none."""
     split_path = source_root / MIP_SPLIT_FILE
     if not split_path.exists():
         return {}
     with split_path.open("rb") as handle:
         declared = tomllib.load(handle)
+    for package, section in declared.items():
+        unknown = sorted(set(section) - MIP_SPLIT_KEYS)
+        if unknown:
+            raise SystemExit(
+                f"{MIP_SPLIT_FILE} [{package}] has unknown keys: {', '.join(unknown)}"
+            )
+    return declared
+
+
+def read_own_packages(source_root: Path) -> dict[str, tuple[str, ...]]:
+    """{package: requires} for each lib/ package that publishes to MIP on its own.
+
+    Such a package leaves the ``pydevices`` MIP package (it stays in the
+    ``pydevices`` wheel on PyPI). Its ``requires`` become ``require()`` lines,
+    which the index resolves by including them.
+    """
+    own: dict[str, tuple[str, ...]] = {}
+    for package, section in read_split(source_root).items():
+        if not section.get("own-package"):
+            if "requires" in section:
+                raise SystemExit(
+                    f"{MIP_SPLIT_FILE} [{package}] has requires but is not an own-package; "
+                    f"a package inside pydevices has no manifest of its own to put them in"
+                )
+            continue
+        if not (source_root / "lib" / package).is_dir():
+            raise SystemExit(f"{MIP_SPLIT_FILE} names package {package!r}, which is not in lib/")
+        if package not in PYDEVICES_DESCRIPTIONS:
+            raise SystemExit(f"no shared description for own-package {package!r}")
+        own[package] = tuple(section.get("requires", ()))
+    return own
+
+
+def read_host_only(source_root: Path) -> dict[str, frozenset[str]]:
+    """{package: host-only module stems}, checked against what is on disk."""
+    declared = read_split(source_root)
 
     host_only: dict[str, frozenset[str]] = {}
     for package, section in declared.items():
@@ -289,10 +330,35 @@ def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> No
     # instead, which already require()s this package -- so a host installs one
     # thing and gets what it always got (pydevices#30).
     host_only = read_host_only(source_root)
+    own_packages = read_own_packages(source_root)
     host_components: list[tuple[Path, frozenset[str]]] = []
     for source in sorted(filter(publishable, (source_root / "lib").iterdir()), key=lambda path: path.name):
         names.append(source.stem if source.is_file() else source.name)
         split = host_only.get(source.name, frozenset()) if source.is_dir() else frozenset()
+        if source.name in own_packages and source.is_dir():
+            # Its own MIP package, beside pydevices rather than inside it
+            # (bledev: a board without a radio shouldn't carry BLE).
+            check_no_host_imports(source, split)
+            own_root = destination_root / source.name
+            own_root.mkdir()
+            device_files = sorted(path.name for path in source.glob("*.py") if path.stem not in split)
+            destination = own_root / source.name
+            destination.mkdir()
+            for name in device_files:
+                shutil.copy2(source / name, destination / name)
+            listed = ", ".join(f'"{name}"' for name in device_files)
+            (own_root / "manifest.py").write_text(
+                render_pydevices_manifest(
+                    source.name,
+                    version,
+                    own_packages[source.name],
+                    (f'package("{source.name}", files=({listed},))',),
+                ),
+                encoding="utf-8",
+            )
+            if split:
+                host_components.append((source, split))
+            continue
         if not split:
             copy_component(source, package / source.name)
             payloads.append(f'module("{source.name}")' if source.is_file() else f'package("{source.name}")')

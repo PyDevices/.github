@@ -131,6 +131,15 @@ differently, because their constraints differ:
   module scope. A *new* backend nobody classifies ships to the device, so the
   cost of forgetting is one file too many on a board, never a missing import on
   a host.
+- **A package can publish to MIP on its own.** A `mip-split.toml` section
+  with `own-package = true` leaves the `pydevices` MIP package and becomes a
+  sibling (`micropython/pydevices/<name>`), with its own `requires` as
+  `require()` lines, which the index resolves by including them. `bledev` is
+  the first: a board without a radio shouldn't carry BLE, and
+  `mip.install("bledev")` brings aioble with it. On PyPI nothing changes: the
+  package stays inside the `pydevices` wheel, and a section's
+  `pypi-extras = { ble = ["bleak>=1.0"] }` becomes
+  `pip install "pydevices[ble]"`. An unknown key in a section fails the sync.
 - Every publishable entry under `utils/`, plus everything publishable in
   `board_configs/desktop/`, is bundled into `pydevices-desktop`.
 - `pydevices-desktop` depends on `pydevices`, so one install gets the complete

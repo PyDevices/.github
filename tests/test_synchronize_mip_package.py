@@ -341,5 +341,108 @@ class SharedDescriptionTests(unittest.TestCase):
             self.assertNotIn("PyDevices pydevices-desktop", desktop)
 
 
+class OwnPackageTests(unittest.TestCase):
+    """A lib/ package marked own-package publishes to MIP beside pydevices (bledev)."""
+
+    def _source(self, root: Path, split: str) -> Path:
+        source = root / "source"
+        write_pydevices_source(source)
+        bledev = source / "lib" / "bledev"
+        bledev.mkdir(parents=True)
+        for name in ("__init__", "mpble", "nus", "bleak"):
+            (bledev / f"{name}.py").write_text(f"# {name}\n", encoding="utf-8")
+        (source / "mip-split.toml").write_text(textwrap.dedent(split), encoding="utf-8")
+        return source
+
+    def _sync(self, root: Path, source: Path) -> subprocess.CompletedProcess[str]:
+        mip = root / "mip"
+        write_lockfile(mip, {"pydevices": "PyDevices/pydevices"})
+        return run_sync(source, mip, source_name="PyDevices/pydevices", profile="pydevices", version="1.2.3")
+
+    def test_own_package_leaves_pydevices_and_requires_aioble(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = self._source(
+                root,
+                """
+                [bledev]
+                own-package = true
+                requires = ["aioble"]
+                host-only = ["bleak"]
+                pypi-extras = { ble = ["bleak>=1.0"] }
+                """,
+            )
+            result = self._sync(root, source)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            out = root / "mip" / "micropython" / "pydevices"
+            pydevices = (out / "pydevices" / "manifest.py").read_text(encoding="utf-8")
+            self.assertNotIn("bledev", pydevices)
+            self.assertFalse((out / "pydevices" / "bledev").exists())
+            manifest = (out / "bledev" / "manifest.py").read_text(encoding="utf-8")
+            self.assertIn('require("aioble")', manifest)
+            self.assertIn('package("bledev", files=("__init__.py", "mpble.py", "nus.py",))', manifest)
+            self.assertIn(metadata.PYDEVICES_DESCRIPTIONS["bledev"], manifest)
+            self.assertNotIn("pypi_publish", manifest)
+            self.assertEqual(
+                sorted(p.name for p in (out / "bledev" / "bledev").iterdir()),
+                ["__init__.py", "mpble.py", "nus.py"],
+            )
+            desktop = (out / "pydevices-desktop" / "manifest.py").read_text(encoding="utf-8")
+            self.assertIn('package("bledev", files=("bleak.py",))', desktop)
+
+    def test_unknown_key_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = self._source(root, '[bledev]\nown_package = true\n')
+            result = self._sync(root, source)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("unknown keys: own_package", result.stderr)
+
+    def test_requires_without_own_package_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = self._source(root, '[bledev]\nrequires = ["aioble"]\n')
+            result = self._sync(root, source)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("not an own-package", result.stderr)
+
+    def test_without_the_flag_bledev_ships_inside_pydevices(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = self._source(root, '[bledev]\nhost-only = ["bleak"]\n')
+            result = self._sync(root, source)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            out = root / "mip" / "micropython" / "pydevices"
+            self.assertFalse((out / "bledev").exists())
+            self.assertIn('package("bledev"', (out / "pydevices" / "manifest.py").read_text(encoding="utf-8"))
+
+
+class PypiExtrasTests(unittest.TestCase):
+    def test_extras_reach_the_pydevices_pyproject(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "mip-split.toml").write_text('[bledev]\npypi-extras = { ble = ["bleak>=1.0"] }\n', encoding="utf-8")
+            extras = build.pypi_extras(root)
+            self.assertEqual(extras, {"ble": ["bleak>=1.0"]})
+            text = build.project_text("pydevices", "1.2.3", "d", [], Path("."), extras)
+            import tomllib
+
+            self.assertEqual(tomllib.loads(text)["project"]["optional-dependencies"], {"ble": ["bleak>=1.0"]})
+
+    def test_no_extras_leaves_the_pyproject_unchanged(self) -> None:
+        text = build.project_text("pydevices", "1.2.3", "d", [], Path("."))
+        self.assertNotIn("optional-dependencies", text)
+
+    def test_conflicting_extras_fail(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "mip-split.toml").write_text(
+                '[a]\npypi-extras = { ble = ["bleak>=1.0"] }\n[b]\npypi-extras = { ble = ["bleak>=2"] }\n',
+                encoding="utf-8",
+            )
+            with self.assertRaises(SystemExit):
+                build.pypi_extras(root)
+
+
 if __name__ == "__main__":
     unittest.main()
