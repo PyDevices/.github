@@ -7,9 +7,9 @@ import argparse
 import shutil
 import subprocess
 import sys
-import tomllib
 from pathlib import Path
 
+import tomllib
 from pydevices_package_metadata import PYDEVICES_DESCRIPTIONS
 
 DEBRIS = {"__pycache__", "README.md", "build", "dist"}
