@@ -23,7 +23,8 @@ deleting them.
 |---|---|
 | `reusable-prepare-release-pr.yml` | Open the release PR: compute a version suggestion, write `VERSION` + `CHANGELOG.md`, open/update the PR |
 | `reusable-tag-on-release-merge.yml` | On a merged `VERSION` change, create the `vX.Y.Z` tag and GitHub Release with the App token |
-| `reusable-publish-release-packages.yml` | The whole release chain: resolve the tag, build, publish to TestPyPI, attach assets, request MIP publication, optionally publish to PyPI, report health |
+| `reusable-publish-release-packages.yml` | The whole release chain: resolve the tag, build, publish to TestPyPI, attach assets, request MIP publication, tell the caller whether to publish to PyPI, report health |
+| `reusable-report-pypi-result.yml` | Report a caller-side PyPI upload to Release Health ([why the upload is caller-side](publishing-automation.md#production-pypi-opt-in-protected-trusted-publishing)) |
 | `reusable-build-pure-python-distribution.yml` | sdist + wheel for a pure-Python package |
 | `reusable-build-native-and-wasm-wheels.yml` | cibuildwheel: Linux, Windows, Android, Pyodide wasm32 |
 | `reusable-build-pydevices-distributions.yml` | The `pydevices` and `pydevices-desktop` distributions, derived from `lib/` and `utils/` |

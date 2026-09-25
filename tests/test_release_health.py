@@ -52,7 +52,22 @@ def payload(distribution: str, version: str) -> str:
     )
 
 
-def run_step(clone: Path, distribution: str, version: str) -> subprocess.CompletedProcess[str]:
+def partial_pypi_payload(distribution: str, version: str, result: str) -> str:
+    """What reusable-report-pypi-result.yml sends after a caller's pypi job."""
+    return json.dumps(
+        {
+            "partial": True,
+            "repo": "audiodsp",
+            "distribution": distribution,
+            "version": version,
+            "pypi": result,
+        }
+    )
+
+
+def run_step(
+    clone: Path, distribution: str, version: str, body: str | None = None
+) -> subprocess.CompletedProcess[str]:
     """Run the workflow step in `clone`, as one dispatched report would."""
     script = clone / ".step.sh"
     script.write_text(update_step_shell(), encoding="utf-8")
@@ -65,7 +80,7 @@ def run_step(clone: Path, distribution: str, version: str) -> subprocess.Complet
             "PATH": "/usr/bin:/bin",
             "HOME": str(clone.parent),
             "RUNNER_TEMP": str(runner_temp),
-            "PAYLOAD": payload(distribution, version),
+            "PAYLOAD": body if body is not None else payload(distribution, version),
             "DISTRIBUTION": distribution,
             "RELEASE_VERSION": version,
         },
@@ -159,6 +174,69 @@ class ConcurrentReportTests(unittest.TestCase):
         second = run_step(self.first, "pydevices-cmods", "0.1.1")
         self.assertEqual(second.returncode, 0, second.stdout + second.stderr)
         self.assertEqual(self.published()["data"]["pydevices-cmods"]["version"], "0.1.1")
+
+
+
+class PartialPypiReportTests(unittest.TestCase):
+    """The caller-side PyPI upload reports after the coordinator's full report."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        root = Path(self._tmp.name)
+        origin = root / "origin.git"
+        subprocess.run(
+            ["git", "init", "-q", "--bare", "-b", "main", str(origin)],
+            check=True,
+            capture_output=True,
+        )
+        self.clone = root / "clone"
+        git(root, "clone", "-q", str(origin), str(self.clone))
+        git(self.clone, "config", "user.email", "test@example.invalid")
+        git(self.clone, "config", "user.name", "Test")
+        (self.clone / "release-health").mkdir()
+        (self.clone / "release-health/data.json").write_text("{}\n", encoding="utf-8")
+        (self.clone / "RELEASE_HEALTH.md").write_text("# Release health\n", encoding="utf-8")
+        git(self.clone, "add", "-A")
+        git(self.clone, "commit", "-q", "-m", "seed")
+        git(self.clone, "push", "-q", "origin", "main")
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def report(self, version: str, body: str | None = None) -> dict:
+        result = run_step(self.clone, "pydevices-audiodsp", version, body)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        return json.loads((self.clone / "release-health/data.json").read_text())
+
+    def test_a_partial_report_fills_in_the_same_release(self):
+        full = json.loads(payload("pydevices-audiodsp", "0.6.2"))
+        full["pypi"] = "pending"
+        self.report("0.6.2", json.dumps(full))
+        row = self.report(
+            "0.6.2", partial_pypi_payload("pydevices-audiodsp", "0.6.2", "success")
+        )["pydevices-audiodsp"]
+        self.assertEqual(row["pypi"], "success")
+        # Everything the coordinator reported is still there.
+        self.assertEqual(row["testpypi"], "success")
+        self.assertEqual(row["run_url"], "https://example.invalid/pydevices-audiodsp")
+        self.assertNotIn("partial", row)
+        page = (self.clone / "RELEASE_HEALTH.md").read_text(encoding="utf-8")
+        self.assertIn("| 0.6.2 | OK | OK | OK | OK |", page)
+
+    def test_a_partial_report_for_another_version_does_not_borrow_its_row(self):
+        self.report("0.6.1")
+        row = self.report(
+            "0.6.2", partial_pypi_payload("pydevices-audiodsp", "0.6.2", "failure")
+        )["pydevices-audiodsp"]
+        self.assertEqual(row["version"], "0.6.2")
+        self.assertEqual(row["pypi"], "failure")
+        self.assertNotIn("testpypi", row)
+
+    def test_a_full_report_still_replaces_the_row(self):
+        self.report("0.6.1", partial_pypi_payload("pydevices-audiodsp", "0.6.1", "success"))
+        row = self.report("0.6.2")["pydevices-audiodsp"]
+        self.assertEqual(row["version"], "0.6.2")
+        self.assertEqual(row["pypi"], "skipped")
 
 
 if __name__ == "__main__":
