@@ -10,7 +10,7 @@ Latest publish run per distribution, reported by publishing-v6's report-release-
 | [pydevices-audioif](https://github.com/PyDevices/audiodsp/actions/runs/34441714768) | 0.4.0 | OK | OK | -- | -- | 2026-09-10 05:41 UTC |
 | [pydevices-audioinstruments](https://github.com/PyDevices/audiocomponents/actions/runs/35940579913) | 0.3.1 | OK | OK | OK | -- | 2026-09-24 01:10 UTC |
 | [pydevices-lvgl](https://github.com/PyDevices/lvgl-python/actions/runs/35928840535) | 9.5.45 | OK | OK | -- | -- | 2026-09-23 22:39 UTC |
-| [pydevices-mpftp](https://github.com/PyDevices/mpftp/actions/runs/35962157719) | 0.0.7 | OK | OK | -- | -- | 2026-09-24 05:57 UTC |
+| [pydevices-mpftp](https://github.com/PyDevices/mpftp/actions/runs/36101551293) | 0.0.8 | OK | OK | -- | -- | 2026-09-25 06:09 UTC |
 | [pydevices-palettes](https://github.com/PyDevices/palettes/actions/runs/35952269091) | 0.0.14 | OK | OK | OK | -- | 2026-09-24 03:38 UTC |
 | [pydevices-pdwidgets](https://github.com/PyDevices/pdwidgets/actions/runs/35952308530) | 0.0.24 | OK | OK | OK | -- | 2026-09-24 03:39 UTC |
 | [pydevices-pygraphics](https://github.com/PyDevices/pygraphics/actions/runs/35952279595) | 0.0.39 | OK | OK | OK | -- | 2026-09-24 03:42 UTC |
