@@ -78,10 +78,10 @@
   "prerelease": false,
   "pypi": "skipped",
   "repo": "mpftp",
-  "run_url": "https://github.com/PyDevices/mpftp/actions/runs/36196803324",
+  "run_url": "https://github.com/PyDevices/mpftp/actions/runs/36277791075",
   "testpypi": "success",
-  "updated": "2026-09-25 22:28 UTC",
-  "version": "0.0.10"
+  "updated": "2026-09-26 22:55 UTC",
+  "version": "0.0.11"
  },
  "pydevices-palettes": {
   "assets": "success",
