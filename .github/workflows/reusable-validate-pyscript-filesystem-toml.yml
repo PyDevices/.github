@@ -15,7 +15,7 @@ on:
         default: ""
         type: string
       publishing-tools-ref:
-        default: publishing-v11
+        default: publishing-v12
         type: string
 
 permissions:
