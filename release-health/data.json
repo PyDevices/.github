@@ -66,10 +66,10 @@
   "prerelease": false,
   "pypi": "skipped",
   "repo": "lvgl-python",
-  "run_url": "https://github.com/PyDevices/lvgl-python/actions/runs/36241177315",
+  "run_url": "https://github.com/PyDevices/lvgl-python/actions/runs/36277895292",
   "testpypi": "success",
-  "updated": "2026-09-26 12:20 UTC",
-  "version": "9.5.47"
+  "updated": "2026-09-26 23:05 UTC",
+  "version": "9.5.48"
  },
  "pydevices-mpftp": {
   "assets": "success",
