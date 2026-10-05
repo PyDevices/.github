@@ -45,11 +45,6 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "deps": [
-        "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/audio_scope.py"
     },
     "buttons": [
@@ -88,9 +83,6 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "deps": [
-        "pydevices"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/bus_scope.py"
     },
     "buttons": [
@@ -129,10 +121,6 @@
       "width": 480,
       "height": 480,
       "shape": "square",
-      "deps": [
-        "pydevices",
-        "pydevices-lvgl"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/signal_gen.py"
     },
     "buttons": [
@@ -171,10 +159,6 @@
       "width": 480,
       "height": 480,
       "shape": "square",
-      "deps": [
-        "pydevices",
-        "pydevices-lvgl"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/signal_gen.py"
     },
     "buttons": [
@@ -213,11 +197,6 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "deps": [
-        "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/audio_scope.py"
     },
     "buttons": [
@@ -256,10 +235,6 @@
       "width": 480,
       "height": 480,
       "shape": "square",
-      "deps": [
-        "pydevices",
-        "pydevices-lvgl"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/encoder.py"
     },
     "buttons": [
@@ -298,10 +273,6 @@
       "width": 480,
       "height": 480,
       "shape": "square",
-      "deps": [
-        "pydevices",
-        "pydevices-lvgl"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/encoder.py"
     },
     "buttons": [
@@ -340,11 +311,6 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "deps": [
-        "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/simon.py"
     },
     "buttons": [
@@ -383,12 +349,6 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "deps": [
-        "pydevices",
-        "pydevices-pdwidgets",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/sensor_deck.py"
     },
     "buttons": [
@@ -427,11 +387,6 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "deps": [
-        "pydevices",
-        "pydevices-palettes",
-        "pydevices-pygraphics"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/palette_orb.py"
     },
     "buttons": [
@@ -470,11 +425,6 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "deps": [
-        "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/ast_parser.py"
     },
     "buttons": [
@@ -513,10 +463,6 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "deps": [
-        "pydevices",
-        "pydevices-lvgl"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/mp_console.py"
     },
     "buttons": [
@@ -555,10 +501,6 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "deps": [
-        "pydevices",
-        "pydevices-lvgl"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/thermostat.py"
     },
     "buttons": [
@@ -597,11 +539,6 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "deps": [
-        "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/circuit_dial.py"
     },
     "buttons": [
@@ -640,11 +577,6 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "deps": [
-        "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/radar_scope.py"
     },
     "buttons": [
@@ -683,11 +615,6 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "deps": [
-        "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/mobile_pad.py"
     },
     "buttons": [
@@ -726,11 +653,6 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "deps": [
-        "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/ftp_scope.py"
     },
     "buttons": [
@@ -769,11 +691,6 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "deps": [
-        "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/package_matrix.py"
     },
     "buttons": [
@@ -812,11 +729,6 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "deps": [
-        "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/benchmark_deck.py"
     },
     "buttons": [
@@ -885,10 +797,6 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "deps": [
-        "pydevices",
-        "pydevices-lvgl"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/watch.py"
     },
     "buttons": [
@@ -927,11 +835,6 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "deps": [
-        "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/radar_scope.py"
     },
     "buttons": [
@@ -970,11 +873,6 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "deps": [
-        "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/polyhedron.py"
     },
     "buttons": [
@@ -1008,11 +906,6 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "deps": [
-        "pydevices",
-        "pydevices-pygraphics",
-        "pydevices-palettes"
-      ],
       "app_url": "https://PyDevices.github.io/assets/apps/ftp_scope.py"
     },
     "buttons": [
