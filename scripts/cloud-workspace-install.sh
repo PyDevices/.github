@@ -233,23 +233,24 @@ link_pydevices pydevices-examples "$REPOS/pydevices-examples"
 link_pydevices android-template "$REPOS/android-template"
 
 # Every module repository is a sibling at the workspace root: that is the
-# layout micropython-pydevices' presets assume (paths two levels up from its
-# manifests/), and the one every build script in the org defaults to.
+# layout micropython-pydevices' build_mp.py links into its modules/ (anything
+# missing, ulab included, it clones at the commit modules.lock pins), and the
+# one every build script in the org defaults to.
 for s in micropython-pydevices audiodsp audioif usbif cameraif displayif pygraphics \
     lvgl-bindings lvgl-circuitpython lvgl-python lvgl-micropython; do
     [[ -d "$REPOS/$s" || -L "$REPOS/$s" ]] && link_pydevices "$s" "$REPOS/$s"
 done
 
 # The interpreter checkouts, beside the repositories. The MicroPython tag is
-# the one micropython-pydevices pins, and tools/prepare-micropython.sh there
-# applies the patch series once.
+# the one micropython-pydevices pins, and patches/apply_patches.py there
+# applies the patch series once (build_mp.py would also do it on first use).
 MP_TAG="${PYDEVICES_MP_TAG:-$(tr -d '[:space:]' < "$REPOS/micropython-pydevices/UPSTREAM" 2>/dev/null || echo v1.29.0)}"
 CP_TAG="${PYDEVICES_CP_TAG:-10.3.0}"
 shallow_clone_if_missing micropython https://github.com/micropython/micropython.git "$MP_TAG"
 shallow_clone_if_missing circuitpython https://github.com/adafruit/circuitpython.git "$CP_TAG"
-if [[ -x "$REPOS/micropython-pydevices/tools/prepare-micropython.sh" ]]; then
-    "$REPOS/micropython-pydevices/tools/prepare-micropython.sh" "$PD/micropython" \
-        || log "WARNING: prepare-micropython.sh failed; the checkout is unpatched"
+if [[ -f "$REPOS/micropython-pydevices/patches/apply_patches.py" ]]; then
+    python3 "$REPOS/micropython-pydevices/patches/apply_patches.py" "$PD/micropython" \
+        || log "WARNING: apply_patches.py failed; the checkout is unpatched"
 fi
 
 if [[ -d "$REPOS/lvgl-bindings/.git" ]]; then
