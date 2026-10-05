@@ -341,6 +341,27 @@ class SharedDescriptionTests(unittest.TestCase):
             self.assertNotIn("PyDevices pydevices-desktop", desktop)
 
 
+    def test_a_freeze_manifest_beside_the_desktop_board_config_is_not_published(self) -> None:
+        # board_configs/desktop carries a manifest.py so a firmware can freeze
+        # it; installing it into a user's lib as a module would be nonsense.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "source"
+            mip = root / "mip"
+            write_pydevices_source(source)
+            desktop_src = source / "board_configs" / "desktop"
+            desktop_src.mkdir(parents=True, exist_ok=True)
+            (desktop_src / "board_config.py").write_text("# config\n", encoding="utf-8")
+            (desktop_src / "manifest.py").write_text('module("board_config.py")\n', encoding="utf-8")
+            write_lockfile(mip, {"pydevices": "PyDevices/pydevices"})
+            result = run_sync(source, mip, source_name="PyDevices/pydevices",
+                              profile="pydevices", version="1.2.3")
+            self.assertEqual(result.returncode, 0, result.stderr)
+            desktop = mip / "micropython" / "pydevices" / "pydevices-desktop"
+            self.assertTrue((desktop / "board_config.py").is_file())
+            self.assertNotIn('module("manifest.py")',
+                             (desktop / "manifest.py").read_text(encoding="utf-8"))
+
 class OwnPackageTests(unittest.TestCase):
     """A lib/ package marked own-package publishes to MIP beside pydevices (bledev)."""
 

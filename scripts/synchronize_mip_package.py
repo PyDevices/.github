@@ -152,9 +152,11 @@ def render_manifest(profile: Profile, version: str) -> str:
 
 
 def publishable(path: Path) -> bool:
+    # manifest.py is a build's freeze manifest (a board config dir carries
+    # one so a firmware can freeze it), never something to install.
     return (
         not path.name.startswith(".")
-        and path.name not in {"__pycache__", "README.md", "build", "dist"}
+        and path.name not in {"__pycache__", "README.md", "build", "dist", "manifest.py"}
         and path.suffix not in {".pyc", ".pyo"}
         and (path.is_dir() or path.suffix == ".py")
     )
