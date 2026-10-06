@@ -79,8 +79,8 @@
   "pypi": "skipped",
   "repo": "mpftp",
   "run_url": "https://github.com/PyDevices/mpftp/actions/runs/37444436356",
-  "testpypi": "failure",
-  "updated": "2026-10-06 11:33 UTC",
+  "testpypi": "success",
+  "updated": "2026-10-06 12:25 UTC",
   "version": "0.0.12"
  },
  "pydevices-palettes": {
