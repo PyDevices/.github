@@ -49,8 +49,8 @@ history stays.
 
 - The release-automation App mints all cross-repo tokens
   (create-github-app-token in the reusables). Failures name the missing
-  permission or repo in the log. Brad owns the App's installation and
-  permissions; agents never hold its key (roadmap rule 3).
+  permission or repo in the log. The org owner holds the App's installation
+  and permissions; agents never hold its key (roadmap rule 3).
 - The dashboard receiver (`release-health.yml`) is repository_dispatch
   only; a stuck dashboard means the App can't reach this repo. Rows are
   additive JSON in `release-health/data.json` — safe to hand-edit in a
@@ -65,8 +65,5 @@ history stays.
 - **A human maintainer**: CONTRIBUTING.md here, then the repo they'll
   touch (every repo states its role, status, and build path in its
   README), then publishing-automation.md before their first release.
-- **An agent**: the private workspace anchor repo holds the agent
-  contract (`docs/agent-contract.md`), the knowledge modules
-  (`docs/agent-knowledge/`), and the fleet definitions
-  (`.claude/agents/`). New agents are forged through `/forge-agent` and
-  are not trusted until their smoke task has run green.
+- **An agent**: [AGENTS.md](../AGENTS.md) here, then the `AGENTS.md` of the
+  repository it works in.

@@ -366,7 +366,7 @@ whose build and TestPyPI upload succeeded, and the caller uploads:
 ```
 
 The `pypi` job runs through the repository's `pypi` **GitHub Environment**
-(required reviewer Brad, deployment limited to `v*` tags; check with
+(a required maintainer review, deployment limited to `v*` tags; check with
 `gh api repos/PyDevices/<repo>/environments/pypi`) and authenticates with
 **Trusted Publishing** (OIDC, no stored PyPI credential). The PyPI project's
 publisher is owner `PyDevices`, the repository, workflow

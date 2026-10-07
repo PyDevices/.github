@@ -5,7 +5,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for the suggestion! For open-ended questions or discussion,
+        Thanks for the suggestion! Check the repo's ROADMAP.md first: it
+        may already be planned. For open-ended questions or discussion,
         consider starting a thread in
         [pydevices-examples Discussions](https://github.com/PyDevices/pydevices-examples/discussions)
         instead.
