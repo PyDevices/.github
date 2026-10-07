@@ -389,9 +389,10 @@ Trusted Publishing, so its upload stays in the coordinator.
 `lvgl-python`, `lvgl-micropython`, and `lvgl-circuitpython` all consume
 generated bindings from `lvgl-bindings`, which is the **single writer** of
 the generated C, the `.pyi` stub, and the sync-relevant support files
-(`lv_conf.h`, `display_driver.py`, `fs_driver.py`, the `lvgl` submodule
-pointer). Hand-editing any of that in a consumer repo is overwritten by the
-next sync — see CONTRIBUTING.md.
+(`lv_conf.h`, `fs_driver.py`, the `lvgl` submodule pointer). Hand-editing
+any of that in a consumer repo is overwritten by the next sync — see
+CONTRIBUTING.md. `display_driver.py` is not in that set: it lives in
+pydevices `lib/` and publishes with the pydevices wheel and mip package.
 
 The trigger is explicit dispatch, not a webhook chain:
 
@@ -406,7 +407,7 @@ lvgl-bindings: Release bindings (workflow_dispatch, bindings-ref, publish=true)
 lvgl-python: Sync and release (workflow_dispatch, lvgl_bindings_ref, mode)
   -> ./scripts/sync_from_lvgl_bindings.sh --ref <ref>
   -> writes/commits LVGL_BINDINGS_COMMIT, VERSION, generated/lvgl_python.c,
-     generated/lvgl.pyi, lv_conf.h, display_driver.py, fs_driver.py, lvgl
+     generated/lvgl.pyi, lv_conf.h, fs_driver.py, lvgl
   -> builds + runs its test suite + the lvgl-bindings smoke suite
   -> mode=release: mints an App token, publishes vX.Y.Z (App token, same
      reasoning as tag-release.yml -- GITHUB_TOKEN would not trigger
