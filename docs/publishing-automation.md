@@ -42,14 +42,15 @@ out this repository's `scripts/`) and tags the same commit, and the
 identical — and is the last tag cut before the script covered them.)
 
 **There is no single "current" pin — a repository is on whatever tag it was
-last moved to.** As of 2026-09-22:
+last moved to.** As of 2026-10-07:
 
 | Reusable | Pinned at | By |
 |---|---|---|
-| every reusable it calls | `publishing-v11` | `pydevices` (moved for v0.5.0; v10 burned the first attempt) |
+| every other reusable it calls | `publishing-v12` | `pydevices` |
 | `reusable-publish-release-packages` | `publishing-v8` | `audiodsp`, `audiocomponents` |
 | `reusable-publish-release-packages` | `publishing-v6` | `palettes`, `pdwidgets`, `pygraphics`, `lvgl-python`, `mpftp` |
-| `reusable-prepare-release-pr`, `reusable-tag-on-release-merge` | `publishing-v6` | every publishing repository except `pydevices` |
+| `reusable-prepare-release-pr` | `publishing-v13` | every publishing repository (moved 2026-10-07 for the release PR's description) |
+| `reusable-tag-on-release-merge` | `publishing-v6` | every publishing repository except `pydevices` |
 | `reusable-validate-pyscript-filesystem-toml` | `publishing-v6` | `palettes`, `pdwidgets`, `pygraphics` |
 | `reusable-synchronize-mip-package` (and its `publishing-tools-ref`) | `publishing-v11` | `mip` (moved 2026-09-22, mip#2, so the MCU split reaches the index at the next publication) |
 
