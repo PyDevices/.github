@@ -31,11 +31,10 @@ the parts they'd otherwise duplicate.
   from [`release-health/data.json`](release-health/data.json) every time a
   publishing repository's release chain reports in. Don't hand-edit either
   file.
-- **The multi-repository workspace** is defined by the private `workspace`
-  anchor repository, whose own `bootstrap.sh` carries the list of every
-  PyDevices repository and clones them as siblings on disk. The list in
-  [`.cursor/environment.json`](.cursor/environment.json) is Cursor's cloud
-  copy of it, kept by hand.
+- **Sibling checkouts** — the PyDevices repositories build against each
+  other checked out side by side on disk.
+  [`.cursor/environment.json`](.cursor/environment.json) lists the ones
+  Cursor's cloud environment clones, kept by hand.
 - **The repository database and site generator** —
   [`data/repos_db.json`](data/repos_db.json) is the single source of truth
   for the repository map: tier, description, buttons, and where each repo's
@@ -46,6 +45,8 @@ the parts they'd otherwise duplicate.
   **Edit the database, not the generated markup** — run the generator by hand
   from a full workspace checkout (`python3 dotgithub/scripts/generate_sites.py`)
   after editing it; it validates the database first and is idempotent.
+- **Roadmap** — [`ROADMAP.md`](ROADMAP.md): what's planned for the shared
+  automation. Every repository keeps its own.
 - **History** — [`docs/history.md`](docs/history.md): how the organization
   came to be, and a dated chronology of every repository.
 - **Org docs** — [`docs/`](docs/) covers repo layout, doc style and

@@ -30,15 +30,19 @@ Long-form notes and guides belong under `docs/`.
 | Packaging / build metadata | `pyproject.toml`, `setup.py`, `setup.cfg`, `MANIFEST.in`, `micropython.mk`, `circuitpython.mk` | Yes — tooling discovers these at root |
 | Docs site config | `mkdocs.yml` | Yes |
 | Short entry scripts | `apply_*.sh`, `build_*.sh`, `regenerate_*.sh` | Yes when they are the public entry point |
-| License / community | `LICENSE`, `README.md`, `AGENTS.md`, `CONTRIBUTING.md` | Yes |
+| License / community | `LICENSE`, `README.md`, `ROADMAP.md`, `AGENTS.md`, `CONTRIBUTING.md` | Yes |
 | Pip requirements | `requirements.txt`, `requirements-dev.txt` | Yes (see below) |
 | Long-form docs | design notes, build guides, handoffs, publishing write-ups | No — use `docs/` |
 
 ### Markdown naming
 
 - Reserve all-caps Markdown names for conventional repository and community
-  control files such as `README.md`, `AGENTS.md`, `CONTRIBUTING.md`,
-  `SECURITY.md`, and `CHANGELOG.md`.
+  control files such as `README.md`, `ROADMAP.md`, `AGENTS.md`,
+  `CONTRIBUTING.md`, `SECURITY.md`, and `CHANGELOG.md`.
+- Every repository has a `ROADMAP.md`: planned enhancements and restructuring,
+  written for users, one bullet of at most three lines each. Bugs and unmet
+  needs stay in issues. A repository with nothing planned says so in a line,
+  and its README links the file.
 - **Do not add `RELEASE_NOTES.md`.** All three that existed carried a bare
   `## Unreleased` heading, never recorded a shipped version, and were linked from
   nowhere; they were deleted in August 2026. Releases use `--generate-notes`, so

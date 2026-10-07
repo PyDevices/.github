@@ -31,6 +31,11 @@ Use the issue templates on the relevant repo. Include the interpreter
 (MicroPython/CircuitPython/CPython), version, and platform/board where
 applicable — most bugs here are interpreter- or hardware-specific.
 
+Every repository has a `ROADMAP.md` at its root: the planned enhancements and
+restructuring, in short bullets for users. Issues are for bugs and for things
+you need that don't work yet. A request that becomes planned work moves into
+the roadmap and its issue closes with a link to it.
+
 For open-ended questions, ideas, or show-and-tell, use
 [pydevices Discussions](https://github.com/PyDevices/pydevices/discussions)
 instead of opening an issue.

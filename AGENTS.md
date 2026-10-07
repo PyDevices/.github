@@ -79,8 +79,7 @@ resolve two levels up from `manifests/`), and the one every build script in
 the org defaults to: from `micropython/ports/<port>`, upstream's own `make`
 with `VARIANT_DIR=`, `BOARD_DIR=` and `FROZEN_MANIFEST=` pointing into
 `micropython-pydevices`; for CircuitPython, each C-carrying repo's
-`apply_cp_patches.sh` and then upstream's `make`. The workspace anchor's
-`docs/retool-build-draft.md` carries the commands.
+`apply_cp_patches.sh` and then upstream's `make`.
 
 Upstream trees (`micropython/`, `circuitpython/`) are **read-only clones** in
 this workspace. The MicroPython one carries a single local commit, the

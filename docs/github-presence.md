@@ -30,7 +30,10 @@ the answer from scratch.
   reaching the maintainer. Every other repository has Discussions turned off
   (2026-09-03) so there is exactly one place to look; SUPPORT.md, CONTRIBUTING.md
   and the design docs all point there.
-- **Issues** are enabled on every owned repo (bug reports / feature requests).
+- **Issues** are enabled on every owned repo, for bugs and for things a user
+  needs that don't work yet. Planned enhancements live in each repo's
+  `ROADMAP.md` instead; a feature request that becomes planned work moves
+  there and its issue closes.
   Default issue *templates* (`bug.yml`, `feature.yml`) live in the org's
   [`.github`](https://github.com/PyDevices/.github/tree/main/.github/ISSUE_TEMPLATE)
   repo and apply automatically to any repo that doesn't define its own.
