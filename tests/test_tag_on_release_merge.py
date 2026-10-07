@@ -75,7 +75,7 @@ class RefusedVersionTests(unittest.TestCase):
         self.assertNotIn("changed=true", result.github_output)
 
     def test_placeholder_is_refused(self):
-        self.assert_refused("0.0.0-PLACEHOLDER-BRAD-NAMES-THIS")
+        self.assert_refused("0.0.0-PLACEHOLDER-MAINTAINER-NAMES-THIS")
 
     def test_leading_v_is_refused(self):
         self.assert_refused("v0.2.0")

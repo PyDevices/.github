@@ -51,8 +51,8 @@ the parts they'd otherwise duplicate.
   came to be, and a dated chronology of every repository.
 - **Org docs** — [`docs/`](docs/) covers repo layout, doc style and
   docstring conventions, how the ReadTheDocs sites build, GitHub presence
-  (Discussions/Issues/Pages/licensing), the platform roadmap, and the public
-  [modernization roadmap](docs/pydevices-organization-modernization.md).
+  (Discussions/Issues/Pages/licensing), publishing automation, and the
+  operations runbook.
 
 Board / Detect inventory docs live in
 [pydevices/docs](https://github.com/PyDevices/pydevices/tree/main/docs)
