@@ -150,5 +150,5 @@ jobs:
           git commit -m "Release $V"
           git push -f origin "$BRANCH"
           gh pr create --head "$BRANCH" --title "Release $V" --body \
-            "Automated release PR. **The version is yours to change** -- edit VERSION on this branch before merging if $V is not the right call. Merging tags the version in VERSION and triggers publication; closing publishes nothing." \
+            "$(printf 'Release %s: sets VERSION and adds this release'"'"'s CHANGELOG section.\n\nMerging tags the version in VERSION and publishes it. Closing publishes nothing.' "$V")" \
             || gh pr edit "$BRANCH" --title "Release $V"

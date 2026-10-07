@@ -198,10 +198,9 @@ workflow:
 2. Writes that version to `VERSION` and prepends a new `## vX.Y.Z (date)`
    section to `CHANGELOG.md`, built from `git log` since the last tag.
 3. Opens (or updates) a PR titled `Release X.Y.Z` from branch
-   `release/vX.Y.Z`, with an explicit note: **"The version is yours to
-   change — edit VERSION on this branch before merging if X.Y.Z is not the
-   right call. Merging tags the version in VERSION and triggers publication;
-   closing publishes nothing."**
+   `release/vX.Y.Z`. Its description reads: "Release X.Y.Z: sets VERSION and
+   adds this release's CHANGELOG section. Merging tags the version in VERSION
+   and publishes it. Closing publishes nothing."
 
 ### 2. Review and merge the release PR
 
