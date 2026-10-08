@@ -142,6 +142,11 @@ def validate_db(db, only=None):
             problems.append(
                 f'{name}: page {destination!r} is not one of {sorted(valid_pages)}'
             )
+        # page=none generates no landing page, so a hero there runs nowhere.
+        if destination == 'none' and data.get('hero_canvas'):
+            problems.append(
+                f'{name}: hero_canvas on page=none; nothing generates a page to show it'
+            )
         # A repo keeping its own Pages must still have somewhere to publish from.
         if on_disk and destination == 'self' and not os.path.isdir(
             os.path.join(BASE_DIR, name, '.site')

@@ -868,13 +868,6 @@
     "eyebrow": "workbench",
     "headline": "workbench — the browser IDE and MicroPython simulator.",
     "description": "A ViperIDE fork with a built-in WebAssembly MicroPython simulator: edit, run, and debug PyDevices code against a simulated board entirely in the browser, no hardware required.",
-    "hero_canvas": {
-      "app": "polyhedron",
-      "width": 240,
-      "height": 240,
-      "shape": "square",
-      "app_url": "https://PyDevices.github.io/assets/apps/polyhedron.py"
-    },
     "buttons": [
       {
         "label": "GitHub Repo",
