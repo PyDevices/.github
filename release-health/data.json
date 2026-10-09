@@ -35,18 +35,6 @@
   "updated": "2026-09-25 13:13 UTC",
   "version": "0.3.2"
  },
- "pydevices-audioif": {
-  "assets": "success",
-  "distribution": "pydevices-audioif",
-  "mip": "skipped",
-  "prerelease": false,
-  "pypi": "skipped",
-  "repo": "audiodsp",
-  "run_url": "https://github.com/PyDevices/audiodsp/actions/runs/34441714768",
-  "testpypi": "success",
-  "updated": "2026-09-10 05:41 UTC",
-  "version": "0.4.0"
- },
  "pydevices-audioinstruments": {
   "assets": "success",
   "distribution": "pydevices-audioinstruments",
