@@ -7,10 +7,10 @@ import argparse
 import json
 import re
 import shutil
+import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 
-import tomllib
 from pydevices_package_metadata import PYDEVICES_DESCRIPTIONS
 
 

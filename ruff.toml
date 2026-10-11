@@ -1,0 +1,3 @@
+# The scripts use 3.12 syntax and import tomllib; saying so keeps every ruff
+# version sorting tomllib with the standard library (0.16 and 0.17 disagreed).
+target-version = "py312"
