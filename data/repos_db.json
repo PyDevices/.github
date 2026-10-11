@@ -799,6 +799,7 @@
       "shape": "round",
       "app_url": "https://PyDevices.github.io/assets/apps/watch.py"
     },
+    "hero_note": "Get Started installs the Python packages, with pip on a desktop or mip on a board. To build MicroPython firmware with the modules compiled in, run <code>curl -fsSL https://pydevices.github.io/install.sh | sh</code> and follow the <a href=\"https://pydevices.github.io/micropython-pydevices/\">firmware page</a>.",
     "buttons": [
       {
         "label": "GitHub Org",
