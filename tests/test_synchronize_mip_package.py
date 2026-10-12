@@ -465,5 +465,27 @@ class PypiExtrasTests(unittest.TestCase):
                 build.pypi_extras(root)
 
 
+class DesktopRequirementsTests(unittest.TestCase):
+    def test_utils_requirements_become_desktop_dependencies(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "utils").mkdir()
+            (root / "utils" / "requirements.txt").write_text(
+                "# what utils/ needs\nzeroconf>=0.132  # mdns.py\n\n", encoding="utf-8"
+            )
+            requirements = build.desktop_requirements(root)
+            self.assertEqual(requirements, ["zeroconf>=0.132"])
+            text = build.project_text("pydevices-desktop", "1.2.3", "d", ["pydevices==1.2.3", *requirements], Path("."))
+            import tomllib
+
+            self.assertEqual(
+                tomllib.loads(text)["project"]["dependencies"], ["pydevices==1.2.3", "zeroconf>=0.132"]
+            )
+
+    def test_no_file_means_no_requirements(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertEqual(build.desktop_requirements(Path(tmp)), [])
+
+
 if __name__ == "__main__":
     unittest.main()

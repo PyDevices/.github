@@ -72,6 +72,21 @@ def pypi_extras(root: Path) -> dict[str, list[str]]:
     return extras
 
 
+def desktop_requirements(root: Path) -> list[str]:
+    """What pydevices-desktop needs from PyPI: utils/requirements.txt in the
+    source repository, one requirement a line (zeroconf, for mdns.py).
+    Comments and blank lines are skipped; no file means none."""
+    path = root / "utils" / "requirements.txt"
+    if not path.exists():
+        return []
+    requirements = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.split("#", 1)[0].strip()
+        if line:
+            requirements.append(line)
+    return requirements
+
+
 def project_text(
     name: str,
     version: str,
@@ -176,7 +191,7 @@ def build(root: Path, output: Path, version: str) -> None:
         "pydevices-desktop",
         version,
         PYDEVICES_DESCRIPTIONS["pydevices-desktop"],
-        [f"pydevices=={version}"],
+        [f"pydevices=={version}", *desktop_requirements(root)],
     )
     stages.append(desktop)
 
