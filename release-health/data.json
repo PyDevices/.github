@@ -48,16 +48,16 @@
   "version": "0.4.0"
  },
  "pydevices-lvgl": {
-  "assets": "success",
+  "assets": "skipped",
   "distribution": "pydevices-lvgl",
   "mip": "skipped",
   "prerelease": false,
   "pypi": "skipped",
   "repo": "lvgl-python",
-  "run_url": "https://github.com/PyDevices/lvgl-python/actions/runs/37939244956",
-  "testpypi": "success",
-  "updated": "2026-10-09 13:54 UTC",
-  "version": "9.5.50"
+  "run_url": "https://github.com/PyDevices/lvgl-python/actions/runs/38813845067",
+  "testpypi": "skipped",
+  "updated": "2026-10-15 22:10 UTC",
+  "version": "9.5.51"
  },
  "pydevices-mpftp": {
   "assets": "success",
