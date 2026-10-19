@@ -141,6 +141,21 @@ differently, because their constraints differ:
   package stays inside the `pydevices` wheel, and a section's
   `pypi-extras = { ble = ["bleak>=1.0"] }` becomes
   `pip install "pydevices[ble]"`. An unknown key in a section fails the sync.
+- **A directory at the repository root can publish to MIP under its own
+  name.** A `mip-split.toml` section that is only `top-level = true` publishes
+  `<repo>/<name>/` to `micropython/pydevices/<name>`. pydevices' `midiports`
+  and `usb-*` packages are the first, eleven of them plus `midiports`
+  (pydevices#226). The directory's own `manifest.py` is the single source for
+  its description, `require()` lines and files, since a firmware build freezes
+  the same file; the sync copies the directory without `package.json` and
+  `README.md` and sets only the manifest's `version` to the release's, so the
+  index and the lockfile agree. A section takes no other keys. The sync fails
+  if a listed name isn't a directory with a `manifest.py`, or if a listed
+  package `require()`s a sibling directory the file doesn't list. The reverse,
+  a directory nobody listed, is the source repository's own test to catch
+  (pydevices' `tests/test_mip_split.py`). Available from `publishing-v14`.
+  mip's `scripts/update_package_list.py` expects these packages once the
+  lockfile's pydevices ref is 0.7.6 or later (`PROFILE_PACKAGES_SINCE`).
 - Every publishable entry under `utils/`, plus everything publishable in
   `board_configs/desktop/`, is bundled into `pydevices-desktop`.
 - `pydevices-desktop` depends on `pydevices`, so one install gets the complete

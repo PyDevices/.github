@@ -438,6 +438,151 @@ class OwnPackageTests(unittest.TestCase):
             self.assertIn('package("bledev"', (out / "pydevices" / "manifest.py").read_text(encoding="utf-8"))
 
 
+class TopLevelPackageTests(unittest.TestCase):
+    """A directory at the repository root marked top-level publishes under its own name."""
+
+    CORE = textwrap.dedent(
+        """
+        metadata(
+            description="usb.core for a host board.",
+            version="0.1.0",
+        )
+
+        package("usb")
+        """
+    ).lstrip()
+    MSC = textwrap.dedent(
+        """
+        metadata(
+            description="Mount a USB flash drive.",
+            version="0.1.0",
+        )
+
+        require("usb-core")
+        package("usb")
+        """
+    ).lstrip()
+
+    def _package(self, source: Path, name: str, manifest: str, files: dict[str, str]) -> None:
+        pkg = source / name
+        for relative, text in files.items():
+            (pkg / relative).parent.mkdir(parents=True, exist_ok=True)
+            (pkg / relative).write_text(text, encoding="utf-8")
+        (pkg / "manifest.py").write_text(manifest, encoding="utf-8")
+        (pkg / "package.json").write_text('{"urls": []}\n', encoding="utf-8")
+        (pkg / "README.md").write_text("# readme\n", encoding="utf-8")
+
+    def _source(self, root: Path, split: str) -> Path:
+        source = root / "source"
+        write_pydevices_source(source)
+        self._package(source, "usb-core", self.CORE, {"usb/core.py": "# core\n", "usb_host.py": "# host\n"})
+        self._package(source, "usb-host-msc", self.MSC, {"usb/host/msc.py": "# msc\n"})
+        (source / "mip-split.toml").write_text(textwrap.dedent(split), encoding="utf-8")
+        return source
+
+    def _sync(self, root: Path, source: Path) -> subprocess.CompletedProcess[str]:
+        mip = root / "mip"
+        write_lockfile(mip, {"pydevices": "PyDevices/pydevices"})
+        return run_sync(source, mip, source_name="PyDevices/pydevices", profile="pydevices", version="1.2.3")
+
+    BOTH = """
+        [usb-core]
+        top-level = true
+
+        [usb-host-msc]
+        top-level = true
+        """
+
+    def test_each_package_is_published_with_the_release_version(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            result = self._sync(root, self._source(root, self.BOTH))
+            self.assertEqual(result.returncode, 0, result.stderr)
+            out = root / "mip" / "micropython" / "pydevices"
+            msc = (out / "usb-host-msc" / "manifest.py").read_text(encoding="utf-8")
+            self.assertIn('version="1.2.3"', msc)
+            self.assertNotIn("0.1.0", msc)
+            self.assertIn('require("usb-core")', msc)
+            self.assertIn("Mount a USB flash drive.", msc)
+            self.assertTrue((out / "usb-host-msc" / "usb" / "host" / "msc.py").is_file())
+            self.assertTrue((out / "usb-core" / "usb_host.py").is_file())
+            for name in ("usb-core", "usb-host-msc"):
+                self.assertFalse((out / name / "package.json").exists())
+                self.assertFalse((out / name / "README.md").exists())
+
+    def test_the_pydevices_package_does_not_carry_them(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            result = self._sync(root, self._source(root, self.BOTH))
+            self.assertEqual(result.returncode, 0, result.stderr)
+            out = root / "mip" / "micropython" / "pydevices"
+            manifest = (out / "pydevices" / "manifest.py").read_text(encoding="utf-8")
+            self.assertNotIn("usb", manifest)
+            self.assertNotIn("usb", (out / "pydevices-desktop" / "manifest.py").read_text(encoding="utf-8"))
+
+    def test_a_required_sibling_missing_from_the_toml_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            result = self._sync(root, self._source(root, "[usb-host-msc]\ntop-level = true\n"))
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("requires 'usb-core'", result.stderr)
+            self.assertIn("not listed in mip-split.toml", result.stderr)
+
+    def test_a_name_that_is_not_a_directory_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            result = self._sync(root, self._source(root, self.BOTH + "\n[usb-gone]\ntop-level = true\n"))
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("'usb-gone', which is not a directory", result.stderr)
+
+    def test_a_package_without_a_manifest_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = self._source(root, self.BOTH)
+            (source / "usb-core" / "manifest.py").unlink()
+            result = self._sync(root, source)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("has no manifest.py", result.stderr)
+
+    def test_other_keys_in_a_top_level_section_fail(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = self._source(root, '[usb-core]\ntop-level = true\nrequires = ["aioble"]\n[usb-host-msc]\ntop-level = true\n')
+            result = self._sync(root, source)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("takes no other keys (remove requires)", result.stderr)
+
+    def test_a_manifest_without_exactly_one_version_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = self._source(root, self.BOTH)
+            (source / "usb-core" / "manifest.py").write_text('metadata(description="x")\npackage("usb")\n', encoding="utf-8")
+            result = self._sync(root, source)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("exactly one version=", result.stderr)
+
+    def test_a_name_in_lib_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = self._source(root, self.BOTH)
+            write_lib_package(source, "usb-core")
+            result = self._sync(root, source)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("also exists", result.stderr)
+
+    def test_without_any_the_pydevices_sync_is_unchanged(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "source"
+            write_pydevices_source(source)
+            result = self._sync(root, source)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(
+                sorted(p.name for p in (root / "mip" / "micropython" / "pydevices").iterdir()),
+                ["pydevices", "pydevices-desktop"],
+            )
+
+
 class PypiExtrasTests(unittest.TestCase):
     def test_extras_reach_the_pydevices_pyproject(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
