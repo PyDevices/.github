@@ -17,10 +17,6 @@ ORG="${PYDEVICES_GITHUB_ORG:-PyDevices}"
 SIBLINGS=(
     micropython-pydevices
     audiodsp
-    audioif
-    usbif
-    cameraif
-    displayif
     pygraphics
     lvgl-bindings
     lvgl-circuitpython
@@ -192,14 +188,14 @@ ensure_lv_cpython_lvgl_symlink() {
 
 verify_ready() {
     local name missing=0
-    for name in micropython-pydevices audiodsp displayif pygraphics lvgl-bindings pydevices pydevices-examples palettes pdwidgets; do
+    for name in micropython-pydevices audiodsp pygraphics lvgl-bindings pydevices pydevices-examples palettes pdwidgets; do
         if [[ ! -d "$REPOS/$name/.git" && ! -L "$REPOS/$name" ]]; then
             log "ERROR: required repo missing: $REPOS/$name"
             missing=1
         fi
     done
-    if [[ ! -e "$REPOS/displayif/docs/port-matrix.md" ]]; then
-        log "ERROR: displayif port matrix doc missing under $REPOS/displayif"
+    if [[ ! -e "$REPOS/micropython-pydevices/modules/displayif/docs/port-matrix.md" ]]; then
+        log "ERROR: displayif port matrix doc missing under $REPOS/micropython-pydevices/modules/displayif"
         missing=1
     fi
     if [[ ! -d "$PD/micropython/.git" ]]; then
@@ -232,11 +228,12 @@ link_pydevices pdwidgets "$REPOS/pdwidgets"
 link_pydevices pydevices-examples "$REPOS/pydevices-examples"
 link_pydevices android-template "$REPOS/android-template"
 
-# Every module repository is a sibling at the workspace root: that is the
-# layout micropython-pydevices' build_mp.py links into its modules/ (anything
-# missing, ulab included, it clones at the commit modules.lock pins), and the
-# one every build script in the org defaults to.
-for s in micropython-pydevices audiodsp audioif usbif cameraif displayif pygraphics \
+# The C modules (displayif, audioif, cameraif, usbhost) live inside
+# micropython-pydevices under modules/, so they need no checkout of their own;
+# build_mp.py clones anything else it needs (ulab, say) at the commit
+# modules.lock pins. The repositories below are siblings at the workspace root,
+# the layout every build script in the org defaults to.
+for s in micropython-pydevices audiodsp pygraphics \
     lvgl-bindings lvgl-circuitpython lvgl-python lvgl-micropython; do
     [[ -d "$REPOS/$s" || -L "$REPOS/$s" ]] && link_pydevices "$s" "$REPOS/$s"
 done
