@@ -205,7 +205,7 @@ MIP_SPLIT_FILE = "mip-split.toml"
 
 #: Every key a mip-split.toml section may use. An unknown key fails the sync,
 #: so a misspelt `own-package` can't quietly ship a package inside pydevices.
-MIP_SPLIT_KEYS = frozenset({"host-only", "own-package", "requires", "pypi-extras"})
+MIP_SPLIT_KEYS = frozenset({"host-only", "own-package", "requires", "pypi-extras", "top-level"})
 
 
 def read_split(source_root: Path) -> dict[str, dict]:
@@ -233,6 +233,8 @@ def read_own_packages(source_root: Path) -> dict[str, tuple[str, ...]]:
     """
     own: dict[str, tuple[str, ...]] = {}
     for package, section in read_split(source_root).items():
+        if section.get("top-level"):
+            continue
         if not section.get("own-package"):
             if "requires" in section:
                 raise SystemExit(
@@ -254,6 +256,8 @@ def read_host_only(source_root: Path) -> dict[str, frozenset[str]]:
 
     host_only: dict[str, frozenset[str]] = {}
     for package, section in declared.items():
+        if section.get("top-level"):
+            continue
         package_dir = source_root / "lib" / package
         if not package_dir.is_dir():
             raise SystemExit(
@@ -310,6 +314,77 @@ def check_no_host_imports(package_dir: Path, host_only: frozenset[str]) -> None:
                 )
 
 
+def read_top_level_packages(source_root: Path) -> list[str]:
+    """Names of the packages that live at the repository root, not in lib/.
+
+    ``midiports`` and the ``usb-*`` packages are top-level directories, each
+    with its own ``manifest.py`` (also what a firmware build freezes) and its
+    own ``package.json`` (what ``mip.install("github:...")`` reads). A section
+    marked ``top-level = true`` publishes that directory to the index under its
+    own name. The manifest is the one source of what the package is, requires
+    and ships, so a section may carry nothing else.
+    """
+    names: list[str] = []
+    for package, section in read_split(source_root).items():
+        if not section.get("top-level"):
+            continue
+        extra = sorted(set(section) - {"top-level"})
+        if extra:
+            raise SystemExit(
+                f"{MIP_SPLIT_FILE} [{package}] is top-level, so it takes no other keys "
+                f"(remove {', '.join(extra)}). Its manifest.py says what it requires and ships."
+            )
+        package_dir = source_root / package
+        if not package_dir.is_dir():
+            raise SystemExit(f"{MIP_SPLIT_FILE} names top-level package {package!r}, which is not a directory at the repository root")
+        if not (package_dir / "manifest.py").is_file():
+            raise SystemExit(f"top-level package {package!r} has no manifest.py")
+        if (source_root / "lib" / package).exists():
+            raise SystemExit(f"{MIP_SPLIT_FILE} [{package}] is top-level but lib/{package} also exists")
+        names.append(package)
+    # A package that requires a sibling directory the file doesn't list would
+    # install, then fail on import. Say so here, in the pull request's own
+    # terms, instead of in the index build.
+    for package in names:
+        manifest = (source_root / package / "manifest.py").read_text(encoding="utf-8")
+        for required in re.findall(r'^\s*require\(\s*["\']([^"\']+)["\']', manifest, re.MULTILINE):
+            if required not in names and (source_root / required / "manifest.py").is_file():
+                raise SystemExit(
+                    f"top-level package {package!r} requires {required!r}, which is a directory "
+                    f"here but is not listed in {MIP_SPLIT_FILE}; add [{required}] with top-level = true"
+                )
+    return names
+
+
+_VERSION_LINE = re.compile(r'^(\s*version\s*=\s*)(["\'])[^"\']*\2', re.MULTILINE)
+
+
+def stamp_version(manifest: str, package: str, version: str) -> str:
+    """The manifest with its metadata version set to the release's.
+
+    A top-level package keeps its own freeze manifest, whose version is the
+    package's own number. In the index every PyDevices package carries the
+    release version, which is what the lockfile and the package list compare.
+    """
+    stamped, count = _VERSION_LINE.subn(lambda m: f'{m.group(1)}"{version}"', manifest)
+    if count != 1:
+        raise SystemExit(f"{package}/manifest.py needs exactly one version=... line in metadata(), found {count}")
+    return stamped
+
+
+def synchronize_top_level(source_root: Path, destination_root: Path, package: str, version: str) -> None:
+    source = source_root / package
+    destination = destination_root / package
+    destination.mkdir()
+    for path in sorted(source.iterdir()):
+        if path.name == "manifest.py":
+            (destination / "manifest.py").write_text(
+                stamp_version(path.read_text(encoding="utf-8"), package, version), encoding="utf-8"
+            )
+        elif path.name != "package.json" and publishable(path):
+            copy_component(path, destination / path.name)
+
+
 def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> None:
     destination_root = mip_root / "micropython" / "pydevices"
     if destination_root.parent != mip_root / "micropython":
@@ -333,6 +408,7 @@ def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> No
     # thing and gets what it always got (pydevices#30).
     host_only = read_host_only(source_root)
     own_packages = read_own_packages(source_root)
+    top_level = read_top_level_packages(source_root)
     host_components: list[tuple[Path, frozenset[str]]] = []
     for source in sorted(filter(publishable, (source_root / "lib").iterdir()), key=lambda path: path.name):
         names.append(source.stem if source.is_file() else source.name)
@@ -381,6 +457,13 @@ def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> No
 
     if len(names) != len(set(names)):
         raise SystemExit("lib/ contains colliding module and package names")
+
+    # Top-level packages are published beside pydevices, not inside it, and
+    # under the directory's own name, which is the name mip.install() takes.
+    for package_name in top_level:
+        if package_name in names or package_name in {"pydevices", "pydevices-desktop"}:
+            raise SystemExit(f"top-level package {package_name!r} collides with a lib/ module or a pydevices package")
+        synchronize_top_level(source_root, destination_root, package_name, version)
 
     (package / "manifest.py").write_text(
         render_pydevices_manifest("pydevices", version, (), tuple(payloads)), encoding="utf-8"
