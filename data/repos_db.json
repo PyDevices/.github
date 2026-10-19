@@ -30,6 +30,12 @@
     "excluded": {
       ".github (dotgithub)": "No landing page by design. It holds org-wide data, scripts, and community health files, and is documented as markdown only.",
       "android-runner": "Exists solely to enable pydevices/bin/android.py. The APK is documented in pydevices; the runner publishes no site."
+    },
+    "moved": {
+      "displayif": "now [`modules/displayif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/displayif) in micropython-pydevices. The old repository is archived.",
+      "audioif": "now [`modules/audioif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/audioif) in micropython-pydevices. The old repository is archived.",
+      "cameraif": "now [`modules/cameraif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/cameraif) in micropython-pydevices. The old repository is archived.",
+      "usbif": "the C module is now [`modules/usbhost`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/usbhost) in micropython-pydevices; the Python USB packages are in [pydevices](https://github.com/PyDevices/pydevices/blob/main/docs/usb.md). The old repository is archived."
     }
   },
   "pydevices": {
@@ -73,37 +79,32 @@
   "displayif": {
     "tier": 1,
     "page": "portal-subdir",
+    "portal_grid": false,
+    "title": "PyDevices - displayif (moved)",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "displayif",
-    "headline": "displayif — C hardware bus engine & usermod drivers.",
-    "description": "High-performance C hardware bus engines (SPI, I2C, Intel 8080, RGB/DPI, MIPI DSI) and native usermod display drivers for MicroPython and CircuitPython.",
-    "hero_canvas": {
-      "app": "bus_scope",
-      "width": 240,
-      "height": 240,
-      "shape": "square",
-      "app_url": "https://PyDevices.github.io/assets/apps/bus_scope.py"
-    },
+    "eyebrow": "displayif · moved",
+    "headline": "displayif has moved into micropython-pydevices.",
+    "description": "Moved to micropython-pydevices as modules/displayif, with its history. It was never published on its own: it reaches you in firmware built by micropython-pydevices' build_mp.py, so that is where it is built, tested and changed now. Your code doesn't change. The old repository is archived.",
     "buttons": [
       {
-        "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/displayif",
+        "label": "modules/displayif",
+        "href": "https://github.com/PyDevices/micropython-pydevices/tree/main/modules/displayif",
         "primary": true
       },
       {
-        "label": "Hardware Bring-up",
-        "href": "https://github.com/PyDevices/displayif/blob/main/docs/soft-reset-and-bring-up.md",
+        "label": "Hardware bring-up",
+        "href": "https://github.com/PyDevices/micropython-pydevices/blob/main/modules/displayif/docs/soft-reset-and-bring-up.md",
         "tier_color": true
       },
       {
-        "label": "pygraphics",
-        "href": "https://pydevices.github.io/pygraphics/",
+        "label": "micropython-pydevices",
+        "href": "https://pydevices.github.io/micropython-pydevices/",
         "tier_color": true
       },
       {
-        "label": "pydevices Core",
-        "href": "https://pydevices.github.io/pydevices/",
+        "label": "Archived repo",
+        "href": "https://github.com/PyDevices/displayif",
         "tier_color": true
       }
     ]
@@ -149,37 +150,32 @@
   "audioif": {
     "tier": 1,
     "page": "portal-subdir",
+    "portal_grid": false,
+    "title": "PyDevices - audioif (moved)",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "audioif",
-    "headline": "audioif — the audio hardware layer: the platform drivers under the audio pump.",
-    "description": "The part of the audio stack that knows what a thread is, where the clock comes from and where the sound goes: a pinned task and the I2S peripheral on ESP32, a native thread on unix and Windows, and a CircuitPython-shaped audiobusio.I2SOut over all of it. With it in a firmware, a graph keeps an exact clock while a screen redraws and a USB stack runs, and audiodev plays through it without being asked. The portable half of the pump, and every DSP node, is audiodsp.",
-    "hero_canvas": {
-      "app": "signal_gen",
-      "width": 480,
-      "height": 480,
-      "shape": "square",
-      "app_url": "https://PyDevices.github.io/assets/apps/signal_gen.py"
-    },
+    "eyebrow": "audioif · moved",
+    "headline": "audioif has moved into micropython-pydevices.",
+    "description": "Moved to micropython-pydevices as modules/audioif, with its history. It was never published on its own: it reaches you in firmware built by micropython-pydevices' build_mp.py, so that is where it is built, tested and changed now. Your code doesn't change. The old repository is archived.",
     "buttons": [
       {
-        "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/audioif",
+        "label": "modules/audioif",
+        "href": "https://github.com/PyDevices/micropython-pydevices/tree/main/modules/audioif",
         "primary": true
-      },
-      {
-        "label": "Releases",
-        "href": "https://github.com/PyDevices/audioif/releases/latest",
-        "tier_color": true
-      },
-      {
-        "label": "audiodsp",
-        "href": "https://pydevices.github.io/audiodsp/",
-        "tier_color": true
       },
       {
         "label": "Audio in pydevices",
         "href": "https://github.com/PyDevices/pydevices/blob/main/docs/audio.md",
+        "tier_color": true
+      },
+      {
+        "label": "micropython-pydevices",
+        "href": "https://pydevices.github.io/micropython-pydevices/",
+        "tier_color": true
+      },
+      {
+        "label": "Archived repo",
+        "href": "https://github.com/PyDevices/audioif",
         "tier_color": true
       }
     ]
@@ -225,37 +221,32 @@
   "usbif": {
     "tier": 1,
     "page": "portal-subdir",
+    "portal_grid": false,
+    "title": "PyDevices - usbif (moved)",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "usbif",
-    "headline": "usbif — native USB for MicroPython: device, host, and both at once.",
-    "description": "A board a computer sees as a sound card, a MIDI instrument, a keyboard, a drive or a webcam — and, on the same board, a USB host that a keyboard, thumb drive, MIDI controller or camera plugs into. One of the PyDevices *if modules, with displayif, audioif and cameraif: a native C module with a thin, stable Python surface that runs unchanged on a workstation.",
-    "hero_canvas": {
-      "app": "encoder",
-      "width": 480,
-      "height": 480,
-      "shape": "square",
-      "app_url": "https://PyDevices.github.io/assets/apps/encoder.py"
-    },
+    "eyebrow": "usbif · moved",
+    "headline": "usbif has moved, to two homes.",
+    "description": "The C module is now usbhost, in micropython-pydevices as modules/usbhost (its binding is _usbhost, it was _usbif). The Python USB packages (usb.core, the host and device classes, usb-hid) are top-level packages in pydevices, installed with mip. Code that uses the packages doesn't change. The old repository is archived.",
     "buttons": [
       {
-        "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/usbif",
+        "label": "modules/usbhost",
+        "href": "https://github.com/PyDevices/micropython-pydevices/tree/main/modules/usbhost",
         "primary": true
       },
       {
-        "label": "Portable API",
-        "href": "https://github.com/PyDevices/usbif/blob/main/lib/usbif/README.md",
+        "label": "USB packages in pydevices",
+        "href": "https://github.com/PyDevices/pydevices/blob/main/docs/usb.md",
         "tier_color": true
       },
       {
-        "label": "Examples",
-        "href": "https://github.com/PyDevices/usbif/tree/main/examples",
+        "label": "micropython-pydevices",
+        "href": "https://pydevices.github.io/micropython-pydevices/",
         "tier_color": true
       },
       {
-        "label": "audiodsp",
-        "href": "https://pydevices.github.io/audiodsp/",
+        "label": "Archived repo",
+        "href": "https://github.com/PyDevices/usbif",
         "tier_color": true
       }
     ]
@@ -263,37 +254,32 @@
   "cameraif": {
     "tier": 1,
     "page": "portal-subdir",
+    "portal_grid": false,
+    "title": "PyDevices - cameraif (moved)",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "cameraif",
-    "headline": "cameraif — a MIPI-CSI camera as a MicroPython object.",
-    "description": "Point the board at something and read the frame. The sensor is found by probing rather than named in code, so a different camera is a build-time option away, not a rewrite. Hardware JPEG, zero-copy frames and hardware scaling straight into a display's scanout buffer, with every rate in its README measured on the board it names.",
-    "hero_canvas": {
-      "app": "encoder",
-      "width": 480,
-      "height": 480,
-      "shape": "square",
-      "app_url": "https://PyDevices.github.io/assets/apps/encoder.py"
-    },
+    "eyebrow": "cameraif · moved",
+    "headline": "cameraif has moved into micropython-pydevices.",
+    "description": "Moved to micropython-pydevices as modules/cameraif, with its history. It was never published on its own: it reaches you in firmware built by micropython-pydevices' build_mp.py, so that is where it is built, tested and changed now. Your code doesn't change. The old repository is archived.",
     "buttons": [
       {
-        "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/cameraif",
+        "label": "modules/cameraif",
+        "href": "https://github.com/PyDevices/micropython-pydevices/tree/main/modules/cameraif",
         "primary": true
       },
       {
         "label": "Examples",
-        "href": "https://github.com/PyDevices/cameraif/tree/main/examples",
+        "href": "https://github.com/PyDevices/micropython-pydevices/tree/main/modules/cameraif/examples",
         "tier_color": true
       },
       {
-        "label": "displayif",
-        "href": "https://pydevices.github.io/displayif/",
+        "label": "micropython-pydevices",
+        "href": "https://pydevices.github.io/micropython-pydevices/",
         "tier_color": true
       },
       {
-        "label": "usbif",
-        "href": "https://pydevices.github.io/usbif/",
+        "label": "Archived repo",
+        "href": "https://github.com/PyDevices/cameraif",
         "tier_color": true
       }
     ]
@@ -830,7 +816,7 @@
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "micropython-pydevices",
     "headline": "micropython-pydevices — the versioned MicroPython runtime overlay.",
-    "description": "The PyDevices patch queue for MicroPython, kept like a distribution keeps one: an ordered, provenance-tracked patch series over the pinned upstream release (v1.29.0), with presets, boards and variants that build PyDevices modules into firmware with upstream's own make.",
+    "description": "The PyDevices patch queue for MicroPython, kept like a distribution keeps one: an ordered, provenance-tracked patch series over the pinned upstream (MicroPython v1.30.0-preview-160), with presets, boards and variants that build PyDevices modules into firmware with upstream's own make.",
     "hero_canvas": {
       "app": "radar_scope",
       "width": 240,

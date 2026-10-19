@@ -211,6 +211,16 @@ def build_ecosystem_markdown(db):
             lines.append(f'- [`{repo_name}`]({url}) — {data.get("description", "")}')
         lines.append('')
 
+    # Repos that were folded into another one and archived. Their pages stay up
+    # as pointers (portal_grid: false keeps them off the grid), and the map
+    # says where each went so a reader of the map isn't sent to an archive.
+    moved = db['_meta'].get('moved')
+    if moved:
+        lines += ['**Moved into other repositories:**', '']
+        for repo_name, where in moved.items():
+            lines.append(f'- **{repo_name}** — {where}')
+        lines.append('')
+
     lines += ['**Deliberately absent from this map:**', '']
     for repo_name, reason in db['_meta']['excluded'].items():
         lines.append(f'- **{repo_name}** — {reason}')
