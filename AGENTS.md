@@ -54,7 +54,7 @@ handing work from Cursor desktop to Cloud Agents.
     ├── micropython           a clone at the tag micropython-pydevices pins, the patch series applied
     ├── circuitpython         a clone at the pinned CircuitPython tag
     ├── micropython-pydevices -> /agent/repos/micropython-pydevices
-    ├── audiodsp, displayif, pygraphics, lvgl-* ...  -> /agent/repos/<name>
+    ├── audiodsp, pygraphics, lvgl-* ...  -> /agent/repos/<name>   (displayif, audioif, cameraif and usbhost are in micropython-pydevices/modules/)
     ├── dotgithub             -> /agent/repos/.github   (this repo)
     ├── pydevices  -> /agent/repos/pydevices
     ├── mpftp                 -> /agent/repos/mpftp
