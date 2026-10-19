@@ -110,5 +110,32 @@ class OnlyMipTests(unittest.TestCase):
         self.assertIn("not in data/repos_db.json", result.stderr)
 
 
+class MovedRepoTests(unittest.TestCase):
+    """A repo folded into another one stays a pointer page, off the map and grid."""
+
+    def setUp(self) -> None:
+        sys.path.insert(0, str(REPO / "scripts"))
+        self.addCleanup(sys.path.remove, str(REPO / "scripts"))
+        import generate_sites
+
+        self.gen = generate_sites
+        self.db = json.loads((REPO / "data/repos_db.json").read_text(encoding="utf-8"))
+
+    def test_moved_repos_are_named_in_the_map_not_listed_as_products(self) -> None:
+        moved = self.db["_meta"]["moved"]
+        self.assertTrue(moved)
+        block = self.gen.build_ecosystem_markdown(self.db)
+        for name in moved:
+            self.assertIn(f"- **{name}** \u2014 ", block)
+            self.assertNotIn(f"[`{name}`](https://github.com/PyDevices/{name})", block)
+
+    def test_moved_repos_keep_their_page_but_leave_the_grid(self) -> None:
+        for name in self.db["_meta"]["moved"]:
+            entry = self.db[name]
+            self.assertIs(entry.get("portal_grid"), False, name)
+            self.assertNotEqual(self.gen.page_destination(entry), "none", name)
+            self.assertNotIn(f'href="/{name}/"', self.gen.build_portal_grids_html(self.db))
+
+
 if __name__ == "__main__":
     unittest.main()
