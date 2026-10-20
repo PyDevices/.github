@@ -240,6 +240,16 @@ The App token is required here, not incidental: **a Release created with the
 default `GITHUB_TOKEN` does not trigger `on: release` workflows**, so the
 publish chain below would silently never fire.
 
+If GitHub never delivers the push event for a merge (it has happened: a merge
+that ran no workflow at all), run the repository's tag workflow by hand from
+`main`. A caller that also triggers on `workflow_dispatch` and passes its
+`release` and `dry-run` inputs through (the shape is in the header comment of
+`reusable-tag-on-release-merge.yml`) gets a manual path that tags the commit
+that brought `VERSION` to the version, checks the same version grammar as the
+push path, and does nothing if the tag exists. Leave `release` blank to tag
+`VERSION` as it stands, or give a version or that merge's SHA. Set `dry-run` to
+see what it would tag without tagging anything.
+
 ### 4. Publish release packages runs from the Release event
 
 `reusable-publish-release-packages.yml` resolves and validates the `vX.Y.Z`

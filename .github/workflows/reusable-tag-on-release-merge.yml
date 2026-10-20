@@ -2,10 +2,43 @@
 # changed), create the vX.Y.Z tag and GitHub Release with the App token --
 # required so the created release triggers the publish workflow (a plain
 # GITHUB_TOKEN release does not trigger downstream workflows).
+#
+# The manual path is the recovery for a push event GitHub never delivered (a
+# merge that ran no workflow at all). A caller that also triggers on
+# `workflow_dispatch` gets it by passing its dispatch input through:
+#
+#   on:
+#     push: { branches: [main], paths: [VERSION] }
+#     workflow_dispatch:
+#       inputs:
+#         release: { description: "Version or merge SHA; blank = VERSION as it stands", required: false, default: "" }
+#         dry-run: { type: boolean, default: false }
+#   jobs:
+#     tag:
+#       uses: PyDevices/.github/.github/workflows/reusable-tag-on-release-merge.yml@<tag>
+#       with: { release: "${{ inputs.release }}", dry-run: "${{ inputs.dry-run == true }}" }
+#       secrets: inherit
+#
+# A manual run tags the commit that brought VERSION to the version being
+# tagged, never an arbitrary one, and applies the same version grammar as the
+# push path. Callers that don't dispatch are unchanged.
 name: Reusable tag on release merge
 
 on:
-  workflow_call: {}
+  workflow_call:
+    inputs:
+      release:
+        description: >-
+          Manual runs only. The version (X.Y.Z[{a|b|rc}N|.devN]) or the merge
+          SHA to tag. Blank tags VERSION as it stands on the default branch.
+        type: string
+        required: false
+        default: ""
+      dry-run:
+        description: Manual runs only. Say what would be tagged, tag nothing.
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: read
@@ -16,10 +49,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          fetch-depth: 2
+          # A manual run walks VERSION's history and needs the tags.
+          fetch-depth: ${{ github.event_name == 'workflow_dispatch' && '0' || '2' }}
 
       - name: Detect a VERSION change
         id: detect
+        if: github.event_name != 'workflow_dispatch'
         run: |
           if git diff --quiet HEAD^ HEAD -- VERSION 2>/dev/null; then
             echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
@@ -43,8 +78,77 @@ jobs:
           echo "changed=true" >> "$GITHUB_OUTPUT"
           echo "version=$V" >> "$GITHUB_OUTPUT"
 
+      - name: Resolve a manual release
+        id: manual
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          RELEASE: ${{ inputs.release }}
+          DRY_RUN: ${{ inputs.dry-run }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -eu
+          GRAMMAR='^[0-9]+\.[0-9]+\.[0-9]+((a|b|rc)[0-9]+|\.dev[0-9]+)?$'
+          if [ "$GITHUB_REF" != "refs/heads/$DEFAULT_BRANCH" ]; then
+            echo "::error::Run this on $DEFAULT_BRANCH, not $GITHUB_REF; refusing to tag."
+            exit 1
+          fi
+          R=$(printf %s "$RELEASE" | tr -d '[:space:]')
+          WANT_SHA=""
+          if [ -z "$R" ]; then
+            V=$(tr -d '[:space:]' < VERSION)
+          elif [[ "$R" =~ $GRAMMAR ]]; then
+            V=$R
+          elif [[ "$R" =~ ^[0-9a-fA-F]{7,40}$ ]]; then
+            WANT_SHA=$(git rev-parse -q --verify "$R^{commit}") || {
+              echo "::error::No commit '$R' in this repository; refusing to tag."; exit 1; }
+            if ! git merge-base --is-ancestor "$WANT_SHA" HEAD; then
+              echo "::error::$WANT_SHA is not on $DEFAULT_BRANCH; refusing to tag."
+              exit 1
+            fi
+            V=$(git show "$WANT_SHA:VERSION" | tr -d '[:space:]')
+          else
+            echo "::error::'$R' is neither a release version nor a commit SHA; refusing to tag."
+            exit 1
+          fi
+          # Same grammar as the push path: a placeholder is not a release.
+          if [[ ! "$V" =~ $GRAMMAR ]]; then
+            echo "::error::VERSION is '$V', not a release version X.Y.Z[{a|b|rc}N|.devN]; refusing to tag."
+            exit 1
+          fi
+          if git rev-parse -q --verify "refs/tags/v$V" >/dev/null; then
+            echo "Tag v$V already exists; nothing to do."
+            echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          # The commit on the default branch that brought VERSION to $V (the
+          # oldest of a run of commits that leave it there): what the push
+          # run would have tagged.
+          SHA=""
+          for C in $(git log --first-parent --format=%H -- VERSION); do
+            if [ "$(git show "$C:VERSION" | tr -d '[:space:]')" = "$V" ]; then
+              SHA=$C
+            elif [ -n "$SHA" ]; then
+              break
+            fi
+          done
+          if [ -z "$SHA" ]; then
+            echo "::error::No commit on $DEFAULT_BRANCH sets VERSION to $V; refusing to tag."
+            exit 1
+          fi
+          if [ -n "$WANT_SHA" ] && [ "$WANT_SHA" != "$SHA" ]; then
+            echo "::error::$WANT_SHA is not the commit that set VERSION to $V; that is $SHA; refusing to tag."
+            exit 1
+          fi
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "Dry run: would tag v$V at $SHA. Nothing was tagged."
+            echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          echo "Tagging v$V at $SHA"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+
       - name: Mint App token
-        if: steps.detect.outputs.changed == 'true'
+        if: steps.detect.outputs.changed == 'true' || steps.manual.outputs.changed == 'true'
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
@@ -52,12 +156,13 @@ jobs:
           private-key: ${{ secrets.PYDEVICES_APP_PRIVATE_KEY }}
 
       - name: Create tag and Release
-        if: steps.detect.outputs.changed == 'true'
+        if: steps.detect.outputs.changed == 'true' || steps.manual.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          V: ${{ steps.detect.outputs.version }}
+          V: ${{ steps.detect.outputs.version || steps.manual.outputs.version }}
+          TARGET: ${{ steps.manual.outputs.sha || github.sha }}
         run: |
           PRERELEASE=""
           [[ "$V" =~ (a|b|rc)[0-9]+$|\.dev[0-9]+$ ]] && PRERELEASE="--prerelease"
-          gh release create "v$V" --target "$GITHUB_SHA" \
+          gh release create "v$V" --target "$TARGET" \
             --title "v$V" --generate-notes $PRERELEASE
