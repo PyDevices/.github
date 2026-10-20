@@ -86,14 +86,14 @@
  "pydevices-pdwidgets": {
   "assets": "success",
   "distribution": "pydevices-pdwidgets",
-  "mip": "success",
-  "prerelease": false,
+  "mip": "skipped",
+  "prerelease": true,
   "pypi": "skipped",
-  "repo": "pdwidgets",
-  "run_url": "https://github.com/PyDevices/pdwidgets/actions/runs/35952308530",
+  "repo": "pydevices",
+  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/39508746177",
   "testpypi": "success",
-  "updated": "2026-09-24 03:39 UTC",
-  "version": "0.0.24"
+  "updated": "2026-10-20 22:32 UTC",
+  "version": "0.0.25rc1"
  },
  "pydevices-pygraphics": {
   "assets": "success",
