@@ -78,8 +78,9 @@ them. That is the layout micropython-pydevices' presets assume (their paths
 resolve two levels up from `manifests/`), and the one every build script in
 the org defaults to: from `micropython/ports/<port>`, upstream's own `make`
 with `VARIANT_DIR=`, `BOARD_DIR=` and `FROZEN_MANIFEST=` pointing into
-`micropython-pydevices`; for CircuitPython, each C-carrying repo's
-`apply_cp_patches.sh` and then upstream's `make`.
+`micropython-pydevices`; for CircuitPython, the same `build_mp.py` with
+`--interpreter circuitpython`, which builds each repo's `micropython.mk` as a
+user C module.
 
 Upstream trees (`micropython/`, `circuitpython/`) are **read-only clones** in
 this workspace. The MicroPython one carries a single local commit, the
