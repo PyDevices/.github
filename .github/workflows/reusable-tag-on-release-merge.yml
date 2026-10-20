@@ -143,9 +143,11 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
           fi
           echo "Tagging v$V at $SHA"
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-          echo "version=$V" >> "$GITHUB_OUTPUT"
-          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          {
+            echo "changed=true"
+            echo "version=$V"
+            echo "sha=$SHA"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Mint App token
         if: steps.detect.outputs.changed == 'true' || steps.manual.outputs.changed == 'true'
