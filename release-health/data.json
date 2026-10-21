@@ -18,10 +18,10 @@
   "prerelease": true,
   "pypi": "skipped",
   "repo": "audiodsp",
-  "run_url": "https://github.com/PyDevices/audiodsp/actions/runs/39585637550",
+  "run_url": "https://github.com/PyDevices/audiodsp/actions/runs/39627578727",
   "testpypi": "success",
-  "updated": "2026-10-21 10:41 UTC",
-  "version": "0.6.9.dev1"
+  "updated": "2026-10-21 15:46 UTC",
+  "version": "0.6.9.dev2"
  },
  "pydevices-audioeffects": {
   "assets": "success",
