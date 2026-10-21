@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pydevices-docs"
+version = "0.1.0"
+description = "Shared Sphinx theme and configuration for the PyDevices documentation projects."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "sphinx>=7.3",
+    "sphinx_rtd_theme>=3.0",
+    "myst-parser>=3.0",
+    "sphinx-design>=0.6",
+    "sphinxcontrib-mermaid>=1.0",
+]
+
+[project.entry-points."sphinx.html_themes"]
+pydevices = "pydevices_docs"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+pydevices_docs = ["theme/*", "theme/static/*", "templates/*"]

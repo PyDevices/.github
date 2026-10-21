@@ -1,0 +1,3 @@
+# Read the Docs installs this project's shared configuration from the checkout.
+# Paths in a requirements file are relative to where pip runs: the repository root.
+./docs-config

@@ -1,0 +1,28 @@
+{# The shared top bar, laid over sphinx_rtd_theme. Found through templates_path, so "!layout.html" is the theme's own. #}
+{%- extends "!layout.html" %}
+
+{%- block extrahead %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ pathto('_static/pydevices.css', 1) }}" type="text/css" />
+  <script src="{{ pathto('_static/pydevices-bar.js', 1) }}" defer></script>
+  <script src="{{ pathto('_static/pydevices-demo.js', 1) }}" defer></script>
+{%- endblock %}
+
+{%- block extrabody %}
+  {{ super() }}
+  <nav class="pd-bar" aria-label="PyDevices projects" data-pd-main="{{ 'true' if pd_is_main else 'false' }}">
+    <a class="pd-brand" href="{{ pd_projects[0].url }}" data-pd-path="{{ pd_projects[0].path }}">
+      <img src="{{ pathto('_static/logo.svg', 1) }}" alt="" width="22" height="22">
+      <span>PyDevices</span>
+    </a>
+    <ul class="pd-projects">
+      {%- for p in pd_projects[1:] %}
+      <li><a href="{{ p.url }}" data-pd-path="{{ p.path }}"{% if p.name == pd_project %} aria-current="page" class="pd-current"{% endif %}>{{ p.title }}</a></li>
+      {%- endfor %}
+    </ul>
+    <span class="pd-bar-links">
+      <a href="{{ pd_portal }}">Website</a>
+      <a href="{{ pd_github }}">GitHub</a>
+    </span>
+  </nav>
+{%- endblock %}

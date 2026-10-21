@@ -62,20 +62,19 @@ the answer from scratch.
 
 ## Read the Docs
 
-MkDocs sites for **pydevices-examples**, **pygraphics**, **palettes**, and **pdwidgets**
-publish to `*.readthedocs.io`. GitHub integration uses the org-installed
+Sphinx documentation for the organization, **pygraphics**, **palettes**, and **pdwidgets**
+publishes to Read the Docs as one site (see [building-docs.md](building-docs.md)). GitHub integration uses the org-installed
 [Read the Docs Community](https://github.com/apps/read-the-docs-community)
 app (**all repositories** — see the org's
 [installed GitHub Apps](https://github.com/organizations/PyDevices/settings/installations)).
 
 With the GitHub App, RTD receives push/PR events directly — no per-repo webhook
-is required. The docs repos (**pydevices-examples**, **pygraphics**, **palettes**,
-**pdwidgets**) use this app; legacy `api/v2/webhook/...` hooks are gone. New
+is required. The docs repos (**pygraphics**, **palettes**, **pdwidgets**) use this app; legacy `api/v2/webhook/...` hooks are gone. New
 projects: import from the RTD dashboard (repo list comes from the app). If an
 older project still needs migrating:
 [Migrate to GitHub App](https://app.readthedocs.org/accounts/migrate-to-github-app/).
 
-Build config in each docs repo is `.readthedocs.yaml` + `mkdocs.yml` (no secrets).
+Build config in each docs repo is `.readthedocs.yaml` + `docs/conf.py` (no secrets).
 
 ## Repos & Pages sites
 

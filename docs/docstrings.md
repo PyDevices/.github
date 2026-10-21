@@ -1,14 +1,20 @@
 # Docstring conventions
 
-Public docstrings in the three library repositories — `palettes`, `pdwidgets`,
-and `pygraphics` — are rendered on ReadTheDocs via mkdocstrings. Follow these
-rules so the generated reference pages stay accurate. See
-[building-docs.md](building-docs.md) for the build itself.
+Public docstrings in the three library projects — `palettes`, `pdwidgets`,
+and `pygraphics` — are rendered on Read the Docs by Sphinx's `autodoc` with the
+`napoleon` extension. Follow these rules so the generated reference pages stay
+accurate. See [building-docs.md](building-docs.md) for the build itself.
 
 ## Style
 
 - **Google style** only (`Args`, `Returns`, `Raises`, `Example`).
-- Do not mix Sphinx directives (`:return:`, `:param:`).
+- Do not mix Sphinx fields (`:return:`, `:param:`) or roles (`:meth:`, `:class:`).
+- Cross-reference with single backticks: `` `Palette` `` or
+  `` `text <palettes.Palette.name>` ``. A single backtick in a docstring is a
+  Python cross-reference. Use double backticks for code that is not a name.
+- A blank line before every list, and a raw string or a doubled backslash for
+  `\n` in prose: a bare `\n` in a normal docstring is a real newline and
+  breaks the paragraph.
 - Match **real function signatures** — do not document named parameters on `*args` / `**kwargs` wrappers.
 
 ## Module docstrings
@@ -43,9 +49,11 @@ See also: https://github.com/PyDevices/pydevices/blob/main/docs/displaydev.md
 
 - **`Area` returns:** Drawing helpers that return dirty regions use `pygraphics.Area` (`x`, `y`, `w`, `h`).
 - **App:** Document poll/subscribe patterns; link to [Events concept](https://github.com/PyDevices/pydevices/blob/main/docs/appdev.md).
-- **Private API:** Names starting with `_` are excluded from mkdocstrings output; minimal or no docstrings are fine.
+- **Private API:** Names starting with `_` are excluded from the API pages; minimal or no docstrings are fine.
   Document public methods that live on private implementation bases when they surface via inheritance
-  (e.g. provider `Timer` classes ← `_TimerCore.init` / `deinit` with `inherited_members: true`).
+  (set `:inherited-members:` on the page for that class).
+- **Properties:** write a sentence. Napoleon does not read `Name: text` on a
+  property as a type, so the sentence stays a sentence.
 
 ## Types
 
@@ -59,13 +67,13 @@ annotations that deliberately are not there.
 
 ## Verification
 
-From the repo root:
+From the repo root, build the way CI does:
 
 ```bash
-.venv-docs/bin/mkdocs build 2>&1 | grep -i griffe
+.venv-docs/bin/sphinx-build -W --keep-going -b html palettes/docs palettes/docs/_build/html
 ```
 
-Griffe warnings mean a docstring parameter does not appear in the signature — fix before merging P0 module changes.
+A docstring problem is a warning, and `-W` makes it a failure. Fix it before merging.
 
 ## Priority tiers
 
