@@ -207,7 +207,10 @@ def build_ecosystem_markdown(db):
         name, hint = meta[tier]
         lines += [f'### Tier {tier}: {name}', '', f'{hint}', '']
         for repo_name, data in by_tier[tier]:
-            url = f'https://github.com/PyDevices/{repo_name}'
+            # A package that lives inside another repository (palettes and
+            # pdwidgets in pydevices) names its real home with repo_url; the
+            # same-named repository is archived.
+            url = data.get('repo_url') or f'https://github.com/PyDevices/{repo_name}'
             lines.append(f'- [`{repo_name}`]({url}) — {data.get("description", "")}')
         lines.append('')
 
