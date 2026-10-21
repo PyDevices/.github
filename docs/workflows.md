@@ -131,11 +131,11 @@ those paths.
 
 ## Documentation
 
-**No repository builds documentation in Actions.** ReadTheDocs builds
-`palettes`, `pdwidgets`, and `pygraphics` on push via the org GitHub App. A
-duplicate `mkdocs build` used to run here too and was deleted: it passed while
-two of the three sites were failing to publish, because `mkdocs` exits 0 and RTD
-then fails the build on output checks `mkdocs` cannot see.
+ReadTheDocs builds the main project, `palettes`, `pdwidgets`, and `pygraphics`
+on push via the org GitHub App, with `fail_on_warning: true`. Each repo's CI
+builds its docs the same way (`sphinx-build -W`, from the repository root with
+the paths in `.readthedocs.yaml`), so a warning fails the pull request before it
+can fail the published build.
 
 ## Maintenance
 

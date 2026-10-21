@@ -1,0 +1,217 @@
+/*
+ * The PyDevices documentation look, laid over sphinx_rtd_theme.
+ *
+ * Its palette mirrors the website chrome (assets/css/site.css in this
+ * repository, deployed as PyDevices.github.io/assets/chrome/site.css):
+ * the same brand cyan and the same dark panels. Every colour is a token in
+ * the block below, so a palette change is one edit here and one there.
+ */
+
+:root {
+  --pd-brand-rgb: 34 199 226;
+  --pd-brand: rgb(var(--pd-brand-rgb));
+  --pd-brand-soft: #5edcf0;
+  --pd-header-rgb: 10 113 134;       /* deep cyan: 5.4:1 under near-white text */
+  --pd-header: rgb(var(--pd-header-rgb));
+  --pd-link: #08657a;
+  --pd-link-hover: #0a7186;
+  --pd-ink: #0c161d;
+  --pd-ink-soft: #47606f;
+  --pd-bg: #ffffff;
+  --pd-bg-soft: #f5f9fb;
+  --pd-bg-code: #eff6f9;
+  --pd-border: #cfdde6;
+  --pd-dark: #0c1218;                 /* the bar and the sidebar */
+  --pd-dark-2: #121a22;
+  --pd-dark-ink: #dfeaf2;
+  --pd-dark-soft: #a7bccc;
+  --pd-success-rgb: 46 125 50;
+  --pd-error: #d32f2f;
+  --pd-shade-rgb: 0 0 0;
+  --pd-on-primary: #fff;
+  /* The emulated device screen in a live demo: fixed in every scheme. */
+  --pd-canvas-bg: #000000;
+  --pd-canvas-frame: #17222c;
+  --pd-canvas-border: #333333;
+
+  --pd-bar-h: 2.5rem;
+}
+
+/* ---- The shared top bar -------------------------------------------- */
+
+.pd-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--pd-bar-h);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1rem;
+  background: var(--pd-dark);
+  color: var(--pd-dark-ink);
+  border-bottom: 2px solid var(--pd-brand);
+  font-family: Lato, "proxima-nova", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+.pd-bar a { color: var(--pd-dark-soft); text-decoration: none; white-space: nowrap; }
+.pd-bar a:hover { color: var(--pd-brand-soft); }
+.pd-bar .pd-brand {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  color: var(--pd-dark-ink); font-weight: 700; flex: none;
+}
+.pd-bar .pd-projects {
+  display: flex; gap: 0.25rem; list-style: none; margin: 0; padding: 0;
+  overflow-x: auto; flex: 1 1 auto; scrollbar-width: none;
+}
+.pd-bar .pd-projects::-webkit-scrollbar { display: none; }
+.pd-bar .pd-projects li { margin: 0; padding: 0; list-style: none; }
+.pd-bar .pd-projects a { display: block; padding: 0.15rem 0.6rem; border-radius: 4px; }
+.pd-bar .pd-projects a:hover { background: rgb(var(--pd-brand-rgb) / 0.12); }
+.pd-bar .pd-projects a.pd-current {
+  color: var(--pd-dark-ink);
+  background: rgb(var(--pd-brand-rgb) / 0.18);
+  box-shadow: inset 0 -2px 0 var(--pd-brand);
+}
+.pd-bar .pd-bar-links { display: flex; gap: 1rem; margin-left: auto; flex: none; }
+@media (max-width: 640px) {
+  .pd-bar { gap: 0.5rem; padding: 0 0.5rem; }
+  .pd-bar .pd-brand span, .pd-bar .pd-bar-links { display: none; }
+}
+
+/* Make room for the bar: the theme pins its sidebar to the top of the window. */
+.wy-grid-for-nav { top: var(--pd-bar-h); height: calc(100% - var(--pd-bar-h)); }
+.wy-nav-side { top: var(--pd-bar-h); background: var(--pd-dark); }
+.wy-side-nav-search, .wy-nav-top { background: var(--pd-header); }
+.wy-nav-side.shift { top: var(--pd-bar-h); }
+html { scroll-padding-top: var(--pd-bar-h); }
+body.wy-body-for-nav { padding-top: 0; }
+
+/* ---- Sidebar and page ---------------------------------------------- */
+
+.wy-menu-vertical a { color: var(--pd-dark-soft); }
+.wy-menu-vertical a:hover { background: var(--pd-dark-2); color: var(--pd-dark-ink); }
+.wy-menu-vertical li.current { background: var(--pd-dark-2); }
+.wy-menu-vertical li.current > a,
+.wy-menu-vertical li.toctree-l1.current > a { background: #17222c; color: var(--pd-dark-ink); border-color: var(--pd-border); }
+.wy-menu-vertical li.toctree-l2.current > a,
+.wy-menu-vertical li.toctree-l2.current li.toctree-l3 > a { background: var(--pd-dark-2); }
+.wy-menu-vertical li.current a { border-right: 1px solid #23323f; }
+.wy-menu-vertical li.on a, .wy-menu-vertical li.current > a { color: var(--pd-dark-ink); }
+.wy-menu-vertical li.current ul li a,
+.wy-menu-vertical li.toctree-l2 a,
+.wy-menu-vertical li.toctree-l3 a,
+.wy-menu-vertical li.toctree-l4 a { color: var(--pd-dark-soft); }
+.wy-menu-vertical li.toctree-l2.current > a,
+.wy-menu-vertical li.toctree-l3.current > a { color: var(--pd-dark-ink); }
+.wy-menu-vertical li.current ul li a:hover { color: var(--pd-dark-ink); background: #17222c; }
+.wy-menu-vertical li.toctree-l1 > a:hover,
+.wy-menu-vertical li.toctree-l1.current > a:hover { background: #17222c; }
+.wy-menu-vertical li.current > ul li.current > a { background: var(--pd-dark-2); }
+.wy-menu-vertical li.toctree-l2.current li.toctree-l3 > a { background: var(--pd-dark-2); }
+.wy-menu-vertical li.toctree-l3.current li.toctree-l4 > a { background: var(--pd-dark-2); }
+.wy-menu-vertical header, .wy-menu-vertical p.caption { color: var(--pd-brand-soft); }
+.wy-side-nav-search input[type=text] { border-color: rgb(var(--pd-shade-rgb) / 0.2); }
+.wy-side-nav-search > a, .wy-side-nav-search .wy-dropdown > a { color: #fff; }
+
+.wy-nav-content-wrap, .wy-nav-content { background: var(--pd-bg); }
+.wy-nav-content { color: var(--pd-ink); }
+.rst-content a, .rst-content a:visited, .wy-nav-content a { color: var(--pd-link); }
+.rst-content a:hover { color: var(--pd-link-hover); }
+.rst-content code.literal, .rst-content tt.literal { color: var(--pd-ink); background: var(--pd-bg-code); border-color: var(--pd-border); }
+.rst-content div[class^="highlight"], .rst-content pre.literal-block { background: var(--pd-bg-code); border-color: var(--pd-border); }
+.rst-content .linenodiv pre { border-color: var(--pd-border); }
+
+/* Signatures from autodoc. */
+.rst-content dl:not(.docutils):not(.field-list) > dt {
+  background: rgb(var(--pd-brand-rgb) / 0.08);
+  border-top: 3px solid var(--pd-brand);
+  color: var(--pd-ink);
+}
+.rst-content dl:not(.docutils) dl:not(.field-list):not(.docutils) > dt {
+  background: var(--pd-bg-soft);
+  border-left: 3px solid var(--pd-brand);
+  border-top: 0;
+}
+.rst-content .viewcode-link, .rst-content .viewcode-back { color: var(--pd-link); }
+
+/* ---- Hero, badges ---------------------------------------------------- */
+
+.hero-banner {
+  background: linear-gradient(135deg, rgb(var(--pd-brand-rgb) / 0.08) 0%, rgb(var(--pd-brand-rgb) / 0.02) 100%);
+  border: 1px solid rgb(var(--pd-brand-rgb) / 0.25);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero-banner p { margin-bottom: 0; }
+.badge-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.badge {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.75rem; font-weight: 600;
+  border-radius: 9999px;
+  background: var(--pd-bg-soft); color: var(--pd-ink);
+  border: 1px solid var(--pd-border);
+}
+.badge-brand { background: rgb(var(--pd-brand-rgb) / 0.12); color: var(--pd-header); border-color: rgb(var(--pd-brand-rgb) / 0.35); }
+.badge-green { background: rgb(var(--pd-success-rgb) / 0.12); color: rgb(var(--pd-success-rgb)); border-color: rgb(var(--pd-success-rgb) / 0.3); }
+
+/* sphinx-design cards, in the brand colour */
+.sd-card { border-color: var(--pd-border); }
+.sd-card:hover { border-color: var(--pd-brand); }
+.sd-card-title a, .sd-card .sd-stretched-link { color: var(--pd-link); }
+.sd-tab-set > label.sd-tab-label { color: var(--pd-ink-soft); }
+.sd-tab-set > input:checked + label.sd-tab-label { color: var(--pd-header); border-color: var(--pd-brand); }
+
+/* ---- Live WebAssembly demos ----------------------------------------- */
+
+.pydevices-live-demo {
+  display: flex; flex-wrap: wrap; gap: 1.25rem;
+  background: var(--pd-bg-code);
+  border: 1px solid var(--pd-border);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgb(var(--pd-shade-rgb) / 0.05);
+}
+.demo-editor-pane { flex: 1 1 340px; display: flex; flex-direction: column; gap: 0.6rem; min-width: 280px; }
+.code-editor {
+  font-family: SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.85rem; line-height: 1.45;
+  background: var(--pd-bg); color: var(--pd-ink);
+  border: 1px solid var(--pd-border); border-radius: 6px;
+  padding: 0.75rem; height: 230px; resize: vertical; tab-size: 4;
+}
+.code-editor:focus { outline: none; border-color: var(--pd-brand); box-shadow: 0 0 0 2px rgb(var(--pd-brand-rgb) / 0.2); }
+.demo-controls { display: flex; align-items: center; gap: 0.6rem; }
+.run-btn {
+  background: var(--pd-header); color: var(--pd-on-primary);
+  border: none; padding: 0.35rem 0.9rem; font-size: 0.82rem; font-weight: 600;
+  border-radius: 4px; cursor: pointer;
+}
+.run-btn:hover:not(:disabled) { background: #08657a; }
+.run-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.reset-btn {
+  background: var(--pd-bg-soft); color: var(--pd-ink);
+  border: 1px solid var(--pd-border); padding: 0.35rem 0.75rem; font-size: 0.82rem;
+  border-radius: 4px; cursor: pointer;
+}
+.reset-btn:hover { background: var(--pd-bg-code); }
+.demo-status { font-size: 0.78rem; color: var(--pd-ink-soft); margin-left: auto; font-weight: 500; }
+.demo-output {
+  font-family: SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.78rem; color: var(--pd-error);
+  margin: 0; max-height: 80px; overflow-y: auto; white-space: pre-wrap;
+  background: transparent; border: 0; padding: 0;
+}
+.demo-canvas-pane {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: var(--pd-canvas-bg); border: 1px solid var(--pd-canvas-frame);
+  border-radius: 8px; padding: 0.75rem;
+}
+.demo-canvas-pane { max-width: 100%; box-sizing: border-box; }
+.demo-canvas-pane canvas { max-width: 100%; height: auto; image-rendering: pixelated; border: 1px solid var(--pd-canvas-border); outline: none; background: var(--pd-canvas-bg); }
+.demo-canvas-pane canvas:focus { border-color: var(--pd-brand); }

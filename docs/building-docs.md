@@ -1,182 +1,110 @@
 # Building and publishing documentation
 
-How to preview a documentation site on your machine and publish it to
-ReadTheDocs.
+How to preview a PyDevices documentation project on your machine and how it
+reaches Read the Docs.
 
-**This applies to the three library sites only** — `palettes`, `pdwidgets`, and
-`pygraphics`. Every other PyDevices repository documents itself as plain
-markdown browsed on github.com; do not add MkDocs to one.
+One Sphinx configuration, in the `pydevices-docs` package
+([docs-config/](../docs-config/)), gives every project the same theme, the
+same top bar linking every project to every other, and the same Markdown and
+docstring setup. The organization overview is the main project, built from
+[docs-site/](../docs-site/); each library's manual is a subproject.
 
-| Repository | Site |
-|---|---|
-| [pygraphics](https://github.com/PyDevices/pygraphics) | [pygraphics.readthedocs.io](https://pygraphics.readthedocs.io) |
-| [pdwidgets](https://github.com/PyDevices/pdwidgets) | [pdwidgets.readthedocs.io](https://pdwidgets.readthedocs.io) |
-| [palettes](https://github.com/PyDevices/palettes) | [palettes.readthedocs.io](https://palettes.readthedocs.io) |
+| Project | Source | Site |
+|---|---|---|
+| PyDevices (the main project) | [docs-site/](../docs-site/) here | `pydevices.readthedocs.io` |
+| palettes | [palettes/docs](https://github.com/PyDevices/pydevices/tree/main/palettes/docs) | `/projects/palettes/` under the main site |
+| pdwidgets | [pdwidgets/docs](https://github.com/PyDevices/pydevices/tree/main/pdwidgets/docs) | `/projects/pdwidgets/` |
+| pygraphics | [docs/](https://github.com/PyDevices/pygraphics/tree/main/docs) in its repo | `/projects/pygraphics/` |
 
 Docstring conventions for the generated API pages: [docstrings.md](docstrings.md).
 
 ## Preview locally
 
-From the repository root:
+From the project's repository root (for palettes and pdwidgets, from the
+`pydevices` checkout):
 
 ```bash
 python3 -m venv .venv-docs
-.venv-docs/bin/pip install -r docs/requirements.txt
-.venv-docs/bin/mkdocs serve
+.venv-docs/bin/pip install -r palettes/docs/requirements.txt   # or pdwidgets/, or docs/ in pygraphics
+.venv-docs/bin/sphinx-build -W --keep-going -b html palettes/docs palettes/docs/_build/html
 ```
 
-Open **http://127.0.0.1:8000** in your browser. MkDocs reloads when you edit files under `docs/`.
+`requirements.txt` installs the tagged `pydevices-docs`. To work on the shared
+package itself, install your checkout instead:
+`.venv-docs/bin/pip install -e ../.github/docs-config`.
 
-One-shot production build (output in `site/`):
+Open `_build/html/index.html`, or serve the folder
+(`python3 -m http.server -d palettes/docs/_build/html`). Live demos need http,
+not `file://`. `sphinx-autobuild palettes/docs palettes/docs/_build/html`
+rebuilds as you edit.
 
-```bash
-.venv-docs/bin/mkdocs build
-```
-
-> **Already have the venv?**
->
-> If `.venv-docs/` exists from a previous session, skip the `venv` and `pip install` lines and run `.venv-docs/bin/mkdocs serve` directly.
+`-W` turns every warning into a failure. That is how CI and Read the Docs
+(`fail_on_warning: true` in `.readthedocs.yaml`) build, so a build that passes
+here passes there. No network? Set `PYDEVICES_DOCS_OFFLINE=1` to skip the
+reference map to the Python and MicroPython manuals.
 
 ### What runs during a build
 
 | File | Role |
 |------|------|
-| `mkdocs.yml` | Site config, theme, navigation |
-| `docs/requirements.txt` | Python packages for MkDocs and plugins |
-| `.readthedocs.yaml` | ReadTheDocs build settings (same deps) |
-| `scripts/mkdocs_gen_ref_pages.py` | Auto-generates API reference stubs from source docstrings |
+| `docs/conf.py` | Five lines: the project's name and where its code is, passed to `pydevices_docs.configure()` |
+| `docs/requirements.txt` | The pinned `pydevices-docs` release |
+| `.readthedocs.yaml` | Read the Docs build settings |
+| `docs/reference/` | API pages, written at build time from the package's modules (git-ignored) |
 
-Hand-authored pages live under `docs/` and follow a **Try → Quick start → Install → Learn → Reference** structure (see `mkdocs.yml` nav).
-
-API reference pages under `reference/` and `reference/utils/` are generated at build time — do not hand-edit them.
-
-Shared copy-paste blocks: `docs/_snippets/` (included via pymdownx Snippets).
-
-### Jupyter notebooks
-
-Interactive Jupyter notebooks are generated on demand from example scripts using `jupyter.py`. See [pydevices/docs/jupyter.md](https://github.com/PyDevices/pydevices/blob/main/docs/jupyter.md).
+Hand-authored pages are Markdown (MyST) in `docs/`. Cards and tabs come from
+`sphinx-design`, diagrams from `mermaid`, and the live browser demos are raw
+HTML (see the [pydevices-docs README](../docs-config/README.md)).
 
 ### Troubleshooting
 
-**`ModuleNotFoundError` during build** — use a venv as shown above; do not `pip install` into the system Python on Debian/Ubuntu (externally-managed-environment error).
+**`ModuleNotFoundError` while importing a module for the API pages** -- autodoc
+imports the package. Name modules a desktop build lacks (hardware, interpreter
+builtins) in `mock_imports` in `conf.py`.
 
-**Griffe warnings** — docstring parameter mismatches in source. All three sites
-now build under `strict: true`, so these fail the build rather than scrolling
-past. Fix them in the **docstring**, not the signature: these packages run on
-MicroPython and CircuitPython, where annotations cost bytecode and RAM. See
-[docstrings.md](docstrings.md).
+**A docstring warning fails the build** -- fix it in the **docstring**, not the
+signature: these packages run on MicroPython and CircuitPython, where
+annotations cost bytecode and RAM. See [docstrings.md](docstrings.md).
 
-**`Returns` type reported as missing when it is right there** — griffe's default
-`returns_named_value: true` expects the type in parentheses, `(Area): text`,
-while our convention writes a bare `Area: text` and griffe then reads `Area` as
-the return's *name*. All three sites therefore set:
+**An API page is missing a name** -- the page documents what the module
+defines. For a package whose public names live in private modules (pygraphics),
+set `use_module_all=True` so the page follows `__all__`.
 
-```yaml
-plugins:
-  - mkdocstrings:
-      handlers:
-        python:
-          options:
-            docstring_options:
-              returns_named_value: false
-```
+## Publish to Read the Docs
 
-A new library site must set it too, or it will fail `strict` on warnings that
-are not real. If shared mkdocs config is ever centralized in this repo, this
-option belongs in it.
+Read the Docs reads `.readthedocs.yaml` from the repository. The main project
+and each subproject are separate Read the Docs projects; the main project lists
+the others under **Subprojects**, which is what puts them at
+`/projects/<name>/` and gives every page the same address scheme.
 
-**MkDocs 2.0 warning banner** — harmless; set `DISABLE_MKDOCS_2_WARNING=true` to hide it.
-
-#### ReadTheDocs: "Builds disabled due to consecutive failures"
-
-This project was registered on ReadTheDocs before the docs revamp. RTD kept building **`main`**, which had broken MkDocs config (missing nav pages, no `docs/requirements.txt`, wrong mkdocstrings paths). After 25 failures, RTD auto-disabled builds.
-
-**Fix:**
-
-1. **Admin** → **Settings** → Advanced → uncheck **Disable builds for this project** → Save.
-2. **Push fixes to `main`** — RTD builds from the default branch; it cannot build changes that exist only locally.
-3. **Admin** → **Versions** → ensure **`latest`** is active → click **Build version**.
-4. Confirm the build log shows MkDocs Material and `docs/requirements.txt` installing — not the old readthedocs theme with missing `test2.md`.
-
-#### ReadTheDocs: "Search indexing has been disabled"
-
-Harmless for now — RTD pauses search indexing on inactive projects. After docs are live and receiving traffic:
-
-**Admin** → **Settings** → **Enable search indexing** → Save.
-
----
-
-## Publish to ReadTheDocs
-
-ReadTheDocs reads `.readthedocs.yaml` from the repository and runs the same MkDocs build as locally.
-
-### Org GitHub App (required)
+### Org GitHub App
 
 PyDevices uses the
 [Read the Docs Community GitHub App](https://github.com/apps/read-the-docs-community)
-installed on the org with access to **all repositories** (see
+installed on the org with access to all repositories (see the
 [org installation](https://github.com/organizations/PyDevices/settings/installations)).
-That app delivers push/PR events to RTD — do **not** add a manual
-`readthedocs.org/api/v2/webhook/...` hook on the repo.
+It delivers push and pull-request events; do not add a manual
+`readthedocs.org/api/v2/webhook/...` hook.
 
-Docs projects on the same app: **pygraphics**,
-**palettes**, **pdwidgets**.
+### A new project
 
-### First-time setup (new project)
+1. Open the [Read the Docs dashboard](https://app.readthedocs.org/dashboard/)
+   and **Add project**; pick the repository under `PyDevices/`.
+2. If the project's `.readthedocs.yaml` is not at the repository root, set
+   **Settings > Advanced > Path for .readthedocs.yaml** (palettes and pdwidgets
+   use `palettes/.readthedocs.yaml` and `pdwidgets/.readthedocs.yaml`).
+3. Make sure `latest` (tracking `main`) is active and the default version.
+4. On the main project, **Subprojects > Add subproject**, with the project's
+   name as the alias.
+5. Add the project to `projects.py` in `docs-config/` with `live = True` and
+   release a new `pydevices-docs`, so it appears in every project's top bar.
 
-1. Go to [readthedocs.org](https://readthedocs.org) and sign in with **GitHub**
-   (an account that can see the repository).
-2. Open the [Read the Docs dashboard](https://app.readthedocs.org/dashboard/)
-   and click **Add project**.
-3. Search for the repository under **`PyDevices/`** and import it.
-   - If the repo does not appear, confirm the
-     [GitHub App installation](https://github.com/organizations/PyDevices/settings/installations)
-     includes this repository, then use **Refresh your repositories** on RTD.
-4. On the setup form, confirm:
-   - **Documentation type:** MkDocs (auto-detected from `.readthedocs.yaml`)
-   - **Configuration file:** `.readthedocs.yaml`
-   - Click **Next**, then **This file exists** (the config is already in the repo).
-5. **Build `latest` (tracks `main`):**
-   - Go to **Admin** → **Versions**.
-   - Ensure **`latest`** is **Active** and set as the **default version**.
-   - Click **Build** on `latest` (or wait for the next push to `main`).
-6. Check the **Builds** tab. A successful build ends with
-   `Documentation built successfully`. The site appears at:
-   - `https://<project>.readthedocs.io/en/latest/`
-   - `https://<project>.readthedocs.io/` when `latest` is the default
+### Versions
 
-### Migrating a legacy (webhook) project to the GitHub App
+Readers land on **latest**, built from `main`. Keep only the most recent
+release version active beside it (**Admin > Versions**); hide the rest.
 
-Older imports used a per-repo webhook under GitHub **Settings → Webhooks**.
-Those PyDevices docs projects (**pygraphics**, **palettes**, **pdwidgets**) have
-been migrated to the org GitHub App via
-[Migrate to GitHub App](https://app.readthedocs.org/accounts/migrate-to-github-app/);
-legacy webhooks are removed. New projects should use the App from the start
-(no manual webhook).
+### Pull request previews
 
-### Ongoing
-
-1. RTD rebuilds automatically when you push to `main` (via the GitHub App).
-2. Optionally disable obsolete version slugs under **Admin** → **Versions** if any remain from earlier experiments.
-3. Enable **search indexing** under **Settings** once the site is live.
-
-### Optional: pull request previews
-
-In RTD project **Admin** → **Preview documentation from pull requests**, enable PR builds so each PR gets a preview URL before merge.
-
-## Check GitHub Actions from the CLI
-
-Authenticate once (stores credentials for future sessions):
-
-```bash
-gh auth login
-```
-
-Then from the repo root:
-
-```bash
-gh run list --limit 5              # recent workflow runs
-gh run watch                       # follow the latest run
-```
-
-Useful after pushing doc changes to confirm the RTD build succeeded.
+In the project's **Admin > Preview documentation from pull requests**, enable
+PR builds so each PR gets a preview before merge.

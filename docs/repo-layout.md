@@ -28,7 +28,7 @@ Long-form notes and guides belong under `docs/`.
 | Kind | Examples | Stay at root? |
 |------|----------|---------------|
 | Packaging / build metadata | `pyproject.toml`, `setup.py`, `setup.cfg`, `MANIFEST.in`, `micropython.mk`, `circuitpython.mk` | Yes — tooling discovers these at root |
-| Docs site config | `mkdocs.yml` | Yes |
+| Docs site config | `.readthedocs.yaml` (`conf.py` lives in `docs/`) | Yes |
 | Short entry scripts | `apply_*.sh`, `build_*.sh`, `regenerate_*.sh` | Yes when they are the public entry point |
 | License / community | `LICENSE`, `README.md`, `ROADMAP.md`, `AGENTS.md`, `CONTRIBUTING.md` | Yes |
 | Pip requirements | `requirements.txt`, `requirements-dev.txt` | Yes (see below) |
@@ -74,7 +74,7 @@ Do **not** put a root `requirements.txt` that only lists tooling — that reads 
 “install these to use the app,” which is misleading when the product ships via
 MIP / TestPyPI / wheels / source trees instead.
 
-MkDocs (and similar) stay under **`docs/requirements.txt`**, not at the repo
+Documentation tooling (Sphinx and its extensions) stays under **`docs/requirements.txt`**, not at the repo
 root.
 
 Examples:

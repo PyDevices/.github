@@ -39,7 +39,7 @@ rather than what was hoped:
   restraint reads better. This is the prescribed convention (a handful of
   READMEs still carry stray emoji; Phase 4 removes them as each repo gets
   its pass).
-- **Docs-site pages** (mkdocs/portal pages) may use the landmark set
+- **Docs-site pages** (Read the Docs and portal pages) may use the landmark set
   above, sparingly, on headings only — the original rules (one per
   heading, only the fixed set, never in body text or code) apply there.
 - A repo using none at all is compliant. The failure mode this document

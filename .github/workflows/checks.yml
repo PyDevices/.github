@@ -153,3 +153,19 @@ jobs:
 
       - name: Run publishing-script unit tests
         run: python3 -m unittest discover -s tests -v
+
+  docs-site:
+    # The main documentation project and the shared package it installs, built
+    # the way Read the Docs builds them: every warning is a failure.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - run: pip install -r docs-site/requirements.txt
+
+      - name: Build the main project
+        run: sphinx-build -W --keep-going -b html docs-site docs-site/_build/html
