@@ -284,11 +284,12 @@ jobs:
             -F 'client_payload[run_url]='"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
 
   request-mip-publication:
-    # Final releases only: a .devN/rcN must never reach the board index.
+    # Every release asks for publication. The request itself keeps a
+    # .devN/rcN away from the mip index, which only takes finals; the library
+    # index takes them all.
     if: >-
       always()
       && inputs.mip-profile != ''
-      && needs.prepare-release.outputs.prerelease == 'false'
       && needs.prepare-release.result == 'success'
       && !contains(needs.*.result, 'failure')
       && !contains(needs.*.result, 'cancelled')
@@ -302,6 +303,7 @@ jobs:
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}
       profile: ${{ inputs.mip-profile }}
+      prerelease: ${{ needs.prepare-release.outputs.prerelease == 'true' }}
     # The MIP request mints its own App token; it needs the App secrets, which
     # inherit passes through from the calling repository.
     secrets: inherit
