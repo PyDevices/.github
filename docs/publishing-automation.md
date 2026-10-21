@@ -191,7 +191,7 @@ Prepare release (workflow_dispatch, optional version)
   -> merge to main
   -> Tag release creates the vX.Y.Z tag and GitHub Release (via the App)
   -> Publish release packages: build -> TestPyPI -> assets attached
-     -> MIP (final releases only) -> health report
+     -> MIP index (final releases only) and library index (every release) -> health report
 ```
 
 ### 1. Dispatch "Prepare release"
@@ -473,10 +473,15 @@ race — the second waits for the first to finish.
 `reusable-request-mip-publication.yml` (called from a publishing repository
 with `secrets: inherit`) mints an App token scoped to `mip` and dispatches
 one `repository_dispatch` per profile in the (possibly comma-separated)
-`mip-profile` input — `audiocomponents` sends two in the same release. This only
-happens for **final releases**: `request-mip-publication`'s `if:` requires
-`prerelease == 'false'`, so a `.devN`/`rcN` build never reaches the MIP
-index, only TestPyPI.
+`mip-profile` input — `audiocomponents` sends two in the same release. That
+dispatch happens for **final releases only**: the request's `prerelease` input
+is true for a `.devN`/`rcN`/`aN`/`bN`, and then the MIP leg is skipped, so a
+pre-release never reaches the MIP index (mip installs its `latest.json`).
+Since `publishing-v15` the same request also dispatches each profile to the
+library index, `PyDevices/lib`, **for every release, pre-releases included**
+(see [The library index](#the-library-index)). A repository whose profile the
+MIP lockfile doesn't know (palettes and pdwidgets, now folders of `pydevices`)
+sets `legacy-index: false` and sends only the library leg.
 
 The queue consumer, `reusable-synchronize-mip-package.yml`:
 
@@ -517,6 +522,24 @@ The queue consumer, `reusable-synchronize-mip-package.yml`:
 6. Assembles and uploads the GitHub Pages artifact; a separate
    `deploy-complete-mip-index` job in the caller workflow deploys it via
    `actions/deploy-pages@v4`.
+
+### The library index
+
+`PyDevices/lib` serves the library index (`https://pydevices.github.io/lib`,
+`lib.omnipython.org` once that domain points at it) and is built beside the MIP
+index, not from it. Its `publish.yml` takes the same `publish-package-release`
+dispatch, queues in the `omnipython-lib-publication-queue` group (no
+cancel-in-progress), records the release's profile and tag in `pins.json`, and
+rebuilds every package from the pins with `tools/libbuild.py` from the
+`pydevices` checkout: `pydevices`, `pydevices-desktop`, `bledev`, `midiports`,
+the `usb-*` packages, every board config and driver, `appkit`, `palettes` and
+`pdwidgets` from the `pydevices` tag (a `palettes-vX.Y.Z` or `pdwidgets-vX.Y.Z`
+tag replaces just that folder), plus `pygraphics`, `audioinstruments` and
+`audioeffects`. It deploys with `actions/deploy-pages`, then commits `pins.json`
+so the file says what is live. A profile is refused if its repository isn't the
+one `pins.json` names for it. To rebuild without a release, run `publish.yml`
+by hand with the inputs empty; to try a library commit before it is released,
+give `test-root-ref`, which deploys the build and records nothing.
 
 ### Manual dispatch
 

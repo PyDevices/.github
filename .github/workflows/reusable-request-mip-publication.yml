@@ -17,6 +17,20 @@ on:
           them for a repository that publishes more than one package.
         required: true
         type: string
+      prerelease:
+        description: >-
+          The release is an aN/bN/rcN/.devN. The mip index (PyDevices.github.io/mip)
+          only ever takes finals, because mip installs its latest.json; the
+          library index (PyDevices.github.io/lib) takes every release.
+        default: false
+        type: boolean
+      legacy-index:
+        description: >-
+          Also request the mip index (finals only). A release that mip's
+          profiles don't know, such as a palettes or pdwidgets release from
+          the pydevices repository, sets this false.
+        default: true
+        type: boolean
 
 permissions:
   contents: read
@@ -25,14 +39,16 @@ jobs:
   request-serialized-mip-publication:
     runs-on: ubuntu-latest
     steps:
-      - name: Mint an installation token for mip
+      - name: Mint an installation token for the two indexes
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ secrets.PYDEVICES_APP_ID }}
           private-key: ${{ secrets.PYDEVICES_APP_PRIVATE_KEY }}
           owner: PyDevices
-          repositories: mip
+          repositories: |
+            mip
+            lib
 
       # One dispatch per profile. A repository with a single package sends one,
       # exactly as before; audiodsp sends two. They are not raced: mip's
@@ -41,6 +57,7 @@ jobs:
       # cancel-in-progress false, so the second waits for the first and each
       # run re-syncs every locked source anyway.
       - name: Dispatch the exact release to the MIP queue
+        if: ${{ inputs.legacy-index && !inputs.prerelease }}
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           SOURCE_REPOSITORY: ${{ github.repository }}
@@ -66,3 +83,35 @@ jobs:
               exit 1
           fi
           echo "dispatched $dispatched profile(s)"
+
+      # The library index takes every release, pre-releases included, and
+      # queues in its own group (omnipython-lib-publication-queue in
+      # PyDevices/lib). It runs whether or not the MIP request above worked:
+      # the two are built independently.
+      - name: Dispatch the exact release to the library index
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          SOURCE_REPOSITORY: ${{ github.repository }}
+          SOURCE_REF: ${{ inputs.release-ref }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          PUBLICATION_PROFILES: ${{ inputs.profile }}
+        run: |
+          set -euo pipefail
+          dispatched=0
+          while IFS= read -r profile; do
+              [[ -n "$profile" ]] || continue
+              echo "dispatching $profile @ $SOURCE_REF to PyDevices/lib"
+              gh api --method POST repos/PyDevices/lib/dispatches \
+                -f event_type=publish-package-release \
+                -f "client_payload[source_repository]=$SOURCE_REPOSITORY" \
+                -f "client_payload[source_ref]=$SOURCE_REF" \
+                -f "client_payload[version]=$RELEASE_VERSION" \
+                -f "client_payload[profile]=$profile"
+              dispatched=$((dispatched + 1))
+          done < <(echo "$PUBLICATION_PROFILES" | tr ',' '\n' | sed 's/[[:space:]]//g' | grep -v '^$' || true)
+          if [[ "$dispatched" == 0 ]]; then
+              echo "no profile in '$PUBLICATION_PROFILES'" >&2
+              exit 1
+          fi
+          echo "dispatched $dispatched profile(s) to the library index"
