@@ -74,14 +74,14 @@
  "pydevices-palettes": {
   "assets": "success",
   "distribution": "pydevices-palettes",
-  "mip": "skipped",
-  "prerelease": true,
+  "mip": "success",
+  "prerelease": false,
   "pypi": "skipped",
   "repo": "pydevices",
-  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/39508750241",
+  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/39736822049",
   "testpypi": "success",
-  "updated": "2026-10-20 22:32 UTC",
-  "version": "0.0.15rc1"
+  "updated": "2026-10-22 06:54 UTC",
+  "version": "0.0.15"
  },
  "pydevices-pdwidgets": {
   "assets": "success",
