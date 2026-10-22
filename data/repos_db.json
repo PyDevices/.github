@@ -12,7 +12,7 @@
       },
       "2": {
         "name": "Python Framebuffers & GUI Toolkits",
-        "hint": "Zero external native dependencies — runs on any Python 3 host."
+        "hint": "Pure Python on any Python 3 host; pygraphics adds native wheels for Linux x86_64, Windows, Android and Pyodide."
       },
       "3": {
         "name": "LVGL Native Extensions & Binding Generator",
@@ -187,7 +187,7 @@
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audiocomponents",
     "headline": "audiocomponents — 55 classic instruments and 45 effects, in pure Python, on audiodsp.",
-    "description": "The instrument and effect libraries for audiodsp: audioinstruments (55 modelled classics, from the TR-808 to the DX7) and audioeffects (45 effect classes and racks), pure Python on MicroPython and CPython. Ships as pydevices-audioinstruments and pydevices-audioeffects, each a standalone distribution and a MIP package.",
+    "description": "The instrument and effect libraries for audiodsp: audioinstruments (55 modelled classics, from the TR-808 to the DX7) and audioeffects (45 effect classes and racks), pure Python on MicroPython and CPython. Ships as pydevices-audioinstruments and pydevices-audioeffects, each a standalone distribution on TestPyPI and a MIP package.",
     "hero_canvas": {
       "app": "audio_scope",
       "width": 240,
@@ -445,7 +445,7 @@
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-micropython",
     "headline": "lvgl-micropython — MicroPython C usermod for LVGL v9.",
-    "description": "Native MicroPython C module integrating LVGL v9 graphics engine with displayif bus drivers across ESP32, RP2040, and i.MX RT targets.",
+    "description": "Native MicroPython C module integrating LVGL v9 graphics engine with displayif bus drivers on ESP32 targets.",
     "hero_canvas": {
       "app": "mp_console",
       "width": 240,
@@ -521,7 +521,7 @@
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-circuitpython",
     "headline": "lvgl-circuitpython — CircuitPython native LVGL C module.",
-    "description": "CircuitPython native C module providing LVGL v9 bindings and displayif integration for Adafruit Feather and SAMD51 / RP2040 boards.",
+    "description": "CircuitPython native C module providing LVGL v9 bindings and displayif integration for the Adafruit Feather RP2040 and ESP32 boards.",
     "hero_canvas": {
       "app": "circuit_dial",
       "width": 240,
@@ -635,7 +635,7 @@
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "mpftp",
     "headline": "mpftp — board tools for the editor, CLI, and agents.",
-    "description": "Connect MicroPython and CircuitPython boards from VS Code, Cursor, or the CLI, over USB or Wi-Fi: dual-pane file transfer, in-editor REPL, firmware builds and flashing, mip/circup, plus RPC, MCP, and an optional browser PWA.",
+    "description": "Connect MicroPython and CircuitPython boards from VS Code, Cursor, or the CLI, over USB or Wi-Fi: dual-pane file transfer, in-editor REPL, firmware builds and flashing, mip/circup, plus RPC and an optional browser PWA.",
     "hero_canvas": {
       "app": "ftp_scope",
       "width": 240,
@@ -779,7 +779,7 @@
     "theme_color": "var(--accent)",
     "eyebrow": "PyDevices Portal",
     "headline": "One display & hardware contract for MicroPython, CircuitPython, and CPython — from bare metal to the browser.",
-    "description": "The same driver, event, and display code runs unmodified on bare-metal MicroPython and CircuitPython boards, as native CPython wheels on desktop and Android, and directly in a browser tab — no rewrites, no plugins.",
+    "description": "The same driver, event, and display code runs unchanged on bare-metal MicroPython and CircuitPython boards, as native CPython wheels on desktop and Android, and directly in a browser tab, once the board or host has its board_config — no rewrites, no plugins.",
     "hero_canvas": {
       "app": "watch",
       "width": 240,

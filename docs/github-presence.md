@@ -112,7 +112,7 @@ icons. Header brand stays on the shared org logo.
 | [.github](https://github.com/PyDevices/.github) | This repo — org profile README, issue templates, CONTRIBUTING.md, `docs/github-presence.md`, `docs/repo-layout.md` | *(no Pages site — org metadata only)* |
 | [micropython-lib](https://github.com/PyDevices/mip) | Fork carrying PyDevices' micropython-lib packages for `mip install` | *(no dedicated marketing site — it's a package index fork, not a product)* |
 | [pydevices](https://github.com/PyDevices/pydevices) | Canonical reusable product: cross-interpreter libraries, board configs, and hardware drivers published for pip and MIP | [pydevices.github.io/pydevices](https://pydevices.github.io/pydevices/) |
-| [mpftp](https://github.com/PyDevices/mpftp) | VS Code / Cursor / CLI board tools (REPL, file transfer, mip/circup, firmware, MCP) | [pydevices.github.io/mpftp](https://pydevices.github.io/mpftp/) |
+| [mpftp](https://github.com/PyDevices/mpftp) | VS Code / Cursor / CLI board tools (REPL, file transfer, mip/circup, firmware) | [pydevices.github.io/mpftp](https://pydevices.github.io/mpftp/) |
 
 ## Licensing
 
