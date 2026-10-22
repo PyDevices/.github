@@ -75,7 +75,9 @@ jobs:
         with:
           name: native-wheels-${{ inputs.distribution-name }}-${{ matrix.os }}
           path: wheelhouse/*.whl
-          if-no-files-found: error
+          # The empty macOS cell above uploads nothing; collect-validated-
+          # wheels downloads by pattern, so a missing artifact is fine there.
+          if-no-files-found: ${{ matrix.os == 'macos-latest' && 'ignore' || 'error' }}
 
   build-android-wheels:
     runs-on: ubuntu-latest
