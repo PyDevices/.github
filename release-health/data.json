@@ -27,13 +27,13 @@
   "assets": "success",
   "distribution": "pydevices-audioeffects",
   "mip": "skipped",
-  "prerelease": true,
+  "prerelease": false,
   "pypi": "skipped",
   "repo": "audiocomponents",
-  "run_url": "https://github.com/PyDevices/audiocomponents/actions/runs/39418596898",
+  "run_url": "https://github.com/PyDevices/audiocomponents/actions/runs/39728747032",
   "testpypi": "success",
-  "updated": "2026-10-20 12:52 UTC",
-  "version": "0.4.1.dev3"
+  "updated": "2026-10-22 06:39 UTC",
+  "version": "0.4.1"
  },
  "pydevices-audioinstruments": {
   "assets": "success",
