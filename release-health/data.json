@@ -96,15 +96,15 @@
   "version": "0.0.25rc1"
  },
  "pydevices-pygraphics": {
-  "assets": "skipped",
+  "assets": "success",
   "distribution": "pydevices-pygraphics",
-  "mip": "skipped",
+  "mip": "success",
   "prerelease": false,
   "pypi": "skipped",
   "repo": "pygraphics",
-  "run_url": "https://github.com/PyDevices/pygraphics/actions/runs/39724391563",
-  "testpypi": "skipped",
-  "updated": "2026-10-22 04:51 UTC",
+  "run_url": "https://github.com/PyDevices/pygraphics/actions/runs/39724870951",
+  "testpypi": "success",
+  "updated": "2026-10-22 04:56 UTC",
   "version": "0.1.1"
  }
 }
