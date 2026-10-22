@@ -12,8 +12,8 @@ one of three labels:
 
 We demonstrated it ourselves on real hardware — the demo a stranger
 could watch exists and has run. This is the default tier for the
-platforms on our bench: the MCU fleet (ESP32 family, RP2), Windows, and
-desktop Linux.
+platforms on our bench: the ESP32-S3 and ESP32-P4 boards, a Feather
+RP2040 under CircuitPython, Windows, and desktop Linux.
 
 ## CI-proven
 
@@ -41,10 +41,11 @@ silent gap the completeness standard condemns, with a friendlier label.
 
 ## Current postures
 
-**macOS.** PyDevices ships everything for macOS that CI can prove —
-wheels, imports, unit and contract tests on macOS runners — and claims
-nothing hardware-adjacent (USB enumeration, Bluetooth radios, audio
-devices) beyond that. Those surfaces ship at the community-verified
+**macOS.** audiodsp ships macOS wheels, and audiodsp and audiocomponents
+run their tests on macOS runners. pydevices has no macOS CI job, and
+pygraphics and LVGL publish no macOS wheel. PyDevices claims nothing
+hardware-adjacent (USB enumeration, Bluetooth radios, audio devices)
+beyond what that CI proves. Those surfaces ship at the community-verified
 tier: the code paths exist where the underlying libraries support them,
 and reports from Mac users promote them. No PyDevices claim assumes a
 Mac on our bench, because there isn't one.
