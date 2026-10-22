@@ -62,6 +62,13 @@ jobs:
 
       - name: Build native wheels
         uses: pypa/cibuildwheel@v4.3.1
+        env:
+          # A repo whose skip list leaves a runner nothing to build gets an
+          # empty cell, not a failure: cibuildwheel 4 exits 3 on "No build
+          # identifiers selected" (pygraphics v0.1.1 burned on macOS). Only
+          # macOS is allowed to be empty; the expected-wheel-count check
+          # still catches a Linux or Windows cell that built nothing.
+          CIBW_ALLOW_EMPTY: ${{ matrix.os == 'macos-latest' && 'true' || 'false' }}
 
       - name: Upload native wheels
         uses: actions/upload-artifact@v7
