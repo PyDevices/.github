@@ -270,7 +270,7 @@ def build_head_tags_html(repo_name, data):
         f'  <!-- PYDEVICES-HEAD-TAGS: START -->\n'
         f'  <title>{title}</title>\n'
         f'  <meta name="description" content="{data.get("description", "")}">\n'
-        f'  <link rel="icon" type="image/svg+xml" href="/assets/img/logo.svg">\n'
+        f'  <link rel="icon" href="/assets/img/favicon.ico" sizes="16x16 32x32 48x48">\n'
         f'  <!-- PYDEVICES-HEAD-TAGS: END -->'
     )
 
@@ -566,7 +566,7 @@ def _copy_chrome_into(site_root):
         if os.path.exists(src):
             shutil.copy2(src, os.path.join(chrome_dir, fname))
 
-    for img_name in ('logo.svg', 'logo-512.png', 'logo-avatar.png'):
+    for img_name in ('logo.svg', 'logo-512.png', 'logo-avatar.png', 'favicon.ico'):
         src_img = os.path.join(ASSETS_DIR, 'img', img_name)
         if os.path.exists(src_img):
             shutil.copy2(src_img, os.path.join(img_dir, img_name))
