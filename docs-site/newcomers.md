@@ -20,9 +20,9 @@ opens and your program draws into it, which is the quickest way to try an idea.
 
 Most programs use three libraries stacked on the display:
 
-- [pygraphics](https://pydevices.readthedocs.io/projects/pygraphics/en/latest/) draws: lines, shapes, text and images.
-- [palettes](https://pydevices.readthedocs.io/projects/palettes/en/latest/) supplies colors in the format the display wants.
-- [pdwidgets](https://pydevices.readthedocs.io/projects/pdwidgets/en/latest/) builds a user interface out of buttons, sliders and labels, and routes touch and keys to them.
+- [pygraphics](https://pygraphics.readthedocs.io/) draws: lines, shapes, text and images.
+- [palettes](https://palettes.readthedocs.io/) supplies colors in the format the display wants.
+- [pdwidgets](https://pdwidgets.readthedocs.io/) builds a user interface out of buttons, sliders and labels, and routes touch and keys to them.
 
 Each project's manual has its own newcomer's guide.
 

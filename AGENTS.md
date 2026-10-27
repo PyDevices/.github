@@ -128,5 +128,5 @@ at the workspace root — the single home for this rule.
 
 - [micropython-pydevices](https://github.com/PyDevices/micropython-pydevices) —
   presets, variants, boards and the patch series the builds use
-- [lvgl-bindings releasing-bindings.md](https://github.com/PyDevices/lvgl-bindings/blob/main/docs/releasing-bindings.md) —
+- [lvgl-bindings CONTRIBUTING.md, Releasing](https://github.com/PyDevices/lvgl-bindings/blob/main/CONTRIBUTING.md#releasing) —
   binding regeneration and `lvgl-python` release dispatch
