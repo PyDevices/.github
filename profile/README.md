@@ -66,7 +66,7 @@ MIP package indexing, multi-usermod builds, and serial/FTP IDE extensions.
 - **displayif** — now [`modules/displayif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/displayif) in micropython-pydevices. The old repository is archived.
 - **audioif** — now [`modules/audioif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/audioif) in micropython-pydevices. The old repository is archived.
 - **cameraif** — now [`modules/cameraif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/cameraif) in micropython-pydevices. The old repository is archived.
-- **usbif** — the C module is now [`modules/usbhost`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/usbhost) in micropython-pydevices; the Python USB packages are in [pydevices](https://github.com/PyDevices/pydevices/blob/main/docs/usb.md). The old repository is archived.
+- **usbif** — the C module is now [`modules/usbhost`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/usbhost) in micropython-pydevices; the Python USB packages are in [pydevices](https://github.com/PyDevices/pydevices/blob/main/docs/guides/usb.md). The old repository is archived.
 
 **Deliberately absent from this map:**
 

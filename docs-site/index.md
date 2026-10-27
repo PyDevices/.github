@@ -30,20 +30,20 @@ you to any of them. If you are new, start with the
 :gutter: 3
 
 :::{grid-item-card} palettes
-:link: https://pydevices.readthedocs.io/projects/palettes/en/latest/
+:link: https://palettes.readthedocs.io/
 :link-type: url
 Color palettes: an HSV wheel, RGB cubes, Material Design swatches and RGB565
 helpers.
 :::
 
 :::{grid-item-card} pygraphics
-:link: https://pydevices.readthedocs.io/projects/pygraphics/en/latest/
+:link: https://pygraphics.readthedocs.io/
 :link-type: url
 2D drawing, bitmap fonts and blitting, in C and in Python.
 :::
 
 :::{grid-item-card} pdwidgets
-:link: https://pydevices.readthedocs.io/projects/pdwidgets/en/latest/
+:link: https://pdwidgets.readthedocs.io/
 :link-type: url
 Buttons, sliders, labels and screens for touch displays, in pure Python.
 :::
