@@ -165,7 +165,7 @@
       },
       {
         "label": "Audio in pydevices",
-        "href": "https://github.com/PyDevices/pydevices/blob/main/docs/audio.md",
+        "href": "https://github.com/PyDevices/pydevices/blob/main/docs/guides/audio.md",
         "tier_color": true
       },
       {
@@ -203,7 +203,7 @@
       },
       {
         "label": "Component API",
-        "href": "https://github.com/PyDevices/audiocomponents/blob/main/docs/audio-component-api.md",
+        "href": "https://github.com/PyDevices/audiocomponents/blob/main/docs/reference/component-api.md",
         "tier_color": true
       },
       {
@@ -460,8 +460,8 @@
         "primary": true
       },
       {
-        "label": "Newcomer's guide",
-        "href": "https://github.com/PyDevices/lvgl-micropython/blob/main/docs/newcomers.md",
+        "label": "Get started",
+        "href": "https://github.com/PyDevices/lvgl-bindings/blob/main/docs/get-started/install.md#micropython-compatible-firmware-with-lvgl-micropython",
         "tier_color": true
       },
       {
@@ -536,8 +536,8 @@
         "primary": true
       },
       {
-        "label": "Newcomer's guide",
-        "href": "https://github.com/PyDevices/lvgl-circuitpython/blob/main/docs/newcomers.md",
+        "label": "Get started",
+        "href": "https://github.com/PyDevices/lvgl-bindings/blob/main/docs/get-started/install.md#circuitpython-compatible-firmware-with-lvgl-circuitpython",
         "tier_color": true
       },
       {
@@ -650,13 +650,13 @@
         "primary": true
       },
       {
-        "label": "User Guide",
-        "href": "https://github.com/PyDevices/mpftp/blob/main/docs/user-guide.md",
+        "label": "Docs",
+        "href": "https://github.com/PyDevices/mpftp/blob/main/docs/index.md",
         "tier_color": true
       },
       {
         "label": "Agent guide",
-        "href": "https://github.com/PyDevices/mpftp/blob/main/docs/agent-guide.md",
+        "href": "https://github.com/PyDevices/mpftp/blob/main/docs/guides/drive-a-board-from-an-agent.md",
         "tier_color": true
       },
       {
@@ -689,7 +689,7 @@
       },
       {
         "label": "Board bring-up",
-        "href": "https://github.com/PyDevices/pydevices/blob/main/docs/board-bringup.md",
+        "href": "https://github.com/PyDevices/pydevices/blob/main/docs/guides/bring-up-a-board.md",
         "tier_color": true
       },
       {
@@ -838,8 +838,8 @@
         "tier_color": true
       },
       {
-        "label": "Newcomer's guide",
-        "href": "https://github.com/PyDevices/micropython-pydevices/blob/main/docs/newcomers.md",
+        "label": "How it works",
+        "href": "https://github.com/PyDevices/micropython-pydevices/blob/main/docs/how-it-works/index.md",
         "tier_color": true
       },
       {
@@ -903,7 +903,7 @@
       },
       {
         "label": "Getting Started",
-        "href": "https://github.com/PyDevices/mpvst/blob/main/docs/getting-started.md",
+        "href": "https://github.com/PyDevices/mpvst/blob/main/docs/get-started/install.md",
         "tier_color": true
       },
       {
