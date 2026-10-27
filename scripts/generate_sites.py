@@ -585,16 +585,46 @@ def sync_assets(db):
         for app_file in os.listdir(apps_src):
             shutil.copy2(os.path.join(apps_src, app_file), os.path.join(portal_apps, app_file))
 
-    # The first-party PyScript template is intentionally Pyodide-only and is
-    # published beneath its generated portal landing page. Keep its complete
-    # offline PWA payload together, including the pinned vendored interpreter.
-    template_pwa = os.path.join(BASE_DIR, 'pyscript-template', 'pwa')
-    if os.path.isdir(template_pwa):
-        shutil.copytree(
-            template_pwa,
-            os.path.join(portal_root, 'pyscript-template', 'pwa'),
-            dirs_exist_ok=True,
-        )
+    sync_template_pwa(portal_root)
+
+
+# The files at pyscript-template's root that make up the running app. Its
+# docs, tests and scripts stay behind.
+TEMPLATE_APP_FILES = (
+    'index.html', 'main.py', 'pyscript.json', 'manifest.json', 'style.css',
+    'pwa.js', 'sw.js', 'icon-192.png', 'icon-512.png',
+)
+TEMPLATE_APP_DIRS = ('workers', 'vendor')
+
+
+def sync_template_pwa(portal_root):
+    """Mirror pyscript-template's app into the portal at /pyscript-template/pwa/.
+
+    The first-party PyScript template is intentionally Pyodide-only and is
+    published beneath its generated portal landing page. Keep its complete
+    offline PWA payload together, including the pinned vendored interpreter.
+    vendor/ is not committed in the template (scripts/vendor_pyscript.sh
+    fetches it), so without it the mirror is left as it is rather than
+    published without its interpreter.
+    """
+    template = os.path.join(BASE_DIR, 'pyscript-template')
+    if not os.path.isdir(template):
+        return
+    if not os.path.isfile(os.path.join(template, 'vendor', 'pyscript', 'core.js')):
+        print('pyscript-template has no vendor/pyscript (run its scripts/vendor_pyscript.sh); '
+              'leaving the portal mirror unchanged')
+        return
+    dest = os.path.join(portal_root, 'pyscript-template', 'pwa')
+    # Replace the mirror whole, so a file the template drops leaves the
+    # portal too.
+    if os.path.isdir(dest):
+        shutil.rmtree(dest)
+    os.makedirs(dest)
+    for name in TEMPLATE_APP_FILES:
+        shutil.copy2(os.path.join(template, name), os.path.join(dest, name))
+    for name in TEMPLATE_APP_DIRS:
+        shutil.copytree(os.path.join(template, name), os.path.join(dest, name),
+                        ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
 
 def update_html_section(content, marker_start, marker_end, new_html):
     # Consume any existing indentation before the start marker. The replacement
