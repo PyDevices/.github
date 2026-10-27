@@ -3,28 +3,28 @@
  *
  * Its palette mirrors the website chrome (assets/css/site.css in this
  * repository, deployed as PyDevices.github.io/assets/chrome/site.css):
- * the same brand cyan and the same dark panels. Every colour is a token in
+ * the same Blueprint colours and the same dark panels. Every colour is a token in
  * the block below, so a palette change is one edit here and one there.
  */
 
 :root {
-  --pd-brand-rgb: 34 199 226;
+  --pd-brand-rgb: 196 220 76;
   --pd-brand: rgb(var(--pd-brand-rgb));
-  --pd-brand-soft: #5edcf0;
-  --pd-header-rgb: 10 113 134;       /* deep cyan: 5.4:1 under near-white text */
+  --pd-brand-soft: #dbe9a0;
+  --pd-header-rgb: 29 79 128;       /* blueprint blue: 8.6:1 under near-white text */
   --pd-header: rgb(var(--pd-header-rgb));
-  --pd-link: #08657a;
-  --pd-link-hover: #0a7186;
-  --pd-ink: #0c161d;
-  --pd-ink-soft: #47606f;
+  --pd-link: #1d4f80;
+  --pd-link-hover: #2a6aa8;
+  --pd-ink: #0b2238;
+  --pd-ink-soft: #3e5a76;
   --pd-bg: #ffffff;
-  --pd-bg-soft: #f5f9fb;
-  --pd-bg-code: #eff6f9;
-  --pd-border: #cfdde6;
-  --pd-dark: #0c1218;                 /* the bar and the sidebar */
-  --pd-dark-2: #121a22;
-  --pd-dark-ink: #dfeaf2;
-  --pd-dark-soft: #a7bccc;
+  --pd-bg-soft: #f3f7fb;
+  --pd-bg-code: #eaf1f7;
+  --pd-border: #cbd9e7;
+  --pd-dark: #0b2a4a;                 /* the bar and the sidebar */
+  --pd-dark-2: #12355a;
+  --pd-dark-ink: #e8f0f8;
+  --pd-dark-soft: #b4c8dc;
   --pd-success-rgb: 46 125 50;
   --pd-error: #d32f2f;
   --pd-shade-rgb: 0 0 0;
