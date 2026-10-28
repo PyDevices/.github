@@ -9,7 +9,7 @@
 #   - pydevices-examples  (flagship)  -> requirements-dev.txt + pygame-ce + native audio/LVGL bindings
 #   - palettes   pdwidgets   -> ruff
 #
-# Safe to run on every cloud VM boot (environment.json install). See AGENTS.md.
+# Safe to run on every cloud VM boot (environment.json install).
 # Intentionally does NOT `set -e`: a single optional install (e.g. TestPyPI
 # pydevices-lvgl) must never abort VM startup for the whole team. Required
 # failures (no ensurepip after apt) still exit non-zero at the end.

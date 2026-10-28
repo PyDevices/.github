@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Idempotent PyDevices cloud workspace layout: ~/gh/pydevices symlinks into /agent/repos.
-# See AGENTS.md. Safe to run on every cloud VM boot (environment.json install).
+# Safe to run on every cloud VM boot (environment.json install).
 #
 # Self-heals when Cursor did not materialize sibling checkouts under /agent/repos
 # (common for repo-file environments: repositoryDependencies expands the GitHub
