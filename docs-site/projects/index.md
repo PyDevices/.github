@@ -12,7 +12,7 @@ Each project has its own manual. A project listed with its manual here has it on
 - [LVGL bindings and ports](lvgl.md)
 - [micropython-pydevices and the device modules](micropython-pydevices.md)
 - [workbench](workbench.md)
-- [pydevices-examples](pydevices-examples.md)
+- [gallery](gallery.md)
 
 ```{toctree}
 :hidden:
@@ -27,5 +27,5 @@ mpftp
 lvgl
 micropython-pydevices
 workbench
-pydevices-examples
+gallery
 ```

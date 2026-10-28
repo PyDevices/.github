@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Idempotent pydevices-examples desktop dev environment for the PyDevices cloud workspace.
+# Idempotent gallery desktop dev environment for the PyDevices cloud workspace.
 #
 # Complements cloud-workspace-install.sh and cloud-python-deps.sh:
-#   - pip install pydevices-examples requirements.txt (TestPyPI runtime stack for CPython)
+#   - pip install gallery requirements.txt (TestPyPI runtime stack for CPython)
 #   - mip install desktop board_config, appdev, palettes, pdwidgets into ~/.micropython/lib
-#   - ensure shell env (PATH, PYTHONPATH, MICROPYPATH) via pydevices-examples-env.sh + bashrc hook
+#   - ensure shell env (PATH, PYTHONPATH, MICROPYPATH) via gallery-env.sh + bashrc hook
 #
-# Run from pydevices-examples/lib/ after sourcing pydevices-examples-env.sh (or open a new shell).
+# Run from gallery/lib/ after sourcing gallery-env.sh (or open a new shell).
 # See pydevices docs/install-workflows.md (CircuitPython-compatible mip, mpy=False).
 #
 # Safe to re-run. Intentionally does not `set -e` on optional TestPyPI steps.
@@ -14,27 +14,27 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPOS="${PYDEVICES_REPOS_ROOT:-/agent/repos}"
-EXAMPLES="${PYDEVICES_EXAMPLES_ROOT:-$REPOS/pydevices-examples}"
+EXAMPLES="${PYDEVICES_EXAMPLES_ROOT:-$REPOS/gallery}"
 MIP_INDEX="https://PyDevices.github.io/mip"
 MPY_LIB="${HOME}/.micropython"
 BASHRC="${HOME}/.bashrc"
-ENV_FILE="${SCRIPT_DIR}/pydevices-examples-env.sh"
-BASHRC_BEGIN="# >>> pydevices pydevices-examples dev env >>>"
-BASHRC_END="# <<< pydevices pydevices-examples dev env <<<"
+ENV_FILE="${SCRIPT_DIR}/gallery-env.sh"
+BASHRC_BEGIN="# >>> pydevices gallery dev env >>>"
+BASHRC_END="# <<< pydevices gallery dev env <<<"
 
-log() { printf 'cloud-pydevices-examples-dev-env: %s\n' "$*"; }
+log() { printf 'cloud-gallery-dev-env: %s\n' "$*"; }
 
 die() {
     log "ERROR: $*"
     exit 1
 }
 
-# shellcheck source=pydevices-examples-env.sh
+# shellcheck source=gallery-env.sh
 source "${ENV_FILE}" || die "cannot source ${ENV_FILE}"
 
 ensure_pydevices_examples_venv() {
     if [[ ! -d "$EXAMPLES" ]]; then
-        die "pydevices-examples not found at $EXAMPLES"
+        die "gallery not found at $EXAMPLES"
     fi
     local vpy="$EXAMPLES/.venv/bin/python"
     local vpip="$EXAMPLES/.venv/bin/pip"
@@ -50,7 +50,7 @@ ensure_pydevices_examples_venv() {
     "$vpip" install -q --upgrade pip || true
     log "pip install -r $EXAMPLES/requirements.txt"
     "$vpip" install -q -r "$EXAMPLES/requirements.txt" || \
-        log "warn: pydevices-examples requirements.txt install failed"
+        log "warn: gallery requirements.txt install failed"
 }
 
 ensure_micropython_bin() {
@@ -94,11 +94,11 @@ install_bashrc_hook() {
         log "bashrc hook already present"
         return 0
     fi
-    log "append pydevices-examples env hook to $BASHRC"
+    log "append gallery env hook to $BASHRC"
     cat >>"$BASHRC" <<EOF
 
 ${BASHRC_BEGIN}
-# Added by cloud-pydevices-examples-dev-env.sh — run examples from pydevices-examples/lib/
+# Added by cloud-gallery-dev-env.sh — run examples from gallery/lib/
 if [[ -f "${ENV_FILE}" ]]; then
     # shellcheck source=/dev/null
     source "${ENV_FILE}"

@@ -26,7 +26,7 @@ SIBLINGS=(
     mpftp
     palettes
     pdwidgets
-    pydevices-examples
+    gallery
     android-template
     pyscript-template
     PyDevices.github.io
@@ -188,7 +188,7 @@ ensure_lv_cpython_lvgl_symlink() {
 
 verify_ready() {
     local name missing=0
-    for name in micropython-pydevices audiodsp pygraphics lvgl-bindings pydevices pydevices-examples palettes pdwidgets; do
+    for name in micropython-pydevices audiodsp pygraphics lvgl-bindings pydevices gallery palettes pdwidgets; do
         if [[ ! -d "$REPOS/$name/.git" && ! -L "$REPOS/$name" ]]; then
             log "ERROR: required repo missing: $REPOS/$name"
             missing=1
@@ -225,7 +225,7 @@ link_pydevices pydevices "$REPOS/pydevices"
 link_pydevices mpftp "$REPOS/mpftp"
 link_pydevices palettes "$REPOS/palettes"
 link_pydevices pdwidgets "$REPOS/pdwidgets"
-link_pydevices pydevices-examples "$REPOS/pydevices-examples"
+link_pydevices gallery "$REPOS/gallery"
 link_pydevices android-template "$REPOS/android-template"
 
 # The C modules (displayif, audioif, cameraif, usbhost) live inside

@@ -1,8 +1,8 @@
-# pydevices-examples path environment — source before running from pydevices-examples/lib/.
-# Values match pydevices-examples README.md §3.2.1 and docs/utils.md (character-for-character).
+# gallery path environment — source before running from gallery/lib/.
+# Values match gallery README.md §3.2.1 and docs/utils.md (character-for-character).
 #
-#   cd pydevices-examples/lib
-#   source ~/gh/pydevices/dotgithub/scripts/pydevices-examples-env.sh   # or this repo's path
+#   cd gallery/lib
+#   source ~/gh/pydevices/dotgithub/scripts/gallery-env.sh   # or this repo's path
 
 _pydevices_examples_env_root() {
     if [[ -n "${PYDEVICES_EXAMPLES_ROOT:-}" && -d "${PYDEVICES_EXAMPLES_ROOT}/lib" ]]; then
@@ -12,8 +12,8 @@ _pydevices_examples_env_root() {
     local repos="${PYDEVICES_REPOS_ROOT:-/agent/repos}"
     local candidate
     for candidate in \
-        "$repos/pydevices-examples" \
-        "${HOME}/gh/pydevices/pydevices-examples"; do
+        "$repos/gallery" \
+        "${HOME}/gh/pydevices/gallery"; do
         if [[ -d "$candidate/lib" ]]; then
             printf '%s' "$candidate"
             return 0
@@ -23,7 +23,7 @@ _pydevices_examples_env_root() {
 }
 
 if ! PYDEVICES_EXAMPLES_ROOT="$(_pydevices_examples_env_root)"; then
-    echo "pydevices-examples-env: pydevices-examples checkout not found (set PYDEVICES_EXAMPLES_ROOT)" >&2
+    echo "gallery-env: gallery checkout not found (set PYDEVICES_EXAMPLES_ROOT)" >&2
     return 1 2>/dev/null || exit 1
 fi
 

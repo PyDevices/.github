@@ -172,7 +172,7 @@ differently, because their constraints differ:
 Adding or removing a publishable entry under `lib/` or `utils/` therefore
 changes the next release automatically. Review the generated package set as
 part of release preparation. Committed root TOML files (such as
-`pydevices-desktop.toml` and `pydevices-examples.toml`) are PyScript
+`pydevices-desktop.toml` and `gallery.toml`) are PyScript
 filesystem mappings of the repository payloads, not package metadata; their
 CI validation must pass before release.
 
@@ -717,7 +717,7 @@ runtime, and never reaches a device — MIP installs `.py` files only, verified
 against the live index.
 
 The org already does this elsewhere: `lvgl-bindings` generates `lvgl.pyi` and
-syncs it into `lvgl-python`, and `pydevices-examples/tools/typings/` holds a
+syncs it into `lvgl-python`, and `tools/typings/` in the archived pydevices-examples repo holds a
 tree of `.pyi` for MicroPython builtins.
 
 ### The `py.typed` constraint
