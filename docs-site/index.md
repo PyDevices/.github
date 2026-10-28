@@ -54,7 +54,7 @@ listed in [Projects](projects/index.md).
 
 ## Try it before you install it
 
-The [gallery](https://pydevices.github.io/pydevices-examples/gallery/) runs
+The [gallery](https://pydevices.github.io/gallery/gallery/) runs
 the same example programs that run on boards, in your browser, and
 [Workbench](https://pydevices.github.io/workbench/) is an editor with a
 simulated board built in. The main page of each project here also carries a

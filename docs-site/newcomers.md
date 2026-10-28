@@ -5,7 +5,7 @@ order most people meet them in.
 
 ## 1. Watch it run
 
-Open the [gallery](https://pydevices.github.io/pydevices-examples/gallery/).
+Open the [gallery](https://pydevices.github.io/gallery/gallery/).
 Every program there is a real PyDevices example running as MicroPython in your
 browser, with the same code a board would run. Pick one that draws, one that
 reacts to the mouse and one that uses widgets, and read the code beside it.
@@ -13,7 +13,7 @@ reacts to the mouse and one that uses widgets, and read the code beside it.
 ## 2. Run it on your desktop
 
 [Install](install.md) `pydevices-desktop` and run an example from
-[pydevices-examples](https://github.com/PyDevices/pydevices-examples). A window
+[gallery](https://github.com/PyDevices/gallery). A window
 opens and your program draws into it, which is the quickest way to try an idea.
 
 ## 3. Learn the three layers

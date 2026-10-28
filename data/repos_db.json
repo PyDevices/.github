@@ -504,7 +504,7 @@
       },
       {
         "label": "Gallery",
-        "href": "https://pydevices.github.io/pydevices-examples/gallery/",
+        "href": "https://pydevices.github.io/gallery/gallery/",
         "tier_color": true
       },
       {
@@ -704,13 +704,13 @@
       }
     ]
   },
-  "pydevices-examples": {
+  "gallery": {
     "tier": 1,
     "page": "self",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "pydevices-examples",
-    "headline": "pydevices-examples — Showcase, demos & WebAssembly gallery.",
+    "eyebrow": "gallery",
+    "headline": "gallery — Showcase, demos & WebAssembly gallery.",
     "description": "Comprehensive example code, direct MicroPython WebAssembly demos, board configurations, and multi-interpreter showcase benchmarks.",
     "hero_canvas": {
       "app": "benchmark_deck",
@@ -722,12 +722,12 @@
     "buttons": [
       {
         "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/pydevices-examples",
+        "href": "https://github.com/PyDevices/gallery",
         "primary": true
       },
       {
         "label": "Gallery",
-        "href": "https://pydevices.github.io/pydevices-examples/gallery/",
+        "href": "https://pydevices.github.io/gallery/gallery/",
         "tier_color": true
       },
       {
@@ -742,31 +742,31 @@
       }
     ]
   },
-  "pydevices-examples-gallery": {
+  "gallery-gallery": {
     "tier": 1,
     "tier_name": "Core Platform & Board Contract",
     "page": "self-subpath",
-    "site_repo": "pydevices-examples",
+    "site_repo": "gallery",
     "site_subpath": "gallery",
     "portal_grid": false,
-    "title": "pydevices-examples — WebAssembly Gallery",
+    "title": "gallery — WebAssembly Gallery",
     "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "PyDevices / pydevices-examples · WebAssembly Gallery",
+    "eyebrow": "PyDevices / gallery · WebAssembly Gallery",
     "headline": "WebAssembly Gallery",
     "description": "Direct MicroPython WebAssembly demos that run the same PyDevices examples as MCUs and CPython. Explore drawing, input, widgets, and LVGL without flashing a board first.",
     "hero_note": "Click a card to launch the app. The first load may take a few seconds while the interpreter downloads; featured demos stay pinned at the top.",
     "buttons": []
   },
-  "pydevices-examples-pyscript": {
+  "gallery-pyscript": {
     "tier": 1,
     "tier_name": "Core Platform & Board Contract",
     "page": "self-subpath",
-    "site_repo": "pydevices-examples",
+    "site_repo": "gallery",
     "site_subpath": "pyscript",
     "portal_grid": false,
-    "title": "pydevices-examples — PyScript Gallery",
+    "title": "gallery — PyScript Gallery",
     "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "PyDevices / pydevices-examples · PyScript Gallery",
+    "eyebrow": "PyDevices / gallery · PyScript Gallery",
     "headline": "PyScript Gallery",
     "description": "Pyodide / PyScript demos that run full CPython in the browser — the same PyDevices examples as MCUs and the direct WebAssembly gallery. Explore drawing, input, widgets, and LVGL without flashing a board first.",
     "hero_note": "Click a card to launch the app. The first load may take a few seconds while the interpreter downloads; featured demos stay pinned at the top.",
@@ -801,7 +801,7 @@
       },
       {
         "label": "Gallery",
-        "href": "https://pydevices.github.io/pydevices-examples/gallery/",
+        "href": "https://pydevices.github.io/gallery/gallery/",
         "tier_color": true
       },
       {

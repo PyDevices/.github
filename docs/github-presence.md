@@ -14,11 +14,11 @@ the answer from scratch.
 | Report a bug or request a feature | Issues on the **specific repo** it affects (see [repo map](#repos--pages-sites)); use the Bug report / Feature request templates |
 | Find contribution guidelines shared across repos | [PyDevices/.github CONTRIBUTING.md](https://github.com/PyDevices/.github/blob/main/CONTRIBUTING.md) |
 | Read the org's public-facing "about us" | [PyDevices/.github profile README](https://github.com/PyDevices/.github/blob/main/profile/README.md) (rendered on [github.com/PyDevices](https://github.com/PyDevices)) |
-| Read pydevices-examples documentation | [pydevices-examples/docs](https://github.com/PyDevices/pydevices-examples/tree/main/docs) |
+| Read gallery documentation | [gallery/docs](https://github.com/PyDevices/gallery/tree/main/docs) |
 | Read pygraphics documentation | [pygraphics.readthedocs.io](https://pygraphics.readthedocs.io) |
 | Read palettes / pdwidgets docs | [palettes.readthedocs.io](https://palettes.readthedocs.io), [pdwidgets.readthedocs.io](https://pdwidgets.readthedocs.io) |
 | Manage Read the Docs ↔ GitHub (org app) | [Read the Docs Community GitHub App](https://github.com/organizations/PyDevices/settings/installations) (all repos); migrate legacy projects at [RTD migrate-to-github-app](https://app.readthedocs.org/accounts/migrate-to-github-app/) |
-| Try the library without installing anything | [PyScript browser demos](https://pydevices.github.io/pydevices-examples/pyscript/) |
+| Try the library without installing anything | [PyScript browser demos](https://pydevices.github.io/gallery/pyscript/) |
 | Hardware board/driver docs (configs, contract, drivers, matrix) | [pydevices docs/](https://github.com/PyDevices/pydevices/tree/main/docs) (markdown; the [Pages site](https://pydevices.github.io/pydevices/) is a landing page only) |
 | Talk to a board from VS Code / Cursor (REPL, files, firmware) | [mpftp](https://github.com/PyDevices/mpftp) ([Pages](https://pydevices.github.io/mpftp/); agent state under `~/.mpftp/`) |
 
@@ -38,7 +38,7 @@ the answer from scratch.
   [`.github`](https://github.com/PyDevices/.github/tree/main/.github/ISSUE_TEMPLATE)
   repo and apply automatically to any repo that doesn't define its own.
 - If you're not sure which repo an issue belongs to, open it on
-  [pydevices-examples](https://github.com/PyDevices/pydevices-examples/issues) — per
+  [gallery](https://github.com/PyDevices/gallery/issues) — per
   CONTRIBUTING.md, that's the routing point.
 - **Recipes** ([pydevices Discussions](https://github.com/PyDevices/pydevices/discussions), *Recipes* category once created,
   open-ended format, not answerable) is for one-off examples/how-tos that
@@ -48,7 +48,7 @@ the answer from scratch.
   not a permanent home for everything filed into it.
 - **Wikis** are disabled org-wide — reference content lives in each repo's
   `README.md`/`AGENTS.md`, in
-  [pydevices-examples documentation](https://github.com/PyDevices/pydevices-examples/tree/main/docs), or on a Pages site,
+  [gallery documentation](https://github.com/PyDevices/gallery/tree/main/docs), or on a Pages site,
   not in a wiki page.
 - **Projects** are disabled org-wide (org boards and per-repo Projects). Public
   work tracking is Issues + Discussions; there is no org kanban.
@@ -96,7 +96,7 @@ icons. Header brand stays on the shared org logo.
 
 | Repo | Role | Pages site |
 |---|---|---|
-| [pydevices-examples](https://github.com/PyDevices/pydevices-examples) | Examples, tutorials, and PyScript showcase for the PyDevices product stack | [pydevices.github.io/pydevices-examples](https://pydevices.github.io/pydevices-examples/) (+ [PyScript demos](https://pydevices.github.io/pydevices-examples/pyscript/)) |
+| [gallery](https://github.com/PyDevices/gallery) | Examples, tutorials, and PyScript showcase for the PyDevices product stack | [pydevices.github.io/gallery](https://pydevices.github.io/gallery/) (+ [PyScript demos](https://pydevices.github.io/gallery/pyscript/)) |
 | [palettes](https://github.com/PyDevices/palettes) | Color palette toolkit for PyDevices | [pydevices.github.io/palettes](https://pydevices.github.io/palettes/) |
 | [pdwidgets](https://github.com/PyDevices/pdwidgets) | Cross-platform widget toolkit for PyDevices | [pydevices.github.io/pdwidgets](https://pydevices.github.io/pdwidgets/) |
 | [lvgl-bindings](https://github.com/PyDevices/lvgl-bindings) | LVGL C→binding generator (source of truth for the native bindings consumers) | [pydevices.github.io/lvgl-bindings](https://pydevices.github.io/lvgl-bindings/) |
@@ -118,7 +118,7 @@ icons. Header brand stays on the shared org logo.
 
 All owned repos are **MIT**, using GitHub's standard single-author template
 (so it's correctly detected as MIT rather than `NOASSERTION`/`Other`). A
-handful of files in **pydevices-examples** that still carry code from other authors
+handful of files in **gallery** that still carry code from other authors
 (`src/utils/tft_text.py`, `tft_write.py`, `tft_bitmap.py`, and the
 `polygon()` function in `PyDevices/pygraphics`'s `lib/pygraphics/_shapes.py`, tracing back through
 Russ Hughes' st7789_mpy driver to Ivan Belokobylskiy's st7789py_mpy) keep
