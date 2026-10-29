@@ -111,12 +111,12 @@
   "assets": "success",
   "distribution": "pydevices-pygraphics",
   "mip": "success",
-  "prerelease": false,
+  "prerelease": true,
   "pypi": "skipped",
   "repo": "pygraphics",
-  "run_url": "https://github.com/PyDevices/pygraphics/actions/runs/39724870951",
+  "run_url": "https://github.com/PyDevices/pygraphics/actions/runs/40814788374",
   "testpypi": "success",
-  "updated": "2026-10-22 04:56 UTC",
-  "version": "0.1.1"
+  "updated": "2026-10-29 03:58 UTC",
+  "version": "0.1.2rc1"
  }
 }
