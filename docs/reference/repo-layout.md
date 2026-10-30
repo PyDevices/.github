@@ -48,10 +48,9 @@ Long-form notes and guides belong under `docs/`.
   written for users, one bullet of at most three lines each. Bugs and unmet
   needs stay in issues. A repository with nothing planned says so in a line,
   and its README links the file.
-- **Do not add `RELEASE_NOTES.md`.** All three that existed carried a bare
-  `## Unreleased` heading, never recorded a shipped version, and were linked from
-  nowhere; they were deleted in August 2026. Releases use `--generate-notes`, so
-  a hand-maintained file is a second source of truth that goes stale immediately.
+- **Do not add `RELEASE_NOTES.md`.** Releases use `--generate-notes` and
+  `CHANGELOG.md`, so a hand-maintained notes file is a second source of truth
+  that goes stale immediately.
 - Name narrative and topic documents under `docs/` with lowercase kebab-case,
   for example `building-wheels.md`, `build-and-flash.md`, and
   `soft-reset-and-bring-up.md`.
@@ -145,7 +144,7 @@ There is one way to credit outside code. Vendored code goes in
 `third_party/<name>/`, unchanged where possible, with the upstream license
 file and an `ORIGIN.txt` naming the upstream URL, the commit, and every
 change made. A root `NOTICE` lists each one, and the root `LICENSE` stays the
-plain MIT template (see [Licensing](github-presence.md#licensing)), because a
+plain MIT template (see [Licensing](github-org.md#licensing)), because a
 license file that points elsewhere is not one tools can read.
 
 A file that ports upstream code line by line keeps the upstream copyright

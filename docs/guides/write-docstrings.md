@@ -1,9 +1,9 @@
-# Docstring conventions
+# Write docstrings
 
 Public docstrings in the three library projects — `palettes`, `pdwidgets`,
 and `pygraphics` — are rendered on Read the Docs by Sphinx's `autodoc` with the
 `napoleon` extension. Follow these rules so the generated reference pages stay
-accurate. See [building-docs.md](building-docs.md) for the build itself.
+accurate. See [build and publish documentation](build-and-publish-docs.md) for the build itself.
 
 ## Style
 
@@ -25,7 +25,7 @@ One-line summary of the module's role. Optionally link to narrative docs:
 """
 displaydev display drivers.
 
-See also: https://github.com/PyDevices/pydevices/blob/main/docs/displaydev.md
+See also: https://github.com/PyDevices/pydevices/blob/main/docs/how-it-works/displaydev-internals.md
 """
 ```
 
@@ -48,7 +48,7 @@ See also: https://github.com/PyDevices/pydevices/blob/main/docs/displaydev.md
 ## Repository-specific notes
 
 - **`Area` returns:** Drawing helpers that return dirty regions use `pygraphics.Area` (`x`, `y`, `w`, `h`).
-- **App:** Document poll/subscribe patterns; link to [Events concept](https://github.com/PyDevices/pydevices/blob/main/docs/appdev.md).
+- **App:** Document poll/subscribe patterns; link to [The app loop](https://github.com/PyDevices/pydevices/blob/main/docs/guides/the-app-loop.md).
 - **Private API:** Names starting with `_` are excluded from the API pages; minimal or no docstrings are fine.
   Document public methods that live on private implementation bases when they surface via inheritance
   (set `:inherited-members:` on the page for that class).
@@ -60,9 +60,8 @@ See also: https://github.com/PyDevices/pydevices/blob/main/docs/displaydev.md
 Type information goes in the **docstring**, not the signature. These packages
 run on MicroPython, where annotations cost bytecode and RAM.
 
-Stubs are the planned answer for pip consumers who want real types — see
-[Planned: type stubs](publishing-automation.md#planned-type-stubs-for-every-published-package).
-Do not add `py.typed` to a package: it tells a type checker to trust inline
+Type stubs for pip users who want real types are on the
+[roadmap](../../ROADMAP.md). Do not add `py.typed` to a package: it tells a type checker to trust inline
 annotations that deliberately are not there.
 
 ## Verification
@@ -83,5 +82,5 @@ A docstring problem is a warning, and `-W` makes it a failure. Fix it before mer
 | P1 | `displaybuf`, `console`, other `utils` |
 | P2 | Sibling packages document their own APIs: [pygraphics](https://pygraphics.readthedocs.io), [pdwidgets](https://pdwidgets.readthedocs.io), [palettes](https://palettes.readthedocs.io) |
 
-See [CONTRIBUTING.md](../CONTRIBUTING.md) for the PR workflow, and
-[building-docs.md](building-docs.md) for how the generated API pages are built.
+See [CONTRIBUTING.md](../../CONTRIBUTING.md) for the PR workflow, and
+[build and publish documentation](build-and-publish-docs.md) for how the generated API pages are built.

@@ -21,8 +21,8 @@ the parts they'd otherwise duplicate.
   PyPI, report health) shared by seven publishing repositories. Callers pin a
   `publishing-vN` tag, never a branch; those tags are immutable by policy and
   by an active GitHub tag ruleset on this repository that blocks moving or
-  deleting one. See [`docs/publishing-automation.md`](docs/publishing-automation.md)
-  for the runbook and [`docs/workflows.md`](docs/workflows.md) for the full
+  deleting one. See [Release a package](docs/guides/release-a-package.md)
+  for the runbook and [Workflows](docs/reference/workflows.md) for the full
   workflow inventory.
 - **[`RELEASE_HEALTH.md`](RELEASE_HEALTH.md)** — one row per published
   distribution (version, TestPyPI/assets/MIP/PyPI outcome, last-updated,
@@ -41,18 +41,16 @@ the parts they'd otherwise duplicate.
   landing page is published. [`scripts/generate_sites.py`](scripts/generate_sites.py)
   renders it into the org portal, into per-repo `.site/` trees, into
   [`profile/README.md`](profile/README.md), and into
-  [pydevices/docs/ecosystem.md](https://github.com/PyDevices/pydevices/blob/main/docs/ecosystem.md).
+  [pydevices/docs/how-it-works/ecosystem.md](https://github.com/PyDevices/pydevices/blob/main/docs/how-it-works/ecosystem.md).
   **Edit the database, not the generated markup** — run the generator by hand
   from a full workspace checkout (`python3 dotgithub/scripts/generate_sites.py`)
   after editing it; it validates the database first and is idempotent.
 - **Roadmap** — [`ROADMAP.md`](ROADMAP.md): what's planned for the shared
   automation. Every repository keeps its own.
-- **History** — [`docs/history.md`](docs/history.md): how the organization
-  came to be, and a dated chronology of every repository.
-- **Org docs** — [`docs/`](docs/) covers repo layout, doc style and
-  docstring conventions, how the ReadTheDocs sites build, GitHub presence
-  (Discussions/Issues/Pages/licensing), publishing automation, and the
-  operations runbook.
+- **Docs** — [`docs/`](docs/index.md) covers setting up a checkout, releasing
+  a package, rolling back and fixing a release, building the Read the Docs
+  sites, the repository layout and docstring conventions, and where things
+  live on GitHub.
 
 Board / Detect inventory docs live in
 [pydevices/docs](https://github.com/PyDevices/pydevices/tree/main/docs)

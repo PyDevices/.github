@@ -1,22 +1,22 @@
-# Building and publishing documentation
+# Build and publish documentation
 
 How to preview a PyDevices documentation project on your machine and how it
 reaches Read the Docs.
 
 One Sphinx configuration, in the `pydevices-docs` package
-([docs-config/](../docs-config/)), gives every project the same theme, the
+([docs-config/](../../docs-config/)), gives every project the same theme, the
 same top bar linking every project to every other, and the same Markdown and
 docstring setup. The organization overview is the main project, built from
-[docs-site/](../docs-site/); each library's manual is a subproject.
+[docs-site/](../../docs-site/); each library's manual is a subproject.
 
 | Project | Source | Site |
 |---|---|---|
-| PyDevices (the main project) | [docs-site/](../docs-site/) here | `pydevices.readthedocs.io` |
+| PyDevices (the main project) | [docs-site/](../../docs-site/) here | `pydevices.readthedocs.io` |
 | palettes | [palettes/docs](https://github.com/PyDevices/pydevices/tree/main/palettes/docs) | `/projects/palettes/` under the main site |
 | pdwidgets | [pdwidgets/docs](https://github.com/PyDevices/pydevices/tree/main/pdwidgets/docs) | `/projects/pdwidgets/` |
 | pygraphics | [docs/](https://github.com/PyDevices/pygraphics/tree/main/docs) in its repo | `/projects/pygraphics/` |
 
-Docstring conventions for the generated API pages: [docstrings.md](docstrings.md).
+Docstring conventions for the generated API pages: [write docstrings](write-docstrings.md).
 
 ## Preview locally
 
@@ -31,7 +31,7 @@ python3 -m venv .venv-docs
 
 `requirements.txt` installs the tagged `pydevices-docs`. To work on the shared
 package itself, install your checkout instead:
-`.venv-docs/bin/pip install -e ../.github/docs-config`.
+`.venv-docs/bin/pip install -e <path to this repository>/docs-config`.
 
 Open `_build/html/index.html`, or serve the folder
 (`python3 -m http.server -d palettes/docs/_build/html`). Live demos need http,
@@ -47,14 +47,14 @@ reference map to the Python and MicroPython manuals.
 
 | File | Role |
 |------|------|
-| `docs/conf.py` | Five lines: the project's name and where its code is, passed to `pydevices_docs.configure()` |
+| `docs/conf.py` | A few lines: the project's name and where its code is, passed to `pydevices_docs.configure()` |
 | `docs/requirements.txt` | The pinned `pydevices-docs` release |
 | `.readthedocs.yaml` | Read the Docs build settings |
 | `docs/reference/` | API pages, written at build time from the package's modules (git-ignored) |
 
 Hand-authored pages are Markdown (MyST) in `docs/`. Cards and tabs come from
 `sphinx-design`, diagrams from `mermaid`, and the live browser demos are raw
-HTML (see the [pydevices-docs README](../docs-config/README.md)).
+HTML (see the [pydevices-docs README](../../docs-config/README.md)).
 
 ### Troubleshooting
 
@@ -64,7 +64,7 @@ builtins) in `mock_imports` in `conf.py`.
 
 **A docstring warning fails the build** -- fix it in the **docstring**, not the
 signature: these packages run on MicroPython and CircuitPython, where
-annotations cost bytecode and RAM. See [docstrings.md](docstrings.md).
+annotations cost bytecode and RAM. See [write docstrings](write-docstrings.md).
 
 **An API page is missing a name** -- the page documents what the module
 defines. For a package whose public names live in private modules (pygraphics),
