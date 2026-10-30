@@ -18,10 +18,7 @@ SIBLINGS=(
     micropython-pydevices
     audiodsp
     pygraphics
-    lvgl-bindings
-    lvgl-circuitpython
-    lvgl-python
-    lvgl-micropython
+    omnipython-lvgl
     pydevices
     mpftp
     palettes
@@ -158,37 +155,9 @@ shallow_clone_if_missing() {
         "$url" "$path"
 }
 
-# Uninitialized submodule checkout: empty dir or gitlink stub without sources.
-is_empty_lvgl_placeholder() {
-    local d=$1
-    [[ -d "$d" && ! -L "$d" ]] || return 1
-    [[ ! -e "$d/src" && ! -e "$d/lvgl.h" ]]
-}
-
-ensure_lv_cpython_lvgl_symlink() {
-    local lvcp_lvgl="$PD/lvgl-python/lvgl"
-    [[ -d "$PD/lvgl-python" ]] || return 0
-
-    if [[ -L "$lvcp_lvgl" ]]; then
-        return 0
-    fi
-    if is_empty_lvgl_placeholder "$lvcp_lvgl"; then
-        log "replace empty $lvcp_lvgl with symlink -> ../lvgl-bindings/lvgl"
-        rm -rf "$lvcp_lvgl"
-        ln -s ../lvgl-bindings/lvgl "$lvcp_lvgl"
-        return 0
-    fi
-    if [[ -e "$lvcp_lvgl" ]]; then
-        log "skip $lvcp_lvgl (exists, not a symlink — remove manually to relink)"
-        return 0
-    fi
-    log "link $lvcp_lvgl -> ../lvgl-bindings/lvgl"
-    ln -s ../lvgl-bindings/lvgl "$lvcp_lvgl"
-}
-
 verify_ready() {
     local name missing=0
-    for name in micropython-pydevices audiodsp pygraphics lvgl-bindings pydevices gallery palettes pdwidgets; do
+    for name in micropython-pydevices audiodsp pygraphics omnipython-lvgl pydevices gallery palettes pdwidgets; do
         if [[ ! -d "$REPOS/$name/.git" && ! -L "$REPOS/$name" ]]; then
             log "ERROR: required repo missing: $REPOS/$name"
             missing=1
@@ -202,12 +171,8 @@ verify_ready() {
         log "ERROR: micropython clone missing"
         missing=1
     fi
-    if [[ ! -e "$REPOS/lvgl-bindings/lvgl/src" ]]; then
-        log "ERROR: lvgl-bindings/lvgl submodule not initialized"
-        missing=1
-    fi
-    if [[ ! -L "$PD/lvgl-python/lvgl" ]]; then
-        log "ERROR: lvgl-python/lvgl is not a symlink to lvgl-bindings/lvgl"
+    if [[ ! -e "$REPOS/omnipython-lvgl/lvgl/src" ]]; then
+        log "ERROR: omnipython-lvgl/lvgl submodule not initialized"
         missing=1
     fi
     return "$missing"
@@ -234,7 +199,7 @@ link_pydevices android-template "$REPOS/android-template"
 # modules.lock pins. The repositories below are siblings at the workspace root,
 # the layout every build script in the org defaults to.
 for s in micropython-pydevices audiodsp pygraphics \
-    lvgl-bindings lvgl-circuitpython lvgl-python lvgl-micropython; do
+    omnipython-lvgl; do
     [[ -d "$REPOS/$s" || -L "$REPOS/$s" ]] && link_pydevices "$s" "$REPOS/$s"
 done
 
@@ -250,12 +215,10 @@ if [[ -f "$REPOS/micropython-pydevices/patches/apply_patches.py" ]]; then
         || log "WARNING: apply_patches.py failed; the checkout is unpatched"
 fi
 
-if [[ -d "$REPOS/lvgl-bindings/.git" ]]; then
-    log "init lvgl-bindings/lvgl submodule"
-    git -C "$REPOS/lvgl-bindings" submodule update --init --depth 1 lvgl
+if [[ -d "$REPOS/omnipython-lvgl/.git" ]]; then
+    log "init omnipython-lvgl/lvgl submodule"
+    git -C "$REPOS/omnipython-lvgl" submodule update --init --depth 1 lvgl
 fi
-
-ensure_lv_cpython_lvgl_symlink
 
 verify_ready || die "workspace verification failed — agents cannot start real work yet"
 
