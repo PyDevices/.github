@@ -400,6 +400,24 @@
       }
     ]
   },
+  "omnipython-lvgl": {
+    "tier": 3,
+    "page": "none",
+    "portal_grid": false,
+    "tier_name": "LVGL Native Extensions & Binding Generator",
+    "theme_color": "var(--tier-3-blue)",
+    "eyebrow": "omnipython-lvgl",
+    "headline": "omnipython-lvgl — LVGL v9 for MicroPython, CircuitPython and CPython.",
+    "description": "LVGL v9 for MicroPython, CircuitPython and CPython from one binding generator, which parses LVGL's C headers into a MicroPython user C module, a CircuitPython module and a CPython extension (the `pydevices-lvgl` wheels).",
+    "buttons": [
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/omnipython-lvgl",
+        "primary": true
+      }
+    ],
+    "ecosystem_map": true
+  },
   "lvgl-bindings": {
     "tier": 3,
     "page": "portal-subdir",
@@ -436,7 +454,8 @@
         "href": "https://pydevices.github.io/lvgl-circuitpython/",
         "tier_color": true
       }
-    ]
+    ],
+    "ecosystem_map": false
   },
   "lvgl-micropython": {
     "tier": 3,
@@ -474,7 +493,8 @@
         "href": "https://pydevices.github.io/pydevices/",
         "tier_color": true
       }
-    ]
+    ],
+    "ecosystem_map": false
   },
   "lvgl-python": {
     "tier": 3,
@@ -512,7 +532,8 @@
         "href": "https://pydevices.github.io/pydevices/",
         "tier_color": true
       }
-    ]
+    ],
+    "ecosystem_map": false
   },
   "lvgl-circuitpython": {
     "tier": 3,
@@ -550,7 +571,8 @@
         "href": "https://pydevices.github.io/pydevices/",
         "tier_color": true
       }
-    ]
+    ],
+    "ecosystem_map": false
   },
   "pyscript-template": {
     "tier": 4,

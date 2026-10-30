@@ -39,7 +39,7 @@ Pure Python on any Python 3 host; pygraphics adds native wheels for Linux x86_64
 
 Single-source LVGL C header binding generator and native interpreter modules.
 
-- [`omnipython-lvgl`](https://github.com/PyDevices/omnipython-lvgl) — LVGL v9 for MicroPython, CircuitPython and CPython from one binding generator, which parses LVGL's C headers into a MicroPython user C module, a CircuitPython module and a CPython extension (the `pydevices-lvgl` wheels, for Linux, Windows, Android and the browser).
+- [`omnipython-lvgl`](https://github.com/PyDevices/omnipython-lvgl) — LVGL v9 for MicroPython, CircuitPython and CPython from one binding generator, which parses LVGL's C headers into a MicroPython user C module, a CircuitPython module and a CPython extension (the `pydevices-lvgl` wheels).
 
 ### Tier 4: App Hosts & Mobile
 
