@@ -10,16 +10,16 @@ instructions — read that first.
 Org-wide standards every shipped design is measured against — starting
 with completeness ("any pairing the protocols permit that the design does
 not deliver is a defect in the design, not a feature request") — live in
-[`docs/design-principles.md`](docs/design-principles.md).
+[`docs/how-it-works/design-principles.md`](docs/how-it-works/design-principles.md).
 
 ## Where things live
 
 Repo directory and root-file layout (`src/`, `lib/`, `tests/`,
-`requirements-dev.txt`, …): see [`docs/repo-layout.md`](docs/repo-layout.md).
+`requirements-dev.txt`, …): see [`docs/reference/repo-layout.md`](docs/reference/repo-layout.md).
 
 The full repository map — every repo, grouped by tier, with what each one owns —
 is generated from `data/repos_db.json` and published at
-[pydevices/docs/ecosystem.md](https://github.com/PyDevices/pydevices/blob/main/docs/ecosystem.md) and on the
+[pydevices/docs/how-it-works/ecosystem.md](https://github.com/PyDevices/pydevices/blob/main/docs/how-it-works/ecosystem.md) and on the
 [org profile](https://github.com/PyDevices). Do not restate it here; it drifts.
 
 If you're not sure which repo an issue or PR belongs to, open it on
@@ -62,5 +62,5 @@ regenerate; don't hand-edit generated files anywhere else.
 ## Doc style: emoji
 
 Docs across PyDevices use a small, fixed set of emoji as landmarks on
-section headings — see [`docs/doc-style.md`](docs/doc-style.md) for the
+section headings — see [`docs/reference/heading-emoji.md`](docs/reference/heading-emoji.md) for the
 full table and rules of thumb before adding or changing heading emoji.

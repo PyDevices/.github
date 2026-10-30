@@ -71,8 +71,8 @@ on:
         default: false
         type: boolean
     outputs:
-      # What a caller's own PyPI job needs; see "Production PyPI" in
-      # docs/publishing-automation.md for the job that reads them.
+      # What a caller's own PyPI job needs; see
+      # docs/guides/publish-to-pypi.md for the job that reads them.
       pypi-publish:
         description: >-
           'true' when the caller should upload to production PyPI: pypi-publish

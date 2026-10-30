@@ -1,4 +1,4 @@
-# Doc style: emoji
+# Heading emoji
 
 Docs across PyDevices use a small, fixed set of emoji as landmarks on
 section headings — not decoration. Each emoji has exactly one meaning and is
@@ -29,18 +29,12 @@ Rules of thumb:
   tag none of them rather than picking one arbitrarily — repeating the same
   emoji on adjacent headings reads as noise, not a landmark.
 
-## Where this applies (amended 2026-08-29, Gate 4 decision)
-
-Practice across the organization settled differently from this document's
-original ambition, and the convention below now describes what is real
-rather than what was hoped:
+## Where this applies
 
 - **READMEs are emoji-free.** A README renders on GitHub first, where
-  restraint reads better. This is the prescribed convention (a handful of
-  READMEs still carry stray emoji; Phase 4 removes them as each repo gets
-  its pass).
+  restraint reads better. This is the prescribed convention (remove a stray one when you edit a README).
 - **Docs-site pages** (Read the Docs and portal pages) may use the landmark set
-  above, sparingly, on headings only — the original rules (one per
+  above, sparingly, on headings only — the rules above (one per
   heading, only the fixed set, never in body text or code) apply there.
 - A repo using none at all is compliant. The failure mode this document
   guards against is *decorative scatter* — emoji in body text, list

@@ -30,7 +30,7 @@ Each project's manual has its own newcomer's guide.
 
 The board you own has a `board_config` that sets up its display and touch, so
 the program you ran on the desktop starts the same way on the board. The
-[device matrix](https://github.com/PyDevices/pydevices/blob/main/docs/device-matrix.md)
+[device matrix](https://github.com/PyDevices/pydevices/blob/main/docs/boards/device-matrix.md)
 lists the boards, and [mpftp](https://github.com/PyDevices/mpftp) copies files
 to them and gives you a REPL from your editor.
 

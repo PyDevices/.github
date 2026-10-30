@@ -2,7 +2,7 @@
 
 How you install PyDevices depends on where your code will run. The exact
 commands and the system packages each channel needs are in the
-[install workflows](https://github.com/PyDevices/pydevices/blob/main/docs/install-workflows.md)
+[install guide](https://github.com/PyDevices/pydevices/blob/main/docs/get-started/install.md)
 of the `pydevices` repository; this page is the short version.
 
 ::::{tab-set}
@@ -17,7 +17,7 @@ mip.install("palettes", index="https://PyDevices.github.io/mip")
 
 A board's `board_config` installs the same way and wires up the display and
 touch for that board. The board's page in the
-[device matrix](https://github.com/PyDevices/pydevices/blob/main/docs/device-matrix.md)
+[device matrix](https://github.com/PyDevices/pydevices/blob/main/docs/boards/device-matrix.md)
 names the package to ask for.
 :::
 
@@ -57,5 +57,5 @@ python -c "from board_config import display_drv; display_drv.fill_rect(50, 50, 1
 
 If a window opens with a red square in it, the stack is working. If it does
 not, the
-[troubleshooting page](https://github.com/PyDevices/pydevices/blob/main/docs/troubleshooting.md)
+[troubleshooting page](https://github.com/PyDevices/pydevices/blob/main/docs/guides/troubleshooting.md)
 is the next stop.

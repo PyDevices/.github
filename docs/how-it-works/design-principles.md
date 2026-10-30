@@ -34,10 +34,8 @@ What this demands in practice:
   stranger could watch. A matrix cell nobody has exercised is a claim,
   not a capability.
 
-This standard was first written down in a Bluetooth-interface vision
-(2026-08-31, a project since retired)
-and applies retroactively to everything the organization ships: when a
-gap in an existing surface is found, it is triaged as a defect.
+This standard applies retroactively to everything the organization ships:
+when a gap in an existing surface is found, it is triaged as a defect.
 
 ## 2. Portability by tier
 
@@ -47,7 +45,7 @@ makes sense, and translated — not duplicated — where a sibling ecosystem
 already has its own excellent idioms. Exceptions are recorded in the
 design document, not assumed. Every platform claim carries its proof
 tier — bench-proven, CI-proven, or community-verified — as defined in
-[`platform-support-tiers.md`](platform-support-tiers.md).
+[platform support tiers](platform-support-tiers.md).
 
 ## 3. Identity varies with capability, deterministically
 
@@ -63,10 +61,9 @@ always yields the same identity — so a host's cached association stays
 correct across reboots and re-enumerations. Fifteen configurations,
 fifteen identities, the same fifteen every time.
 
-Proven in usbif's runtime function selection (2026-08-31), where
-TinyUSB's own source warns of exactly this; the obligation is inherited
-by every PyDevices surface that lets Python vary a device's capability
-set.
+It was proven in the USB host and device work, where TinyUSB's own source
+warns of exactly this; the obligation is inherited by every PyDevices surface
+that lets Python vary a device's capability set.
 
 ---
 

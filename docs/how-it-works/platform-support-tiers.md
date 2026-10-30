@@ -1,7 +1,7 @@
 # Platform Support Tiers
 
 How PyDevices states what a platform claim is worth. Companion to
-[`design-principles.md`](design-principles.md): the completeness standard
+[design principles](design-principles.md): the completeness standard
 demands that every claim be proven or recorded with its honest cause —
 these tiers are the vocabulary for doing that consistently, org-wide.
 
