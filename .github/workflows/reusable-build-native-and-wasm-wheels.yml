@@ -61,7 +61,7 @@ jobs:
           fi
 
       - name: Build native wheels
-        uses: pypa/cibuildwheel@v4.3.1
+        uses: pypa/cibuildwheel@v4.3.4
         env:
           # A repo whose skip list leaves a runner nothing to build gets an
           # empty cell, not a failure: cibuildwheel 4 exits 3 on "No build
@@ -108,7 +108,7 @@ jobs:
         uses: android-actions/setup-android@v4
 
       - name: Build Android wheels
-        uses: pypa/cibuildwheel@v4.3.1
+        uses: pypa/cibuildwheel@v4.3.4
         env:
           CIBW_PLATFORM: android
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
@@ -144,7 +144,7 @@ jobs:
       # cp313/pyemscripten_2025_0 and cp314/pyemscripten_2026_0. The retired
       # scripts/build_pyodide_wheel.sh produced only the latter.
       - name: Build WASM wheels
-        uses: pypa/cibuildwheel@v4.3.1
+        uses: pypa/cibuildwheel@v4.3.4
         env:
           CIBW_PLATFORM: pyodide
 
