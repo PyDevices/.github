@@ -136,6 +136,18 @@ class MovedRepoTests(unittest.TestCase):
             self.assertNotEqual(self.gen.page_destination(entry), "none", name)
             self.assertNotIn(f'href="/{name}/"', self.gen.build_portal_grids_html(self.db))
 
+    def test_the_four_lvgl_repos_give_way_to_omnipython_lvgl(self) -> None:
+        moved = self.db["_meta"]["moved"]
+        grid = self.gen.build_portal_grids_html(self.db)
+        entry = self.db["omnipython-lvgl"]
+        self.assertNotEqual(self.gen.page_destination(entry), "none")
+        self.assertIn('href="/omnipython-lvgl/"', grid)
+        for old in ("lvgl-bindings", "lvgl-micropython", "lvgl-python", "lvgl-circuitpython"):
+            self.assertIn(old, moved)
+            self.assertNotIn(f'href="/{old}/"', grid)
+        block = self.gen.build_ecosystem_markdown(self.db)
+        self.assertIn("[`omnipython-lvgl`](https://github.com/PyDevices/omnipython-lvgl)", block)
+
 
 if __name__ == "__main__":
     unittest.main()
