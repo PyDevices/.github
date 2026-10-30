@@ -193,7 +193,12 @@ def build_ecosystem_markdown(db):
     meta = tier_meta(db)
     by_tier = {}
     for repo_name, data in repos(db).items():
-        if repo_name == 'PyDevices.github.io' or not data.get('portal_grid', True):
+        if repo_name == 'PyDevices.github.io':
+            continue
+        # ecosystem_map overrides portal_grid for this map: false keeps a repo
+        # on the portal grid but off the map (a page that stays up as a pointer
+        # to its successor); true puts a repo on the map that has no grid card.
+        if not data.get('ecosystem_map', data.get('portal_grid', True)):
             continue
         by_tier.setdefault(data.get('tier', 5), []).append((repo_name, data))
 
@@ -233,7 +238,7 @@ def build_ecosystem_markdown(db):
 
 ECOSYSTEM_TARGETS = (
     ('dotgithub', 'profile/README.md'),
-    ('pydevices', 'docs/ecosystem.md'),
+    ('pydevices', 'docs/how-it-works/ecosystem.md'),
 )
 
 
