@@ -1,7 +1,7 @@
 # LVGL bindings and ports
 
-LVGL v9 for Python. `lvgl-bindings` generates the bindings from the LVGL headers; `lvgl-micropython`, `lvgl-circuitpython` and `lvgl-python` use them to bring LVGL to MicroPython boards, CircuitPython boards, and CPython (desktop, Android and the browser).
+LVGL v9 for Python. One generator reads the LVGL headers and writes the bindings for MicroPython boards, CircuitPython boards, and CPython (desktop, Android and the browser).
 
-[LVGL bindings and ports on GitHub](https://github.com/PyDevices/lvgl-bindings).
+[omnipython-lvgl on GitHub](https://github.com/PyDevices/omnipython-lvgl).
 
-The generator lives in [lvgl-bindings](https://github.com/PyDevices/lvgl-bindings); the ports are [lvgl-micropython](https://github.com/PyDevices/lvgl-micropython), [lvgl-circuitpython](https://github.com/PyDevices/lvgl-circuitpython) and [lvgl-python](https://github.com/PyDevices/lvgl-python).
+The generator and the three ports live together in [omnipython-lvgl](https://github.com/PyDevices/omnipython-lvgl): [`ports/micropython`](https://github.com/PyDevices/omnipython-lvgl/tree/main/ports/micropython), [`ports/circuitpython`](https://github.com/PyDevices/omnipython-lvgl/tree/main/ports/circuitpython) and [`ports/cpython`](https://github.com/PyDevices/omnipython-lvgl/tree/main/ports/cpython).

@@ -86,9 +86,9 @@ Examples:
 
 | Repo | File | Why |
 |------|------|-----|
-| [lvgl-bindings](https://github.com/PyDevices/lvgl-bindings) | `requirements.txt` | Generator runtime (`pycparser`) |
+| [omnipython-lvgl](https://github.com/PyDevices/omnipython-lvgl) | `requirements.txt` | Generator runtime (`pycparser`) |
 | [gallery](https://github.com/PyDevices/gallery) | `requirements-dev.txt` | Playwright, pytest, Jupyter, ruff, … — not product runtime |
-| [lvgl-python](https://github.com/PyDevices/lvgl-python) | `requirements-dev.txt` | Local editable build / wheel tooling; users install `pydevices-lvgl` |
+| [omnipython-lvgl](https://github.com/PyDevices/omnipython-lvgl) | `requirements-dev.txt` | Local editable build / wheel tooling; users install `pydevices-lvgl` |
 | [android-template](https://github.com/PyDevices/android-template) | `requirements-dev.txt` | Host buildozer/Cython for APK builds — not packaged into the APK |
 | [pyscript-template](https://github.com/PyDevices/pyscript-template) | none | Static app template; PyScript interpreter is vendored only for Pages deployment |
 
@@ -161,7 +161,7 @@ one-off pin files:
 
 ```text
 # <name> <clone-url> <full 40-character commit>
-lvgl-bindings https://github.com/PyDevices/lvgl-bindings 0123456789abcdef0123456789abcdef01234567
+omnipython-lvgl https://github.com/PyDevices/omnipython-lvgl 0123456789abcdef0123456789abcdef01234567
 ```
 
 One pin per line, `#` comments allowed. Notes on how to check a pin go in
