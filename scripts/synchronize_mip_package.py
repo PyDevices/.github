@@ -54,10 +54,11 @@ PROFILES = {
     # package, which is why mip-profile takes a list. Its native modules are
     # firmware (a usermod, not MIP); these two are the pure-Python tier on top.
     #
-    # Both carry pypi_name=None deliberately. They do reach PyPI, but inside
-    # the pydevices-audiodsp wheel rather than as distributions of their own, so
-    # claiming a pypi_publish here would advertise a name pip cannot resolve --
-    # the same reasoning as the PYPI_DISTRIBUTIONS note further down.
+    # Both carry pypi_name=None for now. Each is its own distribution
+    # (omnipython-audioinstruments, omnipython-audioeffects), but until a final
+    # of each is on PyPI, claiming a pypi_publish here would advertise a name
+    # pip cannot resolve -- the same reasoning as the PYPI_DISTRIBUTIONS note
+    # further down.
     #
     # No requirements either: audioinstruments and audioeffects both import
     # audiodsp's native modules, which arrive with the firmware and are not MIP
@@ -65,16 +66,16 @@ PROFILES = {
     "audioinstruments": Profile(
         package="audioinstruments",
         description=(
-            "55 synthio instruments for PyDevices (drum machines and "
-            "synthesizers); import as audioinstruments"
+            "Playable synthesizers, organs, electric pianos and drum machines "
+            "on audiodsp; import as audioinstruments"
         ),
         pypi_name=None,
     ),
     "audioeffects": Profile(
         package="audioeffects",
         description=(
-            "Effect classes for PyDevices audio (delay, drive, dynamics, eq, "
-            "modulation, pitch, reverb); import as audioeffects"
+            "Studio and guitar-pedal effects on audiodsp (reverbs, delays, "
+            "compressors, overdrive, EQs); import as audioeffects"
         ),
         pypi_name=None,
     ),
