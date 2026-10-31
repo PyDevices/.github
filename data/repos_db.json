@@ -33,6 +33,7 @@
     },
     "moved": {
       "displayif": "now [`modules/displayif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/displayif) in micropython-pydevices. The old repository is archived.",
+      "audiocomponents": "split into [`audioinstruments`](https://github.com/PyDevices/audioinstruments) and [`audioeffects`](https://github.com/PyDevices/audioeffects). The old repository is archived.",
       "audioif": "now [`modules/audioif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/audioif) in micropython-pydevices. The old repository is archived.",
       "cameraif": "now [`modules/cameraif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/cameraif) in micropython-pydevices. The old repository is archived.",
       "usbif": "the C module is now [`modules/usbhost`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/usbhost) in micropython-pydevices; the Python USB packages are in [pydevices](https://github.com/PyDevices/pydevices/blob/main/docs/guides/usb.md). The old repository is archived.",
@@ -120,7 +121,7 @@
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audiodsp",
     "headline": "audiodsp — CircuitPython-compatible audio for MicroPython and CPython.",
-    "description": "CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. On PyPI as pydevices-audiodsp; the instrument and effect libraries built on it ship from audiocomponents.",
+    "description": "CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. On PyPI as pydevices-audiodsp; the instrument and effect libraries built on it are audioinstruments and audioeffects.",
     "hero_canvas": {
       "app": "signal_gen",
       "width": 480,
@@ -145,8 +146,8 @@
         "tier_color": true
       },
       {
-        "label": "audiocomponents",
-        "href": "https://pydevices.github.io/audiocomponents/",
+        "label": "audioinstruments",
+        "href": "https://pydevices.github.io/audioinstruments/",
         "tier_color": true
       }
     ]
@@ -184,14 +185,14 @@
       }
     ]
   },
-  "audiocomponents": {
+  "audioinstruments": {
     "tier": 1,
     "page": "portal-subdir",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "audiocomponents",
-    "headline": "audiocomponents — 55 classic instruments and 45 effects, in pure Python, on audiodsp.",
-    "description": "The instrument and effect libraries for audiodsp: audioinstruments (55 modelled classics, from the TR-808 to the DX7) and audioeffects (45 effect classes and racks), pure Python on MicroPython and CPython. Ships as pydevices-audioinstruments and pydevices-audioeffects, each a standalone distribution on TestPyPI and a MIP package.",
+    "eyebrow": "audioinstruments",
+    "headline": "audioinstruments — 33 playable synthesizers, organs, electric pianos and drum machines, in pure Python.",
+    "description": "Playable synthesizers, organs, electric pianos and drum machines, each a patch of modules on a virtual rack, rendered a block at a time on audiodsp. Pure Python on CPython and MicroPython-compatible firmware. Install omnipython-audioinstruments from TestPyPI, or audioinstruments from the MIP index.",
     "hero_canvas": {
       "app": "audio_scope",
       "width": 240,
@@ -202,22 +203,93 @@
     "buttons": [
       {
         "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/audiocomponents",
+        "href": "https://github.com/PyDevices/audioinstruments",
         "primary": true
       },
       {
-        "label": "Component API",
-        "href": "https://github.com/PyDevices/audiocomponents/blob/main/docs/reference/component-api.md",
+        "label": "Docs",
+        "href": "https://github.com/PyDevices/audioinstruments/blob/main/docs/overview.md",
         "tier_color": true
       },
       {
-        "label": "TestPyPI: instruments",
-        "href": "https://test.pypi.org/project/pydevices-audioinstruments/",
+        "label": "Instruments",
+        "href": "https://github.com/PyDevices/audioinstruments/blob/main/docs/instruments.md",
         "tier_color": true
       },
       {
-        "label": "TestPyPI: effects",
-        "href": "https://test.pypi.org/project/pydevices-audioeffects/",
+        "label": "TestPyPI",
+        "href": "https://test.pypi.org/project/omnipython-audioinstruments/",
+        "tier_color": true
+      }
+    ]
+  },
+  "audioeffects": {
+    "tier": 1,
+    "page": "portal-subdir",
+    "tier_name": "Core Platform & Board Contract",
+    "theme_color": "var(--tier-1-amber)",
+    "eyebrow": "audioeffects",
+    "headline": "audioeffects — 45 studio and guitar-pedal effects, in pure Python.",
+    "description": "Compressors, EQs, reverbs, delays, modulation, drive and amp simulation, pitch shifters and racks, pure Python on audiodsp's audio nodes, the same on MicroPython-compatible boards, CircuitPython-compatible boards and a desktop. Install omnipython-audioeffects from TestPyPI, or audioeffects from the MIP index.",
+    "hero_canvas": {
+      "app": "signal_gen",
+      "width": 240,
+      "height": 240,
+      "shape": "square",
+      "app_url": "https://PyDevices.github.io/assets/apps/signal_gen.py"
+    },
+    "buttons": [
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/audioeffects",
+        "primary": true
+      },
+      {
+        "label": "Docs",
+        "href": "https://github.com/PyDevices/audioeffects/blob/main/docs/index.md",
+        "tier_color": true
+      },
+      {
+        "label": "Effects",
+        "href": "https://github.com/PyDevices/audioeffects/blob/main/docs/reference/effects.md",
+        "tier_color": true
+      },
+      {
+        "label": "TestPyPI",
+        "href": "https://test.pypi.org/project/omnipython-audioeffects/",
+        "tier_color": true
+      }
+    ]
+  },
+  "audiocomponents": {
+    "tier": 1,
+    "page": "portal-subdir",
+    "portal_grid": false,
+    "title": "PyDevices - audiocomponents (moved)",
+    "tier_name": "Core Platform & Board Contract",
+    "theme_color": "var(--tier-1-amber)",
+    "eyebrow": "audiocomponents · moved",
+    "headline": "audiocomponents has split into audioinstruments and audioeffects.",
+    "description": "Split into two repositories: audioinstruments, the playable synthesizers, organs, electric pianos and drum machines, and audioeffects, the studio and guitar-pedal effects. Both are 0.5.0 on TestPyPI and the MIP index, under the same names. Your code doesn't change. The old repository is archived.",
+    "buttons": [
+      {
+        "label": "audioinstruments",
+        "href": "https://github.com/PyDevices/audioinstruments",
+        "primary": true
+      },
+      {
+        "label": "audioeffects",
+        "href": "https://github.com/PyDevices/audioeffects",
+        "tier_color": true
+      },
+      {
+        "label": "Instruments docs",
+        "href": "https://github.com/PyDevices/audioinstruments/blob/main/docs/overview.md",
+        "tier_color": true
+      },
+      {
+        "label": "Archived repo",
+        "href": "https://github.com/PyDevices/audiocomponents",
         "tier_color": true
       }
     ]
@@ -904,7 +976,7 @@
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "mpvst",
     "headline": "MPVST — audio effects and instruments as a VST3 plug-in.",
-    "description": "Programmable VST3 instruments and effects: every audiocomponents instrument and effect as a named plug-in, each instance running its Python in a sidecar process. Installers for Windows and Linux; nothing has to be built.",
+    "description": "Programmable VST3 instruments and effects: every audioinstruments instrument and audioeffects effect as a named plug-in, each instance running its Python in a sidecar process. Installers for Windows and Linux; nothing has to be built.",
     "hero_canvas": {
       "app": "ftp_scope",
       "width": 240,
@@ -929,8 +1001,8 @@
         "tier_color": true
       },
       {
-        "label": "audiocomponents",
-        "href": "https://pydevices.github.io/audiocomponents/",
+        "label": "audioinstruments",
+        "href": "https://pydevices.github.io/audioinstruments/",
         "tier_color": true
       }
     ]
