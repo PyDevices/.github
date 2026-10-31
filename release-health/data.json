@@ -27,13 +27,13 @@
   "assets": "success",
   "distribution": "omnipython-audioinstruments",
   "mip": "success",
-  "prerelease": true,
-  "pypi": "skipped",
+  "prerelease": false,
+  "pypi": "pending",
   "repo": "audioinstruments",
-  "run_url": "https://github.com/PyDevices/audioinstruments/actions/runs/41190926211",
+  "run_url": "https://github.com/PyDevices/audioinstruments/actions/runs/41193238592",
   "testpypi": "success",
-  "updated": "2026-10-31 10:24 UTC",
-  "version": "0.5.0.dev2"
+  "updated": "2026-10-31 10:58 UTC",
+  "version": "0.5.0"
  },
  "pydevices": {
   "assets": "success",
