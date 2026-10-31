@@ -148,6 +148,14 @@ class MovedRepoTests(unittest.TestCase):
         block = self.gen.build_ecosystem_markdown(self.db)
         self.assertIn("[`omnipython-lvgl`](https://github.com/PyDevices/omnipython-lvgl)", block)
 
+    def test_audiocomponents_gives_way_to_instruments_and_effects(self) -> None:
+        grid = self.gen.build_portal_grids_html(self.db)
+        self.assertIn("audiocomponents", self.db["_meta"]["moved"])
+        self.assertNotIn('href="/audiocomponents/"', grid)
+        for name in ("audioinstruments", "audioeffects"):
+            self.assertNotEqual(self.gen.page_destination(self.db[name]), "none", name)
+            self.assertIn(f'href="/{name}/"', grid)
+
 
 if __name__ == "__main__":
     unittest.main()

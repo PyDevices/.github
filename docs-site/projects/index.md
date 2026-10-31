@@ -7,7 +7,8 @@ Each project has its own manual. A project listed with its manual here has it on
 - [palettes](palettes.md)
 - [pdwidgets](pdwidgets.md)
 - [audiodsp](audiodsp.md)
-- [audiocomponents](audiocomponents.md)
+- [audioinstruments](audioinstruments.md)
+- [audioeffects](audioeffects.md)
 - [mpftp](mpftp.md)
 - [LVGL bindings and ports](lvgl.md)
 - [micropython-pydevices and the device modules](micropython-pydevices.md)
@@ -22,7 +23,8 @@ pygraphics
 palettes
 pdwidgets
 audiodsp
-audiocomponents
+audioinstruments
+audioeffects
 mpftp
 lvgl
 micropython-pydevices
