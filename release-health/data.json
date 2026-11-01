@@ -6,10 +6,10 @@
   "prerelease": true,
   "pypi": "skipped",
   "repo": "audiodsp",
-  "run_url": "https://github.com/PyDevices/audiodsp/actions/runs/41179808319",
+  "run_url": "https://github.com/PyDevices/audiodsp/actions/runs/41321346967",
   "testpypi": "success",
-  "updated": "2026-10-31 07:24 UTC",
-  "version": "0.6.13.dev1"
+  "updated": "2026-11-01 15:33 UTC",
+  "version": "0.6.13.dev2"
  },
  "omnipython-audioeffects": {
   "assets": "success",
