@@ -8,7 +8,7 @@ Latest publish run per distribution, reported by publishing-v6's report-release-
 | [omnipython-audiodsp](https://github.com/PyDevices/audiodsp/actions/runs/41468547443) | 0.6.13.dev7 (pre) | OK | OK | -- | -- | 2026-11-02 15:14 UTC |
 | [omnipython-audioeffects](https://github.com/PyDevices/audioeffects/actions/runs/41193822014) | 0.5.0 | OK | OK | OK | pending | 2026-10-31 11:46 UTC |
 | [omnipython-audioinstruments](https://github.com/PyDevices/audioinstruments/actions/runs/41275676793) | 0.5.1.dev0 (pre) | OK | OK | OK | -- | 2026-11-01 05:22 UTC |
-| [pydevices](https://github.com/PyDevices/pydevices/actions/runs/41433003379) | 0.7.9.dev1 (pre) | -- | -- | -- | -- | 2026-11-02 10:58 UTC |
+| [pydevices](https://github.com/PyDevices/pydevices/actions/runs/41473740695) | 0.7.9.dev2 (pre) | OK | OK | OK | -- | 2026-11-02 15:41 UTC |
 | [pydevices-audiodsp](https://github.com/PyDevices/audiodsp/actions/runs/39729478327) | 0.6.10 | OK | OK | -- | OK | 2026-10-22 05:54 UTC |
 | [pydevices-audioeffects](https://github.com/PyDevices/audiocomponents/actions/runs/40815948502) | 0.4.2rc1 (pre) | OK | OK | -- | -- | 2026-10-29 04:42 UTC |
 | [pydevices-audioinstruments](https://github.com/PyDevices/audiocomponents/actions/runs/40815948502) | 0.4.2rc1 (pre) | OK | OK | OK | -- | 2026-10-29 04:42 UTC |
