@@ -583,6 +583,46 @@ class TopLevelPackageTests(unittest.TestCase):
             )
 
 
+class SeveralPackagesTests(unittest.TestCase):
+    def run_sync(self, source: Path, mip: Path) -> subprocess.CompletedProcess:
+        write_lockfile(mip, {"applibs": "PyDevices/apps"})
+        return subprocess.run(
+            [sys.executable, str(SYNC_SCRIPT), "--source-repository", str(source),
+             "--source-repository-name", "PyDevices/apps", "--mip-repository", str(mip),
+             "--profile", "applibs", "--version", "1.2.3"],
+            capture_output=True, text=True, check=False,
+        )
+
+    def test_each_package_keeps_its_name_and_applibs_requires_them(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            source, mip = Path(tmp) / "src", Path(tmp) / "mip"
+            for name in sync.SEVERAL_PACKAGES["applibs"]:
+                write_lib_package(source, name)
+            examples = source / "lib" / "controlkit" / "examples"
+            examples.mkdir()
+            (examples / "demo.py").write_text("", encoding="utf-8")
+            (source / "lib" / "controlkit" / "manifest.py").write_text("", encoding="utf-8")
+            result = self.run_sync(source, mip)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            controlkit = mip / "micropython" / "controlkit"
+            self.assertTrue((controlkit / "controlkit" / "__init__.py").is_file())
+            self.assertFalse((controlkit / "controlkit" / "examples").exists())
+            self.assertFalse((controlkit / "controlkit" / "manifest.py").exists())
+            self.assertIn('version="1.2.3"', (controlkit / "manifest.py").read_text(encoding="utf-8"))
+            applibs = (mip / "micropython" / "applibs" / "manifest.py").read_text(encoding="utf-8")
+            for name in sync.SEVERAL_PACKAGES["applibs"]:
+                self.assertIn(f'require("{name}")', applibs)
+            self.assertNotIn("package(", applibs)
+
+    def test_a_missing_folder_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            source, mip = Path(tmp) / "src", Path(tmp) / "mip"
+            write_lib_package(source, "appkit")
+            result = self.run_sync(source, mip)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("package source does not exist", result.stderr)
+
+
 class PypiExtrasTests(unittest.TestCase):
     def test_extras_reach_the_pydevices_pyproject(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

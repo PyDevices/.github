@@ -81,6 +81,22 @@ PROFILES = {
     ),
 }
 
+# A profile that publishes several of its repository's lib/ folders, each under
+# its own name, and one package named for the profile that requires them all.
+# The apps repository's are libraries a program imports directly, so they stay
+# top-level names. No pypi_publish: as above, not until a final is on PyPI.
+SEVERAL_PACKAGES = {
+    "applibs": {
+        "appkit": "Apps you can switch between, and a launcher to run them",
+        "controlkit": "LVGL controls: encoders, sliders, meters, lamp buttons, pad grids and a dot-matrix display",
+        "songmodel": "The song a groovebox edits, and the link that carries it to a front panel",
+        "soundmodule": "A sound module that plays MIDI, headless from a port or through files",
+        "spectrum": "A spectrum analyzer in an app's area, sharing the panel with LVGL",
+        "touchkit": "What the apps on an ESP32-P4 touch board share",
+    },
+}
+SEVERAL_DESCRIPTIONS = {"applibs": "The libraries apps share; installs each of them"}
+
 # The source repository for each profile is pydevices-lock.json in the MIP
 # checkout, not a second map in this script. reusable-synchronize-mip-package.yml
 # already keeps that lockfile on the runner; a hardcoded PROFILE_REPOSITORIES
@@ -149,6 +165,43 @@ def render_manifest(profile: Profile, version: str) -> str:
     lines.append(f'package("{profile.package}")')
     lines.append("")
     return "\n".join(lines)
+
+
+def ignore_member_extras(directory: str, names: list[str]) -> set[str]:
+    return ignore_debris(directory, names) | {
+        name for name in names if name in {"docs", "examples", "tests", "manifest.py"}
+    }
+
+
+def synchronize_several(source_repository: Path, mip_root: Path, profile: str, version: str) -> None:
+    members = SEVERAL_PACKAGES[profile]
+    micropython = mip_root / "micropython"
+    for name, description in members.items():
+        source = source_repository / "lib" / name
+        if not source.is_dir():
+            raise SystemExit(f"package source does not exist: {source}")
+        destination = micropython / name
+        if destination.exists():
+            shutil.rmtree(destination)
+        shutil.copytree(source, destination / name, ignore=ignore_member_extras)
+        (destination / "manifest.py").write_text(
+            render_manifest(Profile(package=name, description=description, pypi_name=None), version)
+        )
+    destination = micropython / profile
+    if destination.exists():
+        shutil.rmtree(destination)
+    destination.mkdir(parents=True)
+    lines = [
+        "metadata(",
+        f"    description={SEVERAL_DESCRIPTIONS[profile]!r},",
+        f'    version="{version}",',
+        '    author="Brad Barnett",',
+        '    license="MIT",',
+        ")",
+    ]
+    lines.extend(f'require("{name}")' for name in members)
+    lines.append("")
+    (destination / "manifest.py").write_text("\n".join(lines))
 
 
 def publishable(path: Path) -> bool:
@@ -497,7 +550,7 @@ def main() -> None:
     parser.add_argument("--source-repository", required=True, type=Path)
     parser.add_argument("--source-repository-name", required=True)
     parser.add_argument("--mip-repository", required=True, type=Path)
-    parser.add_argument("--profile", required=True, choices=sorted((*PROFILES, "pydevices")))
+    parser.add_argument("--profile", required=True, choices=sorted((*PROFILES, *SEVERAL_PACKAGES, "pydevices")))
     parser.add_argument("--version", required=True)
     args = parser.parse_args()
 
@@ -511,6 +564,9 @@ def main() -> None:
         )
     if args.profile == "pydevices":
         synchronize_pydevices(source_repository, mip_root, args.version)
+        return
+    if args.profile in SEVERAL_PACKAGES:
+        synchronize_several(source_repository, mip_root, args.profile, args.version)
         return
 
     profile = PROFILES[args.profile]
