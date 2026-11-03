@@ -400,7 +400,7 @@
   },
   "pdwidgets": {
     "tier": 2,
-    "repo_url": "https://github.com/PyDevices/pydevices/tree/main/pdwidgets",
+    "repo_url": "https://github.com/PyDevices/pydevices/tree/main/packages/pdwidgets",
     "page": "portal-subdir",
     "tier_name": "Python Framebuffers & GUI Toolkits",
     "theme_color": "var(--tier-2-emerald)",
@@ -417,7 +417,7 @@
     "buttons": [
       {
         "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/pydevices/tree/main/pdwidgets",
+        "href": "https://github.com/PyDevices/pydevices/tree/main/packages/pdwidgets",
         "primary": true
       },
       {
@@ -439,7 +439,7 @@
   },
   "palettes": {
     "tier": 2,
-    "repo_url": "https://github.com/PyDevices/pydevices/tree/main/palettes",
+    "repo_url": "https://github.com/PyDevices/pydevices/tree/main/packages/palettes",
     "page": "portal-subdir",
     "tier_name": "Python Framebuffers & GUI Toolkits",
     "theme_color": "var(--tier-2-emerald)",
@@ -456,7 +456,7 @@
     "buttons": [
       {
         "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/pydevices/tree/main/palettes",
+        "href": "https://github.com/PyDevices/pydevices/tree/main/packages/palettes",
         "primary": true
       },
       {

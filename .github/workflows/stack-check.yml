@@ -1,0 +1,49 @@
+# The stack page claims to list everything a person can import or run. Compare
+# data/stack.json with every public repository and the mip index, weekly as well
+# as on a change here, because a new module arrives in another repository.
+name: Stack check
+
+on:
+  push:
+    branches: [main]
+    paths: ["data/stack.json", "scripts/stack.py", ".github/workflows/stack-check.yml"]
+  pull_request:
+    paths: ["data/stack.json", "scripts/stack.py", ".github/workflows/stack-check.yml"]
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: workspace-root/dotgithub
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Clone every public repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh repo list PyDevices --visibility public --limit 200 --json name,isArchived > repos.json
+          for repo in $(jq -r '.[] | select(.isArchived | not) | .name' repos.json); do
+            if [ "$repo" != ".github" ]; then
+              git clone --quiet --depth 1 "https://github.com/PyDevices/${repo}.git" "workspace-root/${repo}"
+            fi
+          done
+
+      - name: Fetch the mip index
+        run: curl -fsSL https://lib.omnipython.org/index.json -o index.json
+
+      - name: Compare the data with the repositories, the index and the page
+        run: |
+          python3 workspace-root/dotgithub/scripts/stack.py --check --stale \
+            --index-json index.json --repos-json repos.json

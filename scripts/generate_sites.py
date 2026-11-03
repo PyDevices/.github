@@ -769,6 +769,10 @@ def main(argv=None):
 
     written = write_ecosystem_markdown(db)
 
+    # Imported here: a --only run has just this file and the database beside it.
+    import stack
+    stack.write_page(stack.load_stack(), BASE_DIR)
+
     print(f"=== Complete! Processed {len(repos(db))} repos "
           f"({updated_sites} sites, {written} ecosystem maps) ===")
 
