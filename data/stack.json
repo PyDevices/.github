@@ -12,7 +12,7 @@
     {"id": "drivers", "title": "Drive a chip", "want": "drive a sensor, radio or other chip"},
     {"id": "hosts", "title": "Run somewhere other than a board", "want": "run on a desktop, in a browser or on a phone"},
     {"id": "apps", "title": "Run a finished app", "want": "run something finished"},
-    {"id": "project", "title": "Find the project's own sites", "want": "find the project's sites and shared tooling"}
+    {"id": "project", "title": "Find the project's own sites", "want": "find the project's sites"}
   ],
   "get": {
     "clone": "from source",
@@ -67,7 +67,8 @@
     "audiodsp:src/shared": "build support, nothing to import"
   },
   "repos_not_listed": {
-    "workspace": "private"
+    "workspace": "private",
+    ".github": "our plumbing, so readers are never sent there"
   },
   "entries": [
     {"name": "OmniPython firmware", "group": "firmware", "does": "Build MicroPython-compatible and CircuitPython-compatible firmware with the C modules below compiled in, for boards, desktops and the browser.", "repo": "micropython-pydevices", "path": "README.md", "get": ["clone"], "runs": "Boards, Desktop, Web"},
@@ -232,7 +233,6 @@
 
     {"name": "PyDevices.github.io", "group": "project", "does": "Read the website: the front page, a page for each project and the live demos.", "repo": "PyDevices.github.io", "path": "README.md", "web": "https://pydevices.github.io/", "get": ["open"], "runs": "Web"},
     {"name": "lib", "group": "project", "does": "Browse the `mip` index for the libraries, board configs and drivers.", "repo": "lib", "path": "README.md", "web": "https://lib.omnipython.org", "get": ["open"], "runs": "Web"},
-    {"name": "mip", "group": "project", "does": "Browse the generated package mirror: micropython-lib and the project's releases.", "repo": "mip", "path": "README.md", "web": "https://pydevices.github.io/mip/", "get": ["open"], "runs": "Web"},
-    {"name": ".github", "group": "project", "does": "Read the shared release workflows, the site generator and this page's data.", "repo": ".github", "path": "README.md", "get": ["clone"], "runs": "GitHub"}
+    {"name": "mip", "group": "project", "does": "Browse the generated package mirror: micropython-lib and the project's releases.", "repo": "mip", "path": "README.md", "web": "https://pydevices.github.io/mip/", "get": ["open"], "runs": "Web"}
   ]
 }

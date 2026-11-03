@@ -73,7 +73,6 @@ MIP package indexing, multi-usermod builds, and serial/FTP IDE extensions.
 
 **Deliberately absent from this map:**
 
-- **.github (dotgithub)** — No landing page by design. It holds org-wide data, scripts, and community health files, and is documented as markdown only.
 - **android-runner** — Exists solely to enable pydevices/bin/android.py. The APK is documented in pydevices; the runner publishes no site.
 
 <!-- PYDEVICES-ECOSYSTEM: END -->
