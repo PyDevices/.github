@@ -31,7 +31,6 @@
     {"repo": "pydevices", "glob": "drivers/*"},
     {"repo": "pydevices", "glob": "utils/*.py"},
     {"repo": "pydevices", "glob": "bin/*.py"},
-    {"repo": "pydevices", "glob": "python/*"},
     {"repo": "micropython-pydevices", "glob": "modules/*"},
     {"repo": "apps", "glob": "lib/*"},
     {"repo": "apps", "glob": "apps/*"},
@@ -193,7 +192,7 @@
     {"name": "Real-time clocks", "group": "drivers", "does": "Keep time with a PCF8563.", "repo": "pydevices", "path": "drivers/rtc", "get": ["chipmip"], "runs": "MP"},
     {"name": "Storage", "group": "drivers", "does": "Read SD cards on an nRF52.", "repo": "pydevices", "path": "drivers/storage", "get": ["clone"], "runs": "MP"},
 
-    {"name": "pydevices-desktop", "group": "hosts", "does": "Install the desktop stack and its board config in one command.", "repo": "pydevices", "path": "python/pydisplay-desktop", "guide": "docs/guides/run-on-the-desktop.md", "get": ["pip:pydevices-desktop", "mip:pydevices-desktop"], "runs": "Desktop"},
+    {"name": "pydevices-desktop", "group": "hosts", "does": "Install the desktop stack and its board config in one command.", "repo": "pydevices", "path": "pydevices-desktop.toml", "guide": "docs/guides/run-on-the-desktop.md", "get": ["pip:pydevices-desktop", "mip:pydevices-desktop"], "runs": "Desktop"},
     {"name": "micropython shim", "group": "hosts", "does": "Run code written for MicroPython under CPython without import errors.", "repo": "pydevices", "path": "utils/micropython.py", "get": ["pip:pydevices-desktop"], "runs": "Desktop"},
     {"name": "mip for hosts", "group": "hosts", "does": "Use `mip` on a host that doesn't have it.", "repo": "pydevices", "path": "utils/mip.py", "get": ["pip:pydevices-desktop"], "runs": "Desktop"},
     {"name": "usdl2", "group": "hosts", "does": "Call a subset of SDL2 from pure Python.", "repo": "pydevices", "path": "utils/usdl2.py", "get": ["pip:pydevices-desktop", "firmware"], "runs": "MP, Desktop"},

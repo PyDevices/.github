@@ -53,7 +53,7 @@ def entry_link(entry):
     if entry.get('web'):
         return entry['web']
     path = entry['path']
-    if path.endswith(('.py', '.md')):
+    if path.endswith(('.py', '.md', '.toml')):
         return blob_url(entry['repo'], path)
     return tree_url(entry['repo'], path)
 
