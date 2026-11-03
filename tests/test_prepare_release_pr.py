@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Tests for .github/workflows/reusable-prepare-release-pr.yml.
 
 The changelog logic lives inline in the workflow, because the reusable

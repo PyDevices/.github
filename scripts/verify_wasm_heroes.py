@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Verify every published hero app actually runs.
 
 The hero demos fail silently: the page renders, the runtime catches its own

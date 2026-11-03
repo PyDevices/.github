@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Tests for .github/workflows/release-health.yml.
 
 These lift the step's `run:` body out of the YAML and run it against real git

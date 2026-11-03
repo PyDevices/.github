@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Write the API reference pages for a project from its package folders.
 
 This stands in for the MkDocs `gen-files` script the three library sites used:

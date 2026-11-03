@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Discover public leaf distributions from a source directory.
 
 Every non-debris top-level file or directory is a component. Directories keep

@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Generate every PyDevices landing page from data/repos_db.json.
 
 Run with no arguments from a full workspace to rewrite every page, the shared

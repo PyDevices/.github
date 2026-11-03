@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Tests for scripts/generate_sites.py --only, the path mip's refresh workflow runs."""
 
 from __future__ import annotations

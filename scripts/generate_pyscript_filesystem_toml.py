@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Generate a PyScript filesystem TOML from complete source roots.
 
 Source mappings use ``SOURCE=DESTINATION``. Files are mapped recursively and

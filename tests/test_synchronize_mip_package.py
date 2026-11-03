@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Tests for scripts/synchronize_mip_package.py."""
 
 from __future__ import annotations

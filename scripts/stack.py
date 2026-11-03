@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Render the stack page from data/stack.json, and check that it is exhaustive.
 
 With no arguments, rewrites the marker block in pydevices/docs/stack.md. The

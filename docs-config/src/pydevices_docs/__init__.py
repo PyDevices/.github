@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Shared Sphinx configuration and theme for the PyDevices documentation projects.
 
 A project's ``conf.py`` is five lines:

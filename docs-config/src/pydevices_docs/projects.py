@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """The projects that share the PyDevices documentation site.
 
 This list is the shared top bar and the cross-project reference map. A project

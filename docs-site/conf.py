@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """The PyDevices main documentation project: the organization overview."""
 
 from pydevices_docs import configure

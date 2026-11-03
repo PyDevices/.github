@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Tests for .github/workflows/reusable-tag-on-release-merge.yml.
 
 The step under test is shell, not Python, so these lift the `run:` block out

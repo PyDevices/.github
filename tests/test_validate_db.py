@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """validate_db() catches database entries that generate nothing anyone serves."""
 
 from __future__ import annotations

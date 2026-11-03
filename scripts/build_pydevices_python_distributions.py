@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Build every dynamic PyDevices Python distribution from lib/ and utils/."""
 
 from __future__ import annotations

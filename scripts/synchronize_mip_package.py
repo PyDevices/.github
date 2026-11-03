@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Synchronize a single-source PyDevices package into the MIP repository."""
 
 from __future__ import annotations

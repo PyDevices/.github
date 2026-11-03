@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Brad Barnett
+#
+# SPDX-License-Identifier: MIT
+
 """Descriptions shared by TestPyPI and MIP publications of pydevices packages."""
 
 PYDEVICES_DESCRIPTIONS = {
