@@ -1,9 +1,8 @@
 # Write docstrings
 
-Public docstrings in the three library projects — `palettes`, `pdwidgets`,
-and `pygraphics` — are rendered on Read the Docs by Sphinx's `autodoc` with the
-`napoleon` extension. Follow these rules so the generated reference pages stay
-accurate. See [build and publish documentation](build-and-publish-docs.md) for the build itself.
+Every PyDevices repository writes docstrings this way. Sphinx's `autodoc` and
+`napoleon` extensions render them on the documentation sites, so these rules keep
+the generated reference pages accurate. See [build and publish documentation](build-and-publish-docs.md) for the build itself.
 
 ## Style
 
