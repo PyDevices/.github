@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
 import style_check
@@ -24,6 +25,12 @@ class Repo(unittest.TestCase):
         self._tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self._tmp.cleanup)
         self.root = self._tmp.name
+        # Run as a plain local script, whatever environment the tests run in.
+        env = mock.patch.dict(os.environ)
+        env.start()
+        self.addCleanup(env.stop)
+        os.environ.pop("GITHUB_REPOSITORY", None)
+        os.environ.pop("GITHUB_ACTIONS", None)
 
     def write(self, path, text):
         full = os.path.join(self.root, path)
@@ -140,15 +147,8 @@ class GithubLinkRule(Repo):
     def test_the_dot_github_repo_is_exempt(self):
         self.write("README.md", "https://github.com/PyDevices/.github\n")
         self.assertEqual(self.check("--skip-github-link")[0], 0)
-        old = os.environ.get("GITHUB_REPOSITORY")
         os.environ["GITHUB_REPOSITORY"] = "PyDevices/.github"
-        try:
-            self.assertEqual(self.check()[0], 0)
-        finally:
-            if old is None:
-                del os.environ["GITHUB_REPOSITORY"]
-            else:
-                os.environ["GITHUB_REPOSITORY"] = old
+        self.assertEqual(self.check()[0], 0)
 
 
 class ReadmeRule(Repo):
