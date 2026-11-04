@@ -20,6 +20,7 @@ Inputs, secrets and tags are in [release workflows](release-workflows.md).
 | `reusable-request-mip-publication.yml` | Dispatch into the publication queues of `mip` and `lib`, once per profile |
 | `reusable-synchronize-mip-package.yml` | Record the release in `pydevices-lock.json`, re-sync every locked source, rebuild and validate the index, stage the Pages artifact |
 | `reusable-validate-pyscript-filesystem-toml.yml` | Check a `*.toml` filesystem map against the tree it claims to mirror |
+| `reusable-style-check.yml` | Fail a pull request on the mechanical house-style rules ([the style check](#the-style-check)) |
 
 Callers name a reusable by tag (`@publishing-vN`), never by branch. The build
 workflows that need this repository's scripts check it out at
@@ -98,6 +99,43 @@ Releases that don't use the trio:
 | `omnipython-lvgl` | `generator-checks.yml`, `linux-integration.yml`, `font-drift.yml` |
 | `gallery` | `manifests.yml` (install-manifest freshness) |
 | `.github` (this repository) | `checks.yml` |
+
+## The style check
+
+`reusable-style-check.yml` runs `scripts/style_check.py` in the caller's tree. It
+fails on four things a machine can judge:
+
+1. A Python file that doesn't start with the three SPDX lines: one or more
+   `SPDX-FileCopyrightText` lines, a bare `#`, then `SPDX-License-Identifier`.
+   Any holder passes, so third-party files keep their own. A shebang or a
+   coding line may come first.
+2. A Sphinx role (`:class:`, `:func:`, `:ref:`, `:const:` and the rest) or field
+   (`:param:`, `:returns:` and the rest) in a docstring. Only docstrings count,
+   found with `ast`; comments and ordinary strings, such as a template that
+   writes docstrings, are left alone.
+3. A link to this repository from a README or a page under `docs/`. This
+   repository is exempt.
+4. A badge row or a status banner in the root `README.md`.
+
+On a pull request it reads only the files the PR changed, which takes seconds. On
+a manual or scheduled run it reads every tracked file. A caller is one job:
+
+```yaml
+name: Style
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  style:
+    uses: PyDevices/.github/.github/workflows/reusable-style-check.yml@publishing-vN
+```
+
+Code that isn't ours goes in `.style-exclude` at the caller's root, one glob per
+line with `#` for comments. A glob with no `/` matches a file name anywhere, one
+with a `/` is anchored at the root, a trailing `/` takes a whole folder, and `**`
+crosses folders. Prefer a folder glob to a list of files.
 
 ## Pages
 

@@ -1,0 +1,49 @@
+name: Reusable style check
+
+# Fails a pull request on the mechanical house-style rules: the SPDX header on
+# every Python file, no Sphinx roles in docstrings, no link to the .github
+# repository from a README or docs page, and no badge row or status banner in
+# the README. On a pull request it looks at the changed files only; on any
+# other event it looks at every tracked file. Vendored and generated paths go
+# in the caller's .style-exclude.
+
+on:
+  workflow_call:
+    inputs:
+      publishing-tools-ref:
+        default: publishing-v19
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  style-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Check out shared publishing tools
+        uses: actions/checkout@v7
+        with:
+          repository: PyDevices/.github
+          ref: ${{ inputs.publishing-tools-ref }}
+          path: .pydevices-publishing-tools
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Check the style rules
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          args=()
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            args+=(--base "origin/$BASE_REF")
+          fi
+          python3 .pydevices-publishing-tools/scripts/style_check.py "${args[@]}"
