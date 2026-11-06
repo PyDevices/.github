@@ -63,6 +63,7 @@
     "audiodsp:src/circuitpython_spike": "build support, nothing to import",
     "audiodsp:src/cp_compat": "build support, nothing to import",
     "audiodsp:src/cpython": "build support, nothing to import",
+    "audiodsp:src/mp_libc_shim.c": "build support, nothing to import",
     "audiodsp:src/mpaudio_modules.c": "build support, nothing to import",
     "audiodsp:src/shared": "build support, nothing to import"
   },
