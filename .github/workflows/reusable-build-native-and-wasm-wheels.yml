@@ -70,7 +70,7 @@ jobs:
 
       - name: Build native wheels
         if: matrix.os != 'ubuntu-24.04-arm'
-        uses: pypa/cibuildwheel@v4.3.4
+        uses: pypa/cibuildwheel@v4.3.5
         env:
           # A repo whose skip list leaves a runner nothing to build gets an
           # empty cell, not a failure: cibuildwheel 4 exits 3 on "No build
@@ -81,7 +81,7 @@ jobs:
 
       - name: Build native Linux aarch64 wheels
         if: matrix.os == 'ubuntu-24.04-arm'
-        uses: pypa/cibuildwheel@v4.3.4
+        uses: pypa/cibuildwheel@v4.3.5
         env:
           # Opted in, so an empty cell is a failure, as on x86-64 Linux.
           CIBW_ARCHS_LINUX: aarch64
@@ -124,7 +124,7 @@ jobs:
         uses: android-actions/setup-android@v4
 
       - name: Build Android wheels
-        uses: pypa/cibuildwheel@v4.3.4
+        uses: pypa/cibuildwheel@v4.3.5
         env:
           CIBW_PLATFORM: android
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
@@ -160,7 +160,7 @@ jobs:
       # cp313/pyemscripten_2025_0 and cp314/pyemscripten_2026_0. The retired
       # scripts/build_pyodide_wheel.sh produced only the latter.
       - name: Build WASM wheels
-        uses: pypa/cibuildwheel@v4.3.4
+        uses: pypa/cibuildwheel@v4.3.5
         env:
           CIBW_PLATFORM: pyodide
 
