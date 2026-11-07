@@ -33,6 +33,7 @@ outside this chain.
 | `import-name` | `pure-python` only: the module the smoke test imports |
 | `wheel-filename-prefix` | `native-and-wasm` only, for example `pydevices_pygraphics` |
 | `expected-wheel-count` | `native-and-wasm` only; `0` accepts any non-empty wheel set |
+| `linux-aarch64` | `native-and-wasm` only, from `publishing-v21`: also build Linux aarch64 wheels on a native ARM runner, for 64-bit Raspberry Pi OS and other ARM boards. Count them in `expected-wheel-count` |
 | `install-dependencies` | `pure-python` only: install dependencies before the smoke test |
 | `checkout-submodules` | Check out submodules before building |
 | `mip-profile` | A synchronization profile, or a comma-separated list when a repository publishes several packages; empty skips MIP and the library index |

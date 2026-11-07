@@ -22,6 +22,10 @@ on:
       checkout-submodules:
         default: false
         type: boolean
+      linux-aarch64:
+        description: Also build Linux aarch64 wheels, on a native ARM runner
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -32,16 +36,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-latest
-          - windows-latest
-          # publishing-v7: macOS runner added (org platform-support-tiers
-          # posture: ship everything CI can prove). Per-repo opt-in stays
-          # in each repo's [tool.cibuildwheel] skip list — a repo that
-          # skips *-macosx_* builds nothing here and wastes one no-op
-          # cell; a repo adopting macOS wheels must also raise its
-          # expected-wheel-count in the same change.
-          - macos-latest
+        # publishing-v7: macOS runner added (org platform-support-tiers
+        # posture: ship everything CI can prove). Per-repo opt-in stays
+        # in each repo's [tool.cibuildwheel] skip list — a repo that
+        # skips *-macosx_* builds nothing here and wastes one no-op
+        # cell; a repo adopting macOS wheels must also raise its
+        # expected-wheel-count in the same change.
+        #
+        # publishing-v21: a native ARM Linux runner for Linux aarch64
+        # wheels (64-bit Raspberry Pi OS and other ARM boards), added only
+        # when the caller sets linux-aarch64. Its cell overrides the repo's
+        # Linux archs with aarch64, so a pyproject that pins x86_64 for the
+        # x86 runner needs no change. Adopting it means raising
+        # expected-wheel-count in the same change.
+        os: ${{ fromJSON(inputs.linux-aarch64 && '["ubuntu-latest", "windows-latest", "macos-latest", "ubuntu-24.04-arm"]' || '["ubuntu-latest", "windows-latest", "macos-latest"]') }}
     steps:
       - name: Check out exact release
         uses: actions/checkout@v7
@@ -61,6 +69,7 @@ jobs:
           fi
 
       - name: Build native wheels
+        if: matrix.os != 'ubuntu-24.04-arm'
         uses: pypa/cibuildwheel@v4.3.4
         env:
           # A repo whose skip list leaves a runner nothing to build gets an
@@ -69,6 +78,13 @@ jobs:
           # macOS is allowed to be empty; a Linux or Windows cell that
           # selects nothing still fails here.
           CIBW_ALLOW_EMPTY: ${{ matrix.os == 'macos-latest' && 'true' || 'false' }}
+
+      - name: Build native Linux aarch64 wheels
+        if: matrix.os == 'ubuntu-24.04-arm'
+        uses: pypa/cibuildwheel@v4.3.4
+        env:
+          # Opted in, so an empty cell is a failure, as on x86-64 Linux.
+          CIBW_ARCHS_LINUX: aarch64
 
       - name: Upload native wheels
         uses: actions/upload-artifact@v7
