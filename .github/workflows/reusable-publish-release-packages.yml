@@ -38,6 +38,10 @@ on:
         description: native-and-wasm only; zero accepts any non-empty wheel set
         default: 0
         type: number
+      linux-aarch64:
+        description: native-and-wasm only; also build Linux aarch64 wheels on a native ARM runner
+        default: false
+        type: boolean
       install-dependencies:
         description: pure-python only -- install deps before the smoke test
         default: false
@@ -139,6 +143,7 @@ jobs:
       distribution-name: ${{ inputs.distribution-name }}
       wheel-filename-prefix: ${{ inputs.wheel-filename-prefix }}
       expected-wheel-count: ${{ inputs.expected-wheel-count }}
+      linux-aarch64: ${{ inputs.linux-aarch64 }}
       checkout-submodules: ${{ inputs.checkout-submodules }}
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}
