@@ -11,7 +11,7 @@ on:
   workflow_call:
     inputs:
       publishing-tools-ref:
-        default: publishing-v21
+        default: publishing-v22
         type: string
 
 permissions:
