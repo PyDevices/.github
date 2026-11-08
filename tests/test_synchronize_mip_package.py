@@ -676,5 +676,65 @@ class DesktopRequirementsTests(unittest.TestCase):
             self.assertEqual(build.desktop_requirements(Path(tmp)), [])
 
 
+class TopLevelSourceTests(unittest.TestCase):
+    def test_packages_folder_then_usb_then_the_root(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "packages" / "midiports").mkdir(parents=True)
+            (root / "packages" / "usb" / "usb-core").mkdir(parents=True)
+            (root / "old").mkdir()
+            self.assertEqual(sync.top_level_source(root, "midiports"), root / "packages" / "midiports")
+            self.assertEqual(sync.top_level_source(root, "usb-core"), root / "packages" / "usb" / "usb-core")
+            self.assertEqual(sync.top_level_source(root, "old"), root / "old")
+
+
+class PublishedNamesTests(unittest.TestCase):
+    def test_every_own_package_and_applib_the_stack_lists_has_a_description(self) -> None:
+        self.assertIn("medialink", metadata.PYDEVICES_DESCRIPTIONS)
+        self.assertIn("sayso", sync.SEVERAL_PACKAGES["applibs"])
+
+
+class DesktopBundleTests(unittest.TestCase):
+    def make_root(self, root: Path) -> None:
+        package = root / "packages" / "midiports"
+        (package / "midiports").mkdir(parents=True)
+        (package / "midiports" / "__init__.py").write_text("PORTS = 1\n", encoding="utf-8")
+        (package / "package.json").write_text(
+            '{"urls": [["midiports/__init__.py", "github:PyDevices/pydevices/packages/midiports/midiports/__init__.py"]]}',
+            encoding="utf-8",
+        )
+        (root / "mip-split.toml").write_text(
+            "[midiports]\ntop-level = true\npypi-desktop = true\n[hmilink]\ntop-level = true\n", encoding="utf-8"
+        )
+
+    def test_only_marked_packages_are_bundled(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_root(root)
+            self.assertEqual(build.desktop_bundles(root), [root / "packages" / "midiports"])
+            out = root / "out"
+            build.copy_bundle(root / "packages" / "midiports", root, out)
+            self.assertEqual((out / "midiports" / "__init__.py").read_text(encoding="utf-8"), "PORTS = 1\n")
+
+    def test_the_mip_sync_accepts_the_key(self) -> None:
+        self.assertIn("pypi-desktop", sync.MIP_SPLIT_KEYS)
+
+    def test_a_marked_package_without_package_json_stops_the_build(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "mip-split.toml").write_text("[midiports]\ntop-level = true\npypi-desktop = true\n", encoding="utf-8")
+            with self.assertRaises(SystemExit):
+                build.desktop_bundles(root)
+
+    def test_an_unpinned_source_is_refused(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            package = root / "p"
+            package.mkdir()
+            (package / "package.json").write_text('{"urls": [["a.py", "http://example.com/a.py"]]}', encoding="utf-8")
+            with self.assertRaises(SystemExit):
+                build.copy_bundle(package, root, root / "out")
+
+
 if __name__ == "__main__":
     unittest.main()

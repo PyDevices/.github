@@ -93,6 +93,7 @@ SEVERAL_PACKAGES = {
     "applibs": {
         "appkit": "Apps you can switch between, and a launcher to run them",
         "controlkit": "LVGL controls: encoders, sliders, meters, lamp buttons, pad grids and a dot-matrix display",
+        "sayso": "Lightweight Spotify Web API client for CPython, MicroPython and CircuitPython",
         "songmodel": "The song a groovebox edits, and the link that carries it to a front panel",
         "soundmodule": "A sound module that plays MIDI, headless from a port or through files",
         "spectrum": "A spectrum analyzer in an app's area, sharing the panel with LVGL",
@@ -262,7 +263,7 @@ MIP_SPLIT_FILE = "mip-split.toml"
 
 #: Every key a mip-split.toml section may use. An unknown key fails the sync,
 #: so a misspelt `own-package` can't quietly ship a package inside pydevices.
-MIP_SPLIT_KEYS = frozenset({"host-only", "own-package", "requires", "pypi-extras", "top-level"})
+MIP_SPLIT_KEYS = frozenset({"host-only", "own-package", "requires", "pypi-extras", "pypi-desktop", "top-level"})
 
 
 def read_split(source_root: Path) -> dict[str, dict]:
@@ -371,6 +372,15 @@ def check_no_host_imports(package_dir: Path, host_only: frozenset[str]) -> None:
                 )
 
 
+def top_level_source(source_root: Path, package: str) -> Path:
+    """Where a top-level package lives: packages/<name>, packages/usb/<name>,
+    or (older releases) a directory at the repository root."""
+    for candidate in (source_root / "packages" / package, source_root / "packages" / "usb" / package):
+        if candidate.is_dir():
+            return candidate
+    return source_root / package
+
+
 def read_top_level_packages(source_root: Path) -> list[str]:
     """Names of the packages that live at the repository root, not in lib/.
 
@@ -385,15 +395,15 @@ def read_top_level_packages(source_root: Path) -> list[str]:
     for package, section in read_split(source_root).items():
         if not section.get("top-level"):
             continue
-        extra = sorted(set(section) - {"top-level"})
+        extra = sorted(set(section) - {"top-level", "pypi-desktop"})
         if extra:
             raise SystemExit(
                 f"{MIP_SPLIT_FILE} [{package}] is top-level, so it takes no other keys "
                 f"(remove {', '.join(extra)}). Its manifest.py says what it requires and ships."
             )
-        package_dir = source_root / package
+        package_dir = top_level_source(source_root, package)
         if not package_dir.is_dir():
-            raise SystemExit(f"{MIP_SPLIT_FILE} names top-level package {package!r}, which is not a directory at the repository root")
+            raise SystemExit(f"{MIP_SPLIT_FILE} names top-level package {package!r}, which is not a directory under packages/ or at the repository root")
         if not (package_dir / "manifest.py").is_file():
             raise SystemExit(f"top-level package {package!r} has no manifest.py")
         if (source_root / "lib" / package).exists():
@@ -403,9 +413,9 @@ def read_top_level_packages(source_root: Path) -> list[str]:
     # install, then fail on import. Say so here, in the pull request's own
     # terms, instead of in the index build.
     for package in names:
-        manifest = (source_root / package / "manifest.py").read_text(encoding="utf-8")
+        manifest = (top_level_source(source_root, package) / "manifest.py").read_text(encoding="utf-8")
         for required in re.findall(r'^\s*require\(\s*["\']([^"\']+)["\']', manifest, re.MULTILINE):
-            if required not in names and (source_root / required / "manifest.py").is_file():
+            if required not in names and (top_level_source(source_root, required) / "manifest.py").is_file():
                 raise SystemExit(
                     f"top-level package {package!r} requires {required!r}, which is a directory "
                     f"here but is not listed in {MIP_SPLIT_FILE}; add [{required}] with top-level = true"
@@ -430,7 +440,7 @@ def stamp_version(manifest: str, package: str, version: str) -> str:
 
 
 def synchronize_top_level(source_root: Path, destination_root: Path, package: str, version: str) -> None:
-    source = source_root / package
+    source = top_level_source(source_root, package)
     destination = destination_root / package
     destination.mkdir()
     for path in sorted(source.iterdir()):
