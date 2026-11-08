@@ -142,7 +142,7 @@
     {"name": "picotts", "group": "sound", "does": "Make a board with PSRAM speak, with no network and no computer.", "repo": "micropython-pydevices", "path": "modules/picotts", "get": ["firmware"], "runs": "MP"},
     {"name": "mpvst", "group": "sound", "does": "Run Python instruments and effects in your DAW as a VST3 plug-in.", "repo": "mpvst", "path": "README.md", "get": ["download"], "runs": "Desktop DAW"},
 
-    {"name": "midiports", "group": "midi", "does": "Connect `adafruit_midi` to USB, UART, Web MIDI or a computer's own MIDI ports.", "repo": "pydevices", "path": "packages/midiports", "get": ["mip:midiports"], "runs": "MP, Desktop, Web"},
+    {"name": "midiports", "group": "midi", "does": "Connect `adafruit_midi` to USB, UART, Web MIDI or a computer's own MIDI ports.", "repo": "pydevices", "path": "packages/midiports", "get": ["mip:midiports", "pip:pydevices-desktop"], "runs": "MP, Desktop, Web"},
     {"name": "soundmodule", "group": "midi", "does": "Play MIDI through a sound engine, headless from a port or through files.", "repo": "apps", "path": "lib/soundmodule", "guide": "docs/guides/play-the-sound-module.md", "get": ["mip:soundmodule", "pip:omnipython-applibs"], "runs": "MP, Desktop"},
     {"name": "songmodel", "group": "midi", "does": "Edit a groovebox's song as plain data, and carry it to a front panel.", "repo": "apps", "path": "lib/songmodel", "get": ["mip:songmodel", "pip:omnipython-applibs"], "runs": "MP, Desktop, Web"},
 
