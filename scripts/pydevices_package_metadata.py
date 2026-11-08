@@ -9,4 +9,6 @@ PYDEVICES_DESCRIPTIONS = {
     "pydevices-desktop": "Complete PyDevices desktop stack and board configuration",
     # MIP only: on PyPI bledev is inside the pydevices wheel.
     "bledev": "Portable async Bluetooth Low Energy for PyDevices, over aioble on boards",
+    # MIP only, like bledev: on PyPI medialink is inside the pydevices wheel.
+    "medialink": "Live audio and video between boards and computers: a walkie-talkie, an intercom, a baby monitor",
 }

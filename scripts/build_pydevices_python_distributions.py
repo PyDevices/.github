@@ -8,10 +8,12 @@
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 import subprocess
 import sys
 import tomllib
+import urllib.request
 from pathlib import Path
 
 from pydevices_package_metadata import PYDEVICES_DESCRIPTIONS
@@ -89,6 +91,51 @@ def desktop_requirements(root: Path) -> list[str]:
         if line:
             requirements.append(line)
     return requirements
+
+
+def desktop_bundles(root: Path) -> list[Path]:
+    """Packages that pydevices-desktop carries beyond utils/: the directories
+    mip-split.toml marks ``pypi-desktop = true`` (midiports, for pip users who
+    have no mip). Each is found at packages/<name>, or packages/usb/<name>."""
+    split_path = root / "mip-split.toml"
+    if not split_path.exists():
+        return []
+    with split_path.open("rb") as handle:
+        declared = tomllib.load(handle)
+    found = []
+    for name, section in declared.items():
+        if not section.get("pypi-desktop"):
+            continue
+        for candidate in (root / "packages" / name, root / "packages" / "usb" / name):
+            if (candidate / "package.json").is_file():
+                found.append(candidate)
+                break
+        else:
+            raise SystemExit(f"mip-split.toml: [{name}] is pypi-desktop but packages/{name}/package.json is missing")
+    return found
+
+
+GITHUB_SELF = "github:PyDevices/pydevices/"
+
+
+def copy_bundle(package: Path, root: Path, destination: Path) -> None:
+    """Lay out one package's files from its package.json, the list mip installs.
+
+    A file of this repository is copied from the checkout. Any other file is
+    fetched from its pinned URL (midiports pins Adafruit's adafruit_midi at a
+    tag), so pip users get exactly what mip installs.
+    """
+    urls = json.loads((package / "package.json").read_text(encoding="utf-8"))["urls"]
+    for relative, source in urls:
+        target = destination / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if source.startswith(GITHUB_SELF):
+            shutil.copy2(root / source[len(GITHUB_SELF) :], target)
+        elif source.startswith("https://"):
+            with urllib.request.urlopen(source, timeout=60) as response:
+                target.write_bytes(response.read())
+        else:
+            raise SystemExit(f"{package.name}/package.json: cannot bundle {source!r}")
 
 
 def project_text(
@@ -190,6 +237,8 @@ def build(root: Path, output: Path, version: str) -> None:
         copy_component(source, desktop_source / source.name)
     for source in components(root / DESKTOP_DIR):
         copy_component(source, desktop_source / source.name)
+    for bundle in desktop_bundles(root):
+        copy_bundle(bundle, root, desktop_source)
     write_project(
         desktop,
         "pydevices-desktop",

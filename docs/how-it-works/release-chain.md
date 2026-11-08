@@ -113,6 +113,11 @@ The `pydevices` build keeps no inclusion list. The distribution is exactly
   single source for its description, `require()` lines and files. The sync
   fails if a listed name isn't a directory with a `manifest.py`. This is
   available from `publishing-v14`.
+- **A top-level package can also ride in `pydevices-desktop`.** Adding
+  `pypi-desktop = true` to its section copies the files its `package.json`
+  lists into the wheel, fetching any pinned upstream URL (midiports carries
+  `adafruit_midi` this way), so `pip install pydevices-desktop` gives what
+  `mip` gives. The wheel build reads the key; the MIP sync ignores it.
 - Every publishable entry under `utils/`, and everything publishable in
   `board_configs/desktop/`, is bundled into `pydevices-desktop`, which depends
   on `pydevices`. All artifacts from one release share a version.
