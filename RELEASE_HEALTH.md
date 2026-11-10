@@ -6,7 +6,7 @@ Latest publish run per distribution, reported by publishing-v6's report-release-
 |---|---|---|---|---|---|---|
 | [omnipython-airwindows](https://github.com/PyDevices/airwindows/actions/runs/42817375038) | 0.1.0.dev0 (pre) | OK | OK | -- | -- | 2026-11-10 12:55 UTC |
 | [omnipython-applibs](https://github.com/PyDevices/apps/actions/runs/42455964672) | 0.1.2.dev0 (pre) | OK | OK | OK | -- | 2026-11-08 06:45 UTC |
-| [omnipython-audiodsp](https://github.com/PyDevices/audiodsp/actions/runs/42370776184) | 0.6.16.dev0 (pre) | OK | OK | -- | -- | 2026-11-07 12:09 UTC |
+| [omnipython-audiodsp](https://github.com/PyDevices/audiodsp/actions/runs/42910410643) | 0.6.16.dev1 (pre) | OK | OK | -- | -- | 2026-11-10 22:07 UTC |
 | [omnipython-audioeffects](https://github.com/PyDevices/audioeffects/actions/runs/42838194683) | 0.5.2.dev1 (pre) | OK | OK | OK | -- | 2026-11-10 15:28 UTC |
 | [omnipython-audioinstruments](https://github.com/PyDevices/audioinstruments/actions/runs/42851714069) | 0.5.2.dev2 (pre) | OK | OK | OK | -- | 2026-11-10 16:30 UTC |
 | [pydevices](https://github.com/PyDevices/pydevices/actions/runs/42633964865) | 0.8.0.dev5 (pre) | OK | OK | OK | -- | 2026-11-09 14:23 UTC |
