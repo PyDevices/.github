@@ -12,6 +12,7 @@
     {"id": "drivers", "title": "Drive a chip", "want": "drive a sensor, radio or other chip"},
     {"id": "hosts", "title": "Run somewhere other than a board", "want": "run on a desktop, in a browser or on a phone"},
     {"id": "apps", "title": "Run a finished app", "want": "run something finished"},
+    {"id": "applibs", "title": "Libraries the apps use", "want": "reuse a library the apps share, such as the Spotify client"},
     {"id": "project", "title": "Find the project's own sites", "want": "find the project's sites"}
   ],
   "get": {
@@ -57,7 +58,6 @@
     "micropython-pydevices:modules/pdwidgets": "a firmware recipe for a package listed on its own",
     "micropython-pydevices:modules/pydevices": "a firmware recipe for a repository listed on its own",
     "micropython-pydevices:modules/pygraphics": "a firmware recipe for a repository listed on its own",
-    "micropython-pydevices:modules/sayso": "a firmware recipe for a package listed on its own",
     "micropython-pydevices:modules/ulab": "fetched when firmware is built; its row points upstream",
     "apps:apps/__init__.py": "package marker",
     "audiodsp:src/circuitpython_spike": "build support, nothing to import",
@@ -104,8 +104,8 @@
     {"name": "backends", "group": "app", "does": "Add a display or audio backend of your own, so the automatic choosers can pick it.", "repo": "pydevices", "path": "lib/backends.py", "guide": "docs/modules.md", "get": ["mip:pydevices", "pip:pydevices", "firmware"], "runs": "MP, CP, Desktop, Web, Android"},
     {"name": "appkit", "group": "app", "does": "Run several apps in one program, switch between them, and get each app's memory back when it closes.", "repo": "apps", "path": "lib/appkit", "get": ["mip:appkit", "pip:omnipython-applibs"], "runs": "MP, CP, Desktop"},
     {"name": "applibs", "group": "app", "does": "Install every shared app library at once.", "repo": "apps", "path": "lib", "get": ["mip:applibs", "pip:omnipython-applibs"], "runs": "MP, CP, Desktop"},
-    {"name": "deskkit", "group": "app", "does": "Put a clock and the weather on a screen on your desk, with swipes between them and the screen dark at night.", "repo": "apps", "path": "lib/deskkit", "guide": "apps:docs/guides/put-a-clock-on-your-desk.md", "get": ["clone"], "runs": "MP on an LVGL touch board"},
-    {"name": "touchkit", "group": "app", "does": "Reuse what the apps on an ESP32-P4 touch board share: the shell, settings, clock, network and camera helpers.", "repo": "apps", "path": "lib/touchkit", "get": ["mip:touchkit", "pip:omnipython-applibs"], "runs": "MP on an ESP32-P4 touch board"},
+    {"name": "deskkit", "group": "applibs", "does": "Put a clock and the weather on a screen on your desk, with swipes between them and the screen dark at night.", "repo": "apps", "path": "lib/deskkit", "guide": "apps:docs/guides/put-a-clock-on-your-desk.md", "get": ["clone"], "runs": "MP on an LVGL touch board"},
+    {"name": "touchkit", "group": "applibs", "does": "Reuse what the apps on an ESP32-P4 touch board share: the shell, settings, clock, network and camera helpers.", "repo": "apps", "path": "lib/touchkit", "get": ["mip:touchkit", "pip:omnipython-applibs"], "runs": "MP on an ESP32-P4 touch board"},
 
     {"name": "audiodev", "group": "sound", "does": "Play PCM and tones through one contract on every host.", "repo": "pydevices", "path": "lib/audiodev", "guide": "docs/guides/audio.md", "get": ["mip:pydevices", "pip:pydevices", "firmware"], "runs": "MP, CP, Desktop, Web, Android"},
     {"name": "audioif", "group": "sound", "does": "Reach audio hardware from C: the platform drivers under the audio pump, with CircuitPython's `audiobusio.I2SOut` on top.", "repo": "micropython-pydevices", "path": "modules/audioif", "get": ["firmware"], "runs": "MP"},
@@ -156,7 +156,7 @@
     {"name": "mdns for CPython", "group": "network", "does": "Use the `mdns` API on a desktop, over python-zeroconf.", "repo": "pydevices", "path": "utils/mdns.py", "guide": "docs/guides/mdns.md", "get": ["pip:pydevices-desktop"], "runs": "Desktop"},
     {"name": "bledev", "group": "network", "does": "Write one Bluetooth LE program for a board, a laptop or a browser.", "repo": "pydevices", "path": "lib/bledev", "guide": "docs/guides/bluetooth-le.md", "get": ["mip:bledev", "pip:pydevices", "firmware"], "runs": "MP, CP, Desktop, Web"},
     {"name": "bledev_hid", "group": "network", "does": "Use `adafruit_hid` over Bluetooth LE, as a keyboard, mouse or media remote.", "repo": "pydevices", "path": "packages/bledev_hid", "guide": "docs/guides/bluetooth-le.md", "get": ["clone"], "runs": "MP"},
-    {"name": "sayso", "group": "network", "does": "Call the Spotify Web API from a small object layer, with sign-in helpers.", "repo": "apps", "path": "lib/sayso", "get": ["mip:sayso", "pip:omnipython-applibs"], "runs": "MP, CP, Desktop"},
+    {"name": "sayso", "group": "applibs", "does": "Call the Spotify Web API from a small object layer, with sign-in helpers.", "repo": "apps", "path": "lib/sayso", "get": ["mip:sayso", "pip:omnipython-applibs"], "runs": "MP, CP, Desktop"},
 
     {"name": "usbhost", "group": "usb", "does": "Provide the C host port that the `usb.core` packages use. You don't import it yourself.", "repo": "micropython-pydevices", "path": "modules/usbhost", "guide": "pydevices:docs/guides/usb.md", "get": ["firmware"], "runs": "MP on ESP32-S2, S3, P4; CP on P4"},
     {"name": "usb-core", "group": "usb", "does": "Talk to USB devices from a host board, with `usb.core` and `usb.util`, in PyUSB's shape.", "repo": "pydevices", "path": "packages/usb/usb-core", "guide": "docs/guides/usb.md", "get": ["mip:usb-core"], "runs": "MP"},
