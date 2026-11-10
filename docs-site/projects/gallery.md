@@ -4,4 +4,4 @@ Example programs for every part of PyDevices, the board configurations they run 
 
 [gallery on GitHub](https://github.com/PyDevices/gallery).
 
-Try them in the [gallery](https://pydevices.github.io/gallery/gallery/).
+Try them in the [gallery](https://gallery.omnipython.org/).

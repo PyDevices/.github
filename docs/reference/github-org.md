@@ -19,7 +19,7 @@ doesn't repeat it.
 | Read the shared contribution guidelines | [CONTRIBUTING.md](../../CONTRIBUTING.md) |
 | Read the organization's profile | [profile/README.md](../../profile/README.md), shown on [github.com/PyDevices](https://github.com/PyDevices) |
 | Read a library's manual | The project's Read the Docs site, for example [pygraphics.readthedocs.io](https://pygraphics.readthedocs.io); the [documentation overview](https://pydevices.readthedocs.io) links the rest |
-| Try the libraries without installing | The [PyScript gallery](https://pydevices.github.io/gallery/pyscript/) |
+| Try the libraries without installing | The [PyScript gallery](https://gallery.omnipython.org/pyscript/) |
 | Find board and driver documentation | [pydevices `docs/`](https://github.com/PyDevices/pydevices/tree/main/docs) |
 
 ## Discussions and issues
