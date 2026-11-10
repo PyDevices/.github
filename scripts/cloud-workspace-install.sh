@@ -151,6 +151,14 @@ shallow_clone_if_missing() {
         return 0
     fi
     log "clone $url @ $branch -> $dir"
+    if [[ "$branch" =~ ^[0-9a-f]{40}$ ]]; then
+        # A full commit: clone --branch takes only branches and tags.
+        git init -q "$path"
+        git -C "$path" remote add origin "$url"
+        git -C "$path" fetch -q --depth 1 --filter=blob:none origin "$branch"
+        git -C "$path" -c advice.detachedHead=false checkout -q FETCH_HEAD
+        return 0
+    fi
     git clone --depth 1 --filter=blob:none --branch "$branch" --single-branch \
         "$url" "$path"
 }
@@ -196,17 +204,28 @@ link_pydevices android-template "$REPOS/android-template"
 # The C modules (displayif, audioif, cameraif, usbhost) live inside
 # micropython-pydevices under modules/, so they need no checkout of their own;
 # build_mp.py clones anything else it needs (ulab, say) at the commit
-# modules.lock pins. The repositories below are siblings at the workspace root,
+# micropython-pydevices pins. The repositories below are siblings at the workspace root,
 # the layout every build script in the org defaults to.
 for s in micropython-pydevices audiodsp pygraphics \
     omnipython-lvgl; do
     [[ -d "$REPOS/$s" || -L "$REPOS/$s" ]] && link_pydevices "$s" "$REPOS/$s"
 done
 
-# The interpreter checkouts, beside the repositories. The MicroPython tag is
-# the one micropython-pydevices pins, and patches/apply_patches.py there
+# The interpreter checkouts, beside the repositories. The MicroPython commit is
+# the one micropython-pydevices pins (in DEPENDENCIES.lock, or UPSTREAM in a
+# checkout from before that file), and patches/apply_patches.py there
 # applies the patch series once (build_mp.py would also do it on first use).
-MP_TAG="${PYDEVICES_MP_TAG:-$(tr -d '[:space:]' < "$REPOS/micropython-pydevices/UPSTREAM" 2>/dev/null || echo v1.29.0)}"
+mp_pin() {
+    local mpp="$REPOS/micropython-pydevices"
+    if [[ -f "$mpp/DEPENDENCIES.lock" ]]; then
+        awk '$1 == "micropython" { print $3 }' "$mpp/DEPENDENCIES.lock"
+    elif [[ -f "$mpp/UPSTREAM" ]]; then
+        tr -d '[:space:]' < "$mpp/UPSTREAM"
+    else
+        echo v1.29.0
+    fi
+}
+MP_TAG="${PYDEVICES_MP_TAG:-$(mp_pin)}"
 CP_TAG="${PYDEVICES_CP_TAG:-10.3.0}"
 shallow_clone_if_missing micropython https://github.com/micropython/micropython.git "$MP_TAG"
 shallow_clone_if_missing circuitpython https://github.com/adafruit/circuitpython.git "$CP_TAG"
