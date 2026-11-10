@@ -167,6 +167,19 @@ One pin per line, `#` comments allowed. Notes on how to check a pin go in
 comments above it. When a parent build overrides a module's pin, the parent's
 pin wins, and the module's file says so in a comment.
 
+Two things a line may add:
+
+```text
+# a toolchain the build fetches by tag: the commit that tag is, then the tag
+esp-idf https://github.com/espressif/esp-idf.git 0123456789abcdef0123456789abcdef01234567  # tag v5.5.4
+# a download that is not a git checkout: the archive's URL, then its version
+SDL2 https://example.org/SDL2-2.30.10.tar.gz 2.30.10
+```
+
+A `# tag <tag>` after the commit names the tag a build fetches by; the build
+checks that the checkout is the pinned commit. An archive that isn't a git
+repository is pinned by URL and version, in a section of its own.
+
 ## Notes
 
 - Prefer headers next to C under `src/` (not a separate top-level `include/`).
