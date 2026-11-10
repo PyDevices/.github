@@ -5,7 +5,7 @@ order most people meet them in.
 
 ## 1. Watch it run
 
-Open the [gallery](https://pydevices.github.io/gallery/gallery/).
+Open the [gallery](https://gallery.omnipython.org/).
 Every program there is a real PyDevices example running as MicroPython in your
 browser, with the same code a board would run. Pick one that draws, one that
 reacts to the mouse and one that uses widgets, and read the code beside it.

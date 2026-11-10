@@ -39,8 +39,8 @@ Current releases are on TestPyPI, which is why the command names it first.
 :::
 
 :::{tab-item} In the browser
-Nothing to install: the [gallery](https://pydevices.github.io/gallery/gallery/)
-and [Workbench](https://pydevices.github.io/workbench/) run MicroPython as
+Nothing to install: the [gallery](https://gallery.omnipython.org/)
+and [Workbench](https://workbench.pydevices.com/) run MicroPython as
 WebAssembly. To use a library from your own page, load it with micropip in
 Pyodide or PyScript; each project's page shows the line.
 :::
