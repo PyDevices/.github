@@ -179,7 +179,7 @@
     {"name": "castif", "group": "vision", "does": "Stream what your app draws to a screen across the room.", "repo": "micropython-pydevices", "path": "modules/castif", "get": ["firmware"], "runs": "MP on ESP32-P4"},
     {"name": "vision", "group": "vision", "does": "Run image models and handle pictures with ESP-DL, plus H.264 and RTSP on the P4.", "repo": "micropython-pydevices", "path": "modules/vision", "get": ["optin"], "runs": "MP on ESP32-S3, P4"},
     {"name": "tflite", "group": "vision", "does": "Run TensorFlow Lite Micro models on a board, from speech to person detection.", "repo": "micropython-pydevices", "path": "modules/tflite", "get": ["optin"], "runs": "MP on ESP32-S3, P4"},
-    {"name": "ulab", "group": "vision", "does": "Work with numpy-like arrays.", "repo": "micropython-pydevices", "path": "modules.lock", "web": "https://github.com/v923z/micropython-ulab", "get": ["firmware"], "runs": "MP"},
+    {"name": "ulab", "group": "vision", "does": "Work with numpy-like arrays.", "repo": "micropython-pydevices", "path": "docs/reference/modules.md", "web": "https://github.com/v923z/micropython-ulab", "get": ["firmware"], "runs": "MP"},
 
     {"name": "Display drivers", "group": "drivers", "does": "Drive ILI9341, ST7789, SSD1306, GC9A01 and other panels.", "repo": "pydevices", "path": "drivers/display", "guide": "docs/boards/display-drivers.md", "get": ["chipmip"], "runs": "MP, CP"},
     {"name": "Touch drivers", "group": "drivers", "does": "Read FT6x36, GT911, CST8xx, XPT2046 and other touch panels.", "repo": "pydevices", "path": "drivers/touch", "guide": "docs/boards/touch-drivers.md", "get": ["chipmip"], "runs": "MP, CP"},
