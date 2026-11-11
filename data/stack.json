@@ -161,6 +161,7 @@
 
     {"name": "usbhost", "group": "usb", "does": "Provide the C host port that the `usb.core` packages use. You don't import it yourself.", "repo": "micropython-pydevices", "path": "modules/usbhost", "guide": "pydevices:docs/guides/usb.md", "get": ["firmware"], "runs": "MP on ESP32-S2, S3, P4; CP on P4"},
     {"name": "usb-core", "group": "usb", "does": "Talk to USB devices from a host board, with `usb.core` and `usb.util`, in PyUSB's shape.", "repo": "pydevices", "path": "packages/usb/usb-core", "guide": "docs/guides/usb.md", "get": ["mip:usb-core"], "runs": "MP"},
+    {"name": "usb-host-dfu", "group": "usb", "does": "Read the flash of a board sitting in its USB DFU bootloader.", "repo": "pydevices", "path": "packages/usb/usb-host-dfu", "guide": "docs/guides/usb.md", "get": ["mip:usb-host-dfu"], "runs": "MP"},
     {"name": "usb-host-hid", "group": "usb", "does": "Read a keyboard or mouse plugged into the board.", "repo": "pydevices", "path": "packages/usb/usb-host-hid", "guide": "docs/guides/usb.md", "get": ["mip:usb-host-hid"], "runs": "MP"},
     {"name": "usb-host-msc", "group": "usb", "does": "Mount a USB flash drive.", "repo": "pydevices", "path": "packages/usb/usb-host-msc", "guide": "docs/guides/usb.md", "get": ["mip:usb-host-msc"], "runs": "MP"},
     {"name": "usb-host-cdc", "group": "usb", "does": "Talk to a USB serial device.", "repo": "pydevices", "path": "packages/usb/usb-host-cdc", "guide": "docs/guides/usb.md", "get": ["mip:usb-host-cdc"], "runs": "MP"},
