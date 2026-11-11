@@ -225,8 +225,15 @@ mp_pin() {
         echo v1.29.0
     fi
 }
+# The CircuitPython commit comes from the same file, so a cloud checkout builds
+# the interpreter the firmware and the parity tests use.
+cp_pin() {
+    local lock="$REPOS/micropython-pydevices/DEPENDENCIES.lock" pin=""
+    [[ -f "$lock" ]] && pin=$(awk '$1 == "circuitpython" { print $3 }' "$lock")
+    echo "${pin:-11.0.0-alpha.2}"
+}
 MP_TAG="${PYDEVICES_MP_TAG:-$(mp_pin)}"
-CP_TAG="${PYDEVICES_CP_TAG:-10.3.0}"
+CP_TAG="${PYDEVICES_CP_TAG:-$(cp_pin)}"
 shallow_clone_if_missing micropython https://github.com/micropython/micropython.git "$MP_TAG"
 shallow_clone_if_missing circuitpython https://github.com/adafruit/circuitpython.git "$CP_TAG"
 if [[ -f "$REPOS/micropython-pydevices/patches/apply_patches.py" ]]; then
