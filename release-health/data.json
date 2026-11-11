@@ -54,10 +54,10 @@
   "prerelease": true,
   "pypi": "skipped",
   "repo": "audioinstruments",
-  "run_url": "https://github.com/PyDevices/audioinstruments/actions/runs/42911045194",
+  "run_url": "https://github.com/PyDevices/audioinstruments/actions/runs/42944127684",
   "testpypi": "success",
-  "updated": "2026-11-10 22:24 UTC",
-  "version": "0.5.2.dev3"
+  "updated": "2026-11-11 02:25 UTC",
+  "version": "0.5.2.dev4"
  },
  "pydevices": {
   "assets": "success",
