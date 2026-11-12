@@ -111,13 +111,13 @@
   "assets": "success",
   "distribution": "pydevices-lvgl",
   "mip": "skipped",
-  "prerelease": false,
+  "prerelease": true,
   "pypi": "skipped",
   "repo": "omnipython-lvgl",
-  "run_url": "https://github.com/PyDevices/omnipython-lvgl/actions/runs/42962040332",
+  "run_url": "https://github.com/PyDevices/omnipython-lvgl/actions/runs/43170101089",
   "testpypi": "success",
-  "updated": "2026-11-11 05:05 UTC",
-  "version": "9.5.54"
+  "updated": "2026-11-12 06:59 UTC",
+  "version": "9.6.0.dev0"
  },
  "pydevices-mpftp": {
   "assets": "success",
