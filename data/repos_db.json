@@ -475,6 +475,25 @@
       }
     ]
   },
+  "iconkit": {
+    "tier": 2,
+    "repo_url": "https://github.com/PyDevices/pydevices/tree/main/packages/iconkit",
+    "page": "none",
+    "portal_grid": false,
+    "ecosystem_map": true,
+    "tier_name": "Python Framebuffers & GUI Toolkits",
+    "theme_color": "var(--tier-2-emerald)",
+    "eyebrow": "iconkit",
+    "headline": "iconkit — Material Design icons for LVGL and pygraphics.",
+    "description": "Material Design icons as flash-resident alpha masks, drawn in LVGL or pygraphics.",
+    "buttons": [
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/pydevices/tree/main/packages/iconkit",
+        "primary": true
+      }
+    ]
+  },
   "omnipython-lvgl": {
     "tier": 3,
     "page": "portal-subdir",
