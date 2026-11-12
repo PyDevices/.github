@@ -93,6 +93,7 @@ SEVERAL_PACKAGES = {
     "applibs": {
         "appkit": "Apps you can switch between, and a launcher to run them",
         "controlkit": "LVGL controls: encoders, sliders, meters, lamp buttons, pad grids and a dot-matrix display",
+        "iconkit": "Material icons as 8-bit alpha masks, drawn in LVGL or with pygraphics in any colour",
         "sayso": "Lightweight Spotify Web API client for CPython, MicroPython and CircuitPython",
         "songmodel": "The song a groovebox edits, and the link that carries it to a front panel",
         "soundmodule": "A sound module that plays MIDI, headless from a port or through files",
