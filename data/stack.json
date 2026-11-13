@@ -51,6 +51,7 @@
     "micropython-pydevices:modules/audiodsp": "a firmware recipe for a repository listed on its own",
     "micropython-pydevices:modules/audioeffects": "a firmware recipe for a repository listed on its own",
     "micropython-pydevices:modules/audioinstruments": "a firmware recipe for a repository listed on its own",
+    "micropython-pydevices:modules/iconkit": "a firmware recipe for a package listed on its own",
     "micropython-pydevices:modules/library.py": "a firmware recipe",
     "micropython-pydevices:modules/manifest.py": "a firmware recipe",
     "micropython-pydevices:modules/micropython-lib": "a firmware recipe",
