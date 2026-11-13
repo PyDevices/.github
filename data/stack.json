@@ -51,6 +51,7 @@
     "micropython-pydevices:modules/audiodsp": "a firmware recipe for a repository listed on its own",
     "micropython-pydevices:modules/audioeffects": "a firmware recipe for a repository listed on its own",
     "micropython-pydevices:modules/audioinstruments": "a firmware recipe for a repository listed on its own",
+    "micropython-pydevices:modules/iconkit": "a firmware recipe for a package listed on its own",
     "micropython-pydevices:modules/library.py": "a firmware recipe",
     "micropython-pydevices:modules/manifest.py": "a firmware recipe",
     "micropython-pydevices:modules/micropython-lib": "a firmware recipe",
@@ -94,6 +95,8 @@
     {"name": "jpegio for CPython", "group": "display", "does": "Use the `jpegio` API on a desktop.", "repo": "pydevices", "path": "utils/jpegio.py", "get": ["pip:pydevices-desktop"], "runs": "Desktop"},
     {"name": "pngio", "group": "display", "does": "Turn an RGB565 framebuffer into a PNG and back.", "repo": "micropython-pydevices", "path": "modules/pngio", "get": ["firmware"], "runs": "MP"},
     {"name": "pngio for CPython", "group": "display", "does": "Use the `pngio` API on a desktop, over Pillow.", "repo": "pydevices", "path": "utils/pngio.py", "get": ["pip:pydevices-desktop"], "runs": "Desktop"},
+    {"name": "svgio", "group": "display", "does": "Draw an SVG at any size into RGB565 with alpha, for pygraphics or LVGL's `lv.image`.", "repo": "micropython-pydevices", "path": "modules/svgio", "get": ["firmware"], "runs": "MP"},
+    {"name": "svgio for CPython", "group": "display", "does": "Use the `svgio` API on a desktop, over resvg-py and Pillow.", "repo": "pydevices", "path": "utils/svgio.py", "get": ["pip:pydevices-desktop"], "runs": "Desktop"},
     {"name": "ppa", "group": "display", "does": "Scale, rotate, mirror, crop, convert, fill and blend pictures in memory, in hardware on an ESP32-P4.", "repo": "micropython-pydevices", "path": "modules/ppa", "get": ["firmware"], "runs": "MP"},
     {"name": "frame_recorder", "group": "display", "does": "Record a desktop display to video.", "repo": "pydevices", "path": "utils/frame_recorder.py", "get": ["pip:pydevices-desktop"], "runs": "Desktop"},
 
