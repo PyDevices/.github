@@ -5,7 +5,7 @@ Latest publish run per distribution, reported by publishing-v6's report-release-
 | Distribution | Version | TestPyPI | Assets | MIP | PyPI | Updated |
 |---|---|---|---|---|---|---|
 | [omnipython-airwindows](https://github.com/PyDevices/airwindows/actions/runs/42817375038) | 0.1.0.dev0 (pre) | OK | OK | -- | -- | 2026-11-10 12:55 UTC |
-| [omnipython-applibs](https://github.com/PyDevices/apps/actions/runs/42911833978) | 0.1.2.dev1 (pre) | OK | OK | OK | -- | 2026-11-10 22:11 UTC |
+| [omnipython-applibs](https://github.com/PyDevices/apps/actions/runs/43382665301) | 0.1.2.dev2 (pre) | OK | OK | OK | -- | 2026-11-13 07:01 UTC |
 | [omnipython-audiodsp](https://github.com/PyDevices/audiodsp/actions/runs/42943558534) | 0.6.16.dev2 (pre) | OK | OK | -- | -- | 2026-11-11 02:12 UTC |
 | [omnipython-audioeffects](https://github.com/PyDevices/audioeffects/actions/runs/42943583385) | 0.5.2.dev2 (pre) | OK | OK | OK | -- | 2026-11-11 03:13 UTC |
 | [omnipython-audioinstruments](https://github.com/PyDevices/audioinstruments/actions/runs/42944127684) | 0.5.2.dev4 (pre) | OK | OK | OK | -- | 2026-11-11 02:25 UTC |
