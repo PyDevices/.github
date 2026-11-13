@@ -59,6 +59,18 @@
   "updated": "2026-11-11 02:25 UTC",
   "version": "0.5.2.dev4"
  },
+ "omnipython-iconkit": {
+  "assets": "success",
+  "distribution": "omnipython-iconkit",
+  "mip": "success",
+  "prerelease": true,
+  "pypi": "skipped",
+  "repo": "pydevices",
+  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/43374858602",
+  "testpypi": "success",
+  "updated": "2026-11-13 05:53 UTC",
+  "version": "0.1.0.dev1"
+ },
  "pydevices": {
   "assets": "success",
   "distribution": "pydevices",
