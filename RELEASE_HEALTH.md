@@ -18,4 +18,4 @@ Latest publish run per distribution, reported by publishing-v6's report-release-
 | [pydevices-mpftp](https://github.com/PyDevices/mpftp/actions/runs/43383549479) | 0.1.7.dev2 (pre) | OK | OK | -- | -- | 2026-11-13 07:09 UTC |
 | [pydevices-palettes](https://github.com/PyDevices/pydevices/actions/runs/39736822049) | 0.0.15 | OK | OK | OK | -- | 2026-10-22 06:54 UTC |
 | [pydevices-pdwidgets](https://github.com/PyDevices/pydevices/actions/runs/39737052723) | 0.0.25 | OK | OK | OK | -- | 2026-10-22 06:56 UTC |
-| [pydevices-pygraphics](https://github.com/PyDevices/pygraphics/actions/runs/43412441212) | 0.1.4 | OK | OK | OK | -- | 2026-11-13 10:55 UTC |
+| [pydevices-pygraphics](https://github.com/PyDevices/pygraphics/actions/runs/43463428448) | 0.1.5 | OK | OK | OK | -- | 2026-11-13 16:34 UTC |
