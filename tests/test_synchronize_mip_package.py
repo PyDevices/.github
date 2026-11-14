@@ -618,6 +618,26 @@ class SeveralPackagesTests(unittest.TestCase):
                 self.assertIn(f'require("{name}")', applibs)
             self.assertNotIn("package(", applibs)
 
+    def test_each_package_requires_what_it_imports_from_the_index(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            source, mip = Path(tmp) / "src", Path(tmp) / "mip"
+            for name in sync.SEVERAL_PACKAGES["applibs"]:
+                write_lib_package(source, name)
+            result = self.run_sync(source, mip)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            appkit = (mip / "micropython" / "appkit" / "manifest.py").read_text(encoding="utf-8")
+            self.assertIn('require("iconkit")\npackage("appkit")', appkit)
+            touchkit = (mip / "micropython" / "touchkit" / "manifest.py").read_text(encoding="utf-8")
+            self.assertIn('require("appkit")', touchkit)
+            sayso = (mip / "micropython" / "sayso" / "manifest.py").read_text(encoding="utf-8")
+            self.assertNotIn("require(", sayso)
+
+    def test_every_requirement_names_a_member_or_a_package_of_the_index(self) -> None:
+        for profile, requires in sync.SEVERAL_REQUIRES.items():
+            for name, needs in requires.items():
+                self.assertIn(name, sync.SEVERAL_PACKAGES[profile])
+                self.assertNotIn(name, needs)
+
     def test_a_missing_folder_fails(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             source, mip = Path(tmp) / "src", Path(tmp) / "mip"

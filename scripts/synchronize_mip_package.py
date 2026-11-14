@@ -93,6 +93,8 @@ SEVERAL_PACKAGES = {
     "applibs": {
         "appkit": "Apps you can switch between, and a launcher to run them",
         "controlkit": "LVGL controls: encoders, sliders, meters, lamp buttons, pad grids and a dot-matrix display",
+        "deskkit": "A clock and the weather on a screen that sits on a desk",
+        "programkit": "Reach a board's display, keys and touch from a program that runs without Home",
         "sayso": "Lightweight Spotify Web API client for CPython, MicroPython and CircuitPython",
         "songmodel": "The song a groovebox edits, and the link that carries it to a front panel",
         "soundmodule": "A sound module that plays MIDI, headless from a port or through files",
@@ -101,6 +103,21 @@ SEVERAL_PACKAGES = {
     },
 }
 SEVERAL_DESCRIPTIONS = {"applibs": "The libraries apps share; installs each of them"}
+# What each member imports from the index, so mip and omip bring it along. A
+# member that needs another and doesn't say so installs, then stops at an
+# ImportError on a board whose firmware doesn't freeze it. pydevices isn't
+# here: every board config installs it, and the firmware freezes it.
+SEVERAL_REQUIRES = {
+    "applibs": {
+        "appkit": ("iconkit",),
+        "deskkit": ("appkit",),
+        "programkit": ("pygraphics",),
+        "songmodel": ("hmilink",),
+        "soundmodule": ("audioinstruments", "audioeffects"),
+        "spectrum": ("pygraphics", "touchkit"),
+        "touchkit": ("appkit",),
+    },
+}
 
 # The source repository for each profile is pydevices-lock.json in the MIP
 # checkout, not a second map in this script. reusable-synchronize-mip-package.yml
@@ -189,9 +206,9 @@ def synchronize_several(source_repository: Path, mip_root: Path, profile: str, v
         if destination.exists():
             shutil.rmtree(destination)
         shutil.copytree(source, destination / name, ignore=ignore_member_extras)
-        (destination / "manifest.py").write_text(
-            render_manifest(Profile(package=name, description=description, pypi_name=None), version)
-        )
+        manifest = render_manifest(Profile(package=name, description=description, pypi_name=None), version)
+        requires = "".join(f'require("{need}")\n' for need in SEVERAL_REQUIRES[profile].get(name, ()))
+        (destination / "manifest.py").write_text(manifest.replace("package(", requires + "package(", 1))
     destination = micropython / profile
     if destination.exists():
         shutil.rmtree(destination)
