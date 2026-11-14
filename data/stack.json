@@ -221,6 +221,7 @@
 
     {"name": "Gallery", "group": "apps", "does": "Try a piano, a spectrum analyzer, games, dashboards, a TV remote and more, on any host.", "repo": "gallery", "path": "README.md", "web": "https://pydevices.github.io/gallery/", "get": ["open"], "runs": "MP, CP, Desktop, Web, Android"},
     {"name": "Synth Station", "group": "apps", "does": "Pick an instrument and play it from a MIDI keyboard, with a front panel for its knobs and patches.", "repo": "apps", "path": "apps/synthstation", "get": ["clone"], "runs": "MP, Desktop, Web"},
+    {"name": "Bit World", "group": "apps", "does": "Watch a pixel robot's world, play its sky game and drive its deck.", "repo": "apps", "path": "apps/bit_world", "get": ["clone"], "runs": "MP, Desktop, Web"},
     {"name": "Ostinato", "group": "apps", "does": "Sequence patterns and edit songs in a groovebox.", "repo": "apps", "path": "programs/ostinato", "guide": "docs/guides/run-ostinato.md", "get": ["clone"], "runs": "Desktop, Web"},
     {"name": "Vamp", "group": "apps", "does": "Run a groovebox on a board with no screen of its own.", "repo": "apps", "path": "programs/vamp", "guide": "docs/guides/put-vamp-on-a-board.md", "get": ["clone"], "runs": "MP"},
     {"name": "Internet radio", "group": "apps", "does": "Play MP3 streams over Wi-Fi, with a press to change station.", "repo": "apps", "path": "programs/internet-radio", "get": ["clone"], "runs": "MP with Wi-Fi and audio out"},
