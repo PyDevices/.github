@@ -19,6 +19,18 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 DOTGITHUB_DIR = os.path.join(BASE_DIR, 'dotgithub')
 DB_PATH = os.path.join(DOTGITHUB_DIR, 'data/repos_db.json')
 ASSETS_DIR = os.path.join(DOTGITHUB_DIR, 'assets')
+NAV_GLYPHS_PATH = os.path.join(DOTGITHUB_DIR, 'data/nav_glyphs.json')
+NAV_GLYPH_ALIASES = {
+    'displayif': 'pydevices',
+    'audioif': 'audiodsp',
+    'audiocomponents': 'audioinstruments',
+    'lvgl-bindings': 'omnipython-lvgl',
+    'lvgl-micropython': 'omnipython-lvgl',
+    'lvgl-python': 'omnipython-lvgl',
+    'lvgl-circuitpython': 'omnipython-lvgl',
+    'gallery-gallery': 'gallery',
+    'gallery-pyscript': 'gallery',
+}
 
 def get_gradient_dark(color_var):
     """The darker companion a tier's logo-badge gradient fades into.
@@ -67,6 +79,15 @@ def get_card_icon(repo_name):
         'gallery-gallery': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><circle cx="17" cy="15" r="1.5"/></svg>',
         'gallery-pyscript': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><circle cx="17" cy="15" r="1.5"/></svg>',
     }
+    # The drawn glyph set wins where it has one. data/nav_glyphs.json is keyed
+    # by the ids assets/js/site-chrome.js uses, so a card, its page's badge and
+    # the navigator show the same symbol; tests/test_nav_glyphs.py holds the
+    # two in step. A page that moved, or a sub-page, borrows its home's glyph.
+    with open(NAV_GLYPHS_PATH, encoding='utf-8') as f:
+        glyphs = {name: entry['svg'] for name, entry in json.load(f).items()}
+    name = NAV_GLYPH_ALIASES.get(repo_name, repo_name)
+    if name in glyphs:
+        return glyphs[name]
     return icons.get(repo_name, '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>')
 
 def get_tag_label(repo_name):
@@ -290,7 +311,7 @@ def write_ecosystem_markdown(db):
 
 # The rounded display face the headings are set in; site.css names it first
 # in --font-display and falls back to the system's rounded face without it.
-DISPLAY_FONT_URL = 'https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap'
+DISPLAY_FONT_URL = 'https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap'
 
 
 def build_hero_art_html(data):
