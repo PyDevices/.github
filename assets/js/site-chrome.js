@@ -32,7 +32,7 @@
     '/">' +
     '<span class="logo"><img src="' +
     LOGO +
-    '" alt="" width="30" height="30"></span>' +
+    '" alt="" width="36" height="36"></span>' +
     "PyDevices" +
     "</a>" +
     '<nav class="nav">' +
@@ -60,7 +60,9 @@
   var FOOTER =
     '<footer class="site-footer">' +
     '<div class="wrap">' +
-    "<span>&copy; 2026 PyDevices &middot; MIT License</span>" +
+    '<span class="footer-brand"><img src="' +
+    LOGO +
+    '" alt="" width="26" height="26">&copy; 2026 PyDevices &middot; MIT License</span>' +
     '<span><a href="https://github.com/PyDevices">github.com/PyDevices</a></span>' +
     "</div>" +
     "</footer>";

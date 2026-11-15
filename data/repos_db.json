@@ -78,7 +78,14 @@
         "href": "https://lib.omnipython.org",
         "tier_color": true
       }
-    ]
+    ],
+    "hero_art": {
+      "src": "huey-iron.svg",
+      "width": 560,
+      "height": 460,
+      "alt": "Huey the chameleon on a jumper wire, holding a soldering iron",
+      "caption": "Huey, the OmniPython mascot"
+    }
   },
   "displayif": {
     "tier": 1,
@@ -883,7 +890,14 @@
         "href": "https://lib.omnipython.org",
         "tier_color": true
       }
-    ]
+    ],
+    "hero_art": {
+      "src": "huey-hero.svg",
+      "width": 640,
+      "height": 420,
+      "alt": "Huey, a blue chameleon with lime spots, waving from a jumper wire",
+      "caption": "Huey, mascot of the <a href=\"/pydevices/\">OmniPython</a> libraries"
+    }
   },
   "micropython-pydevices": {
     "tier": 5,
