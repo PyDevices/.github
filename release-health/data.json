@@ -66,10 +66,10 @@
   "prerelease": true,
   "pypi": "skipped",
   "repo": "pydevices",
-  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/43374858602",
+  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/43740919578",
   "testpypi": "success",
-  "updated": "2026-11-13 05:53 UTC",
-  "version": "0.1.0.dev1"
+  "updated": "2026-11-15 17:25 UTC",
+  "version": "0.1.0.dev2"
  },
  "pydevices": {
   "assets": "success",
