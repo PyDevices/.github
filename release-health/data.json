@@ -174,9 +174,9 @@
   "prerelease": false,
   "pypi": "skipped",
   "repo": "pygraphics",
-  "run_url": "https://github.com/PyDevices/pygraphics/actions/runs/43463428448",
+  "run_url": "https://github.com/PyDevices/pygraphics/actions/runs/43710583276",
   "testpypi": "success",
-  "updated": "2026-11-13 16:34 UTC",
-  "version": "0.1.5"
+  "updated": "2026-11-15 11:54 UTC",
+  "version": "0.1.6"
  }
 }
