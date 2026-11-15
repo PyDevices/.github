@@ -179,9 +179,8 @@ def ignore_debris(_directory: str, names: list[str]) -> set[str]:
         for name in names
         if name.startswith(".")
         or name in ignored
-        or name.endswith((".pyc", ".pyo", ".metadata.json"))
         # Type stubs go to pip users only: a board has no use for them.
-        or name.endswith(".pyi")
+        or name.endswith((".pyc", ".pyo", ".metadata.json", ".pyi"))
         or name == "py.typed"
     }
 
