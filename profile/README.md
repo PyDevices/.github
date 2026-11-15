@@ -7,7 +7,7 @@ Welcome to **PyDevices** — a unified pure-Python hardware abstraction engine, 
 ## 🏛️ Ecosystem Structure
 
 - **Org Landing Portal**: [PyDevices.github.io](https://pydevices.github.io/)
-- **MIP Package Index**: [PyDevices MIP Index](https://pydevices.github.io/mip/)
+- **Package Index**: [lib.omnipython.org](https://lib.omnipython.org)
 - **Centralized Assets & Scripts**: [.github (*dotgithub*)](https://github.com/PyDevices/.github)
 
 ---
@@ -35,6 +35,7 @@ Pure Python on any Python 3 host; pygraphics adds native wheels for Linux x86_64
 - [`pygraphics`](https://github.com/PyDevices/pygraphics) — Native C and pure-Python 2D graphics library with drawing primitives, bitmap font rendering, paletted surface blitting, and area-dirtying pipelines.
 - [`pdwidgets`](https://github.com/PyDevices/pydevices/tree/main/packages/pdwidgets) — Lightweight object-oriented UI widget framework including buttons, sliders, progress bars, labels, and event routing for PyDevices screens.
 - [`palettes`](https://github.com/PyDevices/pydevices/tree/main/packages/palettes) — Color management library with RGB565 / RGB888 output, an HSV color wheel, RGB color cubes, Material Design swatches, and Win16 color names.
+- [`iconkit`](https://github.com/PyDevices/pydevices/tree/main/packages/iconkit) — Material Design icons as flash-resident alpha masks, drawn in LVGL or pygraphics.
 
 ### Tier 3: LVGL Native Extensions & Binding Generator
 
@@ -54,7 +55,6 @@ Deploy PyDevices apps directly to desktop browsers or mobile APKs.
 MIP package indexing, multi-usermod builds, and serial/FTP IDE extensions.
 
 - [`mpftp`](https://github.com/PyDevices/mpftp) — Connect MicroPython and CircuitPython boards from VS Code, Cursor, or the CLI, over USB or Wi-Fi: dual-pane file transfer, in-editor REPL, firmware builds and flashing, mip/circup, plus RPC and an optional browser PWA.
-- [`mip`](https://github.com/PyDevices/mip) — Single source of truth (SoT) for precompiled MicroPython .mpy bytecode packages and pure-Python library distributions across the PyDevices ecosystem.
 - [`micropython-pydevices`](https://github.com/PyDevices/micropython-pydevices) — The PyDevices patch queue for MicroPython, kept like a distribution keeps one: an ordered, provenance-tracked patch series over the pinned upstream (MicroPython v1.30.0-preview-160), with presets, boards and variants that build PyDevices modules into firmware with upstream's own make.
 - [`workbench`](https://github.com/PyDevices/workbench) — A ViperIDE fork with a built-in WebAssembly MicroPython simulator: edit, run, and debug PyDevices code against a simulated board entirely in the browser, no hardware required.
 - [`mpvst`](https://github.com/PyDevices/mpvst) — Programmable VST3 instruments and effects: every audioinstruments instrument and audioeffects effect as a named plug-in, each instance running its Python in a sidecar process. Installers for Windows and Linux; nothing has to be built.

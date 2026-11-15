@@ -8,12 +8,16 @@ of the `pydevices` repository; this page is the short version.
 ::::{tab-set}
 
 :::{tab-item} MicroPython board
-Install a package with `mip`, pointing it at the PyDevices index:
+Install a package with `omip`, which looks on the OmniPython index and brings
+what the package needs:
 
 ```python
-import mip
-mip.install("palettes", index="https://PyDevices.github.io/mip")
+import omip
+omip.install("palettes")
 ```
+
+`omip` comes with OmniPython firmware. On other MicroPython firmware, run
+`mip.install("github:PyDevices/pydevices/lib/omip.py")` once to put it on the board.
 
 A board's `board_config` installs the same way and wires up the display and
 touch for that board. The board's page in the

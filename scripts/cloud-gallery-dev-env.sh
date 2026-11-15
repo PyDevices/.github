@@ -15,7 +15,7 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPOS="${PYDEVICES_REPOS_ROOT:-/agent/repos}"
 EXAMPLES="${PYDEVICES_EXAMPLES_ROOT:-$REPOS/gallery}"
-MIP_INDEX="https://PyDevices.github.io/mip"
+MIP_INDEX="https://lib.omnipython.org"
 MPY_LIB="${HOME}/.micropython"
 BASHRC="${HOME}/.bashrc"
 ENV_FILE="${SCRIPT_DIR}/gallery-env.sh"
@@ -65,7 +65,7 @@ mip_install_micropython_lib() {
     log "mip install desktop board_config, appdev, palettes, pdwidgets -> ${MPY_LIB}/lib"
     (
         cd "${MPY_LIB}" || exit 1
-        INDEX="https://PyDevices.github.io/mip"
+        INDEX="$MIP_INDEX"
         micropython -m mip install --no-mpy -t lib -i "$INDEX" \
             github:PyDevices/pydevices/board_configs/desktop \
             appdev \
