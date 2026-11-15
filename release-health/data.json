@@ -18,10 +18,10 @@
   "prerelease": true,
   "pypi": "skipped",
   "repo": "apps",
-  "run_url": "https://github.com/PyDevices/apps/actions/runs/43690133103",
+  "run_url": "https://github.com/PyDevices/apps/actions/runs/43710623129",
   "testpypi": "success",
-  "updated": "2026-11-15 07:30 UTC",
-  "version": "0.1.2.dev10"
+  "updated": "2026-11-15 11:54 UTC",
+  "version": "0.1.2.dev11"
  },
  "omnipython-audiodsp": {
   "assets": "success",
