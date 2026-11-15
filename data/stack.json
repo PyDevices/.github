@@ -251,6 +251,7 @@
     {"name": "Roku remote", "group": "apps", "does": "Control a Roku TV from the touch screen, over your network.", "repo": "apps", "path": "apps/roku", "get": ["appmip", "clone"], "runs": "ESP32-P4 touch board"},
     {"name": "REPL", "group": "apps", "does": "Use the board's Python prompt on its own screen, typed on a USB or Bluetooth keyboard.", "repo": "apps", "path": "apps/repl", "guide": "pydevices:docs/guides/vtterm.md", "get": ["appmip", "clone"], "runs": "MP"},
     {"name": "Wake word", "group": "apps", "does": "Listen on a USB microphone for \"Hey Jarvis\" and flash on each detection.", "repo": "apps", "path": "apps/wake", "get": ["appmip", "clone"], "runs": "ESP32-P4 touch board"},
+    {"name": "Gamepad", "group": "apps", "does": "Make the board a game controller for a computer, or see what a gamepad plugged into it sends.", "repo": "apps", "path": "apps/gamepad", "get": ["appmip", "clone"], "runs": "MP on a touch board with native USB or a USB host port"},
     {"name": "Home", "group": "apps", "does": "Launch the apps from pages, one page per category.", "repo": "apps", "path": "apps/home", "get": ["appmip", "clone"], "runs": "ESP32-P4 touch board"},
     {"name": "System", "group": "apps", "does": "See the free heap, the last switches and what the apps left running.", "repo": "apps", "path": "apps/system", "get": ["appmip", "clone"], "runs": "ESP32-P4 touch board"},
 
