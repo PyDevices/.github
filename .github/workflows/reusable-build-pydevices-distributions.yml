@@ -10,7 +10,7 @@ on:
         required: true
         type: string
       publishing-tools-ref:
-        default: publishing-v23
+        default: publishing-v24
         type: string
 
 permissions:
