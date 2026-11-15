@@ -33,7 +33,7 @@ def publishable(path: Path) -> bool:
         not path.name.startswith(".")
         and path.name not in DEBRIS
         and path.suffix not in {".pyc", ".pyo"}
-        and (path.is_dir() or path.suffix == ".py")
+        and (path.is_dir() or path.suffix in {".py", ".pyi"})
     )
 
 
@@ -50,6 +50,12 @@ def copy_component(source: Path, destination: Path) -> None:
             destination,
             ignore=shutil.ignore_patterns(".*", "__pycache__", "*.pyc", "*.pyo", "*.metadata.json"),
         )
+    elif source.suffix == ".pyi":
+        # A top-level module's stub. PEP 561 has no place for one next to a
+        # single-file module, so it ships as a stub-only package, `<name>-stubs`.
+        stubs = destination.parent / f"{source.stem}-stubs" / "__init__.pyi"
+        stubs.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, stubs)
     else:
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
@@ -155,7 +161,7 @@ def project_text(
             f"{extra} = {requirements!r}\n".replace("'", '"') for extra, requirements in sorted(extras.items())
         )
     return f'''[build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -207,7 +213,7 @@ def build(root: Path, output: Path, version: str) -> None:
     dist.mkdir()
 
     leaves = components(root / "lib")
-    leaf_names = [path.stem if path.is_file() else path.name for path in leaves]
+    leaf_names = [path.stem if path.is_file() else path.name for path in leaves if path.suffix != ".pyi"]
     if len(leaf_names) != len(set(leaf_names)):
         raise SystemExit("lib/ contains colliding module and package names")
 
@@ -254,7 +260,7 @@ def build(root: Path, output: Path, version: str) -> None:
             check=True,
         )
     subprocess.run([sys.executable, "-m", "twine", "check", *map(str, sorted(dist.iterdir()))], check=True)
-    print(f"Built {len(stages)} distributions covering {len(leaves)} lib components.")
+    print(f"Built {len(stages)} distributions covering {len(leaf_names)} lib components.")
 
 
 def main() -> None:
