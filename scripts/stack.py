@@ -134,6 +134,11 @@ def scan_tree(root, rule):
         if not fnmatch.fnmatch(name, pattern):
             continue
         path = os.path.join(full, name)
+        # A type stub beside its module is part of that module's row.
+        stem, ext = os.path.splitext(name)
+        if ext == '.pyi' and (os.path.exists(os.path.join(full, stem + '.py'))
+                              or os.path.isdir(os.path.join(full, stem))):
+            continue
         # A folder with only hidden files is what a removed package leaves.
         if os.path.isdir(path) and not any(
             not n.startswith('.') and n != '__pycache__' for n in os.listdir(path)

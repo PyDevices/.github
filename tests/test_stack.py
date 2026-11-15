@@ -66,6 +66,16 @@ class StackTests(unittest.TestCase):
         (self.lib / "gone/__pycache__").mkdir()
         self.assertEqual(stack.check_tree(_data(), str(self.root)), [])
 
+    def test_a_type_stub_beside_its_module_is_that_module(self) -> None:
+        (self.lib / "thing.pyi").write_text("")
+        (self.lib / "skip.pyi").write_text("")
+        self.assertEqual(stack.check_tree(_data(), str(self.root)), [])
+
+    def test_a_type_stub_with_no_module_fails(self) -> None:
+        (self.lib / "stray.pyi").write_text("")
+        self.assertEqual(stack.check_tree(_data(), str(self.root)),
+                         ["one:lib/stray.pyi has no row in data/stack.json"])
+
     def test_a_removed_module_fails(self) -> None:
         (self.lib / "thing.py").unlink()
         self.assertEqual(stack.check_tree(_data(), str(self.root)),
