@@ -289,9 +289,8 @@ jobs:
             -F 'client_payload[run_url]='"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
 
   request-mip-publication:
-    # Every release asks for publication. The request itself keeps a
-    # .devN/rcN away from the mip index, which only takes finals; the library
-    # index takes them all.
+    # Every release asks the library index for publication, pre-releases
+    # included.
     if: >-
       always()
       && inputs.mip-profile != ''

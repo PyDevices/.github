@@ -256,6 +256,6 @@
 
     {"name": "PyDevices.github.io", "group": "project", "does": "Read the website: the front page, a page for each project and the live demos.", "repo": "PyDevices.github.io", "path": "README.md", "web": "https://pydevices.github.io/", "get": ["open"], "runs": "Web"},
     {"name": "lib", "group": "project", "does": "Browse the `mip` index for the libraries, board configs and drivers.", "repo": "lib", "path": "README.md", "web": "https://lib.omnipython.org", "get": ["open"], "runs": "Web"},
-    {"name": "mip", "group": "project", "does": "Browse the generated package mirror: micropython-lib and the project's releases.", "repo": "mip", "path": "README.md", "web": "https://pydevices.github.io/mip/", "get": ["open"], "runs": "Web"}
+    {"name": "mip", "group": "project", "does": "Read the old package mirror, which no longer takes releases: install from lib instead.", "repo": "mip", "path": "README.md", "web": "https://pydevices.github.io/mip/", "get": ["open"], "runs": "Web"}
   ]
 }

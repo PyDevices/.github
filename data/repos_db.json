@@ -74,8 +74,8 @@
         "tier_color": true
       },
       {
-        "label": "MIP Index",
-        "href": "https://PyDevices.github.io/mip",
+        "label": "Package Index",
+        "href": "https://lib.omnipython.org",
         "tier_color": true
       }
     ]
@@ -391,8 +391,8 @@
         "tier_color": true
       },
       {
-        "label": "MIP Index",
-        "href": "https://PyDevices.github.io/mip",
+        "label": "Package Index",
+        "href": "https://lib.omnipython.org",
         "tier_color": true
       }
     ]
@@ -430,8 +430,8 @@
         "tier_color": true
       },
       {
-        "label": "MIP Index",
-        "href": "https://PyDevices.github.io/mip",
+        "label": "Package Index",
+        "href": "https://lib.omnipython.org",
         "tier_color": true
       }
     ]
@@ -469,8 +469,8 @@
         "tier_color": true
       },
       {
-        "label": "MIP Index",
-        "href": "https://PyDevices.github.io/mip",
+        "label": "Package Index",
+        "href": "https://lib.omnipython.org",
         "tier_color": true
       }
     ]
@@ -778,44 +778,6 @@
       }
     ]
   },
-  "mip": {
-    "tier": 5,
-    "page": "self",
-    "tier_name": "Developer Tools & Infrastructure",
-    "theme_color": "var(--tier-5-steel)",
-    "eyebrow": "mip",
-    "headline": "mip — PyDevices MIP package index & distribution.",
-    "description": "Single source of truth (SoT) for precompiled MicroPython .mpy bytecode packages and pure-Python library distributions across the PyDevices ecosystem.",
-    "hero_canvas": {
-      "app": "package_matrix",
-      "width": 240,
-      "height": 240,
-      "shape": "round",
-      "app_url": "https://PyDevices.github.io/assets/apps/package_matrix.py"
-    },
-    "buttons": [
-      {
-        "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/mip",
-        "primary": true
-      },
-      {
-        "label": "Board bring-up",
-        "href": "https://github.com/PyDevices/pydevices/blob/main/docs/guides/bring-up-a-board.md",
-        "tier_color": true
-      },
-      {
-        "label": "mpftp",
-        "href": "https://pydevices.github.io/mpftp/",
-        "tier_color": true
-      },
-      {
-        "label": "pydevices Core",
-        "href": "https://pydevices.github.io/pydevices/",
-        "tier_color": true
-      }
-    ]
-  },
   "gallery": {
     "tier": 1,
     "page": "self",
@@ -843,8 +805,8 @@
         "tier_color": true
       },
       {
-        "label": "MIP Index",
-        "href": "https://PyDevices.github.io/mip",
+        "label": "Package Index",
+        "href": "https://lib.omnipython.org",
         "tier_color": true
       },
       {
@@ -917,8 +879,8 @@
         "tier_color": true
       },
       {
-        "label": "MIP Index",
-        "href": "https://pydevices.github.io/mip/",
+        "label": "Package Index",
+        "href": "https://lib.omnipython.org",
         "tier_color": true
       }
     ]

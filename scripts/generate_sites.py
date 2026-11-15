@@ -7,12 +7,9 @@
 
 Run with no arguments from a full workspace to rewrite every page, the shared
 chrome, the docs theme and the ecosystem maps. `--only REPO` rewrites that one
-repository's page and nothing else. mip's refresh-package-list workflow uses
-`--only mip` to regenerate its page in the same commit as packages.json
-(.github#51, #54), with only mip and this repository checked out.
+repository's page and nothing else.
 """
 import argparse
-import html
 import json
 import os
 import re
@@ -65,7 +62,6 @@ def get_card_icon(repo_name):
         'lvgl-circuitpython': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M3 12h3M18 12h3M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="4"/></svg>',
         'pyscript-template': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/><path d="M8 9h8M8 13h5"/></svg>',
         'android-template': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 19h4"/></svg>',
-        'mip': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg>',
         'mpftp': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/><circle cx="15" cy="15" r="1"/><path d="M15 16v3M13 19h4"/></svg>',
         # Same glyph as gallery -- these are sub-pages of that repo.
         'gallery-gallery': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><circle cx="17" cy="15" r="1.5"/></svg>',
@@ -98,7 +94,6 @@ def get_tag_label(repo_name):
         'lvgl-circuitpython': 'CircuitPython C',
         'pyscript-template': 'PWA Template',
         'android-template': 'Android APK',
-        'mip': 'MIP Index',
         'mpftp': 'IDE Extension'
     }
     return tags.get(repo_name, repo_name)
@@ -458,72 +453,6 @@ def build_portal_grids_html(db):
     )
 
 
-MIP_PACKAGES_START = '<!-- PYDEVICES-MIP-PACKAGES: START -->'
-MIP_PACKAGES_END = '<!-- PYDEVICES-MIP-PACKAGES: END -->'
-
-
-def build_mip_packages_html(packages_path):
-    """The "Packages in this index" section of the mip landing page.
-
-    Reads mip/packages.json, which mip's refresh-package-list workflow
-    regenerates (scripts/update_package_list.py) from the index itself after
-    every deploy, never from PyPI or TestPyPI. Returns None when the sibling
-    checkout has no packages.json so the caller can leave the marker block
-    alone rather than blank it. mip's refresh workflow reruns this generator
-    with `--only mip` and commits mip/.site with packages.json, then redeploys
-    Pages, so the page moves with the list.
-    """
-    if not os.path.exists(packages_path):
-        return None
-    with open(packages_path, 'r', encoding='utf-8') as f:
-        doc = json.load(f)
-    packages = doc.get('packages', [])
-    esc = html.escape
-
-    rows = []
-    for p in packages:
-        source = f'{p["repository"]} @ {p["ref"]}'
-        rows.append(
-            f'          <tr>\n'
-            f'            <td><code>{esc(p["name"])}</code></td>\n'
-            f'            <td>{esc(p["version"])}</td>\n'
-            f'            <td>{esc(p["description"])}</td>\n'
-            f'            <td><a href="{esc(p["release_url"])}">{esc(source)}</a></td>\n'
-            f'          </tr>'
-        )
-    installs = '\n'.join(esc(p['install']) for p in packages)
-    hint = (
-        f'{len(packages)} packages, each built from the source tag pinned in '
-        f'pydevices-lock.json.'
-    )
-    return (
-        f'    {MIP_PACKAGES_START}\n'
-        f'    <div class="section-head" style="margin-top: 40px;">\n'
-        f'      <h2>Packages in this index</h2>\n'
-        f'      <span class="hint">{esc(hint)}</span>\n'
-        f'    </div>\n'
-        f'    <div class="spec-block">\n'
-        f'      <p>These are the PyDevices packages this index publishes; the\n'
-        f'      micropython-lib packages the index also carries are upstream\'s.</p>\n'
-        f'      <table class="matrix-table">\n'
-        f'        <thead>\n'
-        f'          <tr><th>Package</th><th>Version</th><th>Description</th><th>Source</th></tr>\n'
-        f'        </thead>\n'
-        f'        <tbody>\n'
-        f'{chr(10).join(rows)}\n'
-        f'        </tbody>\n'
-        f'      </table>\n'
-        f'    </div>\n'
-        f'    <div class="spec-block" style="margin-top: 24px;">\n'
-        f'      <h3>Install</h3>\n'
-        f'      <pre><code>import mip\n'
-        f'\n'
-        f'{installs}</code></pre>\n'
-        f'    </div>\n'
-        f'    {MIP_PACKAGES_END}'
-    )
-
-
 PORTAL_REPO = 'PyDevices.github.io'
 
 # Written only when a portal subdirectory has no page yet; every run then
@@ -736,19 +665,6 @@ def main(argv=None):
 
         if repo_name == 'PyDevices.github.io':
             content = update_html_section(content, '<!-- PYDEVICES-PORTAL-GRIDS: START -->', '<!-- PYDEVICES-PORTAL-GRIDS: END -->', build_portal_grids_html(db))
-
-        # mip's below-the-fold package list, from the sibling checkout's
-        # packages.json. Absent file or absent markers: log and leave the
-        # block as it is -- never blank a list that was there.
-        if repo_name == 'mip':
-            packages_path = os.path.join(BASE_DIR, 'mip', 'packages.json')
-            packages_html = build_mip_packages_html(packages_path)
-            if packages_html is None:
-                print(f"[SKIP] mip: no {os.path.relpath(packages_path, BASE_DIR)} -- package list not written")
-            elif MIP_PACKAGES_START not in content:
-                print("[WARN] mip: no PYDEVICES-MIP-PACKAGES marker block -- package list not written")
-            else:
-                content = update_html_section(content, MIP_PACKAGES_START, MIP_PACKAGES_END, packages_html)
 
         # Remove a duplicate hero section left outside the marker block.
         marker = '<!-- PYDEVICES-ABOVE-THE-FOLD: END -->'
