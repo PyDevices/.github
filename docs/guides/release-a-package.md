@@ -136,7 +136,9 @@ gh workflow run process-mip-publication-request.yml \
 A package that lives in a folder of a larger repository, `iconkit` in
 `PyDevices/pydevices`, takes its own tag as `source-ref`
 (`iconkit-vX.Y.Z`) and the plain `X.Y.Z` as `version`. Its source is the
-folder's `lib`, not the repository's.
+folder's `lib`, not the repository's. Its release workflow sends this request
+itself for a final release, so you dispatch by hand only to retry one or to
+publish a pre-release, which the automatic request skips.
 
 Dispatch the queue directly only to recover, after you've confirmed the tag
 and the profile. A repository's own release is the normal way in.
