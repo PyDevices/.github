@@ -312,7 +312,7 @@ pre code {
 }
 
 /* The org mark sits free on the header ground rather than in a tile: the
- * bus mark is drawn in the accent colour in logo.svg itself, so the badge
+ * mark carries its own colours in logo.svg itself, so the badge
  * that used to carry the brand colour is no longer needed here. Platform
  * icons that need an opaque ground use the PNGs, not this. */
 .brand .logo {
