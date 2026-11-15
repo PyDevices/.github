@@ -69,7 +69,7 @@ Releases that don't use the trio:
 | Repository | Workflow | Role |
 |---|---|---|
 | `omnipython-lvgl` | `release.yml` | By hand: with `mode=dry-run`, run every gate and change nothing; with `mode=release`, also write the next version to `VERSION` on `main` and publish a GitHub Release, which starts `publish-release-packages.yml` |
-| `pydevices` | `tag-package-release.yml`, `publish-package-release.yml` | Release the `palettes` and `pdwidgets` folders on their own `palettes-vX.Y.Z` and `pdwidgets-vX.Y.Z` tags: build the distribution from the folder at the tag and upload it to TestPyPI, then ask the library index for it |
+| `pydevices` | `tag-package-release.yml`, `publish-package-release.yml` | Release the `palettes` and `pdwidgets` folders on their own `palettes-vX.Y.Z` and `pdwidgets-vX.Y.Z` tags: build the distribution from the folder at the tag and upload it to TestPyPI, then ask the library index for it, and for `iconkit` finals the mip index too |
 | `pydevices` | `publish-lib-boards.yml` | Ask the library index for board configurations and drivers when they merge |
 | `mpftp` | `publish-vsix.yml` | Build the VS Code extension and publish it to VS Marketplace and Open VSX (`VSCE_PAT`, `OVSX_PAT`, both optional) |
 | `android-runner` | `release_apk.yml` | Build the APK that `pydevices/bin/android.py --install-apk` downloads |
