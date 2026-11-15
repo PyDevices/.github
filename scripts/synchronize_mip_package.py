@@ -24,6 +24,10 @@ class Profile:
     description: str
     pypi_name: str | None
     requirements: tuple[tuple[str, str], ...] = ()
+    # A package that lives in a folder of a larger repository: its source is
+    # packages/<package>/lib/<package>, and the ref the lockfile names is that
+    # package's own tag, <package>-v<version>, not the repository's.
+    folder: bool = False
 
 
 PROFILES = {
@@ -53,6 +57,14 @@ PROFILES = {
             "(FrameBuffer, Draw, fonts); import as pygraphics"
         ),
         pypi_name=None,
+    ),
+    # A folder package of pydevices, versioned by its own <name>-v... tags. The
+    # library publishes it by lib-lock.json's folders; this is the MIP side.
+    "iconkit": Profile(
+        package="iconkit",
+        description="Material Design icons as flash-resident alpha masks, drawn in LVGL or pygraphics",
+        pypi_name=None,
+        folder=True,
     ),
     # audiodsp is the first source repository with more than one publishable
     # package, which is why mip-profile takes a list. Its native modules are
@@ -601,7 +613,10 @@ def main() -> None:
         return
 
     profile = PROFILES[args.profile]
-    source = source_repository / "lib" / profile.package
+    if profile.folder:
+        source = source_repository / "packages" / profile.package / "lib" / profile.package
+    else:
+        source = source_repository / "lib" / profile.package
     destination = mip_root / "micropython" / profile.package
     if not source.is_dir():
         raise SystemExit(f"package source does not exist: {source}")

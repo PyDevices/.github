@@ -130,8 +130,13 @@ gh workflow run process-mip-publication-request.yml \
   -f source-repository=PyDevices/<repository> \
   -f source-ref=vX.Y.Z \
   -f version=X.Y.Z \
-  -f profile=<palettes|pdwidgets|pygraphics|pydevices|audioinstruments|audioeffects>
+  -f profile=<palettes|pdwidgets|pygraphics|pydevices|audioinstruments|audioeffects|iconkit>
 ```
+
+A package that lives in a folder of a larger repository, `iconkit` in
+`PyDevices/pydevices`, takes its own tag as `source-ref`
+(`iconkit-vX.Y.Z`) and the plain `X.Y.Z` as `version`. Its source is the
+folder's `lib`, not the repository's.
 
 Dispatch the queue directly only to recover, after you've confirmed the tag
 and the profile. A repository's own release is the normal way in.
