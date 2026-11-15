@@ -156,7 +156,14 @@
         "href": "https://pydevices.github.io/audioinstruments/",
         "tier_color": true
       }
-    ]
+    ],
+    "hero_art": {
+      "src": "huey-probe.svg",
+      "width": 560,
+      "height": 460,
+      "alt": "Huey the chameleon on a jumper wire, holding a scope probe",
+      "caption": "Huey listens in on the signal"
+    }
   },
   "audioif": {
     "tier": 1,
@@ -227,7 +234,14 @@
         "href": "https://test.pypi.org/project/omnipython-audioinstruments/",
         "tier_color": true
       }
-    ]
+    ],
+    "hero_art": {
+      "src": "huey-sparkler.svg",
+      "width": 560,
+      "height": 460,
+      "alt": "Huey the chameleon on a jumper wire, holding a sparkler",
+      "caption": "Huey, ready to play"
+    }
   },
   "audioeffects": {
     "tier": 1,
@@ -265,7 +279,14 @@
         "href": "https://test.pypi.org/project/omnipython-audioeffects/",
         "tier_color": true
       }
-    ]
+    ],
+    "hero_art": {
+      "src": "huey-wrench.svg",
+      "width": 560,
+      "height": 460,
+      "alt": "Huey the chameleon on a jumper wire, holding a wrench",
+      "caption": "Huey tightens up the sound"
+    }
   },
   "audiocomponents": {
     "tier": 1,
@@ -402,7 +423,14 @@
         "href": "https://lib.omnipython.org",
         "tier_color": true
       }
-    ]
+    ],
+    "hero_art": {
+      "src": "huey-pencil.svg",
+      "width": 560,
+      "height": 460,
+      "alt": "Huey the chameleon on a jumper wire, holding a pencil",
+      "caption": "Huey draws"
+    }
   },
   "pdwidgets": {
     "tier": 2,
@@ -441,7 +469,14 @@
         "href": "https://lib.omnipython.org",
         "tier_color": true
       }
-    ]
+    ],
+    "hero_art": {
+      "src": "huey-screwdriver.svg",
+      "width": 560,
+      "height": 460,
+      "alt": "Huey the chameleon on a jumper wire, holding a screwdriver",
+      "caption": "Huey puts the parts together"
+    }
   },
   "palettes": {
     "tier": 2,
@@ -480,7 +515,14 @@
         "href": "https://lib.omnipython.org",
         "tier_color": true
       }
-    ]
+    ],
+    "hero_art": {
+      "src": "huey-flower.svg",
+      "width": 560,
+      "height": 460,
+      "alt": "Huey the chameleon on a jumper wire, holding a flower",
+      "caption": "Huey picks a colour"
+    }
   },
   "iconkit": {
     "tier": 2,
@@ -499,7 +541,14 @@
         "href": "https://github.com/PyDevices/pydevices/tree/main/packages/iconkit",
         "primary": true
       }
-    ]
+    ],
+    "hero_art": {
+      "src": "huey-magnifier.svg",
+      "width": 560,
+      "height": 460,
+      "alt": "Huey the chameleon on a jumper wire, holding a magnifying glass",
+      "caption": "Huey looks closely at small things"
+    }
   },
   "omnipython-lvgl": {
     "tier": 3,
@@ -537,7 +586,14 @@
         "href": "https://pydevices.github.io/gallery/pyscript/",
         "tier_color": true
       }
-    ]
+    ],
+    "hero_art": {
+      "src": "huey-board.svg",
+      "width": 560,
+      "height": 460,
+      "alt": "Huey the chameleon on a jumper wire, holding a circuit board",
+      "caption": "Huey with a board to light up"
+    }
   },
   "lvgl-bindings": {
     "tier": 3,
@@ -821,7 +877,14 @@
         "href": "https://pydevices.github.io/pydevices/",
         "tier_color": true
       }
-    ]
+    ],
+    "hero_art": {
+      "src": "huey-hanging.svg",
+      "width": 508,
+      "height": 440,
+      "alt": "Huey the chameleon hanging from a jumper wire by his tail",
+      "caption": "Huey drops in to see what runs"
+    }
   },
   "gallery-gallery": {
     "tier": 1,
@@ -935,7 +998,14 @@
         "href": "https://pydevices.github.io/pydevices/",
         "tier_color": true
       }
-    ]
+    ],
+    "hero_art": {
+      "src": "huey-sitting.svg",
+      "width": 508,
+      "height": 420,
+      "alt": "Huey the chameleon sitting on a jumper wire, waving",
+      "caption": "Huey waits for the build"
+    }
   },
   "workbench": {
     "tier": 5,
