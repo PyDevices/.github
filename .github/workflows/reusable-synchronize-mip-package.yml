@@ -119,7 +119,9 @@ jobs:
             # four other repositories.
             git clone --quiet --depth 1 --branch "$ref" \
               "https://github.com/${repository}.git" ".publication-sources/${profile}"
+            # v1.2.3 for a repository's tag, <name>-v1.2.3 for a folder package's.
             version="${ref#v}"
+            version="${version##*-v}"
             python .pydevices-publishing-tools/scripts/synchronize_mip_package.py \
               --source-repository ".publication-sources/${profile}" \
               --source-repository-name "$repository" \
@@ -162,7 +164,7 @@ jobs:
 
           # And each locked package must be at the version the lockfile names.
           for profile, entry in lock.items():
-              want = entry["ref"].lstrip("v")
+              want = entry["ref"].rsplit("-v", 1)[-1].lstrip("v")
               got = json.loads((published / profile / "latest.json").read_text())["version"]
               if got != want:
                   print(f"{profile}: index has {got}, lockfile says {want}", file=sys.stderr)

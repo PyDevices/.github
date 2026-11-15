@@ -125,6 +125,26 @@ class LockfileRepositoryTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertTrue((mip / "micropython" / "audioeffects" / "manifest.py").is_file())
 
+    def test_a_folder_package_comes_from_its_folder_at_its_own_tag(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "source"
+            mip = root / "mip"
+            package = source / "packages" / "iconkit" / "lib" / "iconkit"
+            package.mkdir(parents=True)
+            (package / "__init__.py").write_text("# iconkit\n", encoding="utf-8")
+            write_lockfile(mip, {"iconkit": "PyDevices/pydevices"})
+            result = run_sync(source, mip, source_name="PyDevices/pydevices", profile="iconkit")
+            self.assertEqual(result.returncode, 0, result.stderr)
+            manifest = (mip / "micropython" / "iconkit" / "manifest.py").read_text(encoding="utf-8")
+            self.assertIn('package("iconkit")', manifest)
+            self.assertTrue((mip / "micropython" / "iconkit" / "iconkit" / "__init__.py").is_file())
+
+    def test_the_workflow_takes_the_version_from_either_kind_of_tag(self) -> None:
+        text = SYNC_WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn('version="${version##*-v}"', text)
+        self.assertIn('rsplit("-v", 1)', text)
+
     def test_script_in_isolation_rejects_source_repository_name_that_disagrees_with_lockfile(self) -> None:
         # Defence in depth only. The publication workflow never presents this
         # mismatch: Record this release refuses a repository move before the
