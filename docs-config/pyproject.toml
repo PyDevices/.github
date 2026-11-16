@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pydevices-docs"
-version = "0.2.0"
+version = "0.3.0"
 description = "Shared Sphinx theme and configuration for the PyDevices documentation projects."
 readme = "README.md"
 requires-python = ">=3.10"

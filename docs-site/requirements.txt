@@ -1,3 +1,6 @@
-# Read the Docs installs this project's shared configuration from the checkout.
+# Read the Docs installs this site's shared configuration from the checkout.
 # Paths in a requirements file are relative to where pip runs: the repository root.
 ./docs-config
+# audioeffects and audioinstruments build tables with NumPy when they are
+# imported, so their API pages need it.
+numpy==2.5.4

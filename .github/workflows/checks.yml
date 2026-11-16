@@ -155,8 +155,10 @@ jobs:
         run: python3 -m unittest discover -s tests -v
 
   docs-site:
-    # The main documentation project and the shared package it installs, built
-    # the way Read the Docs builds them: every warning is a failure.
+    # The whole documentation site, gathered from every library's main and
+    # built the way Read the Docs builds it. Warnings from this repository's
+    # pages and the shared package fail the check; each library's count is
+    # printed, and fails that library's own Docs site check instead.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -165,7 +167,17 @@ jobs:
         with:
           python-version: "3.13"
 
+      - name: Install SDL2
+        # pydevices' SDL backends load libSDL2 when autodoc imports them.
+        run: sudo apt-get update && sudo apt-get install -y libsdl2-2.0-0
+
       - run: pip install -r docs-site/requirements.txt
 
-      - name: Build the main project
-        run: sphinx-build -W --keep-going -b html docs-site docs-site/_build/html
+      - name: Gather every library
+        run: python3 docs-site/gather.py
+
+      - name: Build the site
+        run: sphinx-build -b html --keep-going -w "$RUNNER_TEMP/warnings.log" docs-site docs-site/_build/html
+
+      - name: Fail on this repository's warnings
+        run: python3 docs-site/check_warnings.py "$RUNNER_TEMP/warnings.log" --repo PyDevices/.github

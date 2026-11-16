@@ -1,9 +1,9 @@
 # Install
 
-How you install PyDevices depends on where your code will run. The exact
+How you install OmniPython depends on where your code will run. The exact
 commands and the system packages each channel needs are in the
-[install guide](https://github.com/PyDevices/pydevices/blob/main/docs/get-started/install.md)
-of the `pydevices` repository; this page is the short version.
+[pydevices install guide](pydevices/get-started/install.md); this page is the
+short version.
 
 ::::{tab-set}
 
@@ -21,14 +21,14 @@ omip.install("palettes")
 
 A board's `board_config` installs the same way and wires up the display and
 touch for that board. The board's page in the
-[device matrix](https://github.com/PyDevices/pydevices/blob/main/docs/boards/device-matrix.md)
+[device matrix](pydevices/boards/device-matrix.md)
 names the package to ask for.
 :::
 
 :::{tab-item} CircuitPython board
 Copy the library's folder from its repository into `CIRCUITPY/lib/`. Libraries
 that have a C part (pygraphics) are built into a CircuitPython firmware
-instead; each project's page says which.
+instead; each library's install page says which.
 :::
 
 :::{tab-item} Desktop Python
@@ -46,7 +46,7 @@ Current releases are on TestPyPI, which is why the command names it first.
 Nothing to install: the [gallery](https://pydevices.github.io/gallery/gallery/)
 and [Workbench](https://pydevices.github.io/workbench/) run MicroPython as
 WebAssembly. To use a library from your own page, load it with micropip in
-Pyodide or PyScript; each project's page shows the line.
+Pyodide or PyScript; each library's install page shows the line.
 :::
 
 ::::
@@ -61,5 +61,5 @@ python -c "from board_config import display_drv; display_drv.fill_rect(50, 50, 1
 
 If a window opens with a red square in it, the stack is working. If it does
 not, the
-[troubleshooting page](https://github.com/PyDevices/pydevices/blob/main/docs/guides/troubleshooting.md)
+[troubleshooting page](pydevices/guides/troubleshooting.md)
 is the next stop.

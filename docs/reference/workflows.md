@@ -21,8 +21,11 @@ Inputs, secrets and tags are in [release workflows](release-workflows.md).
 | `reusable-synchronize-mip-package.yml` | Record the release in `pydevices-lock.json`, re-sync every locked source, rebuild and validate the index, stage the Pages artifact |
 | `reusable-validate-pyscript-filesystem-toml.yml` | Check a `*.toml` filesystem map against the tree it claims to mirror |
 | `reusable-style-check.yml` | Fail a pull request on the mechanical house-style rules ([the style check](#the-style-check)) |
+| `reusable-docs-site.yml` | Build the whole documentation site with the caller's pages in it, fail on the caller's warnings, and after a push to `main` ask Read the Docs to rebuild ([build and publish documentation](../guides/build-and-publish-docs.md#warnings)) |
 
-Callers name a reusable by tag (`@publishing-vN`), never by branch. The build
+Callers name a reusable by tag (`@publishing-vN`), never by branch, except
+`reusable-docs-site.yml`: Read the Docs builds the site from `main`, so its
+callers check against `@main` too. The build
 workflows that need this repository's scripts check it out at
 `publishing-tools-ref`, which defaults to the tag the workflow itself is at.
 
@@ -30,7 +33,7 @@ workflows that need this repository's scripts check it out at
 
 | Workflow | Trigger | What it does |
 |---|---|---|
-| `checks.yml` | push to `main`, pull request | actionlint over the workflows; a YAML parse of each; the site generator's idempotency check against fresh clones of the repositories it writes to; a check that the reusables' references agree on one tag; `ruff` over `scripts/` and `tests/`; the script tests; the main documentation build |
+| `checks.yml` | push to `main`, pull request | actionlint over the workflows; a YAML parse of each; the site generator's idempotency check against fresh clones of the repositories it writes to; a check that the reusables' references agree on one tag; `ruff` over `scripts/` and `tests/`; the script tests; the documentation site, gathered from every library |
 | `release-health.yml` | `repository_dispatch` from a publish run | Fold the report into `release-health/data.json` and regenerate `RELEASE_HEALTH.md` |
 | `hero-check.yml` | daily, and by hand | Load each published demo in a browser; open or update an issue when one is dead |
 | `cold-eyes-review.yml` | quarterly, and by hand | Open the [review issue](../guides/maintenance-schedule.md#quarterly) |

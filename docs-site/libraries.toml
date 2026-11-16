@@ -1,0 +1,59 @@
+# The libraries on the documentation site, in sidebar order. Each one's pages
+# stay in its own repository, in the `docs` folder named here, beside the
+# conf.py that builds them alone; gather.py brings them into this tree.
+
+[[library]]
+slug = "pydevices"
+title = "pydevices"
+repo = "PyDevices/pydevices"
+summary = "The board contract, displaydev, audiodev, appdev, multimer and the drivers: what every program stands on."
+
+[[library]]
+slug = "palettes"
+title = "palettes"
+repo = "PyDevices/pydevices"
+docs = "packages/palettes/docs"
+summary = "Color palettes: an HSV wheel, RGB cubes, Material Design swatches and RGB565 helpers."
+
+[[library]]
+slug = "pdwidgets"
+title = "pdwidgets"
+repo = "PyDevices/pydevices"
+docs = "packages/pdwidgets/docs"
+summary = "Buttons, sliders, labels and screens for touch displays, in pure Python."
+
+[[library]]
+slug = "pygraphics"
+title = "pygraphics"
+repo = "PyDevices/pygraphics"
+summary = "2D drawing, bitmap fonts and blitting, in C and in Python."
+
+[[library]]
+slug = "lvgl"
+title = "LVGL"
+repo = "PyDevices/omnipython-lvgl"
+summary = "The LVGL bindings, for MicroPython, CircuitPython and CPython."
+
+[[library]]
+slug = "audiodsp"
+title = "audiodsp"
+repo = "PyDevices/audiodsp"
+summary = "The audio engine's native modules: filters, delays, mixers, samplers and the pump."
+
+[[library]]
+slug = "audioinstruments"
+title = "audioinstruments"
+repo = "PyDevices/audioinstruments"
+summary = "Synthesizers, drum machines and samplers built on audiodsp."
+
+[[library]]
+slug = "audioeffects"
+title = "audioeffects"
+repo = "PyDevices/audioeffects"
+summary = "Effects and pedals built on audiodsp."
+
+[[library]]
+slug = "firmware"
+title = "Firmware and modules"
+repo = "PyDevices/micropython-pydevices"
+summary = "The firmware builds and the native modules they carry: displayif, usbif, cameraif and the rest."

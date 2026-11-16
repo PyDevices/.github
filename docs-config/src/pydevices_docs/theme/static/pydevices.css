@@ -70,22 +70,9 @@
   font-family: var(--pd-font-display); font-weight: 800; font-size: 1.1rem;
 }
 .pd-bar .pd-brand img { width: 30px; height: 30px; }
-.pd-bar .pd-projects {
-  display: flex; gap: 0.25rem; list-style: none; margin: 0; padding: 0;
-  overflow-x: auto; flex: 1 1 auto; scrollbar-width: none;
-}
-.pd-bar .pd-projects::-webkit-scrollbar { display: none; }
-.pd-bar .pd-projects li { margin: 0; padding: 0; list-style: none; }
-.pd-bar .pd-projects a { display: block; padding: 0.2rem 0.75rem; border-radius: var(--pd-radius-pill); }
-.pd-bar .pd-projects a:hover { background: rgb(var(--pd-brand-rgb) / 0.12); }
-.pd-bar .pd-projects a.pd-current {
-  color: var(--pd-dark-ink);
-  background: rgb(var(--pd-brand-rgb) / 0.18);
-}
 .pd-bar .pd-bar-links { display: flex; gap: 1rem; margin-left: auto; flex: none; }
 @media (max-width: 640px) {
-  .pd-bar { gap: 0.5rem; padding: 0 0.5rem; }
-  .pd-bar .pd-brand span, .pd-bar .pd-bar-links { display: none; }
+  .pd-bar { gap: 0.5rem; padding: 0 0.75rem; }
 }
 
 /* Make room for the bar: the theme pins its sidebar to the top of the window. */
@@ -120,6 +107,12 @@ body.wy-body-for-nav { padding-top: 0; }
 .wy-menu-vertical li.toctree-l2.current li.toctree-l3 > a { background: var(--pd-dark-2); }
 .wy-menu-vertical li.toctree-l3.current li.toctree-l4 > a { background: var(--pd-dark-2); }
 .wy-menu-vertical header, .wy-menu-vertical p.caption { color: var(--pd-brand-soft); }
+/* A library's own captions, among its pages in the sidebar of the combined site. */
+.wy-menu-vertical li.pd-caption > span {
+  display: block; padding: 0.7em 1.618em 0.2em 2.427em;
+  color: var(--pd-brand-soft); font-size: 0.75em; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
 .wy-side-nav-search input[type=text] { border-color: rgb(var(--pd-shade-rgb) / 0.2); }
 .wy-side-nav-search > a, .wy-side-nav-search .wy-dropdown > a { color: #fff; }
 

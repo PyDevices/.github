@@ -1,0 +1,107 @@
+name: Reusable docs site
+
+# Builds the whole OmniPython documentation site with the calling library's
+# pages taken from this run's checkout, and fails when that library has a
+# warning there (as annotations on its files). Other libraries' warnings are
+# counted, not failed: each repository answers for its own pages.
+#
+# After a push to main (or a manual run) it also asks Read the Docs to
+# rebuild the site, through the project's Generic API incoming webhook. That
+# needs the RTD_WEBHOOK_TOKEN secret and the RTD_WEBHOOK_URL variable (or the
+# webhook-url input); without them the job leaves a notice and skips.
+#
+# A library calls it from .github/workflows/docs-site.yml:
+#
+#   on:
+#     push:
+#       branches: [main]
+#       paths: [docs/**]
+#     pull_request:
+#       paths: [docs/**]
+#     workflow_dispatch:
+#   jobs:
+#     docs-site:
+#       uses: PyDevices/.github/.github/workflows/reusable-docs-site.yml@main
+#       secrets:
+#         RTD_WEBHOOK_TOKEN: ${{ secrets.RTD_WEBHOOK_TOKEN }}
+
+on:
+  workflow_call:
+    inputs:
+      site-ref:
+        description: Branch or tag of PyDevices/.github to build the site from
+        default: main
+        type: string
+      webhook-url:
+        description: The incoming webhook's address, when RTD_WEBHOOK_URL isn't set
+        default: ""
+        type: string
+    secrets:
+      RTD_WEBHOOK_TOKEN:
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the library
+        uses: actions/checkout@v7
+        with:
+          path: caller
+
+      - name: Check out the site
+        uses: actions/checkout@v7
+        with:
+          repository: PyDevices/.github
+          ref: ${{ inputs.site-ref }}
+          path: site
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Install SDL2
+        # pydevices' SDL backends load libSDL2 when autodoc imports them.
+        run: sudo apt-get update && sudo apt-get install -y libsdl2-2.0-0
+
+      - name: Install the site's requirements
+        working-directory: site
+        run: pip install --disable-pip-version-check -r docs-site/requirements.txt
+
+      - name: Gather every library, this one from the checkout
+        working-directory: site
+        env:
+          REPO: ${{ github.repository }}
+        run: python3 docs-site/gather.py --local "${REPO#*/}=$GITHUB_WORKSPACE/caller"
+
+      - name: Build the site
+        working-directory: site
+        run: sphinx-build -b html --keep-going -w "$RUNNER_TEMP/warnings.log" docs-site docs-site/_build/html
+
+      - name: Fail on this library's warnings
+        working-directory: site
+        env:
+          REPO: ${{ github.repository }}
+        run: python3 docs-site/check_warnings.py "$RUNNER_TEMP/warnings.log" --repo "$REPO"
+
+  rebuild:
+    # Independent of the build above: Read the Docs builds with
+    # fail_on_warning off, so one library's warning doesn't hold back the rest.
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ask Read the Docs to rebuild the site
+        env:
+          TOKEN: ${{ secrets.RTD_WEBHOOK_TOKEN }}
+          URL: ${{ inputs.webhook-url || vars.RTD_WEBHOOK_URL }}
+        run: |
+          if [[ -z "$TOKEN" || -z "$URL" ]]; then
+            echo "::notice title=Docs site not rebuilt::RTD_WEBHOOK_TOKEN or RTD_WEBHOOK_URL isn't set for this repository, so Read the Docs wasn't asked to rebuild. The site picks this change up on its next build."
+            exit 0
+          fi
+          # With no branches field, Read the Docs builds the default version, latest.
+          curl -fsS -X POST --retry 3 --data-urlencode "token=$TOKEN" "$URL"
+          echo
