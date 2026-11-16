@@ -80,6 +80,9 @@
 /* The theme gives the sidebar min-height: 100%; below the bar that leaves its
    last bar-height of links off screen, so it ends at the viewport bottom. */
 .wy-nav-side { top: var(--pd-bar-h); bottom: 0; min-height: 0; background: var(--pd-dark); }
+/* Read the Docs pins its ad bar (48-68 px) across the window's bottom; room
+   under the menu lets its last links scroll clear of it. */
+.wy-nav-side .wy-menu-vertical { padding-bottom: 4rem; }
 .wy-side-nav-search, .wy-nav-top { background: var(--pd-header); }
 .wy-nav-side.shift { top: var(--pd-bar-h); }
 html { scroll-padding-top: var(--pd-bar-h); }
