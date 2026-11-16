@@ -11,8 +11,9 @@ Prints how many warnings each repository has. Each warning from the
 repository named by ``--repo`` is printed as a GitHub annotation on its file,
 and the exit status is 1 when there is at least one, so that repository's
 check fails while the others' warnings are only counted. Warnings from the
-site's own pages, from the shared theme, and those Sphinx gives no file for
-belong to ``PyDevices/.github``.
+site's own pages and from the shared theme belong to ``PyDevices/.github``,
+and so do those Sphinx gives no file for, unless a traceback in the warning
+names a library's file.
 """
 
 from __future__ import annotations
@@ -28,6 +29,7 @@ HERE = Path(__file__).resolve().parent
 SITE = "PyDevices/.github"
 LINE = re.compile(r"^(?:(?P<loc>.+?): )?(?P<level>WARNING|ERROR|CRITICAL): (?P<msg>.*)$")
 PATH_LINE = re.compile(r"^(?P<path>/[^:]+?)(?::(?P<line>\d+))?(?::.*)?$")
+TRACE = re.compile(r'File "(?P<path>/[^"]+)", line (?P<line>\d+)')
 
 
 def libraries():
@@ -55,15 +57,28 @@ def owner(location: str, libs) -> tuple[str, str, str]:
     return SITE, path, line
 
 
+def traced(msg: str, libs) -> tuple[str, str, str] | None:
+    """For a warning with no file, the first library file its traceback names."""
+    for m in TRACE.finditer(msg):
+        repo, file, line = owner(f"{m.group('path')}:{m.group('line')}", libs)
+        if repo != SITE:
+            return repo, file, line
+    return None
+
+
 def read(log: Path, libs):
     warnings = []
     for raw in log.read_text(encoding="utf-8", errors="replace").splitlines():
         m = LINE.match(raw)
         if m:
-            repo, file, line = owner(m.group("loc") or "", libs)
-            warnings.append({"repo": repo, "file": file, "line": line, "msg": m.group("msg"), "level": m.group("level")})
+            warnings.append({"loc": m.group("loc") or "", "msg": m.group("msg"), "level": m.group("level")})
         elif warnings and raw.strip():
             warnings[-1]["msg"] += " " + raw.strip()
+    for w in warnings:
+        # An import that fails while autodoc reads a module (a missing system
+        # library, say) is reported with no file; its traceback says whose it is.
+        found = owner(w["loc"], libs) if w["loc"] else (traced(w["msg"], libs) or (SITE, "", ""))
+        w["repo"], w["file"], w["line"] = found
     return warnings
 
 

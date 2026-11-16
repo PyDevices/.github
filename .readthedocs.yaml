@@ -12,6 +12,9 @@ build:
   os: ubuntu-24.04
   tools:
     python: "3.13"
+  # pydevices' SDL backends load libSDL2 when autodoc imports them.
+  apt_packages:
+    - libsdl2-2.0-0
   jobs:
     pre_build:
       - python docs-site/gather.py
