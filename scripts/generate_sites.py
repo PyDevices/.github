@@ -405,7 +405,7 @@ def build_above_the_fold_html(repo_name, data):
         width = hero_canvas.get('width', 240)
         height = hero_canvas.get('height', 240)
         shape = hero_canvas.get('shape', 'round')
-        app_url = hero_canvas.get('app_url', f'https://PyDevices.github.io/assets/apps/{app_name}.py')
+        app_url = hero_canvas.get('app_url', f'https://omnipython.org/assets/apps/{app_name}.py')
         canvas_id = 'hero_canvas'
         container_class = 'hero-canvas-circle' if shape == 'round' else 'hero-canvas-square'
 
@@ -511,7 +511,7 @@ def build_portal_grids_html(db):
         cards_html = []
         for repo_name, data in tier_repos[tier]:
             cards_html.append(
-                f'      <a class="card card-tier-{tier}" href="/{repo_name}/">\n'
+                f'      <a class="card card-tier-{tier}" href="{data.get("card_href", f"/{repo_name}/")}">\n'
                 f'        <div class="card-top">\n'
                 f'          <span class="icon">{get_card_icon(repo_name)}</span>\n'
                 f'          <span class="tag tag-tier-{tier}">{get_tag_label(repo_name)}</span>\n'

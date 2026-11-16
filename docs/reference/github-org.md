@@ -60,7 +60,7 @@ secrets.
 
 ## Pages sites
 
-Product repositories publish a landing page at `pydevices.github.io/<repo>/`
+Product repositories publish a landing page at `omnipython.org/<repo>/`
 from the portal repository, [PyDevices.github.io](https://github.com/PyDevices/PyDevices.github.io).
 This repository doesn't serve a Pages site of its own. The pages share one
 chrome: `assets/css/site.css` and `assets/js/site-chrome.js` here are the

@@ -259,8 +259,8 @@
     {"name": "Home", "group": "apps", "does": "Launch the apps from pages, one page per category.", "repo": "apps", "path": "apps/home", "get": ["appmip", "clone"], "runs": "ESP32-P4 touch board"},
     {"name": "System", "group": "apps", "does": "See the free heap, the last switches and what the apps left running.", "repo": "apps", "path": "apps/system", "get": ["appmip", "clone"], "runs": "ESP32-P4 touch board"},
 
-    {"name": "PyDevices.github.io", "group": "project", "does": "Read the website: the front page, a page for each project and the live demos.", "repo": "PyDevices.github.io", "path": "README.md", "web": "https://pydevices.github.io/", "get": ["open"], "runs": "Web"},
+    {"name": "PyDevices.github.io", "group": "project", "does": "Read the website: the front page, a page for each project and the live demos.", "repo": "PyDevices.github.io", "path": "README.md", "web": "https://omnipython.org/", "get": ["open"], "runs": "Web"},
     {"name": "lib", "group": "project", "does": "Browse the `mip` index for the libraries, board configs and drivers.", "repo": "lib", "path": "README.md", "web": "https://lib.omnipython.org", "get": ["open"], "runs": "Web"},
-    {"name": "mip", "group": "project", "does": "Read the old package mirror, which no longer takes releases: install from lib instead.", "repo": "mip", "path": "README.md", "web": "https://pydevices.github.io/mip/", "get": ["open"], "runs": "Web"}
+    {"name": "mip", "group": "project", "does": "Read the old package mirror, which no longer takes releases: install from lib instead.", "repo": "mip", "path": "README.md", "web": "https://omnipython.org/mip/", "get": ["open"], "runs": "Web"}
   ]
 }

@@ -36,7 +36,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = REPO_ROOT / "data" / "repos_db.json"
-DEFAULT_BASE = "https://pydevices.github.io"
+DEFAULT_BASE = "https://omnipython.org"
 
 # How long a hero may take to boot before silence counts as failure. The wasm
 # runtime downloads and instantiates before it can report anything; a short

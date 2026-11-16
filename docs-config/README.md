@@ -78,7 +78,7 @@ A page can embed a runnable MicroPython demo: raw HTML in a Markdown page,
 using the classes `pydevices-live-demo`, `demo-editor-pane`, `code-editor`,
 `run-btn`, `reset-btn`, `demo-status`, `demo-output` and `demo-canvas-pane`
 (this package styles them). The theme loads the runner,
-`https://PyDevices.github.io/assets/chrome/docs-runtime.js`, on any page that
+`https://omnipython.org/assets/chrome/docs-runtime.js`, on any page that
 has one; the page needs no script tag. See the palettes `index.md` for a
 complete demo.
 

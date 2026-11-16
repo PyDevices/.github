@@ -54,9 +54,9 @@ the parts they'd otherwise duplicate.
 
 Board / Detect inventory docs live in
 [pydevices/docs](https://github.com/PyDevices/pydevices/tree/main/docs)
-([Pages](https://pydevices.github.io/pydevices/)).
+([Pages](https://omnipython.org/pydevices/)).
 
-Website: <https://pydevices.github.io/>
+Website: <https://omnipython.org/>
 
 This repo is the org-level glue for community health files, shared release
 automation, issue templates, and shared docs. It does not publish a product
