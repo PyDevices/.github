@@ -410,7 +410,7 @@
       },
       {
         "label": "Read the Docs",
-        "href": "https://pygraphics.readthedocs.io",
+        "href": "https://docs.omnipython.org/en/latest/pygraphics/",
         "tier_color": true
       },
       {
@@ -456,7 +456,7 @@
       },
       {
         "label": "Read the Docs",
-        "href": "https://pdwidgets.readthedocs.io",
+        "href": "https://docs.omnipython.org/en/latest/pdwidgets/",
         "tier_color": true
       },
       {
@@ -502,7 +502,7 @@
       },
       {
         "label": "Read the Docs",
-        "href": "https://palettes.readthedocs.io",
+        "href": "https://docs.omnipython.org/en/latest/palettes/",
         "tier_color": true
       },
       {

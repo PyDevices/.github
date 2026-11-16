@@ -79,7 +79,7 @@ A docstring problem is a warning, and `-W` makes it a failure. Fix it before mer
 |------|---------|
 | P0 | `displaydev`, `appdev`, `events`, `keys`, `multimer` |
 | P1 | `displaybuf`, `console`, other `utils` |
-| P2 | Sibling packages document their own APIs: [pygraphics](https://pygraphics.readthedocs.io), [pdwidgets](https://pdwidgets.readthedocs.io), [palettes](https://palettes.readthedocs.io) |
+| P2 | Sibling packages document their own APIs: [pygraphics](https://docs.omnipython.org/en/latest/pygraphics/), [pdwidgets](https://docs.omnipython.org/en/latest/pdwidgets/), [palettes](https://docs.omnipython.org/en/latest/palettes/) |
 
 See [CONTRIBUTING.md](../../CONTRIBUTING.md) for the PR workflow, and
 [build and publish documentation](build-and-publish-docs.md) for how the generated API pages are built.
