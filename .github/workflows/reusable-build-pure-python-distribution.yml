@@ -79,7 +79,9 @@ jobs:
         run: |
           python -m venv /tmp/omnipython-package-smoke
           if [[ "$INSTALL_DEPENDENCIES" == "true" ]]; then
-            /tmp/omnipython-package-smoke/bin/python -m pip install \
+            # --pre: until each name has a production release, its PyPI
+            # placeholder (0.0.1) would win over the TestPyPI pre-releases.
+            /tmp/omnipython-package-smoke/bin/python -m pip install --pre \
               --index-url https://test.pypi.org/simple/ \
               --extra-index-url https://pypi.org/simple/ \
               dist/*.whl
