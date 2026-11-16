@@ -10,9 +10,8 @@ build, run in its repository's CI, links back to that site from the top bar
 and resolves references through its inventory.
 """
 
-# The site's address until a custom domain is canonical; Read the Docs
-# redirects it to the canonical domain once there is one.
-ROOT = "https://pydevices.readthedocs.io"
+# The site's canonical address. The old Read the Docs addresses redirect here.
+ROOT = "https://docs.omnipython.org"
 SITE = ROOT + "/en/latest/"
 PORTAL = "https://pydevices.github.io"
 GITHUB = "https://github.com/PyDevices"
