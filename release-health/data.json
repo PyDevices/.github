@@ -120,16 +120,16 @@
   "version": "0.0.16.dev0"
  },
  "omnipython-pdwidgets": {
-  "assets": "success",
+  "assets": "skipped",
   "distribution": "omnipython-pdwidgets",
-  "mip": "success",
-  "prerelease": false,
+  "mip": "skipped",
+  "prerelease": true,
   "pypi": "skipped",
-  "repo": "pydevices",
-  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/39737052723",
-  "testpypi": "success",
-  "updated": "2026-10-22 06:56 UTC",
-  "version": "0.0.25"
+  "repo": "omnipython",
+  "run_url": "https://github.com/PyDevices/omnipython/actions/runs/43823976530",
+  "testpypi": "skipped",
+  "updated": "2026-11-16 07:28 UTC",
+  "version": "0.0.26.dev1"
  },
  "omnipython-pygraphics": {
   "assets": "success",
