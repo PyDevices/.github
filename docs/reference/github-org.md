@@ -18,7 +18,7 @@ doesn't repeat it.
 | See what is planned | The `ROADMAP.md` at the root of each repository |
 | Read the shared contribution guidelines | [CONTRIBUTING.md](../../CONTRIBUTING.md) |
 | Read the organization's profile | [profile/README.md](../../profile/README.md), shown on [github.com/PyDevices](https://github.com/PyDevices) |
-| Read a library's manual | The project's Read the Docs site, for example [pygraphics.readthedocs.io](https://pygraphics.readthedocs.io); the [documentation overview](https://pydevices.readthedocs.io) links the rest |
+| Read a library's manual | The library's page on the docs site, for example [docs.omnipython.org/en/latest/pygraphics/](https://docs.omnipython.org/en/latest/pygraphics/); the [documentation overview](https://docs.omnipython.org/en/latest/) links the rest |
 | Try the libraries without installing | The [PyScript gallery](https://pydevices.github.io/gallery/pyscript/) |
 | Find board and driver documentation | [pydevices `docs/`](https://github.com/PyDevices/pydevices/tree/main/docs) |
 
