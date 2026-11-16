@@ -83,7 +83,7 @@
       "src": "huey-iron.svg",
       "width": 560,
       "height": 460,
-      "alt": "Huey the chameleon on a jumper wire, holding a soldering iron",
+      "alt": "Huey, OmniPython's chameleon mascot, on a jumper wire, holding a soldering iron",
       "caption": "Huey, the OmniPython mascot"
     }
   },
@@ -161,7 +161,7 @@
       "src": "huey-probe.svg",
       "width": 560,
       "height": 460,
-      "alt": "Huey the chameleon on a jumper wire, holding a scope probe",
+      "alt": "Huey, OmniPython's chameleon mascot, on a jumper wire, holding a scope probe",
       "caption": "Huey listens in on the signal"
     }
   },
@@ -239,7 +239,7 @@
       "src": "huey-sparkler.svg",
       "width": 560,
       "height": 460,
-      "alt": "Huey the chameleon on a jumper wire, holding a sparkler",
+      "alt": "Huey, OmniPython's chameleon mascot, on a jumper wire, holding a sparkler",
       "caption": "Huey, ready to play"
     }
   },
@@ -284,7 +284,7 @@
       "src": "huey-wrench.svg",
       "width": 560,
       "height": 460,
-      "alt": "Huey the chameleon on a jumper wire, holding a wrench",
+      "alt": "Huey, OmniPython's chameleon mascot, on a jumper wire, holding a wrench",
       "caption": "Huey tightens up the sound"
     }
   },
@@ -428,7 +428,7 @@
       "src": "huey-pencil.svg",
       "width": 560,
       "height": 460,
-      "alt": "Huey the chameleon on a jumper wire, holding a pencil",
+      "alt": "Huey, OmniPython's chameleon mascot, on a jumper wire, holding a pencil",
       "caption": "Huey draws"
     }
   },
@@ -474,7 +474,7 @@
       "src": "huey-screwdriver.svg",
       "width": 560,
       "height": 460,
-      "alt": "Huey the chameleon on a jumper wire, holding a screwdriver",
+      "alt": "Huey, OmniPython's chameleon mascot, on a jumper wire, holding a screwdriver",
       "caption": "Huey puts the parts together"
     }
   },
@@ -520,7 +520,7 @@
       "src": "huey-flower.svg",
       "width": 560,
       "height": 460,
-      "alt": "Huey the chameleon on a jumper wire, holding a flower",
+      "alt": "Huey, OmniPython's chameleon mascot, on a jumper wire, holding a flower",
       "caption": "Huey picks a colour"
     }
   },
@@ -546,7 +546,7 @@
       "src": "huey-magnifier.svg",
       "width": 560,
       "height": 460,
-      "alt": "Huey the chameleon on a jumper wire, holding a magnifying glass",
+      "alt": "Huey, OmniPython's chameleon mascot, on a jumper wire, holding a magnifying glass",
       "caption": "Huey looks closely at small things"
     }
   },
@@ -591,7 +591,7 @@
       "src": "huey-board.svg",
       "width": 560,
       "height": 460,
-      "alt": "Huey the chameleon on a jumper wire, holding a circuit board",
+      "alt": "Huey, OmniPython's chameleon mascot, on a jumper wire, holding a circuit board",
       "caption": "Huey with a board to light up"
     }
   },
@@ -742,6 +742,13 @@
       "shape": "round",
       "app_url": "https://PyDevices.github.io/assets/apps/radar_scope.py"
     },
+    "hero_art": {
+      "src": "huey-lantern.svg",
+      "width": 560,
+      "height": 460,
+      "alt": "Huey, OmniPython's chameleon mascot, on a jumper wire, holding a lit LED",
+      "caption": "Huey gets the first light on"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -882,7 +889,7 @@
       "src": "huey-hanging.svg",
       "width": 508,
       "height": 440,
-      "alt": "Huey the chameleon hanging from a jumper wire by his tail",
+      "alt": "Huey, OmniPython's chameleon mascot, hanging from a jumper wire by his tail",
       "caption": "Huey drops in to see what runs"
     }
   },
@@ -1003,7 +1010,7 @@
       "src": "huey-sitting.svg",
       "width": 508,
       "height": 420,
-      "alt": "Huey the chameleon sitting on a jumper wire, waving",
+      "alt": "Huey, OmniPython's chameleon mascot, sitting on a jumper wire, waving",
       "caption": "Huey waits for the build"
     }
   },
@@ -1039,7 +1046,7 @@
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "mpvst",
-    "headline": "MPVST — audio effects and instruments as a VST3 plug-in.",
+    "headline": "mpvst — audio effects and instruments as a VST3 plug-in.",
     "description": "Programmable VST3 instruments and effects: every audioinstruments instrument and audioeffects effect as a named plug-in, each instance running its Python in a sidecar process. Installers for Windows and Linux; nothing has to be built.",
     "hero_canvas": {
       "app": "ftp_scope",
