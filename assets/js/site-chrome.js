@@ -331,7 +331,7 @@
 
     // Footer Links
     html += '  <div class="pydevices-nav-footer">';
-    html += '    <a href="' + ROOT + '/gallery/gallery/" class="nav-foot-link">Interactive Gallery</a> &middot; ';
+    html += '    <a href="https://gallery.omnipython.org/" class="nav-foot-link">Interactive Gallery</a> &middot; ';
     html += '    <a href="https://lib.omnipython.org" class="nav-foot-link">Package Index</a> &middot; ';
     html += '    <a href="https://github.com/PyDevices" class="nav-foot-link">GitHub</a>';
     html += '  </div>';
