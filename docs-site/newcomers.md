@@ -30,7 +30,7 @@ Each library's section starts with its own install page and first program.
 
 The board you own has a `board_config` that sets up its display and touch, so
 the program you ran on the desktop starts the same way on the board. The
-[device matrix](omnipython/boards/device-matrix.md)
+[board list](omnipython/boards/board-configs.md)
 lists the boards, and [mcuctl](https://github.com/PyDevices/mcuctl) copies files
 to them and gives you a REPL from your editor.
 
