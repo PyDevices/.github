@@ -5,12 +5,12 @@ Latest publish run per distribution, reported by publishing-v6's report-release-
 | Distribution | Version | TestPyPI | Assets | MIP | PyPI | Updated |
 |---|---|---|---|---|---|---|
 | [omnipython-airwindows](https://github.com/PyDevices/airwindows/actions/runs/43383364991) | 0.1.0.dev1 (pre) | OK | OK | -- | -- | 2026-11-13 07:25 UTC |
-| [omnipython-applibs](https://github.com/PyDevices/apps/actions/runs/43710623129) | 0.1.2.dev11 (pre) | OK | OK | OK | -- | 2026-11-15 11:54 UTC |
+| [omnipython-applibs](https://github.com/PyDevices/apps/actions/runs/43740903231) | 0.1.2.dev12 (pre) | OK | OK | OK | -- | 2026-11-15 17:25 UTC |
 | [omnipython-audiodsp](https://github.com/PyDevices/audiodsp/actions/runs/42943558534) | 0.6.16.dev2 (pre) | OK | OK | -- | -- | 2026-11-11 02:12 UTC |
 | [omnipython-audioeffects](https://github.com/PyDevices/audioeffects/actions/runs/42943583385) | 0.5.2.dev2 (pre) | OK | OK | OK | -- | 2026-11-11 03:13 UTC |
 | [omnipython-audioinstruments](https://github.com/PyDevices/audioinstruments/actions/runs/42944127684) | 0.5.2.dev4 (pre) | OK | OK | OK | -- | 2026-11-11 02:25 UTC |
-| [omnipython-iconkit](https://github.com/PyDevices/pydevices/actions/runs/43374858602) | 0.1.0.dev1 (pre) | OK | OK | OK | -- | 2026-11-13 05:53 UTC |
-| [pydevices](https://github.com/PyDevices/pydevices/actions/runs/43710089474) | 0.8.0.dev19 (pre) | OK | OK | OK | -- | 2026-11-15 11:41 UTC |
+| [omnipython-iconkit](https://github.com/PyDevices/pydevices/actions/runs/43740919578) | 0.1.0.dev2 (pre) | OK | OK | OK | -- | 2026-11-15 17:25 UTC |
+| [pydevices](https://github.com/PyDevices/pydevices/actions/runs/43740852197) | 0.8.0.dev20 (pre) | OK | OK | OK | -- | 2026-11-15 17:24 UTC |
 | [pydevices-audiodsp](https://github.com/PyDevices/audiodsp/actions/runs/39729478327) | 0.6.10 | OK | OK | -- | OK | 2026-10-22 05:54 UTC |
 | [pydevices-audioeffects](https://github.com/PyDevices/audiocomponents/actions/runs/40815948502) | 0.4.2rc1 (pre) | OK | OK | -- | -- | 2026-10-29 04:42 UTC |
 | [pydevices-audioinstruments](https://github.com/PyDevices/audiocomponents/actions/runs/40815948502) | 0.4.2rc1 (pre) | OK | OK | OK | -- | 2026-10-29 04:42 UTC |
