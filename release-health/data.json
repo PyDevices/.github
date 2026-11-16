@@ -113,11 +113,11 @@
   "mip": "success",
   "prerelease": true,
   "pypi": "skipped",
-  "repo": "pydevices",
-  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/43567892126",
+  "repo": "omnipython",
+  "run_url": "https://github.com/PyDevices/omnipython/actions/runs/43823965165",
   "testpypi": "success",
-  "updated": "2026-11-14 06:46 UTC",
-  "version": "0.0.16.dev0"
+  "updated": "2026-11-16 07:30 UTC",
+  "version": "0.0.16.dev2"
  },
  "omnipython-pdwidgets": {
   "assets": "skipped",
