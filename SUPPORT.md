@@ -9,5 +9,5 @@ Welcome to PyDevices! Here are the best ways to get help and ask questions acros
 
 ## 📚 Live Documentation & Specs
 
-- **Organization Landing Portal**: [PyDevices.github.io](https://pydevices.github.io/)
+- **Organization Landing Portal**: [omnipython.org](https://omnipython.org/)
 - **Package Index**: [lib.omnipython.org](https://lib.omnipython.org)

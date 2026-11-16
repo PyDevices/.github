@@ -55,7 +55,7 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "app_url": "https://PyDevices.github.io/assets/apps/audio_scope.py"
+      "app_url": "https://omnipython.org/assets/apps/audio_scope.py"
     },
     "buttons": [
       {
@@ -110,7 +110,7 @@
       },
       {
         "label": "micropython-pydevices",
-        "href": "https://pydevices.github.io/micropython-pydevices/",
+        "href": "https://omnipython.org/micropython-pydevices/",
         "tier_color": true
       },
       {
@@ -133,7 +133,7 @@
       "width": 480,
       "height": 480,
       "shape": "square",
-      "app_url": "https://PyDevices.github.io/assets/apps/signal_gen.py"
+      "app_url": "https://omnipython.org/assets/apps/signal_gen.py"
     },
     "buttons": [
       {
@@ -153,7 +153,7 @@
       },
       {
         "label": "audioinstruments",
-        "href": "https://pydevices.github.io/audioinstruments/",
+        "href": "https://omnipython.org/audioinstruments/",
         "tier_color": true
       }
     ],
@@ -188,7 +188,7 @@
       },
       {
         "label": "micropython-pydevices",
-        "href": "https://pydevices.github.io/micropython-pydevices/",
+        "href": "https://omnipython.org/micropython-pydevices/",
         "tier_color": true
       },
       {
@@ -211,7 +211,7 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "app_url": "https://PyDevices.github.io/assets/apps/audio_scope.py"
+      "app_url": "https://omnipython.org/assets/apps/audio_scope.py"
     },
     "buttons": [
       {
@@ -256,7 +256,7 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "app_url": "https://PyDevices.github.io/assets/apps/signal_gen.py"
+      "app_url": "https://omnipython.org/assets/apps/signal_gen.py"
     },
     "buttons": [
       {
@@ -344,7 +344,7 @@
       },
       {
         "label": "micropython-pydevices",
-        "href": "https://pydevices.github.io/micropython-pydevices/",
+        "href": "https://omnipython.org/micropython-pydevices/",
         "tier_color": true
       },
       {
@@ -377,7 +377,7 @@
       },
       {
         "label": "micropython-pydevices",
-        "href": "https://pydevices.github.io/micropython-pydevices/",
+        "href": "https://omnipython.org/micropython-pydevices/",
         "tier_color": true
       },
       {
@@ -400,7 +400,7 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "app_url": "https://PyDevices.github.io/assets/apps/simon.py"
+      "app_url": "https://omnipython.org/assets/apps/simon.py"
     },
     "buttons": [
       {
@@ -446,7 +446,7 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "app_url": "https://PyDevices.github.io/assets/apps/sensor_deck.py"
+      "app_url": "https://omnipython.org/assets/apps/sensor_deck.py"
     },
     "buttons": [
       {
@@ -492,7 +492,7 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "app_url": "https://PyDevices.github.io/assets/apps/palette_orb.py"
+      "app_url": "https://omnipython.org/assets/apps/palette_orb.py"
     },
     "buttons": [
       {
@@ -563,7 +563,7 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "app_url": "https://PyDevices.github.io/assets/apps/thermostat.py"
+      "app_url": "https://omnipython.org/assets/apps/thermostat.py"
     },
     "buttons": [
       {
@@ -583,7 +583,7 @@
       },
       {
         "label": "Gallery",
-        "href": "https://pydevices.github.io/gallery/pyscript/",
+        "href": "https://gallery.omnipython.org/pyscript/",
         "tier_color": true
       }
     ],
@@ -740,7 +740,7 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "app_url": "https://PyDevices.github.io/assets/apps/radar_scope.py"
+      "app_url": "https://omnipython.org/assets/apps/radar_scope.py"
     },
     "hero_art": {
       "src": "huey-lantern.svg",
@@ -767,7 +767,7 @@
       },
       {
         "label": "pydevices Core",
-        "href": "https://pydevices.github.io/pydevices/",
+        "href": "https://omnipython.org/pydevices/",
         "tier_color": true
       }
     ]
@@ -785,7 +785,7 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "app_url": "https://PyDevices.github.io/assets/apps/mobile_pad.py"
+      "app_url": "https://omnipython.org/assets/apps/mobile_pad.py"
     },
     "buttons": [
       {
@@ -805,7 +805,7 @@
       },
       {
         "label": "pydevices Core",
-        "href": "https://pydevices.github.io/pydevices/",
+        "href": "https://omnipython.org/pydevices/",
         "tier_color": true
       }
     ]
@@ -823,7 +823,7 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "app_url": "https://PyDevices.github.io/assets/apps/ftp_scope.py"
+      "app_url": "https://omnipython.org/assets/apps/ftp_scope.py"
     },
     "buttons": [
       {
@@ -850,19 +850,12 @@
   },
   "gallery": {
     "tier": 1,
-    "page": "self",
+    "page": "none",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "gallery",
     "headline": "gallery — Showcase, demos & WebAssembly gallery.",
     "description": "Comprehensive example code, direct MicroPython WebAssembly demos, board configurations, and multi-interpreter showcase benchmarks.",
-    "hero_canvas": {
-      "app": "benchmark_deck",
-      "width": 240,
-      "height": 240,
-      "shape": "square",
-      "app_url": "https://PyDevices.github.io/assets/apps/benchmark_deck.py"
-    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -871,7 +864,7 @@
       },
       {
         "label": "Gallery",
-        "href": "https://pydevices.github.io/gallery/gallery/",
+        "href": "https://gallery.omnipython.org/",
         "tier_color": true
       },
       {
@@ -881,32 +874,11 @@
       },
       {
         "label": "pydevices Core",
-        "href": "https://pydevices.github.io/pydevices/",
+        "href": "https://omnipython.org/pydevices/",
         "tier_color": true
       }
     ],
-    "hero_art": {
-      "src": "huey-hanging.svg",
-      "width": 508,
-      "height": 440,
-      "alt": "Huey, OmniPython's chameleon mascot, hanging from a jumper wire by his tail",
-      "caption": "Huey drops in to see what runs"
-    }
-  },
-  "gallery-gallery": {
-    "tier": 1,
-    "tier_name": "Core Platform & Board Contract",
-    "page": "self-subpath",
-    "site_repo": "gallery",
-    "site_subpath": "gallery",
-    "portal_grid": false,
-    "title": "gallery — WebAssembly Gallery",
-    "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "PyDevices / gallery · WebAssembly Gallery",
-    "headline": "WebAssembly Gallery",
-    "description": "Direct MicroPython WebAssembly demos that run the same PyDevices examples as MCUs and CPython. Explore drawing, input, widgets, and LVGL without flashing a board first.",
-    "hero_note": "Click a card to launch the app. The first load may take a few seconds while the interpreter downloads; featured demos stay pinned at the top.",
-    "buttons": []
+    "card_href": "https://gallery.omnipython.org/"
   },
   "gallery-pyscript": {
     "tier": 1,
@@ -936,9 +908,9 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "app_url": "https://PyDevices.github.io/assets/apps/watch.py"
+      "app_url": "https://omnipython.org/assets/apps/watch.py"
     },
-    "hero_note": "Get Started installs the Python packages, with pip on a desktop or mip on a board. To build MicroPython firmware with the modules compiled in, run <code>curl -fsSL https://pydevices.github.io/install.sh | sh</code> and follow the guide on the <a href=\"https://pydevices.github.io/micropython-pydevices/\">micropython-pydevices page</a>.",
+    "hero_note": "Get Started installs the Python packages, with pip on a desktop or mip on a board. To build MicroPython firmware with the modules compiled in, run <code>curl -fsSL https://omnipython.org/install.sh | sh</code> and follow the guide on the <a href=\"https://omnipython.org/micropython-pydevices/\">micropython-pydevices page</a>.",
     "buttons": [
       {
         "label": "GitHub Org",
@@ -947,12 +919,12 @@
       },
       {
         "label": "Get Started",
-        "href": "https://pydevices.github.io/pydevices/",
+        "href": "https://omnipython.org/pydevices/",
         "tier_color": true
       },
       {
         "label": "Gallery",
-        "href": "https://pydevices.github.io/gallery/gallery/",
+        "href": "https://gallery.omnipython.org/",
         "tier_color": true
       },
       {
@@ -982,7 +954,7 @@
       "width": 240,
       "height": 240,
       "shape": "round",
-      "app_url": "https://PyDevices.github.io/assets/apps/radar_scope.py"
+      "app_url": "https://omnipython.org/assets/apps/radar_scope.py"
     },
     "buttons": [
       {
@@ -1002,7 +974,7 @@
       },
       {
         "label": "pydevices Core",
-        "href": "https://pydevices.github.io/pydevices/",
+        "href": "https://omnipython.org/pydevices/",
         "tier_color": true
       }
     ],
@@ -1030,7 +1002,7 @@
       },
       {
         "label": "Live App",
-        "href": "https://pydevices.github.io/workbench/",
+        "href": "https://workbench.pydevices.com/",
         "tier_color": true
       },
       {
@@ -1038,7 +1010,8 @@
         "href": "https://github.com/PyDevices/workbench/releases",
         "tier_color": true
       }
-    ]
+    ],
+    "card_href": "https://workbench.pydevices.com/"
   },
   "mpvst": {
     "tier": 5,
@@ -1053,7 +1026,7 @@
       "width": 240,
       "height": 240,
       "shape": "square",
-      "app_url": "https://PyDevices.github.io/assets/apps/ftp_scope.py"
+      "app_url": "https://omnipython.org/assets/apps/ftp_scope.py"
     },
     "buttons": [
       {
@@ -1073,7 +1046,7 @@
       },
       {
         "label": "audioinstruments",
-        "href": "https://pydevices.github.io/audioinstruments/",
+        "href": "https://omnipython.org/audioinstruments/",
         "tier_color": true
       }
     ]
