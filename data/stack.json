@@ -149,7 +149,7 @@
     {"name": "picotts", "group": "sound", "does": "Make a board with PSRAM speak, with no network and no computer.", "repo": "omnipython-builds", "path": "modules/picotts", "get": ["firmware"], "runs": "MP"},
     {"name": "mpvst", "group": "sound", "does": "Run Python instruments and effects in your DAW as a VST3 plug-in.", "repo": "mpvst", "path": "README.md", "get": ["download"], "runs": "Desktop DAW"},
 
-    {"name": "midiports", "group": "midi", "does": "Connect `adafruit_midi` to USB, UART, Web MIDI or a computer's own MIDI ports.", "repo": "omnipython", "path": "packages/midiports", "get": ["mip:midiports", "pip:omnipython-desktop"], "runs": "MP, Desktop, Web"},
+    {"name": "midiports", "group": "midi", "does": "Connect `adafruit_midi` to USB, UART, Bluetooth LE, Web MIDI or a computer's own MIDI ports.", "repo": "omnipython", "path": "packages/midiports", "get": ["mip:midiports", "pip:omnipython-desktop"], "runs": "MP, Desktop, Web"},
     {"name": "soundmodule", "group": "midi", "does": "Play MIDI through a sound engine, headless from a port or through files.", "repo": "apps", "path": "lib/soundmodule", "guide": "docs/guides/play-the-sound-module.md", "get": ["mip:soundmodule", "pip:omnipython-applibs"], "runs": "MP, Desktop"},
     {"name": "songmodel", "group": "midi", "does": "Edit a groovebox's song as plain data, and carry it to a front panel.", "repo": "apps", "path": "lib/songmodel", "get": ["mip:songmodel", "pip:omnipython-applibs"], "runs": "MP, Desktop, Web"},
 
@@ -232,7 +232,7 @@
     {"name": "MIDI module", "group": "apps", "does": "Play General MIDI from a 5-pin DIN socket through a SoundFont.", "repo": "apps", "path": "programs/midi-module", "get": ["clone"], "runs": "MP with audio out and a UART"},
     {"name": "Bluetooth speaker", "group": "apps", "does": "Make the board a speaker your phone or computer pairs with.", "repo": "apps", "path": "programs/bt-speaker", "get": ["clone"], "runs": "MP with Bluetooth Classic and audio out"},
     {"name": "Camera for the ESP32-P4", "group": "apps", "does": "Take photos and H.264 video with sound, keep an album and spot people and faces, as the ESP32-P4X-EYE's own camera app does.", "repo": "apps", "path": "programs/camera", "get": ["appmip", "clone"], "runs": "MP on ESP32-P4"},
-    {"name": "midiEngine", "group": "apps", "does": "Play General MIDI from a SoundFont and a USB MIDI keyboard.", "repo": "apps", "path": "apps/midiengine", "get": ["appmip", "clone"], "runs": "ESP32-P4 touch board"},
+    {"name": "midiEngine", "group": "apps", "does": "Play General MIDI from a SoundFont and a USB or Bluetooth MIDI keyboard.", "repo": "apps", "path": "apps/midiengine", "get": ["appmip", "clone"], "runs": "ESP32-P4 touch board"},
     {"name": "Stompbox", "group": "apps", "does": "Play a guitar or WAV clip through an Airwindows effect, with its knobs on screen.", "repo": "apps", "path": "apps/stompbox", "get": ["appmip", "clone"], "runs": "ESP32-P4 touch board, with `audioairwindows`"},
     {"name": "MP3 player", "group": "apps", "does": "Play the songs on an SD card, with a spectrum.", "repo": "apps", "path": "apps/mp3", "get": ["appmip", "clone"], "runs": "ESP32-P4 touch board"},
     {"name": "Sound card", "group": "apps", "does": "Make the board a USB speaker for a computer, with a spectrum of what plays.", "repo": "apps", "path": "apps/card", "get": ["appmip", "clone"], "runs": "ESP32-P4 touch board"},
