@@ -34,7 +34,14 @@
   --pd-canvas-frame: #17222c;
   --pd-canvas-border: #333333;
 
-  --pd-bar-h: 2.5rem;
+  --pd-bar-h: 3rem;
+  /* The portal's shapes and heading face (assets/css/site.css). */
+  --pd-radius: 26px;
+  --pd-radius-sm: 16px;
+  --pd-radius-xs: 10px;
+  --pd-radius-pill: 999px;
+  --pd-radius-drawn: 28px 22px 30px 20px / 22px 30px 20px 28px;
+  --pd-font-display: "Nunito", ui-rounded, ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
 }
 
 /* ---- The shared top bar -------------------------------------------- */
@@ -59,20 +66,21 @@
 .pd-bar a:hover { color: var(--pd-brand-soft); }
 .pd-bar .pd-brand {
   display: inline-flex; align-items: center; gap: 0.5rem;
-  color: var(--pd-dark-ink); font-weight: 700; flex: none;
+  color: var(--pd-dark-ink); flex: none;
+  font-family: var(--pd-font-display); font-weight: 800; font-size: 1.1rem;
 }
+.pd-bar .pd-brand img { width: 30px; height: 30px; }
 .pd-bar .pd-projects {
   display: flex; gap: 0.25rem; list-style: none; margin: 0; padding: 0;
   overflow-x: auto; flex: 1 1 auto; scrollbar-width: none;
 }
 .pd-bar .pd-projects::-webkit-scrollbar { display: none; }
 .pd-bar .pd-projects li { margin: 0; padding: 0; list-style: none; }
-.pd-bar .pd-projects a { display: block; padding: 0.15rem 0.6rem; border-radius: 4px; }
+.pd-bar .pd-projects a { display: block; padding: 0.2rem 0.75rem; border-radius: var(--pd-radius-pill); }
 .pd-bar .pd-projects a:hover { background: rgb(var(--pd-brand-rgb) / 0.12); }
 .pd-bar .pd-projects a.pd-current {
   color: var(--pd-dark-ink);
   background: rgb(var(--pd-brand-rgb) / 0.18);
-  box-shadow: inset 0 -2px 0 var(--pd-brand);
 }
 .pd-bar .pd-bar-links { display: flex; gap: 1rem; margin-left: auto; flex: none; }
 @media (max-width: 640px) {
@@ -136,12 +144,34 @@ body.wy-body-for-nav { padding-top: 0; }
 }
 .rst-content .viewcode-link, .rst-content .viewcode-back { color: var(--pd-link); }
 
+/* ---- Rounded shapes and the heading face ---------------------------- */
+
+.rst-content h1, .rst-content h2, .rst-content h3, .rst-content h4,
+.rst-content .toctree-wrapper > p.caption, .rst-content .rubric,
+.wy-menu-vertical p.caption, .wy-side-nav-search > a,
+.rst-content .admonition-title, .sd-card-title {
+  font-family: var(--pd-font-display);
+  font-weight: 800;
+}
+.rst-content div[class^="highlight"], .rst-content pre.literal-block { border-radius: var(--pd-radius-xs); }
+.rst-content div[class^="highlight"] pre { border-radius: var(--pd-radius-xs); }
+.rst-content code.literal, .rst-content tt.literal { border-radius: 6px; }
+.rst-content .admonition, .rst-content .note, .rst-content .warning,
+.rst-content .tip, .rst-content .important, .rst-content .seealso {
+  border-radius: var(--pd-radius-sm);
+  overflow: hidden;
+}
+html.writer-html5 .rst-content dl.py > dt { border-radius: var(--pd-radius-xs); }
+.wy-side-nav-search input[type=text] { border-radius: var(--pd-radius-pill); }
+.btn, .rst-content .btn { border-radius: var(--pd-radius-pill); }
+.rst-content table.docutils { border-radius: var(--pd-radius-xs); overflow: hidden; }
+
 /* ---- Hero, badges ---------------------------------------------------- */
 
 .hero-banner {
   background: linear-gradient(135deg, rgb(var(--pd-brand-rgb) / 0.08) 0%, rgb(var(--pd-brand-rgb) / 0.02) 100%);
   border: 1px solid rgb(var(--pd-brand-rgb) / 0.25);
-  border-radius: 12px;
+  border-radius: var(--pd-radius-drawn);
   padding: 1.5rem 1.75rem;
   margin-bottom: 1.5rem;
 }
@@ -160,7 +190,7 @@ body.wy-body-for-nav { padding-top: 0; }
 .badge-green { background: rgb(var(--pd-success-rgb) / 0.12); color: rgb(var(--pd-success-rgb)); border-color: rgb(var(--pd-success-rgb) / 0.3); }
 
 /* sphinx-design cards, in the brand colour */
-.sd-card { border-color: var(--pd-border); }
+.sd-card { border-color: var(--pd-border); border-radius: var(--pd-radius-sm); }
 .sd-card:hover { border-color: var(--pd-brand); }
 .sd-card-title a, .sd-card .sd-stretched-link { color: var(--pd-link); }
 .sd-tab-set > label.sd-tab-label { color: var(--pd-ink-soft); }
@@ -172,7 +202,7 @@ body.wy-body-for-nav { padding-top: 0; }
   display: flex; flex-wrap: wrap; gap: 1.25rem;
   background: var(--pd-bg-code);
   border: 1px solid var(--pd-border);
-  border-radius: 10px;
+  border-radius: var(--pd-radius-sm);
   padding: 1.25rem;
   margin: 1.5rem 0;
   box-shadow: 0 2px 8px rgb(var(--pd-shade-rgb) / 0.05);
@@ -182,7 +212,7 @@ body.wy-body-for-nav { padding-top: 0; }
   font-family: SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   font-size: 0.85rem; line-height: 1.45;
   background: var(--pd-bg); color: var(--pd-ink);
-  border: 1px solid var(--pd-border); border-radius: 6px;
+  border: 1px solid var(--pd-border); border-radius: var(--pd-radius-xs);
   padding: 0.75rem; height: 230px; resize: vertical; tab-size: 4;
 }
 .code-editor:focus { outline: none; border-color: var(--pd-brand); box-shadow: 0 0 0 2px rgb(var(--pd-brand-rgb) / 0.2); }
@@ -190,14 +220,14 @@ body.wy-body-for-nav { padding-top: 0; }
 .run-btn {
   background: var(--pd-header); color: var(--pd-on-primary);
   border: none; padding: 0.35rem 0.9rem; font-size: 0.82rem; font-weight: 600;
-  border-radius: 4px; cursor: pointer;
+  border-radius: var(--pd-radius-pill); cursor: pointer;
 }
 .run-btn:hover:not(:disabled) { background: #08657a; }
 .run-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .reset-btn {
   background: var(--pd-bg-soft); color: var(--pd-ink);
   border: 1px solid var(--pd-border); padding: 0.35rem 0.75rem; font-size: 0.82rem;
-  border-radius: 4px; cursor: pointer;
+  border-radius: var(--pd-radius-pill); cursor: pointer;
 }
 .reset-btn:hover { background: var(--pd-bg-code); }
 .demo-status { font-size: 0.78rem; color: var(--pd-ink-soft); margin-left: auto; font-weight: 500; }
@@ -210,7 +240,7 @@ body.wy-body-for-nav { padding-top: 0; }
 .demo-canvas-pane {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   background: var(--pd-canvas-bg); border: 1px solid var(--pd-canvas-frame);
-  border-radius: 8px; padding: 0.75rem;
+  border-radius: var(--pd-radius-xs); padding: 0.75rem;
 }
 .demo-canvas-pane { max-width: 100%; box-sizing: border-box; }
 .demo-canvas-pane canvas { max-width: 100%; height: auto; image-rendering: pixelated; border: 1px solid var(--pd-canvas-border); outline: none; background: var(--pd-canvas-bg); }

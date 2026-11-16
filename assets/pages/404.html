@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>try{if(localStorage.getItem('pydevices-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}}catch(e){}</script>
+  <title>Page moved — PyDevices</title>
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="/assets/img/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="/assets/chrome/site.css">
+</head>
+<body>
+  <!-- Written by dotgithub/scripts/generate_sites.py from assets/pages/404.html. Edit it there. -->
+  <div id="pydevices-site-header"></div>
+  <main class="notfound wrap">
+    <div class="notfound-stage">
+      <span class="notfound-code" aria-hidden="true">404</span>
+      <img src="/assets/img/huey-asleep.svg" width="600" height="380"
+           alt="Huey, OmniPython's chameleon mascot, asleep on a jumper wire">
+    </div>
+    <h1>Nothing is perched here</h1>
+    <p>Some older links and search results point at places that have since
+    moved. What you were looking for almost certainly lives in one of these
+    now:</p>
+    <ul class="linklist">
+      <li><a href="/"><b>The PyDevices portal</b><span>every project, by tier</span></a></li>
+      <li><a href="/pydevices/"><b>pydevices</b><span>the core driver packages: displaydev, events, keys, multimer, audiodev</span></a></li>
+      <li><a href="/audiodsp/"><b>audiodsp</b><span>the audio stack: synthio, instruments, effects</span></a></li>
+      <li><a href="/workbench/"><b>Workbench</b><span>the browser IDE and device simulator</span></a></li>
+      <li><a href="/mip/"><b>The MIP package index</b><span>installs for boards</span></a></li>
+      <li><a href="https://github.com/PyDevices"><b>github.com/PyDevices</b><span>all repositories</span></a></li>
+    </ul>
+    <p id="hint" hidden>Looking for <code id="path"></code>?
+    Try the <a id="search" href="#">repository search for it</a>.</p>
+    <script>
+      var p = location.pathname.replace(/\/+$/, "");
+      if (p && p !== "/404.html") {
+        var seg = p.split("/").filter(Boolean)[0] || "";
+        document.getElementById("path").textContent = p;
+        document.getElementById("search").href =
+          "https://github.com/search?q=org%3APyDevices+" + encodeURIComponent(seg);
+        document.getElementById("hint").hidden = false;
+      }
+    </script>
+  </main>
+  <div id="pydevices-site-footer"></div>
+  <script src="/assets/chrome/site-chrome.js"></script>
+</body>
+</html>

@@ -3,6 +3,7 @@
 
 {%- block extrahead %}
   {{ super() }}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800&display=swap">
   <link rel="stylesheet" href="{{ pathto('_static/pydevices.css', 1) }}" type="text/css" />
   <script src="{{ pathto('_static/pydevices-bar.js', 1) }}" defer></script>
   <script src="{{ pathto('_static/pydevices-demo.js', 1) }}" defer></script>
@@ -10,10 +11,10 @@
 
 {%- block extrabody %}
   {{ super() }}
-  <nav class="pd-bar" aria-label="PyDevices projects" data-pd-main="{{ 'true' if pd_is_main else 'false' }}">
+  <nav class="pd-bar" aria-label="OmniPython projects" data-pd-main="{{ 'true' if pd_is_main else 'false' }}">
     <a class="pd-brand" href="{{ pd_projects[0].url }}" data-pd-path="{{ pd_projects[0].path }}">
-      <img src="{{ pathto('_static/logo.svg', 1) }}" alt="" width="22" height="22">
-      <span>PyDevices</span>
+      <img src="{{ pathto('_static/logo.svg', 1) }}" alt="" width="30" height="30">
+      <span>OmniPython</span>
     </a>
     <ul class="pd-projects">
       {%- for p in pd_projects[1:] %}

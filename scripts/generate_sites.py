@@ -19,6 +19,18 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 DOTGITHUB_DIR = os.path.join(BASE_DIR, 'dotgithub')
 DB_PATH = os.path.join(DOTGITHUB_DIR, 'data/repos_db.json')
 ASSETS_DIR = os.path.join(DOTGITHUB_DIR, 'assets')
+NAV_GLYPHS_PATH = os.path.join(DOTGITHUB_DIR, 'data/nav_glyphs.json')
+NAV_GLYPH_ALIASES = {
+    'displayif': 'pydevices',
+    'audioif': 'audiodsp',
+    'audiocomponents': 'audioinstruments',
+    'lvgl-bindings': 'omnipython-lvgl',
+    'lvgl-micropython': 'omnipython-lvgl',
+    'lvgl-python': 'omnipython-lvgl',
+    'lvgl-circuitpython': 'omnipython-lvgl',
+    'gallery-gallery': 'gallery',
+    'gallery-pyscript': 'gallery',
+}
 
 def get_gradient_dark(color_var):
     """The darker companion a tier's logo-badge gradient fades into.
@@ -67,6 +79,15 @@ def get_card_icon(repo_name):
         'gallery-gallery': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><circle cx="17" cy="15" r="1.5"/></svg>',
         'gallery-pyscript': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><circle cx="17" cy="15" r="1.5"/></svg>',
     }
+    # The drawn glyph set wins where it has one. data/nav_glyphs.json is keyed
+    # by the ids assets/js/site-chrome.js uses, so a card, its page's badge and
+    # the navigator show the same symbol; tests/test_nav_glyphs.py holds the
+    # two in step. A page that moved, or a sub-page, borrows its home's glyph.
+    with open(NAV_GLYPHS_PATH, encoding='utf-8') as f:
+        glyphs = {name: entry['svg'] for name, entry in json.load(f).items()}
+    name = NAV_GLYPH_ALIASES.get(repo_name, repo_name)
+    if name in glyphs:
+        return glyphs[name]
     return icons.get(repo_name, '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>')
 
 def get_tag_label(repo_name):
@@ -137,6 +158,20 @@ def validate_db(db, only=None):
                 app_path = os.path.join(ASSETS_DIR, 'apps', f'{app_name}.py')
                 if app_name and not os.path.exists(app_path):
                     problems.append(f'{name}: hero_canvas app {app_name}.py not found in {os.path.relpath(app_path, BASE_DIR)}')
+
+        # A hero drawing is a file under assets/img with words for a reader
+        # who can't see it.
+        hero_art = data.get('hero_art')
+        if hero_art is not None:
+            if not isinstance(hero_art, dict):
+                problems.append(f'{name}: hero_art must be an object')
+            else:
+                for req in ('src', 'alt', 'width', 'height'):
+                    if req not in hero_art:
+                        problems.append(f'{name}: hero_art missing {req}')
+                src = hero_art.get('src')
+                if src and not os.path.exists(os.path.join(ASSETS_DIR, 'img', src)):
+                    problems.append(f'{name}: hero_art {src} not found in assets/img')
 
     valid_pages = {'portal-root', 'portal-subdir', 'self', 'self-subpath', 'none'}
     roots = [n for n, d in repos(db).items() if page_destination(d) == 'portal-root']
@@ -274,13 +309,40 @@ def write_ecosystem_markdown(db):
     return written
 
 
+# The rounded display face the headings are set in; site.css names it first
+# in --font-display and falls back to the system's rounded face without it.
+DISPLAY_FONT_URL = 'https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap'
+
+
+def build_hero_art_html(data):
+    """The drawing beside a page's headline, or '' when the page has none.
+
+    Huey the chameleon is OmniPython's mascot, so a page carries him only
+    when it is about the OmniPython libraries; a product page has no
+    hero_art, or one with no character in it.
+    """
+    art = data.get('hero_art')
+    if not art:
+        return ''
+    caption = art.get('caption', '')
+    caption_html = f'<figcaption>{caption}</figcaption>' if caption else ''
+    return (
+        f'      <figure class="hero-art">'
+        f'<img src="/assets/img/{art["src"]}" alt="{art["alt"]}" '
+        f'width="{art["width"]}" height="{art["height"]}">'
+        f'{caption_html}</figure>\n'
+    )
+
+
 def build_head_tags_html(repo_name, data):
     title = data.get('title', f'PyDevices - {repo_name}')
     return (
         f'  <!-- PYDEVICES-HEAD-TAGS: START -->\n'
         f'  <title>{title}</title>\n'
         f'  <meta name="description" content="{data.get("description", "")}">\n'
-        f'  <link rel="icon" href="/assets/img/favicon.ico" sizes="16x16 32x32 48x48">\n'
+        f'  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">\n'
+        f'  <link rel="alternate icon" href="/assets/img/favicon.ico" sizes="16x16 32x32 48x48">\n'
+        f'  <link rel="stylesheet" href="{DISPLAY_FONT_URL}">\n'
         f'  <!-- PYDEVICES-HEAD-TAGS: END -->'
     )
 
@@ -326,7 +388,7 @@ def build_above_the_fold_html(repo_name, data):
         label, href = btn['label'], btn['href']
         if btn.get('primary', False):
             b_html = (
-                f'      <a class="btn primary" style="background: var(--github-ink); color: var(--on-accent); border-color: var(--github-ink);" href="{href}">\n'
+                f'      <a class="btn primary" href="{href}">\n'
                 f'        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5 4.6 4.6 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.6 1.7 5.5 2 5.5 2a4.6 4.6 0 0 0-.1 3.5A5 5 0 0 0 4 9c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg>\n'
                 f'        {label}\n'
                 f'      </a>'
@@ -363,11 +425,16 @@ def build_above_the_fold_html(repo_name, data):
         cta_html = (
             f'      <div class="cta">\n{buttons_joined}\n      </div>\n' if buttons_joined else ''
         )
+        art_html = build_hero_art_html(data)
+        if art_html:
+            # The device and the drawing share the right-hand side.
+            canvas_html = f'    <div class="hero-stage">\n{canvas_html}\n{art_html}    </div>'
+        hero_class = 'has-hero-stage' if art_html else 'has-hero-canvas'
         return (
             f'  <!-- PYDEVICES-ABOVE-THE-FOLD: START -->\n'
             f'  <div id="pydevices-site-header"></div>\n\n'
             f'  <!-- Hero Banner -->\n'
-            f'  <section class="hero wrap has-hero-canvas">\n'
+            f'  <section class="hero wrap {hero_class}">\n'
             f'    <div class="hero-main">\n'
             f'      <div class="hero-lead">\n'
             f'        {badge_html}\n'
@@ -387,6 +454,29 @@ def build_above_the_fold_html(repo_name, data):
     cta_html = (
         f'    <div class="cta">\n{buttons_joined}\n    </div>\n' if buttons_joined else ''
     )
+    art_html = build_hero_art_html(data)
+    if art_html:
+        return (
+            f'  <!-- PYDEVICES-ABOVE-THE-FOLD: START -->\n'
+            f'  <div id="pydevices-site-header"></div>\n\n'
+            f'  <!-- Hero Banner -->\n'
+            f'  <section class="hero wrap has-hero-stage">\n'
+            f'    <div class="hero-main">\n'
+            f'    <div class="hero-lead">\n'
+            f'      <div class="hero-brand">\n'
+            f'        {badge_html}\n'
+            f'        <span class="eyebrow" style="color: {theme_color};">{eyebrow}</span>\n'
+            f'      </div>\n'
+            f'      <h1>{headline}</h1>\n'
+            f'    </div>\n'
+            f'    <p>{description_html}</p>\n'
+            f'{hero_note_html}'
+            f'{cta_html}'
+            f'    </div>\n'
+            f'    <div class="hero-stage">\n{art_html}    </div>\n'
+            f'  </section>\n'
+            f'  <!-- PYDEVICES-ABOVE-THE-FOLD: END -->'
+        )
     return (
         f'  <!-- PYDEVICES-ABOVE-THE-FOLD: START -->\n'
         f'  <div id="pydevices-site-header"></div>\n\n'
@@ -417,7 +507,7 @@ def build_portal_grids_html(db):
     sections_html = []
     for tier in sorted(tier_repos.keys()):
         name, hint = meta[tier]
-        title = f'{tier}: {name}'
+        title = f'<span class="tier-dot tier-dot-{tier}">{tier}</span>{name}'
         cards_html = []
         for repo_name, data in tier_repos[tier]:
             cards_html.append(
@@ -510,9 +600,10 @@ def _copy_chrome_into(site_root):
         if os.path.exists(src):
             shutil.copy2(src, os.path.join(chrome_dir, fname))
 
-    for img_name in ('logo.svg', 'logo-512.png', 'logo-avatar.png', 'favicon.ico'):
+    # Every image the chrome and the pages name, the drawings included.
+    for img_name in sorted(os.listdir(os.path.join(ASSETS_DIR, 'img'))):
         src_img = os.path.join(ASSETS_DIR, 'img', img_name)
-        if os.path.exists(src_img):
+        if os.path.isfile(src_img):
             shutil.copy2(src_img, os.path.join(img_dir, img_name))
 
 
@@ -528,6 +619,12 @@ def sync_assets(db):
         os.makedirs(portal_apps, exist_ok=True)
         for app_file in os.listdir(apps_src):
             shutil.copy2(os.path.join(apps_src, app_file), os.path.join(portal_apps, app_file))
+
+    # The portal's whole-page files: today the page a wrong address lands on.
+    pages_src = os.path.join(ASSETS_DIR, 'pages')
+    if os.path.isdir(pages_src):
+        for page_file in sorted(os.listdir(pages_src)):
+            shutil.copy2(os.path.join(pages_src, page_file), os.path.join(portal_root, page_file))
 
     sync_template_pwa(portal_root)
 
