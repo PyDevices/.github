@@ -1,4 +1,16 @@
 {
+ "mcuctl": {
+  "assets": "success",
+  "distribution": "mcuctl",
+  "mip": "skipped",
+  "prerelease": true,
+  "pypi": "skipped",
+  "repo": "mcuctl",
+  "run_url": "https://github.com/PyDevices/mcuctl/actions/runs/43815239137",
+  "testpypi": "success",
+  "updated": "2026-11-16 06:16 UTC",
+  "version": "0.1.7.dev4"
+ },
  "omnipython-airwindows": {
   "assets": "success",
   "distribution": "omnipython-airwindows",
@@ -22,66 +34,6 @@
   "testpypi": "success",
   "updated": "2026-11-16 03:15 UTC",
   "version": "0.1.2.dev13"
- },
- "omnipython-audiodsp": {
-  "assets": "success",
-  "distribution": "omnipython-audiodsp",
-  "mip": "skipped",
-  "prerelease": true,
-  "pypi": "skipped",
-  "repo": "audiodsp",
-  "run_url": "https://github.com/PyDevices/audiodsp/actions/runs/42943558534",
-  "testpypi": "success",
-  "updated": "2026-11-11 02:12 UTC",
-  "version": "0.6.16.dev2"
- },
- "omnipython-audioeffects": {
-  "assets": "success",
-  "distribution": "omnipython-audioeffects",
-  "mip": "success",
-  "prerelease": true,
-  "pypi": "skipped",
-  "repo": "audioeffects",
-  "run_url": "https://github.com/PyDevices/audioeffects/actions/runs/42943583385",
-  "testpypi": "success",
-  "updated": "2026-11-11 03:13 UTC",
-  "version": "0.5.2.dev2"
- },
- "omnipython-audioinstruments": {
-  "assets": "success",
-  "distribution": "omnipython-audioinstruments",
-  "mip": "success",
-  "prerelease": true,
-  "pypi": "skipped",
-  "repo": "audioinstruments",
-  "run_url": "https://github.com/PyDevices/audioinstruments/actions/runs/42944127684",
-  "testpypi": "success",
-  "updated": "2026-11-11 02:25 UTC",
-  "version": "0.5.2.dev4"
- },
- "omnipython-iconkit": {
-  "assets": "success",
-  "distribution": "omnipython-iconkit",
-  "mip": "success",
-  "prerelease": true,
-  "pypi": "skipped",
-  "repo": "pydevices",
-  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/43740919578",
-  "testpypi": "success",
-  "updated": "2026-11-15 17:25 UTC",
-  "version": "0.1.0.dev2"
- },
- "pydevices": {
-  "assets": "success",
-  "distribution": "pydevices",
-  "mip": "success",
-  "prerelease": true,
-  "pypi": "skipped",
-  "repo": "pydevices",
-  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/43800043072",
-  "testpypi": "success",
-  "updated": "2026-11-16 03:46 UTC",
-  "version": "0.8.0.dev21"
  },
  "omnipython-audiodsp": {
   "assets": "success",
@@ -119,6 +71,18 @@
   "updated": "2026-10-29 04:42 UTC",
   "version": "0.4.2rc1"
  },
+ "omnipython-iconkit": {
+  "assets": "success",
+  "distribution": "omnipython-iconkit",
+  "mip": "success",
+  "prerelease": true,
+  "pypi": "skipped",
+  "repo": "pydevices",
+  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/43740919578",
+  "testpypi": "success",
+  "updated": "2026-11-15 17:25 UTC",
+  "version": "0.1.0.dev2"
+ },
  "omnipython-lvgl": {
   "assets": "success",
   "distribution": "omnipython-lvgl",
@@ -130,18 +94,6 @@
   "testpypi": "success",
   "updated": "2026-11-12 06:59 UTC",
   "version": "9.6.0.dev0"
- },
- "mcuctl": {
-  "assets": "success",
-  "distribution": "mcuctl",
-  "mip": "skipped",
-  "prerelease": true,
-  "pypi": "skipped",
-  "repo": "mpftp",
-  "run_url": "https://github.com/PyDevices/mpftp/actions/runs/43710563286",
-  "testpypi": "success",
-  "updated": "2026-11-15 11:51 UTC",
-  "version": "0.1.7.dev3"
  },
  "omnipython-palettes": {
   "assets": "success",
@@ -178,5 +130,17 @@
   "testpypi": "success",
   "updated": "2026-11-15 11:54 UTC",
   "version": "0.1.6"
+ },
+ "pydevices": {
+  "assets": "success",
+  "distribution": "pydevices",
+  "mip": "success",
+  "prerelease": true,
+  "pypi": "skipped",
+  "repo": "pydevices",
+  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/43800043072",
+  "testpypi": "success",
+  "updated": "2026-11-16 03:46 UTC",
+  "version": "0.8.0.dev21"
  }
 }

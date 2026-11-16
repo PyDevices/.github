@@ -4,18 +4,15 @@ Latest publish run per distribution, reported by publishing-v6's report-release-
 
 | Distribution | Version | TestPyPI | Assets | MIP | PyPI | Updated |
 |---|---|---|---|---|---|---|
+| [mcuctl](https://github.com/PyDevices/mcuctl/actions/runs/43815239137) | 0.1.7.dev4 (pre) | OK | OK | -- | -- | 2026-11-16 06:16 UTC |
 | [omnipython-airwindows](https://github.com/PyDevices/airwindows/actions/runs/43383364991) | 0.1.0.dev1 (pre) | OK | OK | -- | -- | 2026-11-13 07:25 UTC |
 | [omnipython-applibs](https://github.com/PyDevices/apps/actions/runs/43796932250) | 0.1.2.dev13 (pre) | OK | OK | OK | -- | 2026-11-16 03:15 UTC |
-| [omnipython-audiodsp](https://github.com/PyDevices/audiodsp/actions/runs/42943558534) | 0.6.16.dev2 (pre) | OK | OK | -- | -- | 2026-11-11 02:12 UTC |
-| [omnipython-audioeffects](https://github.com/PyDevices/audioeffects/actions/runs/42943583385) | 0.5.2.dev2 (pre) | OK | OK | OK | -- | 2026-11-11 03:13 UTC |
-| [omnipython-audioinstruments](https://github.com/PyDevices/audioinstruments/actions/runs/42944127684) | 0.5.2.dev4 (pre) | OK | OK | OK | -- | 2026-11-11 02:25 UTC |
-| [omnipython-iconkit](https://github.com/PyDevices/pydevices/actions/runs/43740919578) | 0.1.0.dev2 (pre) | OK | OK | OK | -- | 2026-11-15 17:25 UTC |
-| [pydevices](https://github.com/PyDevices/pydevices/actions/runs/43800043072) | 0.8.0.dev21 (pre) | OK | OK | OK | -- | 2026-11-16 03:46 UTC |
 | [omnipython-audiodsp](https://github.com/PyDevices/audiodsp/actions/runs/39729478327) | 0.6.10 | OK | OK | -- | OK | 2026-10-22 05:54 UTC |
 | [omnipython-audioeffects](https://github.com/PyDevices/audiocomponents/actions/runs/40815948502) | 0.4.2rc1 (pre) | OK | OK | -- | -- | 2026-10-29 04:42 UTC |
 | [omnipython-audioinstruments](https://github.com/PyDevices/audiocomponents/actions/runs/40815948502) | 0.4.2rc1 (pre) | OK | OK | OK | -- | 2026-10-29 04:42 UTC |
+| [omnipython-iconkit](https://github.com/PyDevices/pydevices/actions/runs/43740919578) | 0.1.0.dev2 (pre) | OK | OK | OK | -- | 2026-11-15 17:25 UTC |
 | [omnipython-lvgl](https://github.com/PyDevices/omnipython-lvgl/actions/runs/43170101089) | 9.6.0.dev0 (pre) | OK | OK | -- | -- | 2026-11-12 06:59 UTC |
-| [mcuctl](https://github.com/PyDevices/mpftp/actions/runs/43710563286) | 0.1.7.dev3 (pre) | OK | OK | -- | -- | 2026-11-15 11:51 UTC |
 | [omnipython-palettes](https://github.com/PyDevices/pydevices/actions/runs/43567892126) | 0.0.16.dev0 (pre) | OK | OK | OK | -- | 2026-11-14 06:46 UTC |
 | [omnipython-pdwidgets](https://github.com/PyDevices/pydevices/actions/runs/39737052723) | 0.0.25 | OK | OK | OK | -- | 2026-10-22 06:56 UTC |
 | [omnipython-pygraphics](https://github.com/PyDevices/pygraphics/actions/runs/43710583276) | 0.1.6 | OK | OK | OK | -- | 2026-11-15 11:54 UTC |
+| [pydevices](https://github.com/PyDevices/pydevices/actions/runs/43800043072) | 0.8.0.dev21 (pre) | OK | OK | OK | -- | 2026-11-16 03:46 UTC |
