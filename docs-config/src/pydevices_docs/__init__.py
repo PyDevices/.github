@@ -24,14 +24,14 @@ import os
 import urllib.request
 from pathlib import Path
 
-from .projects import GITHUB, MAIN, PORTAL, PROJECTS, ROOT, live_projects
+from .projects import GITHUB, PORTAL, SITE
 
-__version__ = "0.1.0"
+__version__ = "0.3.0"
 
 THEME_DIR = Path(__file__).parent / "theme"
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 
-__all__ = ["configure", "setup", "live_projects", "__version__"]
+__all__ = ["configure", "setup", "__version__"]
 
 
 def _keep_property_docstrings_plain():
@@ -62,9 +62,8 @@ def setup(app):
 
 
 def _reachable(url: str) -> bool:
-    """True when a published inventory answers, so a project that is not on
-    the site yet does not turn into an intersphinx warning (and a failed
-    `-W` build)."""
+    """True when a published inventory answers, so a site that is not up
+    does not turn into an intersphinx warning (and a failed `-W` build)."""
     try:
         req = urllib.request.Request(url, method="HEAD")
         with urllib.request.urlopen(req, timeout=5) as resp:
@@ -73,25 +72,21 @@ def _reachable(url: str) -> bool:
         return False
 
 
-def intersphinx_map(skip: str = "") -> dict:
-    """The reference map: the Python and MicroPython manuals plus every other
-    live PyDevices project whose inventory is published.
+def intersphinx_map(main: bool = False) -> dict:
+    """The reference map: the Python and MicroPython manuals, and for a
+    library built alone, the documentation site, whose inventory holds every
+    library's names.
 
-    Set ``PYDEVICES_DOCS_OFFLINE=1`` to leave out every sibling, for a build
-    with no network.
+    Set ``PYDEVICES_DOCS_OFFLINE=1`` for a build with no network.
     """
+    if os.environ.get("PYDEVICES_DOCS_OFFLINE"):
+        return {}
     mapping = {
         "python": ("https://docs.python.org/3", None),
         "micropython": ("https://docs.micropython.org/en/latest", None),
     }
-    if os.environ.get("PYDEVICES_DOCS_OFFLINE"):
-        return {}
-    for p in live_projects():
-        if p.name == skip:
-            continue
-        key = "pydevices" if p.main else p.name
-        if _reachable(p.inventory):
-            mapping[key] = (p.url, None)
+    if not main and _reachable(SITE + "objects.inv"):
+        mapping["omnipython"] = (SITE, None)
     return mapping
 
 
@@ -195,7 +190,7 @@ def configure(
         "api_packages": list(api_packages),
         "api_skip": list(api_skip),
         "api_source_dirs": [str((conf_dir / d).resolve()) for d in source_dirs],
-        "intersphinx_mapping": intersphinx_map(skip="home" if main else name),
+        "intersphinx_mapping": intersphinx_map(main),
         "intersphinx_timeout": 10,
         # Theme
         "html_theme": "pydevices",
@@ -218,11 +213,8 @@ def configure(
             "github_version": "main",
             "conf_py_path": conf_path,
             "pd_project": name,
-            "pd_is_main": main,
-            "pd_projects": [
-                {"name": p.name, "title": p.title, "url": p.url, "path": p.path}
-                for p in live_projects()
-            ],
+            "pd_site": False,
+            "pd_home": SITE,
             "pd_portal": PORTAL,
             "pd_github": GITHUB,
         },

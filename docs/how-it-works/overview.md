@@ -14,7 +14,7 @@ defaults for any repository in the organization that doesn't have its own.
 | The reusable release workflows and the tag contract | `.github/workflows/reusable-*.yml`, `scripts/` | [the release chain](release-chain.md) |
 | The release dashboard, one row per distribution | `RELEASE_HEALTH.md`, `release-health/data.json` | [fix a failed release](../guides/fix-a-failed-release.md) |
 | The repository database and site generator | `data/repos_db.json`, `scripts/generate_sites.py` | [set up a checkout](../get-started/set-up.md) |
-| The shared Sphinx configuration and the organization overview site | `docs-config/`, `docs-site/` | [build and publish documentation](../guides/build-and-publish-docs.md) |
+| The shared Sphinx configuration and the documentation site that gathers every library | `docs-config/`, `docs-site/` | [build and publish documentation](../guides/build-and-publish-docs.md) |
 | Shared standards | `docs/` | [design principles](design-principles.md), [platform support tiers](platform-support-tiers.md), [repository layout](../reference/repo-layout.md) |
 
 `RELEASE_HEALTH.md` and `release-health/data.json` are written by the

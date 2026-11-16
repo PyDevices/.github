@@ -11,6 +11,10 @@ and packages whose name starts with an underscore are skipped.
 
 The pages are generated into the source tree, so list `reference/` in the
 project's .gitignore and put `reference/index` in a toctree.
+
+The combined site sets `api_sections` instead: one entry per library, each
+with its own folder (``<slug>/reference``), packages, import folders and
+folders to skip.
 """
 
 from __future__ import annotations
@@ -44,13 +48,11 @@ def _modules(source_dirs, package, skip=()):
     return []
 
 
-def generate(app):
-    srcdir = Path(app.srcdir)
-    out = srcdir / OUT
+def _generate(out, packages, source_dirs, skip):
     out.mkdir(exist_ok=True)
     names = []
-    for package in app.config.api_packages:
-        for module in _modules(app.config.api_source_dirs, package, app.config.api_skip):
+    for package in packages:
+        for module in _modules(source_dirs, package, skip):
             title = f"{module}"
             body = f"{title}\n{'=' * len(title)}\n\n.. automodule:: {module}\n"
             _write(out / f"{module}.rst", body)
@@ -60,9 +62,18 @@ def generate(app):
     _write(out / "index.rst", index)
 
 
+def generate(app):
+    srcdir = Path(app.srcdir)
+    if app.config.api_packages:
+        _generate(srcdir / OUT, app.config.api_packages, app.config.api_source_dirs, app.config.api_skip)
+    for section in app.config.api_sections:
+        _generate(srcdir / section["dir"], section["packages"], section["source_dirs"], section.get("skip", ()))
+
+
 def setup(app):
     app.add_config_value("api_packages", [], "env")
     app.add_config_value("api_source_dirs", [], "env")
     app.add_config_value("api_skip", [], "env")
+    app.add_config_value("api_sections", [], "env")
     app.connect("builder-inited", generate)
     return {"version": "1", "parallel_read_safe": True, "parallel_write_safe": True}

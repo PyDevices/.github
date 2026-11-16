@@ -1,1 +1,12 @@
-_build/
+# gather.py's clones, and the links it makes to each library's docs.
+/_repos/
+/pydevices
+/palettes
+/pdwidgets
+/pygraphics
+/lvgl
+/audiodsp
+/audioinstruments
+/audioeffects
+/firmware
+/_build/

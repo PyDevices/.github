@@ -5,22 +5,17 @@
   {{ super() }}
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800&display=swap">
   <link rel="stylesheet" href="{{ pathto('_static/pydevices.css', 1) }}" type="text/css" />
-  <script src="{{ pathto('_static/pydevices-bar.js', 1) }}" defer></script>
   <script src="{{ pathto('_static/pydevices-demo.js', 1) }}" defer></script>
 {%- endblock %}
 
 {%- block extrabody %}
   {{ super() }}
-  <nav class="pd-bar" aria-label="OmniPython projects" data-pd-main="{{ 'true' if pd_is_main else 'false' }}">
-    <a class="pd-brand" href="{{ pd_projects[0].url }}" data-pd-path="{{ pd_projects[0].path }}">
+  {#- On the site, the brand is its front page; a library built alone links to the site. #}
+  <nav class="pd-bar" aria-label="OmniPython">
+    <a class="pd-brand" href="{{ pathto(root_doc) if pd_site else pd_home }}">
       <img src="{{ pathto('_static/logo.svg', 1) }}" alt="" width="30" height="30">
       <span>OmniPython</span>
     </a>
-    <ul class="pd-projects">
-      {%- for p in pd_projects[1:] %}
-      <li><a href="{{ p.url }}" data-pd-path="{{ p.path }}"{% if p.name == pd_project %} aria-current="page" class="pd-current"{% endif %}>{{ p.title }}</a></li>
-      {%- endfor %}
-    </ul>
     <span class="pd-bar-links">
       <a href="{{ pd_portal }}">Website</a>
       <a href="{{ pd_github }}">GitHub</a>

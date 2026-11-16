@@ -1,9 +1,10 @@
 # pydevices-docs
 
 The shared look and configuration of the PyDevices documentation projects: a
-Sphinx theme (`sphinx_rtd_theme` with a PyDevices palette), the top bar that
-links every project to every other, the Markdown setup, the Google-style
-docstring setup, and the reference map between projects.
+Sphinx theme (`sphinx_rtd_theme` with a PyDevices palette), the top bar, the
+Markdown setup, the Google-style docstring setup, the reference map to the
+Python manuals, and `site`, which builds every library's docs folder into the
+one OmniPython site.
 
 Each project's `docs/conf.py` calls `configure()` and sets only its name and
 where its code is. This is what `palettes` does:
@@ -40,20 +41,26 @@ the API pages (see below).
   `reference/` in the project's `.gitignore`.
 - `mock_imports`: modules autodoc should not import (hardware modules a
   desktop build lacks).
-- The reference map: the Python and MicroPython manuals, and every other
-  PyDevices project whose `objects.inv` answers. A project that is not
-  published yet is left out, so it cannot fail a `-W` build.
-  `PYDEVICES_DOCS_OFFLINE=1` leaves all of them out.
+- The reference map: the Python and MicroPython manuals and, in a build of
+  one library alone, the OmniPython site as `omnipython` while its
+  `objects.inv` answers. `PYDEVICES_DOCS_OFFLINE=1` leaves all of them out.
 - The version, read from the file named by `version_file` (default
   `../VERSION`).
 
 ## The top bar
 
-`pydevices_docs/projects.py` lists the projects. A project is in the bar once
-its `live` flag is true, which takes a new package release. Links are the Read
-the Docs addresses; `pydevices-bar.js` rewrites them to the host serving the
-page when that is the main project's site (or a subproject under it), so a
-custom domain, a preview or a local server keeps readers where they are.
+The bar has the OmniPython name, which goes to the site's front page, and links
+to the PyDevices website and GitHub. `pydevices_docs/projects.py` holds those
+addresses.
+
+## The combined site
+
+`pydevices_docs.site.configure_site()` is what `docs-site/conf.py` in this
+repository calls. It reads each library's own `conf.py` and builds every
+library as a section of one site, with that library's settings applied while
+its pages are read. How it works, and how warnings are kept to the library
+that caused them, is in
+[build and publish documentation](../docs/guides/build-and-publish-docs.md).
 
 ## Preview a project
 

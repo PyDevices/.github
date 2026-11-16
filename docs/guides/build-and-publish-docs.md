@@ -1,110 +1,129 @@
 # Build and publish documentation
 
-How to preview a PyDevices documentation project on your machine and how it
-reaches Read the Docs.
+How the OmniPython documentation site is built from every library's own
+`docs/` folder, how to preview it, and how a change in a library reaches Read
+the Docs.
 
-One Sphinx configuration, in the `pydevices-docs` package
-([docs-config/](../../docs-config/)), gives every project the same theme, the
-same top bar linking every project to every other, and the same Markdown and
-docstring setup. The organization overview is the main project, built from
-[docs-site/](../../docs-site/); each library's manual is a subproject.
+There is one site and one Sphinx build. Its source is [docs-site/](../../docs-site/)
+here: the front pages, and [libraries.toml](../../docs-site/libraries.toml), the
+list of libraries in sidebar order. Each library's pages stay in its own
+repository, beside a `conf.py` that builds them alone. Before the build,
+[gather.py](../../docs-site/gather.py) clones each repository's `main` and
+copies its docs folder in as a section, so the site has one search, one table
+of contents and one sidebar. The shared theme and configuration are the
+`pydevices-docs` package, [docs-config/](../../docs-config/).
 
-| Project | Source | Site |
-|---|---|---|
-| PyDevices (the main project) | [docs-site/](../../docs-site/) here | `pydevices.readthedocs.io` |
-| palettes | [palettes/docs](https://github.com/PyDevices/pydevices/tree/main/palettes/docs) | `/projects/palettes/` under the main site |
-| pdwidgets | [pdwidgets/docs](https://github.com/PyDevices/pydevices/tree/main/pdwidgets/docs) | `/projects/pdwidgets/` |
-| pygraphics | [docs/](https://github.com/PyDevices/pygraphics/tree/main/docs) in its repo | `/projects/pygraphics/` |
+| Section | Source |
+|---|---|
+| The front pages | [docs-site/](../../docs-site/) here |
+| `/pydevices/`, `/palettes/`, `/pdwidgets/` | `docs/`, `packages/palettes/docs/`, `packages/pdwidgets/docs/` in [pydevices](https://github.com/PyDevices/pydevices) |
+| `/pygraphics/` | `docs/` in [pygraphics](https://github.com/PyDevices/pygraphics) |
+| `/lvgl/` | `docs/` in [omnipython-lvgl](https://github.com/PyDevices/omnipython-lvgl) |
+| `/audiodsp/`, `/audioinstruments/`, `/audioeffects/` | `docs/` in each repository |
+| `/firmware/` | `docs/` in [micropython-pydevices](https://github.com/PyDevices/micropython-pydevices) |
 
 Docstring conventions for the generated API pages: [write docstrings](write-docstrings.md).
 
-## Preview locally
+## Preview the site
 
-From the project's repository root (for palettes and pdwidgets, from the
-`pydevices` checkout):
+From this repository's root:
 
 ```bash
 python3 -m venv .venv-docs
-.venv-docs/bin/pip install -r palettes/docs/requirements.txt   # or pdwidgets/, or docs/ in pygraphics
-.venv-docs/bin/sphinx-build -W --keep-going -b html palettes/docs palettes/docs/_build/html
+.venv-docs/bin/pip install -r docs-site/requirements.txt
+.venv-docs/bin/python docs-site/gather.py
+.venv-docs/bin/sphinx-build -b html --keep-going -w warnings.log docs-site docs-site/_build/html
+.venv-docs/bin/python docs-site/check_warnings.py warnings.log
 ```
 
-`requirements.txt` installs the tagged `pydevices-docs`. To work on the shared
-package itself, install your checkout instead:
-`.venv-docs/bin/pip install -e <path to this repository>/docs-config`.
+The build takes about a minute. To see a library change before it is pushed,
+gather from your checkout instead of a clone, and run `gather.py` again after
+each edit: `gather.py --local pygraphics=../pygraphics`. Serve the result with
+`python3 -m http.server -d docs-site/_build/html`; live demos need http, not
+`file://`.
 
-Open `_build/html/index.html`, or serve the folder
-(`python3 -m http.server -d palettes/docs/_build/html`). Live demos need http,
-not `file://`. `sphinx-autobuild palettes/docs palettes/docs/_build/html`
-rebuilds as you edit.
+## Preview one library alone
 
-`-W` turns every warning into a failure. That is how CI and Read the Docs
-(`fail_on_warning: true` in `.readthedocs.yaml`) build, so a build that passes
-here passes there. No network? Set `PYDEVICES_DOCS_OFFLINE=1` to skip the
-reference map to the Python and MicroPython manuals.
+Each library still builds alone from its own repository, which is quicker and
+is what its own CI checks with `-W`:
 
-### What runs during a build
+```bash
+python3 -m venv .venv-docs
+.venv-docs/bin/pip install -r docs/requirements.txt
+.venv-docs/bin/sphinx-build -W --keep-going -b html docs docs/_build/html
+```
 
-| File | Role |
-|------|------|
-| `docs/conf.py` | A few lines: the project's name and where its code is, passed to `pydevices_docs.configure()` |
-| `docs/requirements.txt` | The pinned `pydevices-docs` release |
-| `.readthedocs.yaml` | Read the Docs build settings |
-| `docs/reference/` | API pages, written at build time from the package's modules (git-ignored) |
+`requirements.txt` installs a tagged `pydevices-docs`. To work on the shared
+package, install your checkout instead:
+`.venv-docs/bin/pip install -e <path to this repository>/docs-config`. No
+network? Set `PYDEVICES_DOCS_OFFLINE=1`.
 
-Hand-authored pages are Markdown (MyST) in `docs/`. Cards and tabs come from
-`sphinx-design`, diagrams from `mermaid`, and the live browser demos are raw
-HTML (see the [pydevices-docs README](../../docs-config/README.md)).
+## How a library's conf.py is read
+
+The library's `conf.py` is the one description of how its pages are built,
+alone and on the site. The site runs it from the clone and keeps what it
+passes to `pydevices_docs.configure()` (import folders, API packages, mocks,
+`__all__` or not), plus `master_doc`, `exclude_patterns`, `suppress_warnings`
+and `myst_heading_anchors`, and calls its `setup(app)` with the section's
+folder as `app.srcdir`. While Sphinx reads a page, the mocks and autodoc
+defaults are that page's library's, so libraries that mock each other's
+modules build as they do alone. The details are in
+[site.py](../../docs-config/src/pydevices_docs/site.py).
+
+A library whose `master_doc` is a navigation page (`contents.md`) starts at
+its `index` on the site, and the navigation's toctrees move onto that page.
+Links and includes that leave the docs folder (`../src/x.c`,
+`../CHANGELOG.md`) are pointed back at the repository.
+
+## Warnings
+
+A warning on the site belongs to the repository whose file caused it, and it
+fails that repository's check, not anyone else's. Read the Docs builds with
+`fail_on_warning: false`, so one library's bad page shows as it is (and in the
+build log) rather than stopping every other library's update.
+
+- Each library's own docs job builds it alone with `-W`, on every pull request.
+- Each library's **Docs site** workflow builds the whole site with the
+  pull request's pages in it, and fails when that library has a warning there.
+  The annotations land on the library's files.
+- This repository's `docs-site` check does the same for the front pages and the
+  shared package, and prints every library's count.
 
 ### Troubleshooting
 
-**`ModuleNotFoundError` while importing a module for the API pages** -- autodoc
+**`ModuleNotFoundError` while importing a module for the API pages**: autodoc
 imports the package. Name modules a desktop build lacks (hardware, interpreter
-builtins) in `mock_imports` in `conf.py`.
+builtins) in `mock_imports` in the library's `conf.py`.
 
-**A docstring warning fails the build** -- fix it in the **docstring**, not the
-signature: these packages run on MicroPython and CircuitPython, where
+**A docstring warning fails the build**: fix it in the docstring, not the
+signature. These packages run on MicroPython and CircuitPython, where
 annotations cost bytecode and RAM. See [write docstrings](write-docstrings.md).
 
-**An API page is missing a name** -- the page documents what the module
+**An API page is missing a name**: the page documents what the module
 defines. For a package whose public names live in private modules (pygraphics),
 set `use_module_all=True` so the page follows `__all__`.
 
 ## Publish to Read the Docs
 
-Read the Docs reads `.readthedocs.yaml` from the repository. The main project
-and each subproject are separate Read the Docs projects; the main project lists
-the others under **Subprojects**, which is what puts them at
-`/projects/<name>/` and gives every page the same address scheme.
+The site is the Read the Docs project `pydevices`, built from this repository
+by the root [.readthedocs.yaml](../../.readthedocs.yaml), which runs
+`gather.py` before Sphinx. Readers land on **latest**, built from `main`.
 
-### Org GitHub App
+Read the Docs rebuilds on a push here through the org's
+[Read the Docs Community GitHub App](https://github.com/apps/read-the-docs-community).
+A push to a library's `main` doesn't reach this repository, so each library's
+**Docs site** workflow calls the project's incoming build webhook after a push
+that touches its docs or the code they're generated from. It needs the
+organization secret `RTD_WEBHOOK_TOKEN` and the organization variable
+`RTD_WEBHOOK_URL`, both from the project's **Admin > Integrations > Generic
+API incoming webhook**. Without them the workflow says so in a notice and
+skips the call; the site then catches up on the next build here.
 
-PyDevices uses the
-[Read the Docs Community GitHub App](https://github.com/apps/read-the-docs-community)
-installed on the org with access to all repositories (see the
-[org installation](https://github.com/organizations/PyDevices/settings/installations)).
-It delivers push and pull-request events; do not add a manual
-`readthedocs.org/api/v2/webhook/...` hook.
+### A new library
 
-### A new project
-
-1. Open the [Read the Docs dashboard](https://app.readthedocs.org/dashboard/)
-   and **Add project**; pick the repository under `PyDevices/`.
-2. If the project's `.readthedocs.yaml` is not at the repository root, set
-   **Settings > Advanced > Path for .readthedocs.yaml** (palettes and pdwidgets
-   use `palettes/.readthedocs.yaml` and `pdwidgets/.readthedocs.yaml`).
-3. Make sure `latest` (tracking `main`) is active and the default version.
-4. On the main project, **Subprojects > Add subproject**, with the project's
-   name as the alias.
-5. Add the project to `projects.py` in `docs-config/` with `live = True` and
-   release a new `pydevices-docs`, so it appears in every project's top bar.
-
-### Versions
-
-Readers land on **latest**, built from `main`. Keep only the most recent
-release version active beside it (**Admin > Versions**); hide the rest.
-
-### Pull request previews
-
-In the project's **Admin > Preview documentation from pull requests**, enable
-PR builds so each PR gets a preview before merge.
+1. Give it a `docs/` folder with a `conf.py` that calls
+   `pydevices_docs.configure()`, and build it alone with `-W`.
+2. Add it to [libraries.toml](../../docs-site/libraries.toml) and to
+   [docs-site/.gitignore](../../docs-site/.gitignore).
+3. Copy the caller workflow from another library
+   (`.github/workflows/docs-site.yml`) and set its paths.

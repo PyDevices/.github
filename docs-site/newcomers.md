@@ -1,12 +1,12 @@
 # New here?
 
-PyDevices has a lot of parts, and you only need a few of them. This is the
+OmniPython has a lot of parts, and you only need a few of them. This is the
 order most people meet them in.
 
 ## 1. Watch it run
 
 Open the [gallery](https://pydevices.github.io/gallery/gallery/).
-Every program there is a real PyDevices example running as MicroPython in your
+Every program there is a real OmniPython example running as MicroPython in your
 browser, with the same code a board would run. Pick one that draws, one that
 reacts to the mouse and one that uses widgets, and read the code beside it.
 
@@ -20,22 +20,22 @@ opens and your program draws into it, which is the quickest way to try an idea.
 
 Most programs use three libraries stacked on the display:
 
-- [pygraphics](https://pygraphics.readthedocs.io/) draws: lines, shapes, text and images.
-- [palettes](https://palettes.readthedocs.io/) supplies colors in the format the display wants.
-- [pdwidgets](https://pdwidgets.readthedocs.io/) builds a user interface out of buttons, sliders and labels, and routes touch and keys to them.
+- [pygraphics](pygraphics/index.md) draws: lines, shapes, text and images.
+- [palettes](palettes/index.md) supplies colors in the format the display wants.
+- [pdwidgets](pdwidgets/index.md) builds a user interface out of buttons, sliders and labels, and routes touch and keys to them.
 
-Each project's manual has its own newcomer's guide.
+Each library's section starts with its own install page and first program.
 
 ## 4. Move it to a board
 
 The board you own has a `board_config` that sets up its display and touch, so
 the program you ran on the desktop starts the same way on the board. The
-[device matrix](https://github.com/PyDevices/pydevices/blob/main/docs/boards/device-matrix.md)
+[device matrix](pydevices/boards/device-matrix.md)
 lists the boards, and [mpftp](https://github.com/PyDevices/mpftp) copies files
 to them and gives you a REPL from your editor.
 
 ## When something goes wrong
 
-Open an issue in the project that misbehaves; the links are on the
-[projects page](projects/index.md). Say what you ran and what you saw, and
+Open an issue in the repository of the library that misbehaves; the
+"Edit on GitHub" link at the top of its pages leads there. Say what you ran and what you saw, and
 which board or interpreter it was.

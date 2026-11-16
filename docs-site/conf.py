@@ -2,13 +2,16 @@
 #
 # SPDX-License-Identifier: MIT
 
-"""The PyDevices main documentation project: the organization overview."""
+"""The OmniPython documentation site: every library's docs in one build.
 
-from pydevices_docs import configure
+Run ``python docs-site/gather.py`` first; it brings each library's ``docs``
+folder in from its own repository.
+"""
 
-globals().update(configure(
-    "PyDevices", __file__,
-    repo="PyDevices/.github", edit_path="docs-site",
-    version_file=None, main=True,
-))
-exclude_patterns = ["_build"]
+from pathlib import Path
+
+from pydevices_docs.site import configure_site, read_libraries
+
+LIBRARIES = read_libraries(Path(__file__).with_name("libraries.toml"))
+
+globals().update(configure_site(__file__, LIBRARIES))
