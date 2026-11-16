@@ -583,7 +583,7 @@
       },
       {
         "label": "Gallery",
-        "href": "https://pydevices.github.io/gallery/pyscript/",
+        "href": "https://gallery.omnipython.org/pyscript/",
         "tier_color": true
       }
     ],
@@ -871,7 +871,7 @@
       },
       {
         "label": "Gallery",
-        "href": "https://pydevices.github.io/gallery/gallery/",
+        "href": "https://gallery.omnipython.org/",
         "tier_color": true
       },
       {
@@ -952,7 +952,7 @@
       },
       {
         "label": "Gallery",
-        "href": "https://pydevices.github.io/gallery/gallery/",
+        "href": "https://gallery.omnipython.org/",
         "tier_color": true
       },
       {
@@ -1030,7 +1030,7 @@
       },
       {
         "label": "Live App",
-        "href": "https://pydevices.github.io/workbench/",
+        "href": "https://workbench.pydevices.com/",
         "tier_color": true
       },
       {
