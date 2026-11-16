@@ -4,7 +4,7 @@ Latest publish run per distribution, reported by publishing-v6's report-release-
 
 | Distribution | Version | TestPyPI | Assets | MIP | PyPI | Updated |
 |---|---|---|---|---|---|---|
-| [mcuctl](https://github.com/PyDevices/mcuctl/actions/runs/43832914967) | 0.1.7.dev5 (pre) | OK | OK | -- | -- | 2026-11-16 08:40 UTC |
+| [mcuctl](https://github.com/PyDevices/mcuctl/actions/runs/43900786186) | 0.1.7.dev6 (pre) | OK | OK | -- | -- | 2026-11-16 15:51 UTC |
 | [omnipython](https://github.com/PyDevices/omnipython/actions/runs/43822918740) | 0.8.0.dev22 (pre) | OK | OK | OK | -- | 2026-11-16 07:25 UTC |
 | [omnipython-airwindows](https://github.com/PyDevices/airwindows/actions/runs/43820934635) | 0.1.0.dev2 (pre) | OK | OK | -- | -- | 2026-11-16 07:24 UTC |
 | [omnipython-applibs](https://github.com/PyDevices/apps/actions/runs/43826931957) | 0.1.2.dev14 (pre) | OK | OK | OK | -- | 2026-11-16 07:54 UTC |
