@@ -23,6 +23,8 @@
     } catch (e) {}
   }
   var LOGO = (ROOT || '') + '/assets/img/logo.svg';
+  /* Three pads a side: the drawing for slots under about 32 px. */
+  var LOGO_SMALL = (ROOT || '') + '/assets/img/logo-small.svg';
 
   var HEADER =
     '<header class="site-header">' +
@@ -61,7 +63,7 @@
     '<footer class="site-footer">' +
     '<div class="wrap">' +
     '<span class="footer-brand"><img src="' +
-    LOGO +
+    LOGO_SMALL +
     '" alt="" width="26" height="26">&copy; 2026 PyDevices &middot; MIT License</span>' +
     '<span><a href="https://github.com/PyDevices">github.com/PyDevices</a></span>' +
     "</div>" +
@@ -269,7 +271,7 @@
 
     // 1. Peeking Handle (visible on screens <= 1400px when collapsed)
     html += '<div class="pydevices-nav-peeking-tab" id="pydevices-nav-peeking-tab" title="Click to browse PyDevices Ecosystem">';
-    html += '  <img src="' + LOGO + '" alt="" class="peeking-logo" width="22" height="22">';
+    html += '  <img src="' + LOGO_SMALL + '" alt="" class="peeking-logo" width="22" height="22">';
     html += '  <span class="peeking-title">ECOSYSTEM</span>';
     html += '  <svg class="peeking-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6" stroke-width="2.5"/></svg>';
     html += '</div>';
@@ -278,7 +280,7 @@
     html += '<div class="pydevices-nav-panel">';
     html += '  <div class="pydevices-nav-header">';
     html += '    <a class="pydevices-nav-brand" href="' + ROOT + '/">';
-    html += '      <img src="' + LOGO + '" alt="PyDevices" width="28" height="28">';
+    html += '      <img src="' + LOGO_SMALL + '" alt="PyDevices" width="28" height="28">';
     html += '      <div>';
     html += '        <div class="pydevices-nav-brand-title">PyDevices</div>';
     html += '        <div class="pydevices-nav-brand-sub">Ecosystem Navigator</div>';
