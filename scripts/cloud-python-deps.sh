@@ -11,11 +11,11 @@
 #
 # Safe to run on every cloud VM boot (environment.json install).
 # Intentionally does NOT `set -e`: a single optional install (e.g. TestPyPI
-# pydevices-lvgl) must never abort VM startup for the whole team. Required
+# omnipython-lvgl) must never abort VM startup for the whole team. Required
 # failures (no ensurepip after apt) still exit non-zero at the end.
 set -uo pipefail
 
-REPOS="${PYDEVICES_REPOS_ROOT:-/agent/repos}"
+REPOS="${OMNIPYTHON_REPOS_ROOT:-/agent/repos}"
 
 log() { printf 'cloud-python-deps: %s\n' "$*"; }
 
@@ -89,29 +89,29 @@ if bin="$(ensure_venv gallery)"; then
     # examples exercise the same source that MicroPython consumes.
     if [[ -d "$REPOS/audiodsp" ]]; then
         "$bin/pip" install -q -e "$REPOS/audiodsp" || \
-            log "warn: editable pydevices-audiodsp install failed; synthesis examples unavailable"
+            log "warn: editable omnipython-audiodsp install failed; synthesis examples unavailable"
     else
         "$bin/pip" install -q -i https://test.pypi.org/simple/ \
-            --extra-index-url https://pypi.org/simple/ pydevices-audiodsp || \
-            log "warn: pydevices-audiodsp (TestPyPI) install skipped; synthesis examples unavailable"
+            --extra-index-url https://pypi.org/simple/ omnipython-audiodsp || \
+            log "warn: omnipython-audiodsp (TestPyPI) install skipped; synthesis examples unavailable"
     fi
     # CPython LVGL binding (import name `lvgl`) from TestPyPI — optional; the
     # LVGL examples/timer kits need it. Best-effort so TestPyPI outages don't
     # break startup.
     "$bin/pip" install -q -i https://test.pypi.org/simple/ \
-        --extra-index-url https://pypi.org/simple/ pydevices-lvgl || \
-        log "warn: pydevices-lvgl (TestPyPI) install skipped; LVGL examples unavailable"
+        --extra-index-url https://pypi.org/simple/ omnipython-lvgl || \
+        log "warn: omnipython-lvgl (TestPyPI) install skipped; LVGL examples unavailable"
     # Put canonical product and source-only sibling packages on gallery's
     # venv path so the matrix tests the current multi-repo sources.
     sp="$("$bin/python" -c 'import site; print(site.getsitepackages()[0])' 2>/dev/null)"
     if [[ -n "${sp:-}" ]]; then
         printf '%s\n%s\n%s\n%s\n%s\n%s\n' \
-            "$REPOS/pydevices/drivers/display" \
-            "$REPOS/pydevices/lib" \
-            "$REPOS/pydevices/utils" \
+            "$REPOS/omnipython/drivers/display" \
+            "$REPOS/omnipython/lib" \
+            "$REPOS/omnipython/utils" \
             "$REPOS/palettes/lib" "$REPOS/pdwidgets/lib" "$REPOS/pygraphics/lib" \
-            > "$sp/pydevices_siblings.pth"
-        log "wrote $sp/pydevices_siblings.pth"
+            > "$sp/omnipython_siblings.pth"
+        log "wrote $sp/omnipython_siblings.pth"
     fi
 else
     log "ERROR: gallery venv unavailable"

@@ -5,7 +5,7 @@
 """Build every library's documentation as one site, with one Sphinx run.
 
 Each library keeps its documentation in its own repository, as a ``docs/``
-folder with its own ``conf.py`` that calls `pydevices_docs.configure`. The
+folder with its own ``conf.py`` that calls `omnipython_docs.configure`. The
 site's ``gather.py`` clones each repository into ``<srcdir>/_repos`` and
 copies its docs folder into the source tree as a section, ``<srcdir>/<slug>``.
 The build reads each library's ``conf.py``, where it sits in the clone, to
@@ -107,7 +107,7 @@ class _SectionApp:
 
 def _read_section_conf(lib: Library, conf_path: Path) -> None:
     """Run a library's conf.py and keep what the site needs from it."""
-    import pydevices_docs
+    import omnipython_docs
 
     calls = []
 
@@ -115,22 +115,22 @@ def _read_section_conf(lib: Library, conf_path: Path) -> None:
         calls.append(kwargs)
         return _configure(name, conf_file, **kwargs)
 
-    namespace = {"__file__": str(conf_path), "__name__": f"_pydevices_docs_conf_{lib.slug.replace('-', '_')}"}
-    saved_offline = os.environ.get("PYDEVICES_DOCS_OFFLINE")
-    pydevices_docs.configure = recording_configure
+    namespace = {"__file__": str(conf_path), "__name__": f"_omnipython_docs_conf_{lib.slug.replace('-', '_')}"}
+    saved_offline = os.environ.get("OMNIPYTHON_DOCS_OFFLINE")
+    omnipython_docs.configure = recording_configure
     # The section's own reference map is not used, so don't ask the network for it.
-    os.environ["PYDEVICES_DOCS_OFFLINE"] = "1"
+    os.environ["OMNIPYTHON_DOCS_OFFLINE"] = "1"
     try:
         code = compile(conf_path.read_text(encoding="utf-8"), str(conf_path), "exec")
         exec(code, namespace)  # noqa: S102 - the library's own conf.py, as Sphinx would run it
     finally:
-        pydevices_docs.configure = _configure
+        omnipython_docs.configure = _configure
         if saved_offline is None:
-            os.environ.pop("PYDEVICES_DOCS_OFFLINE", None)
+            os.environ.pop("OMNIPYTHON_DOCS_OFFLINE", None)
         else:
-            os.environ["PYDEVICES_DOCS_OFFLINE"] = saved_offline
+            os.environ["OMNIPYTHON_DOCS_OFFLINE"] = saved_offline
     if len(calls) != 1:
-        raise RuntimeError(f"{conf_path} must call pydevices_docs.configure once; it called it {len(calls)} times")
+        raise RuntimeError(f"{conf_path} must call omnipython_docs.configure once; it called it {len(calls)} times")
 
     kwargs = calls[0]
     conf_dir = conf_path.resolve().parent
@@ -215,7 +215,7 @@ def configure_site(conf_file: str, libraries: list, *, title: str = "OmniPython"
     # pages would otherwise hang under the last of them.
     settings["html_theme_options"]["titles_only"] = True
     settings["html_title"] = f"{title} documentation"
-    settings["extensions"] += ["pydevices_docs.apigen", "pydevices_docs.site"]
+    settings["extensions"] += ["omnipython_docs.apigen", "omnipython_docs.site"]
     settings["api_sections"] = [lib.api for lib in libraries if lib.api]
     settings["pd_libraries"] = libraries
     return settings
@@ -418,7 +418,7 @@ def _prefer_own_package():
     from sphinx.domains.python import PythonDomain
 
     original = PythonDomain.find_obj
-    if getattr(original, "_pydevices_site", False):
+    if getattr(original, "_omnipython_site", False):
         return
 
     def find_obj(self, env, modname, classname, name, type, searchmode=0):
@@ -430,7 +430,7 @@ def _prefer_own_package():
                 return own
         return matches
 
-    find_obj._pydevices_site = True
+    find_obj._omnipython_site = True
     PythonDomain.find_obj = find_obj
 
 

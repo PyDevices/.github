@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pydevices-docs"
-version = "0.3.1"
-description = "Shared Sphinx theme and configuration for the PyDevices documentation projects."
+name = "omnipython-docs"
+version = "0.4.0"
+description = "Shared Sphinx theme and configuration for the OmniPython documentation projects."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -18,10 +18,10 @@ dependencies = [
 ]
 
 [project.entry-points."sphinx.html_themes"]
-pydevices = "pydevices_docs"
+omnipython = "omnipython_docs"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-pydevices_docs = ["theme/*", "theme/static/*", "templates/*"]
+omnipython_docs = ["theme/*", "theme/static/*", "templates/*"]

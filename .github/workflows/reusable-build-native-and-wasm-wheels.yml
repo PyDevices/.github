@@ -7,7 +7,7 @@ on:
         required: true
         type: string
       wheel-filename-prefix:
-        description: Normalized wheel filename prefix, such as pydevices_pygraphics
+        description: Normalized wheel filename prefix, such as omnipython_pygraphics
         required: true
         type: string
       expected-wheel-count:

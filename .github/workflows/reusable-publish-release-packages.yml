@@ -9,7 +9,7 @@
 # path. A local `./` reference does not do what .github#26 hoped: when a
 # consumer calls this coordinator at @publishing-vN, `./` resolves against the
 # CONSUMER's repository, and the run dies at startup with zero jobs
-# (publishing-v10, pydevices v0.5.0, .github#47). So the refs are literal and
+# (publishing-v10, omnipython v0.5.0, .github#47). So the refs are literal and
 # the tag name is repeated below, and `scripts/cut_publishing_tag.sh` is the
 # only way a tag is cut: it rewrites these four refs to the new tag in the
 # same commit it tags, and the `sibling-refs` job in checks.yml refuses a
@@ -19,11 +19,11 @@ on:
   workflow_call:
     inputs:
       build-kind:
-        description: pure-python | native-and-wasm | pydevices-multi
+        description: pure-python | native-and-wasm | omnipython-multi
         required: true
         type: string
       distribution-name:
-        description: TestPyPI distribution name, e.g. pydevices-palettes
+        description: TestPyPI distribution name, e.g. omnipython-palettes
         required: true
         type: string
       import-name:
@@ -31,7 +31,7 @@ on:
         default: ""
         type: string
       wheel-filename-prefix:
-        description: native-and-wasm only -- e.g. pydevices_pygraphics
+        description: native-and-wasm only -- e.g. omnipython_pygraphics
         default: ""
         type: string
       expected-wheel-count:
@@ -148,10 +148,10 @@ jobs:
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}
 
-  build-pydevices-multi:
-    if: inputs.build-kind == 'pydevices-multi'
+  build-omnipython-multi:
+    if: inputs.build-kind == 'omnipython-multi'
     needs: prepare-release
-    uses: PyDevices/.github/.github/workflows/reusable-build-pydevices-distributions.yml@publishing-v25
+    uses: PyDevices/.github/.github/workflows/reusable-build-omnipython-distributions.yml@publishing-v25
     with:
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}
@@ -161,7 +161,7 @@ jobs:
       - prepare-release
       - build-pure-python
       - build-native-and-wasm
-      - build-pydevices-multi
+      - build-omnipython-multi
     # Exactly one build job runs; the other two are skipped. Without this the
     # publish would be skipped too, because a skipped dependency is not success.
     if: >-
@@ -192,7 +192,7 @@ jobs:
       - prepare-release
       - build-pure-python
       - build-native-and-wasm
-      - build-pydevices-multi
+      - build-omnipython-multi
     if: >-
       always()
       && needs.prepare-release.result == 'success'
@@ -227,7 +227,7 @@ jobs:
       - prepare-release
       - build-pure-python
       - build-native-and-wasm
-      - build-pydevices-multi
+      - build-omnipython-multi
       - publish-to-testpypi
     if: >-
       always()
@@ -257,7 +257,7 @@ jobs:
       - prepare-release
       - build-pure-python
       - build-native-and-wasm
-      - build-pydevices-multi
+      - build-omnipython-multi
       - publish-to-testpypi
       - attach-release-assets
       - request-mip-publication
@@ -301,7 +301,7 @@ jobs:
       - prepare-release
       - build-pure-python
       - build-native-and-wasm
-      - build-pydevices-multi
+      - build-omnipython-multi
     uses: PyDevices/.github/.github/workflows/reusable-request-mip-publication.yml@publishing-v25
     with:
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}

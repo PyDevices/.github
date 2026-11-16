@@ -2,7 +2,7 @@
 
 How you install OmniPython depends on where your code will run. The exact
 commands and the system packages each channel needs are in the
-[pydevices install guide](pydevices/get-started/install.md); this page is the
+[omnipython install guide](omnipython/get-started/install.md); this page is the
 short version.
 
 ::::{tab-set}
@@ -17,11 +17,11 @@ omip.install("palettes")
 ```
 
 `omip` comes with OmniPython firmware. On other MicroPython firmware, run
-`mip.install("github:PyDevices/pydevices/lib/omip.py")` once to put it on the board.
+`mip.install("github:PyDevices/omnipython/lib/omip.py")` once to put it on the board.
 
 A board's `board_config` installs the same way and wires up the display and
 touch for that board. The board's page in the
-[device matrix](pydevices/boards/device-matrix.md)
+[device matrix](omnipython/boards/device-matrix.md)
 names the package to ask for.
 :::
 
@@ -36,7 +36,7 @@ One command installs the whole desktop stack:
 
 ```bash
 pip install -i https://test.pypi.org/simple/ \
-  --extra-index-url https://pypi.org/simple/ pydevices-desktop
+  --extra-index-url https://pypi.org/simple/ omnipython-desktop
 ```
 
 Current releases are on TestPyPI, which is why the command names it first.
@@ -53,7 +53,7 @@ Pyodide or PyScript; each library's install page shows the line.
 
 ## Checking that it works
 
-With `pydevices-desktop` installed, this draws a red square in a window:
+With `omnipython-desktop` installed, this draws a red square in a window:
 
 ```bash
 python -c "from board_config import display_drv; display_drv.fill_rect(50, 50, 100, 100, 0xF800); display_drv.show()"
@@ -61,5 +61,5 @@ python -c "from board_config import display_drv; display_drv.fill_rect(50, 50, 1
 
 If a window opens with a red square in it, the stack is working. If it does
 not, the
-[troubleshooting page](pydevices/guides/troubleshooting.md)
+[troubleshooting page](omnipython/guides/troubleshooting.md)
 is the next stop.

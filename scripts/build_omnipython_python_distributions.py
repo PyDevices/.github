@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-"""Build every dynamic PyDevices Python distribution from lib/ and utils/."""
+"""Build every dynamic OmniPython Python distribution from lib/ and utils/."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ import tomllib
 import urllib.request
 from pathlib import Path
 
-from pydevices_package_metadata import PYDEVICES_DESCRIPTIONS
+from omnipython_package_metadata import OMNIPYTHON_DESCRIPTIONS
 
 DEBRIS = {"__pycache__", "README.md", "build", "dist"}
 # No internal dependency table here: with lib/ shipped as one distribution the
@@ -66,7 +66,7 @@ def pypi_extras(root: Path) -> dict[str, list[str]]:
 
     A lib/ package can name a PyPI extra for a library only some hosts need,
     e.g. bledev's ``pypi-extras = { ble = ["bleak>=1.0"] }``, which becomes
-    ``pip install "pydevices[ble]"``. Two packages naming the same extra
+    ``pip install "omnipython[ble]"``. Two packages naming the same extra
     must agree.
     """
     split_path = root / "mip-split.toml"
@@ -85,7 +85,7 @@ def pypi_extras(root: Path) -> dict[str, list[str]]:
 
 
 def desktop_requirements(root: Path) -> list[str]:
-    """What pydevices-desktop needs from PyPI: utils/requirements.txt in the
+    """What omnipython-desktop needs from PyPI: utils/requirements.txt in the
     source repository, one requirement a line (zeroconf, for mdns.py).
     Comments and blank lines are skipped; no file means none."""
     path = root / "utils" / "requirements.txt"
@@ -100,7 +100,7 @@ def desktop_requirements(root: Path) -> list[str]:
 
 
 def desktop_bundles(root: Path) -> list[Path]:
-    """Packages that pydevices-desktop carries beyond utils/: the directories
+    """Packages that omnipython-desktop carries beyond utils/: the directories
     mip-split.toml marks ``pypi-desktop = true`` (midiports, for pip users who
     have no mip). Each is found at packages/<name>, or packages/usb/<name>."""
     split_path = root / "mip-split.toml"
@@ -121,7 +121,7 @@ def desktop_bundles(root: Path) -> list[Path]:
     return found
 
 
-GITHUB_SELF = "github:PyDevices/pydevices/"
+GITHUB_SELF = "github:PyDevices/omnipython/"
 
 
 def copy_bundle(package: Path, root: Path, destination: Path) -> None:
@@ -177,8 +177,8 @@ dependencies = [
 ]
 {extras_block}
 [project.urls]
-Homepage = "https://github.com/PyDevices/pydevices"
-Repository = "https://github.com/PyDevices/pydevices"
+Homepage = "https://github.com/PyDevices/omnipython"
+Repository = "https://github.com/PyDevices/omnipython"
 
 [tool.setuptools]
 package-dir = {{ "" = "src" }}
@@ -223,21 +223,21 @@ def build(root: Path, output: Path, version: str) -> None:
     # republished in lockstep. MIP stays granular because flash is scarce there;
     # pip has no such constraint.
     stages: list[Path] = []
-    meta = work / "pydevices"
+    meta = work / "omnipython"
     meta_src = meta / "src"
     for source in leaves:
         copy_component(source, meta_src / source.name)
     write_project(
         meta,
-        "pydevices",
+        "omnipython",
         version,
-        PYDEVICES_DESCRIPTIONS["pydevices"],
+        OMNIPYTHON_DESCRIPTIONS["omnipython"],
         [],
         pypi_extras(root),
     )
     stages.append(meta)
 
-    desktop = work / "pydevices-desktop"
+    desktop = work / "omnipython-desktop"
     desktop_source = desktop / "src"
     for source in components(root / "utils"):
         copy_component(source, desktop_source / source.name)
@@ -247,10 +247,10 @@ def build(root: Path, output: Path, version: str) -> None:
         copy_bundle(bundle, root, desktop_source)
     write_project(
         desktop,
-        "pydevices-desktop",
+        "omnipython-desktop",
         version,
-        PYDEVICES_DESCRIPTIONS["pydevices-desktop"],
-        [f"pydevices=={version}", *desktop_requirements(root)],
+        OMNIPYTHON_DESCRIPTIONS["omnipython-desktop"],
+        [f"omnipython=={version}", *desktop_requirements(root)],
     )
     stages.append(desktop)
 

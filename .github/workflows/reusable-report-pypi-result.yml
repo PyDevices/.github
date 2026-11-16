@@ -15,7 +15,7 @@
 #       !cancelled() && needs.publish.outputs.pypi-publish == 'true'
 #     uses: PyDevices/.github/.github/workflows/reusable-report-pypi-result.yml@publishing-vN
 #     with:
-#       distribution-name: pydevices-audiodsp
+#       distribution-name: omnipython-audiodsp
 #       version: ${{ needs.publish.outputs.version }}
 #       pypi-result: ${{ needs.pypi.result }}
 #     secrets: inherit
@@ -24,7 +24,7 @@ on:
   workflow_call:
     inputs:
       distribution-name:
-        description: The distribution the coordinator reported, e.g. pydevices-audiodsp
+        description: The distribution the coordinator reported, e.g. omnipython-audiodsp
         required: true
         type: string
       version:

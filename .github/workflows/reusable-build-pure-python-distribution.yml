@@ -77,19 +77,19 @@ jobs:
           SMOKE_COMMAND: ${{ inputs.smoke-command }}
           INSTALL_DEPENDENCIES: ${{ inputs.install-dependencies }}
         run: |
-          python -m venv /tmp/pydevices-package-smoke
+          python -m venv /tmp/omnipython-package-smoke
           if [[ "$INSTALL_DEPENDENCIES" == "true" ]]; then
-            /tmp/pydevices-package-smoke/bin/python -m pip install \
+            /tmp/omnipython-package-smoke/bin/python -m pip install \
               --index-url https://test.pypi.org/simple/ \
               --extra-index-url https://pypi.org/simple/ \
               dist/*.whl
           else
-            /tmp/pydevices-package-smoke/bin/python -m pip install --no-deps dist/*.whl
+            /tmp/omnipython-package-smoke/bin/python -m pip install --no-deps dist/*.whl
           fi
           if [[ -n "$SMOKE_COMMAND" ]]; then
-            /tmp/pydevices-package-smoke/bin/python -c "$SMOKE_COMMAND"
+            /tmp/omnipython-package-smoke/bin/python -c "$SMOKE_COMMAND"
           else
-            /tmp/pydevices-package-smoke/bin/python -c "__import__('${IMPORT_NAME}')"
+            /tmp/omnipython-package-smoke/bin/python -c "__import__('${IMPORT_NAME}')"
           fi
 
       - name: Upload validated distributions

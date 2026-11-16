@@ -19,11 +19,11 @@ Repo directory and root-file layout (`src/`, `lib/`, `tests/`,
 
 The full repository map — every repo, grouped by tier, with what each one owns —
 is generated from `data/repos_db.json` and published at
-[pydevices/docs/how-it-works/ecosystem.md](https://github.com/PyDevices/pydevices/blob/main/docs/how-it-works/ecosystem.md) and on the
+[omnipython/docs/how-it-works/ecosystem.md](https://github.com/PyDevices/omnipython/blob/main/docs/how-it-works/ecosystem.md) and on the
 [org profile](https://github.com/PyDevices). Do not restate it here; it drifts.
 
 If you're not sure which repo an issue or PR belongs to, open it on
-[pydevices](https://github.com/PyDevices/pydevices/issues) — we'll help route it.
+[omnipython](https://github.com/PyDevices/omnipython/issues) — we'll help route it.
 
 ## 🐛 Reporting bugs / requesting features
 
@@ -37,7 +37,7 @@ you need that don't work yet. A request that becomes planned work moves into
 the roadmap and its issue closes with a link to it.
 
 For open-ended questions, ideas, or show-and-tell, use
-[pydevices Discussions](https://github.com/PyDevices/pydevices/discussions)
+[omnipython Discussions](https://github.com/PyDevices/omnipython/discussions)
 instead of opening an issue.
 
 ## Pull requests

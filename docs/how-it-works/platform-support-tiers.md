@@ -31,7 +31,7 @@ work is done to the CI-proven line, the seams are designed and
 documented, and a report from the field — "works here," with platform
 details — promotes the claim. Verification reports are welcome as
 issues on the relevant repo or in
-[Discussions](https://github.com/PyDevices/pydevices/discussions).
+[Discussions](https://github.com/PyDevices/omnipython/discussions).
 
 A claim may only sit in this tier if the two below it are actually met:
 shipping untestable code and calling it community-verified is the
@@ -42,7 +42,7 @@ silent gap the completeness standard condemns, with a friendlier label.
 ## Current postures
 
 **macOS.** audiodsp ships macOS wheels, and audiodsp and audiocomponents
-run their tests on macOS runners. pydevices has no macOS CI job, and
+run their tests on macOS runners. omnipython has no macOS CI job, and
 pygraphics and LVGL publish no macOS wheel. PyDevices claims nothing
 hardware-adjacent (USB enumeration, Bluetooth radios, audio devices)
 beyond what that CI proves. Those surfaces ship at the community-verified

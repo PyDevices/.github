@@ -69,4 +69,4 @@ that lets Python vary a device's capability set.
 
 *New principles are added here when they've been proven in a shipped
 design, not before. Suggest one via
-[Discussions](https://github.com/PyDevices/pydevices/discussions).*
+[Discussions](https://github.com/PyDevices/omnipython/discussions).*

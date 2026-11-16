@@ -1,5 +1,5 @@
 # The hero demos fail silently: the page renders, the wasm runtime catches its
-# own exception, and nothing anywhere turns red. The /pydevices/ hero was dead
+# own exception, and nothing anywhere turns red. The /omnipython/ hero was dead
 # for a week before a human happened to open the page. This is the thing that
 # notices.
 #

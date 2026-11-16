@@ -1,4 +1,4 @@
-name: Reusable build PyDevices distributions
+name: Reusable build OmniPython distributions
 
 on:
   workflow_call:
@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 jobs:
-  build-and-validate-pydevices-distributions:
+  build-and-validate-omnipython-distributions:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the exact release
@@ -30,7 +30,7 @@ jobs:
         with:
           repository: PyDevices/.github
           ref: ${{ inputs.publishing-tools-ref }}
-          path: .pydevices-publishing-tools
+          path: .omnipython-publishing-tools
 
       - uses: actions/setup-python@v7
         with:
@@ -51,14 +51,14 @@ jobs:
           RELEASE_VERSION: ${{ inputs.version }}
         run: |
           python -m pip install --disable-pip-version-check build twine
-          python .pydevices-publishing-tools/scripts/build_pydevices_python_distributions.py \
+          python .omnipython-publishing-tools/scripts/build_omnipython_python_distributions.py \
             --source-repository . \
-            --output .pydevices-publication \
+            --output .omnipython-publication \
             --version "$RELEASE_VERSION"
 
       - name: Upload validated distributions
         uses: actions/upload-artifact@v7
         with:
-          name: testpypi-pydevices-${{ inputs.version }}
-          path: .pydevices-publication/dist/*
+          name: testpypi-omnipython-${{ inputs.version }}
+          path: .omnipython-publication/dist/*
           if-no-files-found: error

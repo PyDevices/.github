@@ -1,7 +1,7 @@
-# pydevices-docs
+# omnipython-docs
 
-The shared look and configuration of the PyDevices documentation projects: a
-Sphinx theme (`sphinx_rtd_theme` with a PyDevices palette), the top bar, the
+The shared look and configuration of the OmniPython documentation projects: a
+Sphinx theme (`sphinx_rtd_theme` with a OmniPython palette), the top bar, the
 Markdown setup, the Google-style docstring setup, the reference map to the
 Python manuals, and `site`, which builds every library's docs folder into the
 one OmniPython site.
@@ -10,11 +10,11 @@ Each project's `docs/conf.py` calls `configure()` and sets only its name and
 where its code is. This is what `palettes` does:
 
 ```python
-from pydevices_docs import configure
+from omnipython_docs import configure
 
 globals().update(configure(
     "palettes", __file__,
-    repo="PyDevices/pydevices", edit_path="palettes/docs",
+    repo="PyDevices/omnipython", edit_path="palettes/docs",
     source_dirs=["../lib"], api_packages=["palettes"],
 ))
 ```
@@ -25,7 +25,7 @@ Put this line in the project's `docs/requirements.txt`, naming the release you
 want:
 
 ```
-pydevices-docs @ git+https://github.com/PyDevices/.github@docs-v0.1.0#subdirectory=docs-config
+omnipython-docs @ git+https://github.com/PyDevices/.github@docs-v0.4.0#subdirectory=docs-config
 ```
 
 Then add `conf.py`, an `index.md`, and a `.readthedocs.yaml` that sets
@@ -43,19 +43,19 @@ the API pages (see below).
   desktop build lacks).
 - The reference map: the Python and MicroPython manuals and, in a build of
   one library alone, the OmniPython site as `omnipython` while its
-  `objects.inv` answers. `PYDEVICES_DOCS_OFFLINE=1` leaves all of them out.
+  `objects.inv` answers. `OMNIPYTHON_DOCS_OFFLINE=1` leaves all of them out.
 - The version, read from the file named by `version_file` (default
   `../VERSION`).
 
 ## The top bar
 
 The bar has the OmniPython name, which goes to the site's front page, and links
-to the PyDevices website and GitHub. `pydevices_docs/projects.py` holds those
+to the PyDevices website and GitHub. `omnipython_docs/projects.py` holds those
 addresses.
 
 ## The combined site
 
-`pydevices_docs.site.configure_site()` is what `docs-site/conf.py` in this
+`omnipython_docs.site.configure_site()` is what `docs-site/conf.py` in this
 repository calls. It reads each library's own `conf.py` and builds every
 library as a section of one site, with that library's settings applied while
 its pages are read. How it works, and how warnings are kept to the library
@@ -75,7 +75,7 @@ python -m venv .venv-docs
 ## Live demos
 
 A page can embed a runnable MicroPython demo: raw HTML in a Markdown page,
-using the classes `pydevices-live-demo`, `demo-editor-pane`, `code-editor`,
+using the classes `omnipython-live-demo`, `demo-editor-pane`, `code-editor`,
 `run-btn`, `reset-btn`, `demo-status`, `demo-output` and `demo-canvas-pane`
 (this package styles them). The theme loads the runner,
 `https://omnipython.org/assets/chrome/docs-runtime.js`, on any page that

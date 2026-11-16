@@ -5,8 +5,8 @@
 
 """Render the stack page from data/stack.json, and check that it is exhaustive.
 
-With no arguments, rewrites the marker block in pydevices/docs/stack.md. The
-page's text outside the block is the pydevices repository's own.
+With no arguments, rewrites the marker block in omnipython/docs/stack.md. The
+page's text outside the block is the omnipython repository's own.
 
 --check compares data/stack.json with sibling checkouts and fails on anything
 a repository holds that has no row, and on any row whose files are gone.
@@ -23,7 +23,7 @@ import tomllib
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 STACK_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'stack.json')
-PAGE = ('pydevices', 'docs/stack.md')
+PAGE = ('omnipython', 'docs/stack.md')
 START = '<!-- PYDEVICES-STACK: START -->'
 END = '<!-- PYDEVICES-STACK: END -->'
 # The repository name on GitHub, where its checkout's folder differs.
@@ -199,11 +199,11 @@ def check_index(stack, root, index):
     }
     problems = [f'{name}: mip package is not in the index'
                 for name in sorted(claimed - published)]
-    pydevices = checkout(root, 'pydevices')
-    with open(os.path.join(pydevices, 'drivers', 'drivers.toml'), 'rb') as f:
+    omnipython = checkout(root, 'omnipython')
+    with open(os.path.join(omnipython, 'drivers', 'drivers.toml'), 'rb') as f:
         drivers = set(tomllib.load(f))
     boards = set()
-    for _, folders, _ in os.walk(os.path.join(pydevices, 'board_configs')):
+    for _, folders, _ in os.walk(os.path.join(omnipython, 'board_configs')):
         boards.update(folders)
     for name in sorted(published - claimed - drivers - boards):
         problems.append(f'{name}: in the mip index with no row in data/stack.json')
@@ -241,7 +241,7 @@ def write_page(stack, root=BASE_DIR, page=None):
 def parse_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     parser.add_argument('--root', default=BASE_DIR, help='folder holding the sibling checkouts')
-    parser.add_argument('--page', help='write or compare this file instead of the pydevices page')
+    parser.add_argument('--page', help='write or compare this file instead of the omnipython page')
     parser.add_argument('--check', action='store_true', help='compare the data with the checkouts')
     parser.add_argument('--stale', action='store_true', help='fail if the page differs from the data')
     parser.add_argument('--index-json', help='the mip index, for --check')

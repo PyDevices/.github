@@ -5,7 +5,7 @@ the MIP index, the library index and, for some packages, production PyPI. The
 organization-wide release machinery lives in this repository because it
 governs every publishing repository: the reusable workflows, the tag contract
 and the shared credentials. Each repository's own publishing notes cover only
-what its release produces, such as `pydevices`'s dynamically discovered
+what its release produces, such as `omnipython`'s dynamically discovered
 package set. They add build and test detail; they don't replace what's here.
 
 To run a release, see [release a package](../guides/release-a-package.md). For
@@ -35,7 +35,7 @@ that choice:
 
 `reusable-publish-release-packages.yml` is the whole per-repository chain, as
 jobs inside one reusable workflow. It resolves the tag, runs exactly one build
-(`build-pure-python`, `build-native-and-wasm` or `build-pydevices-multi`,
+(`build-pure-python`, `build-native-and-wasm` or `build-omnipython-multi`,
 chosen by `build-kind`), uploads to TestPyPI, attaches the built files to the
 Release, requests MIP and library-index publication, decides whether
 production PyPI should follow, and reports to the Release Health dashboard.
@@ -82,70 +82,70 @@ a tag is cut: it rewrites them all, commits that one change and tags the same
 commit. The `sibling-refs` job in `checks.yml` refuses a tree where any
 disagree or use `./`.
 
-## What the `pydevices` release contains
+## What the `omnipython` release contains
 
-The `pydevices` build keeps no inclusion list. The distribution is exactly
+The `omnipython` build keeps no inclusion list. The distribution is exactly
 `lib/`, though the two ecosystems package it differently:
 
-- **One package in each.** On PyPI it's the `pydevices` distribution; on MIP
-  the `pydevices` package. A package per component was tried and dropped:
+- **One package in each.** On PyPI it's the `omnipython` distribution; on MIP
+  the `omnipython` package. A package per component was tried and dropped:
   micropython-lib resolves `require()` by inclusion at build time rather than
   as a dependency edge, so each package that required `events.py` carried its
   own copy and installing two wrote the file twice.
 - **A microcontroller gets only what can run on one.** `displaydev`, `audiodev`
   and `multimer` each carry platform backends, many of them desktop, browser or
   Android code. The source repository's `mip-split.toml` names the host-only
-  modules; they ship in `pydevices-desktop` instead, and `pydevices` lists its
+  modules; they ship in `omnipython-desktop` instead, and `omnipython` lists its
   files one by one so the install list is the manifest. A name in the file that
   no longer exists fails the sync, and so does a device-side module that
   imports a host-only one at module scope. A new backend nobody classified
   ships to the device, so forgetting costs one extra file on a board, never a
   missing import on a host.
 - **A package can publish to MIP on its own.** A `mip-split.toml` section with
-  `own-package = true` leaves the `pydevices` package and becomes a sibling at
-  `micropython/pydevices/<name>`, with its own `requires` as `require()` lines.
+  `own-package = true` leaves the `omnipython` package and becomes a sibling at
+  `micropython/omnipython/<name>`, with its own `requires` as `require()` lines.
   `bledev` is one: a board without a radio doesn't carry BLE. On PyPI the code
-  stays in the `pydevices` wheel, and `pypi-extras` makes an extra such as
-  `pip install "pydevices[ble]"`.
+  stays in the `omnipython` wheel, and `pypi-extras` makes an extra such as
+  `pip install "omnipython[ble]"`.
 - **A top-level directory can publish under its own name.** A section that is
   only `top-level = true` publishes `<repo>/<name>/` to
-  `micropython/pydevices/<name>`, with the directory's `manifest.py` as the
+  `micropython/omnipython/<name>`, with the directory's `manifest.py` as the
   single source for its description, `require()` lines and files. The sync
   fails if a listed name isn't a directory with a `manifest.py`. This is
   available from `publishing-v14`.
-- **A top-level package can also ride in `pydevices-desktop`.** Adding
+- **A top-level package can also ride in `omnipython-desktop`.** Adding
   `pypi-desktop = true` to its section copies the files its `package.json`
   lists into the wheel, fetching any pinned upstream URL (midiports carries
-  `adafruit_midi` this way), so `pip install pydevices-desktop` gives what
+  `adafruit_midi` this way), so `pip install omnipython-desktop` gives what
   `mip` gives. The wheel build reads the key; the MIP sync ignores it.
 - Every publishable entry under `utils/`, and everything publishable in
-  `board_configs/desktop/`, is bundled into `pydevices-desktop`, which depends
-  on `pydevices`. All artifacts from one release share a version.
+  `board_configs/desktop/`, is bundled into `omnipython-desktop`, which depends
+  on `omnipython`. All artifacts from one release share a version.
 - Board `package.json` installers aren't copied into the central MIP index;
   install them from their documented raw GitHub paths.
 
 Adding or removing a publishable entry under `lib/` or `utils/` therefore
 changes the next release automatically, so review the generated package set
 when you prepare a release. Committed root TOML files such as
-`pydevices-desktop.toml` and `gallery.toml` are PyScript filesystem mappings,
+`omnipython-desktop.toml` and `gallery.toml` are PyScript filesystem mappings,
 not package metadata; their CI validation has to pass before a release.
 
 ## The LVGL release
 
 `omnipython-lvgl` carries the binding generator, its three ports and the
-`pydevices-lvgl` wheel. Its `release.yml` is the release entry point. It
+`omnipython-lvgl` wheel. Its `release.yml` is the release entry point. It
 validates an exact commit SHA or `vX.Y.Z` tag, runs the Linux integration
 matrix, and in `release` mode writes the next version to `VERSION` on `main`
 and publishes a GitHub Release with an App token, for the reason given above.
 That Release starts the ordinary `native-and-wasm` publish for
-`pydevices-lvgl`, with no `mip-profile`. Mode `dry-run` runs every gate and
+`omnipython-lvgl`, with no `mip-profile`. Mode `dry-run` runs every gate and
 changes nothing.
 
 ## The MIP publication queue
 
 Publishing to the MIP index is centralized in `PyDevices/mip` and serialized.
 `process-mip-publication-request.yml` runs in the
-`pydevices-mip-publication-queue` concurrency group with
+`omnipython-mip-publication-queue` concurrency group with
 `cancel-in-progress: false`, so two releases that both want MIP entries never
 race; the second waits.
 
@@ -154,7 +154,7 @@ to `mip` and sends one `repository_dispatch` per profile in the
 `mip-profile` input. The MIP leg runs for final releases only: for a
 `.devN`, `rcN`, `aN` or `bN` it's skipped, so a pre-release never reaches the
 MIP index. A repository whose profile the MIP lockfile doesn't know (the
-`palettes` and `pdwidgets` folders of `pydevices`) sets `legacy-index: false`
+`palettes` and `pdwidgets` folders of `omnipython`) sets `legacy-index: false`
 and sends only the library leg.
 
 **Sync.** The queue consumer, `reusable-synchronize-mip-package.yml`:
@@ -163,7 +163,7 @@ and sends only the library leg.
    dispatch. A dispatch freezes `github.sha` when it's created, so the second
    of two queued publications would otherwise start from a tree that predates
    the first one's lockfile commit and lose its push.
-2. Records the release in `pydevices-lock.json`, the source of truth for which
+2. Records the release in `omnipython-lock.json`, the source of truth for which
    version of each package is live. Every publishable package needs an entry
    there, added deliberately. The entry's `repository` key is also a guard: a
    dispatch from a different source repository is refused.
@@ -190,12 +190,12 @@ outside the queue, because GitHub's concurrency group holds one running and one
 pending job and a newer pending job replaces an older one, which would lose the
 older request's pin. Only the build and the deploy queue, in the
 `omnipython-lib-publication-queue` group. Each build rebuilds every package
-from the pins with `tools/libbuild.py` from the `pydevices` checkout and
+from the pins with `tools/libbuild.py` from the `omnipython` checkout and
 deploys with `actions/deploy-pages`.
 
-A merge to `pydevices` that touches `board_configs/` or `drivers/` sends the
+A merge to `omnipython` that touches `board_configs/` or `drivers/` sends the
 same dispatch with the `boards` profile, so a board or driver is published when
-it merges; the next `pydevices` release clears that pin. A profile is refused
+it merges; the next `omnipython` release clears that pin. A profile is refused
 when its repository isn't the one `pins.json` names for it. To rebuild without
 a release, run `publish.yml` by hand with the inputs empty; to try a library
 commit before it's released, give `test-root-ref`, which deploys the build and

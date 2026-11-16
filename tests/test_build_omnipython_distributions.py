@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2026 Brad Barnett
 #
 # SPDX-License-Identifier: MIT
-"""The pydevices distributions carry type stubs, and the MIP copy doesn't."""
+"""The omnipython distributions carry type stubs, and the MIP copy doesn't."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from pathlib import Path
 
 SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 sys.path.insert(0, str(SCRIPTS))
-build = importlib.import_module("build_pydevices_python_distributions")
+build = importlib.import_module("build_omnipython_python_distributions")
 sync = importlib.import_module("synchronize_mip_package")
 
 

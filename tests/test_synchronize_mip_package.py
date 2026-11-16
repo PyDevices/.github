@@ -28,8 +28,8 @@ def _load_module(name: str):
 
 
 sync = _load_module("synchronize_mip_package")
-build = _load_module("build_pydevices_python_distributions")
-metadata = _load_module("pydevices_package_metadata")
+build = _load_module("build_omnipython_python_distributions")
+metadata = _load_module("omnipython_package_metadata")
 
 
 def write_lockfile(mip: Path, mapping: dict[str, str]) -> None:
@@ -38,7 +38,7 @@ def write_lockfile(mip: Path, mapping: dict[str, str]) -> None:
         profile: {"repository": repository, "ref": "v0.2.0"}
         for profile, repository in mapping.items()
     }
-    (mip / "pydevices-lock.json").write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    (mip / "omnipython-lock.json").write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
 def write_lib_package(source: Path, package: str) -> None:
@@ -47,7 +47,7 @@ def write_lib_package(source: Path, package: str) -> None:
     (pkg / "__init__.py").write_text(f"# {package}\n", encoding="utf-8")
 
 
-def write_pydevices_source(source: Path) -> None:
+def write_omnipython_source(source: Path) -> None:
     write_lib_package(source, "displaydev")
     utils = source / "utils"
     utils.mkdir(parents=True)
@@ -133,8 +133,8 @@ class LockfileRepositoryTests(unittest.TestCase):
             package = source / "packages" / "iconkit" / "lib" / "iconkit"
             package.mkdir(parents=True)
             (package / "__init__.py").write_text("# iconkit\n", encoding="utf-8")
-            write_lockfile(mip, {"iconkit": "PyDevices/pydevices"})
-            result = run_sync(source, mip, source_name="PyDevices/pydevices", profile="iconkit")
+            write_lockfile(mip, {"iconkit": "PyDevices/omnipython"})
+            result = run_sync(source, mip, source_name="PyDevices/omnipython", profile="iconkit")
             self.assertEqual(result.returncode, 0, result.stderr)
             manifest = (mip / "micropython" / "iconkit" / "manifest.py").read_text(encoding="utf-8")
             self.assertIn('package("iconkit")', manifest)
@@ -198,7 +198,7 @@ class LockfileRepositoryTests(unittest.TestCase):
                 profile="audioinstruments",
             )
             self.assertNotEqual(result.returncode, 0)
-            self.assertIn("pydevices-lock.json", result.stderr)
+            self.assertIn("omnipython-lock.json", result.stderr)
             self.assertIn("audioinstruments", result.stderr)
 
     def test_no_hardcoded_profile_repositories_map(self) -> None:
@@ -211,7 +211,7 @@ class LockfileRepositoryTests(unittest.TestCase):
                 mip,
                 {
                     "audioinstruments": "PyDevices/audiocomponents",
-                    "pydevices": "PyDevices/pydevices",
+                    "omnipython": "PyDevices/omnipython",
                 },
             )
             self.assertEqual(
@@ -262,7 +262,7 @@ class RecordLockfileReleaseTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             mip = Path(tmp)
             write_lockfile(mip, {"audioinstruments": "PyDevices/audiocomponents"})
-            lockfile = mip / "pydevices-lock.json"
+            lockfile = mip / "omnipython-lock.json"
             before = json.loads(lockfile.read_text(encoding="utf-8"))
             result = run_record_step(
                 lockfile,
@@ -280,7 +280,7 @@ class RecordLockfileReleaseTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             mip = Path(tmp)
             write_lockfile(mip, {"audioinstruments": "PyDevices/audiocomponents"})
-            lockfile = mip / "pydevices-lock.json"
+            lockfile = mip / "omnipython-lock.json"
             before = lockfile.read_text(encoding="utf-8")
             result = run_record_step(
                 lockfile,
@@ -291,78 +291,78 @@ class RecordLockfileReleaseTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("PyDevices/audiocomponents", result.stderr)
             self.assertIn("PyDevices/audiodsp", result.stderr)
-            self.assertIn("pydevices-lock.json", result.stderr)
+            self.assertIn("omnipython-lock.json", result.stderr)
             self.assertIn("PyDevices branch", result.stderr)
             self.assertEqual(lockfile.read_text(encoding="utf-8"), before)
 
 
 class SharedDescriptionTests(unittest.TestCase):
-    def test_pydevices_manifest_uses_shared_description(self) -> None:
-        text = sync.render_pydevices_manifest("pydevices", "1.2.3", ())
-        description = metadata.PYDEVICES_DESCRIPTIONS["pydevices"]
+    def test_omnipython_manifest_uses_shared_description(self) -> None:
+        text = sync.render_omnipython_manifest("omnipython", "1.2.3", ())
+        description = metadata.OMNIPYTHON_DESCRIPTIONS["omnipython"]
         self.assertIn(description, text)
-        self.assertNotIn("PyDevices pydevices", text)
+        self.assertNotIn("OmniPython omnipython", text)
 
-    def test_pydevices_desktop_manifest_uses_shared_description(self) -> None:
-        text = sync.render_pydevices_manifest("pydevices-desktop", "1.2.3", ("pydevices",))
-        description = metadata.PYDEVICES_DESCRIPTIONS["pydevices-desktop"]
+    def test_omnipython_desktop_manifest_uses_shared_description(self) -> None:
+        text = sync.render_omnipython_manifest("omnipython-desktop", "1.2.3", ("omnipython",))
+        description = metadata.OMNIPYTHON_DESCRIPTIONS["omnipython-desktop"]
         self.assertIn(description, text)
-        self.assertNotIn("PyDevices pydevices-desktop", text)
-        self.assertIn('require("pydevices")', text)
+        self.assertNotIn("OmniPython omnipython-desktop", text)
+        self.assertIn('require("omnipython")', text)
 
     def test_builder_uses_the_same_descriptions(self) -> None:
-        self.assertEqual(build.PYDEVICES_DESCRIPTIONS, metadata.PYDEVICES_DESCRIPTIONS)
-        builder = (SCRIPTS / "build_pydevices_python_distributions.py").read_text(encoding="utf-8")
-        self.assertIn('PYDEVICES_DESCRIPTIONS["pydevices"]', builder)
-        self.assertIn('PYDEVICES_DESCRIPTIONS["pydevices-desktop"]', builder)
-        pydevices = build.project_text(
-            "pydevices",
+        self.assertEqual(build.OMNIPYTHON_DESCRIPTIONS, metadata.OMNIPYTHON_DESCRIPTIONS)
+        builder = (SCRIPTS / "build_omnipython_python_distributions.py").read_text(encoding="utf-8")
+        self.assertIn('OMNIPYTHON_DESCRIPTIONS["omnipython"]', builder)
+        self.assertIn('OMNIPYTHON_DESCRIPTIONS["omnipython-desktop"]', builder)
+        omnipython = build.project_text(
+            "omnipython",
             "1.2.3",
-            metadata.PYDEVICES_DESCRIPTIONS["pydevices"],
+            metadata.OMNIPYTHON_DESCRIPTIONS["omnipython"],
             [],
             Path("."),
         )
         desktop = build.project_text(
-            "pydevices-desktop",
+            "omnipython-desktop",
             "1.2.3",
-            metadata.PYDEVICES_DESCRIPTIONS["pydevices-desktop"],
-            ["pydevices==1.2.3"],
+            metadata.OMNIPYTHON_DESCRIPTIONS["omnipython-desktop"],
+            ["omnipython==1.2.3"],
             Path("."),
         )
         self.assertIn(
-            'description = "Portable display, audio, event, and timing foundations for PyDevices"',
-            pydevices,
+            'description = "Portable display, audio, event, and timing foundations for OmniPython"',
+            omnipython,
         )
         self.assertIn(
-            'description = "Complete PyDevices desktop stack and board configuration"',
+            'description = "Complete OmniPython desktop stack and board configuration"',
             desktop,
         )
 
-    def test_pydevices_profile_writes_shared_descriptions(self) -> None:
+    def test_omnipython_profile_writes_shared_descriptions(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             source = root / "source"
             mip = root / "mip"
-            write_pydevices_source(source)
-            write_lockfile(mip, {"pydevices": "PyDevices/pydevices"})
+            write_omnipython_source(source)
+            write_lockfile(mip, {"omnipython": "PyDevices/omnipython"})
             result = run_sync(
                 source,
                 mip,
-                source_name="PyDevices/pydevices",
-                profile="pydevices",
+                source_name="PyDevices/omnipython",
+                profile="omnipython",
                 version="1.2.3",
             )
             self.assertEqual(result.returncode, 0, result.stderr)
-            pydevices = (
-                mip / "micropython" / "pydevices" / "pydevices" / "manifest.py"
+            omnipython = (
+                mip / "micropython" / "omnipython" / "omnipython" / "manifest.py"
             ).read_text(encoding="utf-8")
             desktop = (
-                mip / "micropython" / "pydevices" / "pydevices-desktop" / "manifest.py"
+                mip / "micropython" / "omnipython" / "omnipython-desktop" / "manifest.py"
             ).read_text(encoding="utf-8")
-            self.assertIn(metadata.PYDEVICES_DESCRIPTIONS["pydevices"], pydevices)
-            self.assertIn(metadata.PYDEVICES_DESCRIPTIONS["pydevices-desktop"], desktop)
-            self.assertNotIn("PyDevices pydevices", pydevices)
-            self.assertNotIn("PyDevices pydevices-desktop", desktop)
+            self.assertIn(metadata.OMNIPYTHON_DESCRIPTIONS["omnipython"], omnipython)
+            self.assertIn(metadata.OMNIPYTHON_DESCRIPTIONS["omnipython-desktop"], desktop)
+            self.assertNotIn("OmniPython omnipython", omnipython)
+            self.assertNotIn("OmniPython omnipython-desktop", desktop)
 
 
     def test_a_freeze_manifest_beside_the_desktop_board_config_is_not_published(self) -> None:
@@ -372,26 +372,26 @@ class SharedDescriptionTests(unittest.TestCase):
             root = Path(tmp)
             source = root / "source"
             mip = root / "mip"
-            write_pydevices_source(source)
+            write_omnipython_source(source)
             desktop_src = source / "board_configs" / "desktop"
             desktop_src.mkdir(parents=True, exist_ok=True)
             (desktop_src / "board_config.py").write_text("# config\n", encoding="utf-8")
             (desktop_src / "manifest.py").write_text('module("board_config.py")\n', encoding="utf-8")
-            write_lockfile(mip, {"pydevices": "PyDevices/pydevices"})
-            result = run_sync(source, mip, source_name="PyDevices/pydevices",
-                              profile="pydevices", version="1.2.3")
+            write_lockfile(mip, {"omnipython": "PyDevices/omnipython"})
+            result = run_sync(source, mip, source_name="PyDevices/omnipython",
+                              profile="omnipython", version="1.2.3")
             self.assertEqual(result.returncode, 0, result.stderr)
-            desktop = mip / "micropython" / "pydevices" / "pydevices-desktop"
+            desktop = mip / "micropython" / "omnipython" / "omnipython-desktop"
             self.assertTrue((desktop / "board_config.py").is_file())
             self.assertNotIn('module("manifest.py")',
                              (desktop / "manifest.py").read_text(encoding="utf-8"))
 
 class OwnPackageTests(unittest.TestCase):
-    """A lib/ package marked own-package publishes to MIP beside pydevices (bledev)."""
+    """A lib/ package marked own-package publishes to MIP beside omnipython (bledev)."""
 
     def _source(self, root: Path, split: str) -> Path:
         source = root / "source"
-        write_pydevices_source(source)
+        write_omnipython_source(source)
         bledev = source / "lib" / "bledev"
         bledev.mkdir(parents=True)
         for name in ("__init__", "mpble", "nus", "bleak"):
@@ -401,10 +401,10 @@ class OwnPackageTests(unittest.TestCase):
 
     def _sync(self, root: Path, source: Path) -> subprocess.CompletedProcess[str]:
         mip = root / "mip"
-        write_lockfile(mip, {"pydevices": "PyDevices/pydevices"})
-        return run_sync(source, mip, source_name="PyDevices/pydevices", profile="pydevices", version="1.2.3")
+        write_lockfile(mip, {"omnipython": "PyDevices/omnipython"})
+        return run_sync(source, mip, source_name="PyDevices/omnipython", profile="omnipython", version="1.2.3")
 
-    def test_own_package_leaves_pydevices_and_requires_aioble(self) -> None:
+    def test_own_package_leaves_omnipython_and_requires_aioble(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             source = self._source(
@@ -419,20 +419,20 @@ class OwnPackageTests(unittest.TestCase):
             )
             result = self._sync(root, source)
             self.assertEqual(result.returncode, 0, result.stderr)
-            out = root / "mip" / "micropython" / "pydevices"
-            pydevices = (out / "pydevices" / "manifest.py").read_text(encoding="utf-8")
-            self.assertNotIn("bledev", pydevices)
-            self.assertFalse((out / "pydevices" / "bledev").exists())
+            out = root / "mip" / "micropython" / "omnipython"
+            omnipython = (out / "omnipython" / "manifest.py").read_text(encoding="utf-8")
+            self.assertNotIn("bledev", omnipython)
+            self.assertFalse((out / "omnipython" / "bledev").exists())
             manifest = (out / "bledev" / "manifest.py").read_text(encoding="utf-8")
             self.assertIn('require("aioble")', manifest)
             self.assertIn('package("bledev", files=("__init__.py", "mpble.py", "nus.py",))', manifest)
-            self.assertIn(metadata.PYDEVICES_DESCRIPTIONS["bledev"], manifest)
+            self.assertIn(metadata.OMNIPYTHON_DESCRIPTIONS["bledev"], manifest)
             self.assertNotIn("pypi_publish", manifest)
             self.assertEqual(
                 sorted(p.name for p in (out / "bledev" / "bledev").iterdir()),
                 ["__init__.py", "mpble.py", "nus.py"],
             )
-            desktop = (out / "pydevices-desktop" / "manifest.py").read_text(encoding="utf-8")
+            desktop = (out / "omnipython-desktop" / "manifest.py").read_text(encoding="utf-8")
             self.assertIn('package("bledev", files=("bleak.py",))', desktop)
 
     def test_unknown_key_fails(self) -> None:
@@ -451,15 +451,15 @@ class OwnPackageTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("not an own-package", result.stderr)
 
-    def test_without_the_flag_bledev_ships_inside_pydevices(self) -> None:
+    def test_without_the_flag_bledev_ships_inside_omnipython(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             source = self._source(root, '[bledev]\nhost-only = ["bleak"]\n')
             result = self._sync(root, source)
             self.assertEqual(result.returncode, 0, result.stderr)
-            out = root / "mip" / "micropython" / "pydevices"
+            out = root / "mip" / "micropython" / "omnipython"
             self.assertFalse((out / "bledev").exists())
-            self.assertIn('package("bledev"', (out / "pydevices" / "manifest.py").read_text(encoding="utf-8"))
+            self.assertIn('package("bledev"', (out / "omnipython" / "manifest.py").read_text(encoding="utf-8"))
 
 
 class TopLevelPackageTests(unittest.TestCase):
@@ -498,7 +498,7 @@ class TopLevelPackageTests(unittest.TestCase):
 
     def _source(self, root: Path, split: str) -> Path:
         source = root / "source"
-        write_pydevices_source(source)
+        write_omnipython_source(source)
         self._package(source, "usb-core", self.CORE, {"usb/core.py": "# core\n", "usb_host.py": "# host\n"})
         self._package(source, "usb-host-msc", self.MSC, {"usb/host/msc.py": "# msc\n"})
         (source / "mip-split.toml").write_text(textwrap.dedent(split), encoding="utf-8")
@@ -506,8 +506,8 @@ class TopLevelPackageTests(unittest.TestCase):
 
     def _sync(self, root: Path, source: Path) -> subprocess.CompletedProcess[str]:
         mip = root / "mip"
-        write_lockfile(mip, {"pydevices": "PyDevices/pydevices"})
-        return run_sync(source, mip, source_name="PyDevices/pydevices", profile="pydevices", version="1.2.3")
+        write_lockfile(mip, {"omnipython": "PyDevices/omnipython"})
+        return run_sync(source, mip, source_name="PyDevices/omnipython", profile="omnipython", version="1.2.3")
 
     BOTH = """
         [usb-core]
@@ -522,7 +522,7 @@ class TopLevelPackageTests(unittest.TestCase):
             root = Path(tmp)
             result = self._sync(root, self._source(root, self.BOTH))
             self.assertEqual(result.returncode, 0, result.stderr)
-            out = root / "mip" / "micropython" / "pydevices"
+            out = root / "mip" / "micropython" / "omnipython"
             msc = (out / "usb-host-msc" / "manifest.py").read_text(encoding="utf-8")
             self.assertIn('version="1.2.3"', msc)
             self.assertNotIn("0.1.0", msc)
@@ -534,15 +534,15 @@ class TopLevelPackageTests(unittest.TestCase):
                 self.assertFalse((out / name / "package.json").exists())
                 self.assertFalse((out / name / "README.md").exists())
 
-    def test_the_pydevices_package_does_not_carry_them(self) -> None:
+    def test_the_omnipython_package_does_not_carry_them(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             result = self._sync(root, self._source(root, self.BOTH))
             self.assertEqual(result.returncode, 0, result.stderr)
-            out = root / "mip" / "micropython" / "pydevices"
-            manifest = (out / "pydevices" / "manifest.py").read_text(encoding="utf-8")
+            out = root / "mip" / "micropython" / "omnipython"
+            manifest = (out / "omnipython" / "manifest.py").read_text(encoding="utf-8")
             self.assertNotIn("usb", manifest)
-            self.assertNotIn("usb", (out / "pydevices-desktop" / "manifest.py").read_text(encoding="utf-8"))
+            self.assertNotIn("usb", (out / "omnipython-desktop" / "manifest.py").read_text(encoding="utf-8"))
 
     def test_a_required_sibling_missing_from_the_toml_fails(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -594,16 +594,16 @@ class TopLevelPackageTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("also exists", result.stderr)
 
-    def test_without_any_the_pydevices_sync_is_unchanged(self) -> None:
+    def test_without_any_the_omnipython_sync_is_unchanged(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             source = root / "source"
-            write_pydevices_source(source)
+            write_omnipython_source(source)
             result = self._sync(root, source)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertEqual(
-                sorted(p.name for p in (root / "mip" / "micropython" / "pydevices").iterdir()),
-                ["pydevices", "pydevices-desktop"],
+                sorted(p.name for p in (root / "mip" / "micropython" / "omnipython").iterdir()),
+                ["omnipython", "omnipython-desktop"],
             )
 
 
@@ -668,19 +668,19 @@ class SeveralPackagesTests(unittest.TestCase):
 
 
 class PypiExtrasTests(unittest.TestCase):
-    def test_extras_reach_the_pydevices_pyproject(self) -> None:
+    def test_extras_reach_the_omnipython_pyproject(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "mip-split.toml").write_text('[bledev]\npypi-extras = { ble = ["bleak>=1.0"] }\n', encoding="utf-8")
             extras = build.pypi_extras(root)
             self.assertEqual(extras, {"ble": ["bleak>=1.0"]})
-            text = build.project_text("pydevices", "1.2.3", "d", [], Path("."), extras)
+            text = build.project_text("omnipython", "1.2.3", "d", [], Path("."), extras)
             import tomllib
 
             self.assertEqual(tomllib.loads(text)["project"]["optional-dependencies"], {"ble": ["bleak>=1.0"]})
 
     def test_no_extras_leaves_the_pyproject_unchanged(self) -> None:
-        text = build.project_text("pydevices", "1.2.3", "d", [], Path("."))
+        text = build.project_text("omnipython", "1.2.3", "d", [], Path("."))
         self.assertNotIn("optional-dependencies", text)
 
     def test_conflicting_extras_fail(self) -> None:
@@ -704,11 +704,11 @@ class DesktopRequirementsTests(unittest.TestCase):
             )
             requirements = build.desktop_requirements(root)
             self.assertEqual(requirements, ["zeroconf>=0.132"])
-            text = build.project_text("pydevices-desktop", "1.2.3", "d", ["pydevices==1.2.3", *requirements], Path("."))
+            text = build.project_text("omnipython-desktop", "1.2.3", "d", ["omnipython==1.2.3", *requirements], Path("."))
             import tomllib
 
             self.assertEqual(
-                tomllib.loads(text)["project"]["dependencies"], ["pydevices==1.2.3", "zeroconf>=0.132"]
+                tomllib.loads(text)["project"]["dependencies"], ["omnipython==1.2.3", "zeroconf>=0.132"]
             )
 
     def test_no_file_means_no_requirements(self) -> None:
@@ -730,7 +730,7 @@ class TopLevelSourceTests(unittest.TestCase):
 
 class PublishedNamesTests(unittest.TestCase):
     def test_every_own_package_and_applib_the_stack_lists_has_a_description(self) -> None:
-        self.assertIn("medialink", metadata.PYDEVICES_DESCRIPTIONS)
+        self.assertIn("medialink", metadata.OMNIPYTHON_DESCRIPTIONS)
         self.assertIn("sayso", sync.SEVERAL_PACKAGES["applibs"])
 
 
@@ -740,7 +740,7 @@ class DesktopBundleTests(unittest.TestCase):
         (package / "midiports").mkdir(parents=True)
         (package / "midiports" / "__init__.py").write_text("PORTS = 1\n", encoding="utf-8")
         (package / "package.json").write_text(
-            '{"urls": [["midiports/__init__.py", "github:PyDevices/pydevices/packages/midiports/midiports/__init__.py"]]}',
+            '{"urls": [["midiports/__init__.py", "github:PyDevices/omnipython/packages/midiports/midiports/__init__.py"]]}',
             encoding="utf-8",
         )
         (root / "mip-split.toml").write_text(

@@ -28,27 +28,27 @@
       }
     },
     "excluded": {
-      "android-runner": "Exists solely to enable pydevices/bin/android.py. The APK is documented in pydevices; the runner publishes no site."
+      "android-runner": "Exists solely to enable omnipython/bin/android.py. The APK is documented in omnipython; the runner publishes no site."
     },
     "moved": {
-      "displayif": "now [`modules/displayif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/displayif) in micropython-pydevices. The old repository is archived.",
+      "displayif": "now [`modules/displayif`](https://github.com/PyDevices/omnipython-builds/tree/main/modules/displayif) in omnipython-builds. The old repository is archived.",
       "audiocomponents": "split into [`audioinstruments`](https://github.com/PyDevices/audioinstruments) and [`audioeffects`](https://github.com/PyDevices/audioeffects). The old repository is archived.",
-      "audioif": "now [`modules/audioif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/audioif) in micropython-pydevices. The old repository is archived.",
-      "cameraif": "now [`modules/cameraif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/cameraif) in micropython-pydevices. The old repository is archived.",
-      "usbif": "the C module is now [`modules/usbhost`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/usbhost) in micropython-pydevices; the Python USB packages are in [pydevices](https://github.com/PyDevices/pydevices/blob/main/docs/guides/usb.md). The old repository is archived.",
+      "audioif": "now [`modules/audioif`](https://github.com/PyDevices/omnipython-builds/tree/main/modules/audioif) in omnipython-builds. The old repository is archived.",
+      "cameraif": "now [`modules/cameraif`](https://github.com/PyDevices/omnipython-builds/tree/main/modules/cameraif) in omnipython-builds. The old repository is archived.",
+      "usbif": "the C module is now [`modules/usbhost`](https://github.com/PyDevices/omnipython-builds/tree/main/modules/usbhost) in omnipython-builds; the Python USB packages are in [omnipython](https://github.com/PyDevices/omnipython/blob/main/docs/guides/usb.md). The old repository is archived.",
       "lvgl-bindings": "now [`binding`](https://github.com/PyDevices/omnipython-lvgl/tree/main/binding) in omnipython-lvgl. The old repository is archived.",
       "lvgl-micropython": "now [`ports/micropython`](https://github.com/PyDevices/omnipython-lvgl/tree/main/ports/micropython) in omnipython-lvgl. The old repository is archived.",
       "lvgl-python": "now [`ports/cpython`](https://github.com/PyDevices/omnipython-lvgl/tree/main/ports/cpython) in omnipython-lvgl. The old repository is archived.",
       "lvgl-circuitpython": "now [`ports/circuitpython`](https://github.com/PyDevices/omnipython-lvgl/tree/main/ports/circuitpython) in omnipython-lvgl. The old repository is archived."
     }
   },
-  "pydevices": {
+  "omnipython": {
     "tier": 1,
     "page": "portal-subdir",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "pydevices",
-    "headline": "pydevices — Hardware Abstraction Layer & Core Contract.",
+    "eyebrow": "omnipython",
+    "headline": "omnipython — Hardware Abstraction Layer & Core Contract.",
     "description": "Unified pure-Python hardware abstraction layer and core device contract for MicroPython, CircuitPython, CPython, direct WebAssembly, Pyodide, and Android.",
     "hero_canvas": {
       "app": "audio_scope",
@@ -60,17 +60,17 @@
     "buttons": [
       {
         "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/pydevices",
+        "href": "https://github.com/PyDevices/omnipython",
         "primary": true
       },
       {
         "label": "Getting Started",
-        "href": "https://github.com/PyDevices/pydevices/blob/main/README.md",
+        "href": "https://github.com/PyDevices/omnipython/blob/main/README.md",
         "tier_color": true
       },
       {
         "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/pydevices-desktop/",
+        "href": "https://test.pypi.org/project/omnipython-desktop/",
         "tier_color": true
       },
       {
@@ -95,22 +95,22 @@
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "displayif · moved",
-    "headline": "displayif has moved into micropython-pydevices.",
-    "description": "Moved to micropython-pydevices as modules/displayif, with its history. It was never published on its own: it reaches you in firmware built by micropython-pydevices' build_mp.py, so that is where it is built, tested and changed now. Your code doesn't change. The old repository is archived.",
+    "headline": "displayif has moved into omnipython-builds.",
+    "description": "Moved to omnipython-builds as modules/displayif, with its history. It was never published on its own: it reaches you in firmware built by omnipython-builds' build_mp.py, so that is where it is built, tested and changed now. Your code doesn't change. The old repository is archived.",
     "buttons": [
       {
         "label": "modules/displayif",
-        "href": "https://github.com/PyDevices/micropython-pydevices/tree/main/modules/displayif",
+        "href": "https://github.com/PyDevices/omnipython-builds/tree/main/modules/displayif",
         "primary": true
       },
       {
         "label": "Hardware bring-up",
-        "href": "https://github.com/PyDevices/micropython-pydevices/blob/main/modules/displayif/docs/soft-reset-and-bring-up.md",
+        "href": "https://github.com/PyDevices/omnipython-builds/blob/main/modules/displayif/docs/soft-reset-and-bring-up.md",
         "tier_color": true
       },
       {
-        "label": "micropython-pydevices",
-        "href": "https://omnipython.org/micropython-pydevices/",
+        "label": "omnipython-builds",
+        "href": "https://omnipython.org/omnipython-builds/",
         "tier_color": true
       },
       {
@@ -127,7 +127,7 @@
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audiodsp",
     "headline": "audiodsp — CircuitPython-compatible audio for MicroPython and CPython.",
-    "description": "CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. On PyPI as pydevices-audiodsp; the instrument and effect libraries built on it are audioinstruments and audioeffects.",
+    "description": "CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. On PyPI as omnipython-audiodsp; the instrument and effect libraries built on it are audioinstruments and audioeffects.",
     "hero_canvas": {
       "app": "signal_gen",
       "width": 480,
@@ -143,7 +143,7 @@
       },
       {
         "label": "PyPI",
-        "href": "https://pypi.org/project/pydevices-audiodsp/",
+        "href": "https://pypi.org/project/omnipython-audiodsp/",
         "tier_color": true
       },
       {
@@ -173,22 +173,22 @@
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audioif · moved",
-    "headline": "audioif has moved into micropython-pydevices.",
-    "description": "Moved to micropython-pydevices as modules/audioif, with its history. It was never published on its own: it reaches you in firmware built by micropython-pydevices' build_mp.py, so that is where it is built, tested and changed now. Your code doesn't change. The old repository is archived.",
+    "headline": "audioif has moved into omnipython-builds.",
+    "description": "Moved to omnipython-builds as modules/audioif, with its history. It was never published on its own: it reaches you in firmware built by omnipython-builds' build_mp.py, so that is where it is built, tested and changed now. Your code doesn't change. The old repository is archived.",
     "buttons": [
       {
         "label": "modules/audioif",
-        "href": "https://github.com/PyDevices/micropython-pydevices/tree/main/modules/audioif",
+        "href": "https://github.com/PyDevices/omnipython-builds/tree/main/modules/audioif",
         "primary": true
       },
       {
-        "label": "Audio in pydevices",
-        "href": "https://github.com/PyDevices/pydevices/blob/main/docs/guides/audio.md",
+        "label": "Audio in omnipython",
+        "href": "https://github.com/PyDevices/omnipython/blob/main/docs/guides/audio.md",
         "tier_color": true
       },
       {
-        "label": "micropython-pydevices",
-        "href": "https://omnipython.org/micropython-pydevices/",
+        "label": "omnipython-builds",
+        "href": "https://omnipython.org/omnipython-builds/",
         "tier_color": true
       },
       {
@@ -330,21 +330,21 @@
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "usbif · moved",
     "headline": "usbif has moved, to two homes.",
-    "description": "The C module is now usbhost, in micropython-pydevices as modules/usbhost (its binding is _usbhost, it was _usbif). The Python USB packages (usb.core, the host and device classes, usb-hid) are top-level packages in pydevices, installed with mip. Code that uses the packages doesn't change. The old repository is archived.",
+    "description": "The C module is now usbhost, in omnipython-builds as modules/usbhost (its binding is _usbhost, it was _usbif). The Python USB packages (usb.core, the host and device classes, usb-hid) are top-level packages in omnipython, installed with mip. Code that uses the packages doesn't change. The old repository is archived.",
     "buttons": [
       {
         "label": "modules/usbhost",
-        "href": "https://github.com/PyDevices/micropython-pydevices/tree/main/modules/usbhost",
+        "href": "https://github.com/PyDevices/omnipython-builds/tree/main/modules/usbhost",
         "primary": true
       },
       {
-        "label": "USB packages in pydevices",
-        "href": "https://github.com/PyDevices/pydevices/blob/main/docs/guides/usb.md",
+        "label": "USB packages in omnipython",
+        "href": "https://github.com/PyDevices/omnipython/blob/main/docs/guides/usb.md",
         "tier_color": true
       },
       {
-        "label": "micropython-pydevices",
-        "href": "https://omnipython.org/micropython-pydevices/",
+        "label": "omnipython-builds",
+        "href": "https://omnipython.org/omnipython-builds/",
         "tier_color": true
       },
       {
@@ -362,22 +362,22 @@
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "cameraif · moved",
-    "headline": "cameraif has moved into micropython-pydevices.",
-    "description": "Moved to micropython-pydevices as modules/cameraif, with its history. It was never published on its own: it reaches you in firmware built by micropython-pydevices' build_mp.py, so that is where it is built, tested and changed now. Your code doesn't change. The old repository is archived.",
+    "headline": "cameraif has moved into omnipython-builds.",
+    "description": "Moved to omnipython-builds as modules/cameraif, with its history. It was never published on its own: it reaches you in firmware built by omnipython-builds' build_mp.py, so that is where it is built, tested and changed now. Your code doesn't change. The old repository is archived.",
     "buttons": [
       {
         "label": "modules/cameraif",
-        "href": "https://github.com/PyDevices/micropython-pydevices/tree/main/modules/cameraif",
+        "href": "https://github.com/PyDevices/omnipython-builds/tree/main/modules/cameraif",
         "primary": true
       },
       {
         "label": "Examples",
-        "href": "https://github.com/PyDevices/micropython-pydevices/tree/main/modules/cameraif/examples",
+        "href": "https://github.com/PyDevices/omnipython-builds/tree/main/modules/cameraif/examples",
         "tier_color": true
       },
       {
-        "label": "micropython-pydevices",
-        "href": "https://omnipython.org/micropython-pydevices/",
+        "label": "omnipython-builds",
+        "href": "https://omnipython.org/omnipython-builds/",
         "tier_color": true
       },
       {
@@ -415,7 +415,7 @@
       },
       {
         "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/pydevices-pygraphics/",
+        "href": "https://test.pypi.org/project/omnipython-pygraphics/",
         "tier_color": true
       },
       {
@@ -434,13 +434,13 @@
   },
   "pdwidgets": {
     "tier": 2,
-    "repo_url": "https://github.com/PyDevices/pydevices/tree/main/packages/pdwidgets",
+    "repo_url": "https://github.com/PyDevices/omnipython/tree/main/packages/pdwidgets",
     "page": "portal-subdir",
     "tier_name": "Python Framebuffers & GUI Toolkits",
     "theme_color": "var(--tier-2-emerald)",
     "eyebrow": "pdwidgets",
     "headline": "pdwidgets — Pure-Python UI widget toolkit.",
-    "description": "Lightweight object-oriented UI widget framework including buttons, sliders, progress bars, labels, and event routing for PyDevices screens.",
+    "description": "Lightweight object-oriented UI widget framework including buttons, sliders, progress bars, labels, and event routing for OmniPython screens.",
     "hero_canvas": {
       "app": "sensor_deck",
       "width": 240,
@@ -451,7 +451,7 @@
     "buttons": [
       {
         "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/pydevices/tree/main/packages/pdwidgets",
+        "href": "https://github.com/PyDevices/omnipython/tree/main/packages/pdwidgets",
         "primary": true
       },
       {
@@ -461,7 +461,7 @@
       },
       {
         "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/pydevices-pdwidgets/",
+        "href": "https://test.pypi.org/project/omnipython-pdwidgets/",
         "tier_color": true
       },
       {
@@ -480,7 +480,7 @@
   },
   "palettes": {
     "tier": 2,
-    "repo_url": "https://github.com/PyDevices/pydevices/tree/main/packages/palettes",
+    "repo_url": "https://github.com/PyDevices/omnipython/tree/main/packages/palettes",
     "page": "portal-subdir",
     "tier_name": "Python Framebuffers & GUI Toolkits",
     "theme_color": "var(--tier-2-emerald)",
@@ -497,7 +497,7 @@
     "buttons": [
       {
         "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/pydevices/tree/main/packages/palettes",
+        "href": "https://github.com/PyDevices/omnipython/tree/main/packages/palettes",
         "primary": true
       },
       {
@@ -507,7 +507,7 @@
       },
       {
         "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/pydevices-palettes/",
+        "href": "https://test.pypi.org/project/omnipython-palettes/",
         "tier_color": true
       },
       {
@@ -526,7 +526,7 @@
   },
   "iconkit": {
     "tier": 2,
-    "repo_url": "https://github.com/PyDevices/pydevices/tree/main/packages/iconkit",
+    "repo_url": "https://github.com/PyDevices/omnipython/tree/main/packages/iconkit",
     "page": "none",
     "portal_grid": false,
     "ecosystem_map": true,
@@ -538,7 +538,7 @@
     "buttons": [
       {
         "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/pydevices/tree/main/packages/iconkit",
+        "href": "https://github.com/PyDevices/omnipython/tree/main/packages/iconkit",
         "primary": true
       }
     ],
@@ -578,7 +578,7 @@
       },
       {
         "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/pydevices-lvgl/",
+        "href": "https://test.pypi.org/project/omnipython-lvgl/",
         "tier_color": true
       },
       {
@@ -670,7 +670,7 @@
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-python · moved",
     "headline": "lvgl-python has moved into omnipython-lvgl.",
-    "description": "Moved to omnipython-lvgl as its CPython port. The wheels are still pydevices-lvgl on TestPyPI. Your code doesn't change. The old repository is archived.",
+    "description": "Moved to omnipython-lvgl as its CPython port. The wheels are still omnipython-lvgl on TestPyPI. Your code doesn't change. The old repository is archived.",
     "buttons": [
       {
         "label": "omnipython-lvgl",
@@ -684,7 +684,7 @@
       },
       {
         "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/pydevices-lvgl/",
+        "href": "https://test.pypi.org/project/omnipython-lvgl/",
         "tier_color": true
       },
       {
@@ -734,7 +734,7 @@
     "theme_color": "var(--tier-4-purple)",
     "eyebrow": "pyscript-template",
     "headline": "pyscript-template — Offline PWA starter template.",
-    "description": "Progressive Web App starter template repository for deploying offline-capable client-side PyDevices applications on GitHub Pages.",
+    "description": "Progressive Web App starter template repository for deploying offline-capable client-side OmniPython applications on GitHub Pages.",
     "hero_canvas": {
       "app": "radar_scope",
       "width": 240,
@@ -766,8 +766,8 @@
         "tier_color": true
       },
       {
-        "label": "pydevices Core",
-        "href": "https://omnipython.org/pydevices/",
+        "label": "OmniPython Core",
+        "href": "https://omnipython.org/omnipython/",
         "tier_color": true
       }
     ]
@@ -779,7 +779,7 @@
     "theme_color": "var(--tier-4-purple)",
     "eyebrow": "android-template",
     "headline": "android-template — Android APK Buildozer project.",
-    "description": "Pre-configured python-for-android build recipes and Buildozer project template for packaging PyDevices applications into native Android APKs.",
+    "description": "Pre-configured python-for-android build recipes and Buildozer project template for packaging OmniPython applications into native Android APKs.",
     "hero_canvas": {
       "app": "mobile_pad",
       "width": 240,
@@ -804,19 +804,19 @@
         "tier_color": true
       },
       {
-        "label": "pydevices Core",
-        "href": "https://omnipython.org/pydevices/",
+        "label": "OmniPython Core",
+        "href": "https://omnipython.org/omnipython/",
         "tier_color": true
       }
     ]
   },
-  "mpftp": {
+  "mcuctl": {
     "tier": 5,
     "page": "portal-subdir",
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
-    "eyebrow": "mpftp",
-    "headline": "mpftp — board tools for the editor, CLI, and agents.",
+    "eyebrow": "mcuctl",
+    "headline": "mcuctl — board tools for the editor, CLI, and agents.",
     "description": "Connect MicroPython and CircuitPython boards from VS Code, Cursor, or the CLI, over USB or Wi-Fi: dual-pane file transfer, in-editor REPL, firmware builds and flashing, mip/circup, plus RPC and an optional browser PWA.",
     "hero_canvas": {
       "app": "ftp_scope",
@@ -828,22 +828,22 @@
     "buttons": [
       {
         "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/mpftp",
+        "href": "https://github.com/PyDevices/mcuctl",
         "primary": true
       },
       {
         "label": "Docs",
-        "href": "https://github.com/PyDevices/mpftp/blob/main/docs/index.md",
+        "href": "https://github.com/PyDevices/mcuctl/blob/main/docs/index.md",
         "tier_color": true
       },
       {
         "label": "Agent guide",
-        "href": "https://github.com/PyDevices/mpftp/blob/main/docs/guides/drive-a-board-from-an-agent.md",
+        "href": "https://github.com/PyDevices/mcuctl/blob/main/docs/guides/drive-a-board-from-an-agent.md",
         "tier_color": true
       },
       {
         "label": "Releases",
-        "href": "https://github.com/PyDevices/mpftp/releases/latest",
+        "href": "https://github.com/PyDevices/mcuctl/releases/latest",
         "tier_color": true
       }
     ]
@@ -873,8 +873,8 @@
         "tier_color": true
       },
       {
-        "label": "pydevices Core",
-        "href": "https://omnipython.org/pydevices/",
+        "label": "OmniPython Core",
+        "href": "https://omnipython.org/omnipython/",
         "tier_color": true
       }
     ],
@@ -891,7 +891,7 @@
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "PyDevices / gallery · PyScript Gallery",
     "headline": "PyScript Gallery",
-    "description": "Pyodide / PyScript demos that run full CPython in the browser — the same PyDevices examples as MCUs and the direct WebAssembly gallery. Explore drawing, input, widgets, and LVGL without flashing a board first.",
+    "description": "Pyodide / PyScript demos that run full CPython in the browser — the same OmniPython examples as MCUs and the direct WebAssembly gallery. Explore drawing, input, widgets, and LVGL without flashing a board first.",
     "hero_note": "Click a card to launch the app. The first load may take a few seconds while the interpreter downloads; featured demos stay pinned at the top.",
     "buttons": []
   },
@@ -910,7 +910,7 @@
       "shape": "round",
       "app_url": "https://omnipython.org/assets/apps/watch.py"
     },
-    "hero_note": "Get Started installs the Python packages, with pip on a desktop or mip on a board. To build MicroPython firmware with the modules compiled in, run <code>curl -fsSL https://omnipython.org/install.sh | sh</code> and follow the guide on the <a href=\"https://omnipython.org/micropython-pydevices/\">micropython-pydevices page</a>.",
+    "hero_note": "Get Started installs the Python packages, with pip on a desktop or mip on a board. To build MicroPython firmware with the modules compiled in, run <code>curl -fsSL https://omnipython.org/install.sh | sh</code> and follow the guide on the <a href=\"https://omnipython.org/omnipython-builds/\">omnipython-builds page</a>.",
     "buttons": [
       {
         "label": "GitHub Org",
@@ -919,7 +919,7 @@
       },
       {
         "label": "Get Started",
-        "href": "https://omnipython.org/pydevices/",
+        "href": "https://omnipython.org/omnipython/",
         "tier_color": true
       },
       {
@@ -938,17 +938,17 @@
       "width": 640,
       "height": 420,
       "alt": "Huey, a blue chameleon with lime spots, waving from a jumper wire",
-      "caption": "<a href=\"/pydevices/\">OmniPython</a>'s mascot"
+      "caption": "<a href=\"/omnipython/\">OmniPython</a>'s mascot"
     }
   },
-  "micropython-pydevices": {
+  "omnipython-builds": {
     "tier": 5,
     "page": "portal-subdir",
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
-    "eyebrow": "micropython-pydevices",
-    "headline": "micropython-pydevices — the versioned MicroPython runtime overlay.",
-    "description": "The PyDevices patch queue for MicroPython, kept like a distribution keeps one: an ordered, provenance-tracked patch series over the pinned upstream (MicroPython v1.30.0-preview-160), with presets, boards and variants that build PyDevices modules into firmware with upstream's own make.",
+    "eyebrow": "omnipython-builds",
+    "headline": "omnipython-builds — the versioned MicroPython runtime overlay.",
+    "description": "The OmniPython patch queue for MicroPython, kept like a distribution keeps one: an ordered, provenance-tracked patch series over the pinned upstream (MicroPython v1.30.0-preview-160), with presets, boards and variants that build PyDevices modules into firmware with upstream's own make.",
     "hero_canvas": {
       "app": "radar_scope",
       "width": 240,
@@ -959,22 +959,22 @@
     "buttons": [
       {
         "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/micropython-pydevices",
+        "href": "https://github.com/PyDevices/omnipython-builds",
         "primary": true
       },
       {
         "label": "Patch series",
-        "href": "https://github.com/PyDevices/micropython-pydevices/tree/main/patches",
+        "href": "https://github.com/PyDevices/omnipython-builds/tree/main/patches",
         "tier_color": true
       },
       {
         "label": "How it works",
-        "href": "https://github.com/PyDevices/micropython-pydevices/blob/main/docs/how-it-works/index.md",
+        "href": "https://github.com/PyDevices/omnipython-builds/blob/main/docs/how-it-works/index.md",
         "tier_color": true
       },
       {
-        "label": "pydevices Core",
-        "href": "https://omnipython.org/pydevices/",
+        "label": "OmniPython Core",
+        "href": "https://omnipython.org/omnipython/",
         "tier_color": true
       }
     ],
@@ -993,7 +993,7 @@
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "workbench",
     "headline": "workbench — the browser IDE and MicroPython simulator.",
-    "description": "A ViperIDE fork with a built-in WebAssembly MicroPython simulator: edit, run, and debug PyDevices code against a simulated board entirely in the browser, no hardware required.",
+    "description": "A ViperIDE fork with a built-in WebAssembly MicroPython simulator: edit, run, and debug OmniPython code against a simulated board entirely in the browser, no hardware required.",
     "buttons": [
       {
         "label": "GitHub Repo",

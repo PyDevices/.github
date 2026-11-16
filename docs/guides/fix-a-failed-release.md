@@ -15,7 +15,7 @@ Two situations are worth recognising before you read the table:
   profile may be published from, and refuses a dispatch from another. The
   releasing repository's `request-mip-publication` job reports success; only
   `mip`'s own run goes red. Tag in the new repository, then change `repository`
-  and `ref` for the profile in `pydevices-lock.json` on `mip`'s `PyDevices`
+  and `ref` for the profile in `omnipython-lock.json` on `mip`'s `PyDevices`
   branch, then rerun the failed `mip` runs.
 
 | Symptom | Meaning and response |

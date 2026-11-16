@@ -6,12 +6,12 @@
 """Verify every published hero app actually runs.
 
 The hero demos fail silently: the page renders, the runtime catches its own
-exception, and nothing anywhere goes red. The `/pydevices/` hero was dead for
+exception, and nothing anywhere goes red. The `/omnipython/` hero was dead for
 a week before a human happened to look. This turns that class of failure into
 a check.
 
 It reads the runtime's own verdict rather than inferring one. `hero-runtime.js`
-publishes `window.__pydevicesHeroes` as `{phase, heroes, errors}` — a single
+publishes `window.__omnipythonHeroes` as `{phase, heroes, errors}` — a single
 top-level `phase` ("idle" until it settles, then "ready" or "failed"), the
 launched heroes, and any errors it caught. Read those fields individually:
 the object holds live emscripten FS nodes, so JSON-serialising the whole
@@ -104,7 +104,7 @@ def check(page_url: str, browser) -> dict:
     waited = 0
     phase = None
     while waited < SETTLE_MS:
-        phase = pg.evaluate("() => (window.__pydevicesHeroes || {}).phase")
+        phase = pg.evaluate("() => (window.__omnipythonHeroes || {}).phase")
         if phase in ("ready", "failed"):
             break
         pg.wait_for_timeout(POLL_MS)
@@ -112,10 +112,10 @@ def check(page_url: str, browser) -> dict:
 
     result["phase"] = phase
     result["hero_count"] = pg.evaluate(
-        "() => ((window.__pydevicesHeroes || {}).heroes || []).length"
+        "() => ((window.__omnipythonHeroes || {}).heroes || []).length"
     )
     for e in pg.evaluate(
-        "() => ((window.__pydevicesHeroes || {}).errors || []).map(String).slice(0, 3)"
+        "() => ((window.__omnipythonHeroes || {}).errors || []).map(String).slice(0, 3)"
     ):
         errors.append(e[:300])
 

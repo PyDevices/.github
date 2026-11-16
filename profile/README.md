@@ -22,8 +22,8 @@ Welcome to **PyDevices** — a unified pure-Python hardware abstraction engine, 
 
 Standard hardware driver engine and companion reference code.
 
-- [`pydevices`](https://github.com/PyDevices/pydevices) — Unified pure-Python hardware abstraction layer and core device contract for MicroPython, CircuitPython, CPython, direct WebAssembly, Pyodide, and Android.
-- [`audiodsp`](https://github.com/PyDevices/audiodsp) — CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. On PyPI as pydevices-audiodsp; the instrument and effect libraries built on it are audioinstruments and audioeffects.
+- [`omnipython`](https://github.com/PyDevices/omnipython) — Unified pure-Python hardware abstraction layer and core device contract for MicroPython, CircuitPython, CPython, direct WebAssembly, Pyodide, and Android.
+- [`audiodsp`](https://github.com/PyDevices/audiodsp) — CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. On PyPI as omnipython-audiodsp; the instrument and effect libraries built on it are audioinstruments and audioeffects.
 - [`audioinstruments`](https://github.com/PyDevices/audioinstruments) — Playable synthesizers, organs, electric pianos and drum machines, each a patch of modules on a virtual rack, rendered a block at a time on audiodsp. Pure Python on CPython and MicroPython-compatible firmware. Install omnipython-audioinstruments from TestPyPI, or audioinstruments from the MIP index.
 - [`audioeffects`](https://github.com/PyDevices/audioeffects) — Compressors, EQs, reverbs, delays, modulation, drive and amp simulation, pitch shifters and racks, pure Python on audiodsp's audio nodes, the same on MicroPython-compatible boards, CircuitPython-compatible boards and a desktop. Install omnipython-audioeffects from TestPyPI, or audioeffects from the MIP index.
 - [`gallery`](https://github.com/PyDevices/gallery) — Comprehensive example code, direct MicroPython WebAssembly demos, board configurations, and multi-interpreter showcase benchmarks.
@@ -33,9 +33,9 @@ Standard hardware driver engine and companion reference code.
 Pure Python on any Python 3 host; pygraphics adds native wheels for Linux x86_64, Windows, Android and Pyodide.
 
 - [`pygraphics`](https://github.com/PyDevices/pygraphics) — Native C and pure-Python 2D graphics library with drawing primitives, bitmap font rendering, paletted surface blitting, and area-dirtying pipelines.
-- [`pdwidgets`](https://github.com/PyDevices/pydevices/tree/main/packages/pdwidgets) — Lightweight object-oriented UI widget framework including buttons, sliders, progress bars, labels, and event routing for PyDevices screens.
-- [`palettes`](https://github.com/PyDevices/pydevices/tree/main/packages/palettes) — Color management library with RGB565 / RGB888 output, an HSV color wheel, RGB color cubes, Material Design swatches, and Win16 color names.
-- [`iconkit`](https://github.com/PyDevices/pydevices/tree/main/packages/iconkit) — Material Design icons as flash-resident alpha masks, drawn in LVGL or pygraphics.
+- [`pdwidgets`](https://github.com/PyDevices/omnipython/tree/main/packages/pdwidgets) — Lightweight object-oriented UI widget framework including buttons, sliders, progress bars, labels, and event routing for OmniPython screens.
+- [`palettes`](https://github.com/PyDevices/omnipython/tree/main/packages/palettes) — Color management library with RGB565 / RGB888 output, an HSV color wheel, RGB color cubes, Material Design swatches, and Win16 color names.
+- [`iconkit`](https://github.com/PyDevices/omnipython/tree/main/packages/iconkit) — Material Design icons as flash-resident alpha masks, drawn in LVGL or pygraphics.
 
 ### Tier 3: LVGL Native Extensions & Binding Generator
 
@@ -47,25 +47,25 @@ Single-source LVGL C header binding generator and native interpreter modules.
 
 Deploy PyDevices apps directly to desktop browsers or mobile APKs.
 
-- [`pyscript-template`](https://github.com/PyDevices/pyscript-template) — Progressive Web App starter template repository for deploying offline-capable client-side PyDevices applications on GitHub Pages.
-- [`android-template`](https://github.com/PyDevices/android-template) — Pre-configured python-for-android build recipes and Buildozer project template for packaging PyDevices applications into native Android APKs.
+- [`pyscript-template`](https://github.com/PyDevices/pyscript-template) — Progressive Web App starter template repository for deploying offline-capable client-side OmniPython applications on GitHub Pages.
+- [`android-template`](https://github.com/PyDevices/android-template) — Pre-configured python-for-android build recipes and Buildozer project template for packaging OmniPython applications into native Android APKs.
 
 ### Tier 5: Developer Tools & Infrastructure
 
 MIP package indexing, multi-usermod builds, and serial/FTP IDE extensions.
 
-- [`mpftp`](https://github.com/PyDevices/mpftp) — Connect MicroPython and CircuitPython boards from VS Code, Cursor, or the CLI, over USB or Wi-Fi: dual-pane file transfer, in-editor REPL, firmware builds and flashing, mip/circup, plus RPC and an optional browser PWA.
-- [`micropython-pydevices`](https://github.com/PyDevices/micropython-pydevices) — The PyDevices patch queue for MicroPython, kept like a distribution keeps one: an ordered, provenance-tracked patch series over the pinned upstream (MicroPython v1.30.0-preview-160), with presets, boards and variants that build PyDevices modules into firmware with upstream's own make.
-- [`workbench`](https://github.com/PyDevices/workbench) — A ViperIDE fork with a built-in WebAssembly MicroPython simulator: edit, run, and debug PyDevices code against a simulated board entirely in the browser, no hardware required.
+- [`mcuctl`](https://github.com/PyDevices/mcuctl) — Connect MicroPython and CircuitPython boards from VS Code, Cursor, or the CLI, over USB or Wi-Fi: dual-pane file transfer, in-editor REPL, firmware builds and flashing, mip/circup, plus RPC and an optional browser PWA.
+- [`omnipython-builds`](https://github.com/PyDevices/omnipython-builds) — The OmniPython patch queue for MicroPython, kept like a distribution keeps one: an ordered, provenance-tracked patch series over the pinned upstream (MicroPython v1.30.0-preview-160), with presets, boards and variants that build PyDevices modules into firmware with upstream's own make.
+- [`workbench`](https://github.com/PyDevices/workbench) — A ViperIDE fork with a built-in WebAssembly MicroPython simulator: edit, run, and debug OmniPython code against a simulated board entirely in the browser, no hardware required.
 - [`mpvst`](https://github.com/PyDevices/mpvst) — Programmable VST3 instruments and effects: every audioinstruments instrument and audioeffects effect as a named plug-in, each instance running its Python in a sidecar process. Installers for Windows and Linux; nothing has to be built.
 
 **Moved into other repositories:**
 
-- **displayif** — now [`modules/displayif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/displayif) in micropython-pydevices. The old repository is archived.
+- **displayif** — now [`modules/displayif`](https://github.com/PyDevices/omnipython-builds/tree/main/modules/displayif) in omnipython-builds. The old repository is archived.
 - **audiocomponents** — split into [`audioinstruments`](https://github.com/PyDevices/audioinstruments) and [`audioeffects`](https://github.com/PyDevices/audioeffects). The old repository is archived.
-- **audioif** — now [`modules/audioif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/audioif) in micropython-pydevices. The old repository is archived.
-- **cameraif** — now [`modules/cameraif`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/cameraif) in micropython-pydevices. The old repository is archived.
-- **usbif** — the C module is now [`modules/usbhost`](https://github.com/PyDevices/micropython-pydevices/tree/main/modules/usbhost) in micropython-pydevices; the Python USB packages are in [pydevices](https://github.com/PyDevices/pydevices/blob/main/docs/guides/usb.md). The old repository is archived.
+- **audioif** — now [`modules/audioif`](https://github.com/PyDevices/omnipython-builds/tree/main/modules/audioif) in omnipython-builds. The old repository is archived.
+- **cameraif** — now [`modules/cameraif`](https://github.com/PyDevices/omnipython-builds/tree/main/modules/cameraif) in omnipython-builds. The old repository is archived.
+- **usbif** — the C module is now [`modules/usbhost`](https://github.com/PyDevices/omnipython-builds/tree/main/modules/usbhost) in omnipython-builds; the Python USB packages are in [omnipython](https://github.com/PyDevices/omnipython/blob/main/docs/guides/usb.md). The old repository is archived.
 - **lvgl-bindings** — now [`binding`](https://github.com/PyDevices/omnipython-lvgl/tree/main/binding) in omnipython-lvgl. The old repository is archived.
 - **lvgl-micropython** — now [`ports/micropython`](https://github.com/PyDevices/omnipython-lvgl/tree/main/ports/micropython) in omnipython-lvgl. The old repository is archived.
 - **lvgl-python** — now [`ports/cpython`](https://github.com/PyDevices/omnipython-lvgl/tree/main/ports/cpython) in omnipython-lvgl. The old repository is archived.
@@ -73,6 +73,6 @@ MIP package indexing, multi-usermod builds, and serial/FTP IDE extensions.
 
 **Deliberately absent from this map:**
 
-- **android-runner** — Exists solely to enable pydevices/bin/android.py. The APK is documented in pydevices; the runner publishes no site.
+- **android-runner** — Exists solely to enable omnipython/bin/android.py. The APK is documented in omnipython; the runner publishes no site.
 
 <!-- PYDEVICES-ECOSYSTEM: END -->

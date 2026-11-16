@@ -11,7 +11,7 @@ the history stays honest and installs stop.
 is gone for good: never reuse it.
 
 **A bad publication on the MIP index.** Revert the lockfile commit
-(`pydevices-lock.json`) on the `PyDevices` branch of `PyDevices/mip`, then
+(`omnipython-lock.json`) on the `PyDevices` branch of `PyDevices/mip`, then
 dispatch `deploy-mip-index-to-pages.yml`. It rebuilds every locked source from
 the lockfile at the branch tip and redeploys. Check
 `package/<abi>/<name>/latest.json` for the version, and spot-check content too
@@ -40,7 +40,7 @@ the App's installation and permissions.
   repository. Rows are additive JSON in `release-health/data.json`; you can
   edit it by hand in a pinch and the next event regenerates the page.
 - **A stuck MIP queue.** Runs serialize in the
-  `pydevices-mip-publication-queue` concurrency group. Cancel the stuck run,
+  `omnipython-mip-publication-queue` concurrency group. Cancel the stuck run,
   then dispatch `process-mip-publication-request.yml` again with the profile,
   repository, ref and version inputs.
 

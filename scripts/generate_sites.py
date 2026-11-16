@@ -21,7 +21,7 @@ DB_PATH = os.path.join(DOTGITHUB_DIR, 'data/repos_db.json')
 ASSETS_DIR = os.path.join(DOTGITHUB_DIR, 'assets')
 NAV_GLYPHS_PATH = os.path.join(DOTGITHUB_DIR, 'data/nav_glyphs.json')
 NAV_GLYPH_ALIASES = {
-    'displayif': 'pydevices',
+    'displayif': 'omnipython',
     'audioif': 'audiodsp',
     'audiocomponents': 'audioinstruments',
     'lvgl-bindings': 'omnipython-lvgl',
@@ -51,7 +51,7 @@ def get_gradient_dark(color_var):
 
 def get_card_icon(repo_name):
     icons = {
-        'pydevices': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+        'omnipython': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
         'displayif': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M7 16l1-4M17 16l-1-4"/></svg>',
         'audiodsp': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4"/></svg>',
         'audioif': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4"/></svg>',
@@ -60,7 +60,7 @@ def get_card_icon(repo_name):
         'audioeffects': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>',
         'usbif': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v14"/><path d="M9 5l3-3 3 3"/><path d="M12 12l-5-3V7M12 14l5-3V9"/><circle cx="12" cy="19" r="3"/></svg>',
         'cameraif': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></svg>',
-        'micropython-pydevices': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>',
+        'omnipython-builds': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>',
         'workbench': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 10l-2 2 2 2M14 10l2 2-2 2"/></svg>',
         'mpvst': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
         'gallery': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><circle cx="17" cy="15" r="1.5"/></svg>',
@@ -74,7 +74,7 @@ def get_card_icon(repo_name):
         'lvgl-circuitpython': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M3 12h3M18 12h3M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="4"/></svg>',
         'pyscript-template': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/><path d="M8 9h8M8 13h5"/></svg>',
         'android-template': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 19h4"/></svg>',
-        'mpftp': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/><circle cx="15" cy="15" r="1"/><path d="M15 16v3M13 19h4"/></svg>',
+        'mcuctl': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/><circle cx="15" cy="15" r="1"/><path d="M15 16v3M13 19h4"/></svg>',
         # Same glyph as gallery -- these are sub-pages of that repo.
         'gallery-gallery': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><circle cx="17" cy="15" r="1.5"/></svg>',
         'gallery-pyscript': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><circle cx="17" cy="15" r="1.5"/></svg>',
@@ -92,7 +92,7 @@ def get_card_icon(repo_name):
 
 def get_tag_label(repo_name):
     tags = {
-        'pydevices': 'Core Flagship',
+        'omnipython': 'Core Flagship',
         'displayif': 'C Bus Usermod',
         'audiodsp': 'C Audio Usermod',
         'audioif': 'C Audio Driver',
@@ -101,7 +101,7 @@ def get_tag_label(repo_name):
         'audioeffects': 'Effects',
         'usbif': 'C USB Usermod',
         'cameraif': 'C Camera Usermod',
-        'micropython-pydevices': 'Runtime Overlay',
+        'omnipython-builds': 'Runtime Overlay',
         'workbench': 'Browser IDE',
         'mpvst': 'VST3 Plug-in',
         'gallery': 'Companion Showcase',
@@ -115,7 +115,7 @@ def get_tag_label(repo_name):
         'lvgl-circuitpython': 'CircuitPython C',
         'pyscript-template': 'PWA Template',
         'android-template': 'Android APK',
-        'mpftp': 'IDE Extension'
+        'mcuctl': 'IDE Extension'
     }
     return tags.get(repo_name, repo_name)
 
@@ -253,7 +253,7 @@ def build_ecosystem_markdown(db):
         lines += [f'### Tier {tier}: {name}', '', f'{hint}', '']
         for repo_name, data in by_tier[tier]:
             # A package that lives inside another repository (palettes and
-            # pdwidgets in pydevices) names its real home with repo_url; the
+            # pdwidgets in omnipython) names its real home with repo_url; the
             # same-named repository is archived.
             url = data.get('repo_url') or f'https://github.com/PyDevices/{repo_name}'
             lines.append(f'- [`{repo_name}`]({url}) — {data.get("description", "")}')
@@ -278,7 +278,7 @@ def build_ecosystem_markdown(db):
 
 ECOSYSTEM_TARGETS = (
     ('dotgithub', 'profile/README.md'),
-    ('pydevices', 'docs/how-it-works/ecosystem.md'),
+    ('omnipython', 'docs/how-it-works/ecosystem.md'),
 )
 
 
@@ -370,7 +370,7 @@ def build_above_the_fold_html(repo_name, data):
             f'color: var(--on-accent);">{mark}</div>'
         )
     eyebrow = data.get('eyebrow', repo_name)
-    headline = data.get('headline', f'{repo_name} — PyDevices library.')
+    headline = data.get('headline', f'{repo_name} — OmniPython library.')
     description = data.get('description', '')
     # The org homepage and repo sub-pages (e.g. a gallery) aren't "a repo among
     # repos" -- skip the <code>reponame</code> prefix that every repo's own
@@ -566,6 +566,59 @@ PAGE_SKELETON = '''<!doctype html>
 '''
 
 
+# Pages whose address changed: the old path gets a page that sends the
+# visitor, and any link or bookmark, to the new one.
+RENAMED_SLUGS = {
+    'pydevices': 'omnipython',
+    'micropython-pydevices': 'omnipython-builds',
+    'mpftp': 'mcuctl',
+}
+
+REDIRECT_PAGE = '''<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Moved to /{new}/</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="0; url=/{new}/">
+  <link rel="canonical" href="/{new}/">
+  <meta name="robots" content="noindex">
+</head>
+<body>
+  <p>This page moved to <a href="/{new}/">/{new}/</a>.</p>
+</body>
+</html>
+'''
+
+
+def redirect_page_html(new):
+    """The stub served at a renamed page's old address."""
+    return REDIRECT_PAGE.format(new=new)
+
+
+def write_slug_redirects(db):
+    """Write a redirect page at each renamed slug's old path in the portal.
+
+    Returns how many files changed, so a second run reports zero.
+    """
+    portal = os.path.join(BASE_DIR, PORTAL_REPO)
+    changed = 0
+    for old, new in RENAMED_SLUGS.items():
+        if new not in repos(db):
+            raise SystemExit(f"redirect {old} -> {new}: {new} is not in data/repos_db.json")
+        dest = os.path.join(portal, old, 'index.html')
+        html = redirect_page_html(new)
+        if os.path.isfile(dest):
+            with open(dest, 'r', encoding='utf-8') as f:
+                if f.read() == html:
+                    continue
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        with open(dest, 'w', encoding='utf-8') as f:
+            f.write(html)
+        changed += 1
+    return changed
+
+
 def asset_prefix(data):
     """Prefix for shared-asset URLs in this repo's page."""
     return '/'
@@ -747,7 +800,7 @@ def main(argv=None):
 
         # Update section markers cleanly
         # A page with no marker blocks is not a page this generator manages --
-        # report it rather than claiming success. pydevices sat like this for
+        # report it rather than claiming success. omnipython sat like this for
         # months after its landing page was replaced by a redirect stub.
         missing = [
             marker for marker in ('PYDEVICES-HEAD-TAGS', 'PYDEVICES-ABOVE-THE-FOLD')
@@ -783,6 +836,9 @@ def main(argv=None):
             raise SystemExit(f"--only {args.only}: page not written")
         print(f"=== Complete! Processed {args.only} only ===")
         return
+
+    redirects = write_slug_redirects(db)
+    print(f"[OK] {redirects} old-address redirect page(s) written")
 
     written = write_ecosystem_markdown(db)
 

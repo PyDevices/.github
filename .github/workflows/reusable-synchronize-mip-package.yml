@@ -3,13 +3,13 @@ name: Reusable synchronize MIP package
 # Rebuilds the whole MIP index from source at publish time. The package trees
 # are no longer committed to mip: they were build output that looked like
 # editable source, and every fix had to be made at the generator and never in
-# mip. What is committed instead is pydevices-lock.json, recording the released
+# mip. What is committed instead is omnipython-lock.json, recording the released
 # tag of each source repository.
 #
 # build.py compiles every manifest.py in the repository, so all four sources
 # must be present in the working tree -- not just the one being released. The
 # lockfile is what makes that reproducible: without it a release of palettes
-# would rebuild pydevices from whatever main happened to be, publishing
+# would rebuild omnipython from whatever main happened to be, publishing
 # unreleased work.
 
 on:
@@ -45,8 +45,8 @@ jobs:
   synchronize-build-and-stage-mip-index:
     runs-on: ubuntu-latest
     env:
-      PACKAGE_INDEX_PATH: /tmp/pydevices-mip-site
-      LOCKFILE: pydevices-lock.json
+      PACKAGE_INDEX_PATH: /tmp/omnipython-mip-site
+      LOCKFILE: omnipython-lock.json
     steps:
       - name: Mint an installation token for mip
         id: app-token
@@ -75,7 +75,7 @@ jobs:
         with:
           repository: PyDevices/.github
           ref: ${{ inputs.publishing-tools-ref }}
-          path: .pydevices-publishing-tools
+          path: .omnipython-publishing-tools
 
       - name: Record this release in the lockfile
         env:
@@ -96,7 +96,7 @@ jobs:
           if expected != got:
               raise SystemExit(
                   f"profile {profile!r} is locked to {expected}, not {got}; "
-                  f"edit pydevices-lock.json on the PyDevices branch to move the profile"
+                  f"edit omnipython-lock.json on the PyDevices branch to move the profile"
               )
           entry["ref"] = os.environ["SOURCE_REF"]
           path.write_text(json.dumps(lock, indent=2) + "\n")
@@ -122,7 +122,7 @@ jobs:
             # v1.2.3 for a repository's tag, <name>-v1.2.3 for a folder package's.
             version="${ref#v}"
             version="${version##*-v}"
-            python .pydevices-publishing-tools/scripts/synchronize_mip_package.py \
+            python .omnipython-publishing-tools/scripts/synchronize_mip_package.py \
               --source-repository ".publication-sources/${profile}" \
               --source-repository-name "$repository" \
               --mip-repository . \
@@ -132,7 +132,7 @@ jobs:
           done
 
       - name: Remove temporary checkouts
-        run: rm -rf .publication-sources .pydevices-publishing-tools
+        run: rm -rf .publication-sources .omnipython-publishing-tools
 
       - name: Build the complete latest-only index
         run: |

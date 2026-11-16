@@ -1,5 +1,5 @@
 /*
- * The PyDevices documentation look, laid over sphinx_rtd_theme.
+ * The OmniPython documentation look, laid over sphinx_rtd_theme.
  *
  * Its palette mirrors the website chrome (assets/css/site.css in this
  * repository, deployed at omnipython.org/assets/chrome/site.css):
@@ -191,7 +191,7 @@ html.writer-html5 .rst-content dl.py > dt { border-radius: var(--pd-radius-xs); 
 
 /* ---- Live WebAssembly demos ----------------------------------------- */
 
-.pydevices-live-demo {
+.omnipython-live-demo {
   display: flex; flex-wrap: wrap; gap: 1.25rem;
   background: var(--pd-bg-code);
   border: 1px solid var(--pd-border);

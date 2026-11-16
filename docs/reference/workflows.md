@@ -16,9 +16,9 @@ Inputs, secrets and tags are in [release workflows](release-workflows.md).
 | `reusable-report-pypi-result.yml` | Report a caller-side PyPI upload to Release Health ([why the upload is caller-side](../guides/publish-to-pypi.md)) |
 | `reusable-build-pure-python-distribution.yml` | sdist and wheel for a pure-Python package |
 | `reusable-build-native-and-wasm-wheels.yml` | cibuildwheel: Linux, Windows, Android and Pyodide wasm32 |
-| `reusable-build-pydevices-distributions.yml` | The `pydevices` and `pydevices-desktop` distributions, derived from `lib/` and `utils/` |
+| `reusable-build-omnipython-distributions.yml` | The `omnipython` and `omnipython-desktop` distributions, derived from `lib/` and `utils/` |
 | `reusable-request-mip-publication.yml` | Dispatch into the publication queues of `mip` and `lib`, once per profile |
-| `reusable-synchronize-mip-package.yml` | Record the release in `pydevices-lock.json`, re-sync every locked source, rebuild and validate the index, stage the Pages artifact |
+| `reusable-synchronize-mip-package.yml` | Record the release in `omnipython-lock.json`, re-sync every locked source, rebuild and validate the index, stage the Pages artifact |
 | `reusable-validate-pyscript-filesystem-toml.yml` | Check a `*.toml` filesystem map against the tree it claims to mirror |
 | `reusable-style-check.yml` | Fail a pull request on the mechanical house-style rules ([the style check](#the-style-check)) |
 | `reusable-docs-site.yml` | Build the whole documentation site with the caller's pages in it, fail on the caller's warnings, and after a push to `main` ask Read the Docs to rebuild ([build and publish documentation](../guides/build-and-publish-docs.md#warnings)) |
@@ -41,19 +41,19 @@ workflows that need this repository's scripts check it out at
 ## Releasing
 
 Six repositories release through the reusable chain. Five of them
-(`pydevices`, `pygraphics`, `audiodsp`, `audiocomponents` and `mpftp`) carry a
+(`omnipython`, `pygraphics`, `audiodsp`, `audiocomponents` and `mcuctl`) carry a
 `prepare-release.yml`, `tag-release.yml` and `publish-release-packages.yml`
 trio. The first two are one-job callers; `publish-release-packages.yml` supplies
 what differs, the build kind, the distribution name and the MIP profile:
 
 | Repository | `build-kind` | Distribution | MIP profile |
 |---|---|---|---|
-| `pydevices` | `pydevices-multi` | `pydevices` (and `pydevices-desktop`) | `pydevices` |
-| `pygraphics` | `native-and-wasm` | `pydevices-pygraphics` | `pygraphics` |
+| `omnipython` | `omnipython-multi` | `omnipython` (and `omnipython-desktop`) | `omnipython` |
+| `pygraphics` | `native-and-wasm` | `omnipython-pygraphics` | `pygraphics` |
 | `audiodsp` | `native-and-wasm` | `omnipython-audiodsp` | none |
-| `audiocomponents` | `pure-python`, twice | `pydevices-audioinstruments`, `pydevices-audioeffects` | `audioinstruments,audioeffects` |
-| `mpftp` | `pure-python` | `pydevices-mpftp` | none |
-| `omnipython-lvgl` | `native-and-wasm` | `pydevices-lvgl` | none |
+| `audiocomponents` | `pure-python`, twice | `omnipython-audioinstruments`, `omnipython-audioeffects` | `audioinstruments,audioeffects` |
+| `mcuctl` | `pure-python` | `mcuctl` | none |
+| `omnipython-lvgl` | `native-and-wasm` | `omnipython-lvgl` | none |
 
 `publish-release-packages.yml` triggers on a published GitHub Release, or on
 `workflow_dispatch` with an exact `vX.Y.Z` tag to retry. `prepare-release.yml`
@@ -72,10 +72,10 @@ Releases that don't use the trio:
 | Repository | Workflow | Role |
 |---|---|---|
 | `omnipython-lvgl` | `release.yml` | By hand: with `mode=dry-run`, run every gate and change nothing; with `mode=release`, also write the next version to `VERSION` on `main` and publish a GitHub Release, which starts `publish-release-packages.yml` |
-| `pydevices` | `tag-package-release.yml`, `publish-package-release.yml` | Release the `palettes` and `pdwidgets` folders on their own `palettes-vX.Y.Z` and `pdwidgets-vX.Y.Z` tags: build the distribution from the folder at the tag and upload it to TestPyPI, then ask the library index for it, and for `iconkit` finals the mip index too |
-| `pydevices` | `publish-lib-boards.yml` | Ask the library index for board configurations and drivers when they merge |
-| `mpftp` | `publish-vsix.yml` | Build the VS Code extension and publish it to VS Marketplace and Open VSX (`VSCE_PAT`, `OVSX_PAT`, both optional) |
-| `android-runner` | `release_apk.yml` | Build the APK that `pydevices/bin/android.py --install-apk` downloads |
+| `omnipython` | `tag-package-release.yml`, `publish-package-release.yml` | Release the `palettes` and `pdwidgets` folders on their own `palettes-vX.Y.Z` and `pdwidgets-vX.Y.Z` tags: build the distribution from the folder at the tag and upload it to TestPyPI, then ask the library index for it, and for `iconkit` finals the mip index too |
+| `omnipython` | `publish-lib-boards.yml` | Ask the library index for board configurations and drivers when they merge |
+| `mcuctl` | `publish-vsix.yml` | Build the VS Code extension and publish it to VS Marketplace and Open VSX (`VSCE_PAT`, `OVSX_PAT`, both optional) |
+| `android-runner` | `release_apk.yml` | Build the APK that `omnipython/bin/android.py --install-apk` downloads |
 
 > A Release created with `GITHUB_TOKEN` doesn't trigger `on: release`
 > workflows. That is why `reusable-tag-on-release-merge.yml` and
@@ -85,7 +85,7 @@ Releases that don't use the trio:
 
 | Repository | Workflow | Role |
 |---|---|---|
-| `mip` | `process-mip-publication-request.yml` | Queue consumer (`pydevices-mip-publication-queue` concurrency group, `cancel-in-progress: false`): synchronize a package, rebuild the index, deploy. Accepts `repository_dispatch` (from `reusable-request-mip-publication.yml`) or `workflow_dispatch` with `profile` as a fixed choice |
+| `mip` | `process-mip-publication-request.yml` | Queue consumer (`omnipython-mip-publication-queue` concurrency group, `cancel-in-progress: false`): synchronize a package, rebuild the index, deploy. Accepts `repository_dispatch` (from `reusable-request-mip-publication.yml`) or `workflow_dispatch` with `profile` as a fixed choice |
 | `mip` | `deploy-mip-index-to-pages.yml` | Rebuild every locked package and publish the index. Triggers on the **`PyDevices`** branch, not `main` |
 | `mip` | `validate-mip-package-index.yml`, `refresh-package-list.yml` | Check index integrity; refresh the committed package list from each deployed index |
 | `mip` | `tests.yml`, `ruff.yml`, `commit-formatting.yml` | Inherited from micropython-lib; leave them alone |
@@ -95,7 +95,7 @@ Releases that don't use the trio:
 
 | Repository | Workflows |
 |---|---|
-| `pydevices` | `tests.yml`; `palettes.yml` and `pdwidgets.yml` for those folders; `appkit.yml`; `validate-pyscript-filesystem-toml.yml` |
+| `omnipython` | `tests.yml`; `palettes.yml` and `pdwidgets.yml` for those folders; `appkit.yml`; `validate-pyscript-filesystem-toml.yml` |
 | `pygraphics` | `tests.yml` (pure Python, then the native extension with `PYGRAPHICS_TEST_NATIVE=1`); `validate-pyscript-filesystem-toml.yml` |
 | `audiodsp` | `test-cpython.yml`, `clean-build.yml`, `lint.yml`, `android-wheels.yml`; the parity gates also rerun at release time |
 | `audiocomponents` | `tests.yml`, `lint.yml` |

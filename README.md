@@ -41,7 +41,7 @@ the parts they'd otherwise duplicate.
   landing page is published. [`scripts/generate_sites.py`](scripts/generate_sites.py)
   renders it into the org portal, into per-repo `.site/` trees, into
   [`profile/README.md`](profile/README.md), and into
-  [pydevices/docs/how-it-works/ecosystem.md](https://github.com/PyDevices/pydevices/blob/main/docs/how-it-works/ecosystem.md).
+  [omnipython/docs/how-it-works/ecosystem.md](https://github.com/PyDevices/omnipython/blob/main/docs/how-it-works/ecosystem.md).
   **Edit the database, not the generated markup** — run the generator by hand
   from a full workspace checkout (`python3 dotgithub/scripts/generate_sites.py`)
   after editing it; it validates the database first and is idempotent.
@@ -53,8 +53,8 @@ the parts they'd otherwise duplicate.
   live on GitHub.
 
 Board / Detect inventory docs live in
-[pydevices/docs](https://github.com/PyDevices/pydevices/tree/main/docs)
-([Pages](https://omnipython.org/pydevices/)).
+[omnipython/docs](https://github.com/PyDevices/omnipython/tree/main/docs)
+([Pages](https://omnipython.org/omnipython/)).
 
 Website: <https://omnipython.org/>
 

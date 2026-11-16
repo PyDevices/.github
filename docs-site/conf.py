@@ -10,7 +10,7 @@ folder in from its own repository.
 
 from pathlib import Path
 
-from pydevices_docs.site import configure_site, read_libraries
+from omnipython_docs.site import configure_site, read_libraries
 
 LIBRARIES = read_libraries(Path(__file__).with_name("libraries.toml"))
 

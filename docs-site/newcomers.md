@@ -12,7 +12,7 @@ reacts to the mouse and one that uses widgets, and read the code beside it.
 
 ## 2. Run it on your desktop
 
-[Install](install.md) `pydevices-desktop` and run an example from
+[Install](install.md) `omnipython-desktop` and run an example from
 [gallery](https://github.com/PyDevices/gallery). A window
 opens and your program draws into it, which is the quickest way to try an idea.
 
@@ -30,8 +30,8 @@ Each library's section starts with its own install page and first program.
 
 The board you own has a `board_config` that sets up its display and touch, so
 the program you ran on the desktop starts the same way on the board. The
-[device matrix](pydevices/boards/device-matrix.md)
-lists the boards, and [mpftp](https://github.com/PyDevices/mpftp) copies files
+[device matrix](omnipython/boards/device-matrix.md)
+lists the boards, and [mcuctl](https://github.com/PyDevices/mcuctl) copies files
 to them and gives you a REPL from your editor.
 
 ## When something goes wrong
