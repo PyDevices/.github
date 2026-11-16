@@ -77,11 +77,11 @@
   "mip": "success",
   "prerelease": true,
   "pypi": "skipped",
-  "repo": "audiocomponents",
-  "run_url": "https://github.com/PyDevices/audiocomponents/actions/runs/40815948502",
+  "repo": "audioinstruments",
+  "run_url": "https://github.com/PyDevices/audioinstruments/actions/runs/43826519240",
   "testpypi": "success",
-  "updated": "2026-10-29 04:42 UTC",
-  "version": "0.4.2rc1"
+  "updated": "2026-11-16 08:07 UTC",
+  "version": "0.5.2.dev5"
  },
  "omnipython-iconkit": {
   "assets": "success",
