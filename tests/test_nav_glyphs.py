@@ -17,6 +17,9 @@ class NavGlyphs(unittest.TestCase):
         with open(os.path.join(ROOT, 'assets/js/site-chrome.js'), encoding='utf-8') as f:
             chrome = f.read()
         for name, entry in glyphs.items():
+            if entry.get('cards_only'):
+                # A page the navigator does not list: only the generator draws it.
+                continue
             # The chrome adds a class to the four symbols it styles by name.
             body = entry['svg'].split('>', 1)[1]
             self.assertIn(body, chrome, f'{name} in site-chrome.js differs from data/nav_glyphs.json')
