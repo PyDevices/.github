@@ -75,7 +75,7 @@ jobs:
       - name: Check out generator output targets
         run: |
           set -euo pipefail
-          for repo in PyDevices.github.io pydevices gallery; do
+          for repo in PyDevices.github.io omnipython gallery; do
             git clone --quiet --depth 1 "https://github.com/PyDevices/${repo}.git" \
               "workspace-root/${repo}"
           done
@@ -91,7 +91,7 @@ jobs:
         run: |
           set -euo pipefail
           failed=0
-          for repo in PyDevices.github.io pydevices gallery; do
+          for repo in PyDevices.github.io omnipython gallery; do
             if ! git -C "workspace-root/${repo}" diff --exit-code; then
               echo "::error::${repo} is out of date with data/repos_db.json -- edit the database and regenerate"
               failed=1
@@ -168,7 +168,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install SDL2
-        # pydevices' SDL backends load libSDL2 when autodoc imports them.
+        # omnipython's SDL backends load libSDL2 when autodoc imports them.
         run: sudo apt-get update && sudo apt-get install -y libsdl2-2.0-0
 
       - run: pip install -r docs-site/requirements.txt

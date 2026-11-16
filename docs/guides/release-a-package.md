@@ -130,11 +130,11 @@ gh workflow run process-mip-publication-request.yml \
   -f source-repository=PyDevices/<repository> \
   -f source-ref=vX.Y.Z \
   -f version=X.Y.Z \
-  -f profile=<palettes|pdwidgets|pygraphics|pydevices|audioinstruments|audioeffects|iconkit>
+  -f profile=<palettes|pdwidgets|pygraphics|omnipython|audioinstruments|audioeffects|iconkit>
 ```
 
 A package that lives in a folder of a larger repository, `iconkit` in
-`PyDevices/pydevices`, takes its own tag as `source-ref`
+`PyDevices/omnipython`, takes its own tag as `source-ref`
 (`iconkit-vX.Y.Z`) and the plain `X.Y.Z` as `version`. Its source is the
 folder's `lib`, not the repository's. Its release workflow sends this request
 itself for a final release, so you dispatch by hand only to retry one or to

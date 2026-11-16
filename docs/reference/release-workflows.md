@@ -7,31 +7,31 @@ The release chain's moving parts, as tables. How they fit together is in
 
 | Source repository | TestPyPI | MIP index |
 |---|---|---|
-| `pydevices` | `pydevices` (all of `lib/`) and `pydevices-desktop` | `pydevices` |
-| `pygraphics` | `pydevices-pygraphics`: Linux, Windows, Android and WASM wheels | pure-Python `pygraphics` |
+| `omnipython` | `omnipython` (all of `lib/`) and `omnipython-desktop` | `omnipython` |
+| `pygraphics` | `omnipython-pygraphics`: Linux, Windows, Android and WASM wheels | pure-Python `pygraphics` |
 | `audiodsp` | `omnipython-audiodsp`: Linux, Windows, macOS, Android and WASM wheels | nothing; the native modules are firmware, built from the usermod source |
-| `audiocomponents` | `pydevices-audioinstruments` and `pydevices-audioeffects`, pure Python, from one repository | `audioinstruments` and `audioeffects` |
-| `omnipython-lvgl` | `pydevices-lvgl`: Linux, Windows, Android and WASM wheels | nothing |
-| `mpftp` | `pydevices-mpftp` wheel and sdist | nothing |
+| `audiocomponents` | `omnipython-audioinstruments` and `omnipython-audioeffects`, pure Python, from one repository | `audioinstruments` and `audioeffects` |
+| `omnipython-lvgl` | `omnipython-lvgl`: Linux, Windows, Android and WASM wheels | nothing |
+| `mcuctl` | `mcuctl` wheel and sdist | nothing |
 
-The `palettes` and `pdwidgets` folders of `pydevices` publish separately, on
+The `palettes` and `pdwidgets` folders of `omnipython` publish separately, on
 `palettes-vX.Y.Z` and `pdwidgets-vX.Y.Z` tags, to TestPyPI and the library
 index. The library index (`PyDevices/lib`) takes every release of every
 repository that asks it, pre-releases included.
 
-pip distribution names carry a prefix (`pydevices-` or `omnipython-`); MIP
-package names don't. `pydevices` and `pydevices-desktop` keep the same name in
-both. `mpftp` also publishes its VS Code extension with `publish-vsix.yml`,
+pip distribution names carry a prefix (`omnipython-` or `omnipython-`); MIP
+package names don't. `omnipython` and `omnipython-desktop` keep the same name in
+both. `mcuctl` also publishes its VS Code extension with `publish-vsix.yml`,
 outside this chain.
 
 ## Inputs of `reusable-publish-release-packages.yml`
 
 | Input | Meaning |
 |---|---|
-| `build-kind` | `pure-python`, `native-and-wasm` or `pydevices-multi`; exactly one build runs |
+| `build-kind` | `pure-python`, `native-and-wasm` or `omnipython-multi`; exactly one build runs |
 | `distribution-name` | The TestPyPI distribution name |
 | `import-name` | `pure-python` only: the module the smoke test imports |
-| `wheel-filename-prefix` | `native-and-wasm` only, for example `pydevices_pygraphics` |
+| `wheel-filename-prefix` | `native-and-wasm` only, for example `omnipython_pygraphics` |
 | `expected-wheel-count` | `native-and-wasm` only; `0` accepts any non-empty wheel set |
 | `linux-aarch64` | `native-and-wasm` only, from `publishing-v21`: also build Linux aarch64 wheels on a native ARM runner, for 64-bit Raspberry Pi OS and other ARM boards. Count them in `expected-wheel-count` |
 | `install-dependencies` | `pure-python` only: install dependencies before the smoke test |
@@ -48,8 +48,8 @@ jobs:
   publish:
     uses: PyDevices/.github/.github/workflows/reusable-publish-release-packages.yml@publishing-vN
     with:
-      build-kind: pure-python          # or native-and-wasm, pydevices-multi
-      distribution-name: pydevices-palettes
+      build-kind: pure-python          # or native-and-wasm, omnipython-multi
+      distribution-name: omnipython-palettes
       import-name: palettes
       mip-profile: palettes            # omit to skip MIP
       release-ref: ${{ inputs.release-ref }}
@@ -62,7 +62,7 @@ jobs:
 |---|---|---|
 | `PYDEVICES_APP_ID`, `PYDEVICES_APP_PRIVATE_KEY` | Every publishing repository and `PyDevices/mip` | Mint short-lived GitHub App tokens: to open release PRs, create tags and Releases (so `on: release` fires), dispatch the MIP queue and send the Release Health report |
 | `TESTPYPI_API_TOKEN` | Every repository that uploads to TestPyPI | API token for TestPyPI |
-| `VSCE_PAT`, `OVSX_PAT` | `mpftp` only (`publish-vsix.yml`) | VS Marketplace and Open VSX; both optional, the steps skip when unset |
+| `VSCE_PAT`, `OVSX_PAT` | `mcuctl` only (`publish-vsix.yml`) | VS Marketplace and Open VSX; both optional, the steps skip when unset |
 
 TestPyPI uses token authentication (`user: __token__`, the token as the
 password, `repository-url: https://test.pypi.org/legacy/`,

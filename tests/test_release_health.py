@@ -145,39 +145,39 @@ class ConcurrentReportTests(unittest.TestCase):
 
     def test_two_reports_from_one_release_both_land(self):
         """.github#34: the second report must not lose its row to a rejection."""
-        first = run_step(self.first, "pydevices-audioinstruments", "0.2.0")
+        first = run_step(self.first, "omnipython-audioinstruments", "0.2.0")
         self.assertEqual(first.returncode, 0, first.stdout + first.stderr)
 
-        second = run_step(self.second, "pydevices-audioeffects", "0.2.0")
+        second = run_step(self.second, "omnipython-audioeffects", "0.2.0")
         self.assertEqual(second.returncode, 0, second.stdout + second.stderr)
         self.assertIn("push rejected (attempt 1)", second.stdout + second.stderr)
 
         state = self.published()
         self.assertEqual(
             sorted(state["data"]),
-            ["pydevices-audioeffects", "pydevices-audioinstruments"],
+            ["omnipython-audioeffects", "omnipython-audioinstruments"],
         )
-        self.assertEqual(state["data"]["pydevices-audioeffects"]["version"], "0.2.0")
+        self.assertEqual(state["data"]["omnipython-audioeffects"]["version"], "0.2.0")
         self.assertEqual(
-            state["data"]["pydevices-audioinstruments"]["version"], "0.2.0"
+            state["data"]["omnipython-audioinstruments"]["version"], "0.2.0"
         )
         # Both rows are on the page, not just the one that pushed first.
-        self.assertIn("| [pydevices-audioeffects]", state["page"])
-        self.assertIn("| [pydevices-audioinstruments]", state["page"])
+        self.assertIn("| [omnipython-audioeffects]", state["page"])
+        self.assertIn("| [omnipython-audioinstruments]", state["page"])
 
     def test_an_uncontended_report_pushes_first_time(self):
-        result = run_step(self.first, "pydevices-audiodsp", "0.5.1")
+        result = run_step(self.first, "omnipython-audiodsp", "0.5.1")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertNotIn("push rejected", result.stdout + result.stderr)
-        self.assertEqual(list(self.published()["data"]), ["pydevices-audiodsp"])
+        self.assertEqual(list(self.published()["data"]), ["omnipython-audiodsp"])
 
     def test_a_repeated_report_is_recorded_not_skipped(self):
         """A re-reported distribution changes its `updated` stamp, so it commits."""
-        self.assertEqual(run_step(self.first, "pydevices-cmods", "0.1.0").returncode, 0)
+        self.assertEqual(run_step(self.first, "omnipython-cmods", "0.1.0").returncode, 0)
         git(self.first, "pull", "-q", "--ff-only")
-        second = run_step(self.first, "pydevices-cmods", "0.1.1")
+        second = run_step(self.first, "omnipython-cmods", "0.1.1")
         self.assertEqual(second.returncode, 0, second.stdout + second.stderr)
-        self.assertEqual(self.published()["data"]["pydevices-cmods"]["version"], "0.1.1")
+        self.assertEqual(self.published()["data"]["omnipython-cmods"]["version"], "0.1.1")
 
 
 
@@ -208,21 +208,21 @@ class PartialPypiReportTests(unittest.TestCase):
         self._tmp.cleanup()
 
     def report(self, version: str, body: str | None = None) -> dict:
-        result = run_step(self.clone, "pydevices-audiodsp", version, body)
+        result = run_step(self.clone, "omnipython-audiodsp", version, body)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         return json.loads((self.clone / "release-health/data.json").read_text())
 
     def test_a_partial_report_fills_in_the_same_release(self):
-        full = json.loads(payload("pydevices-audiodsp", "0.6.2"))
+        full = json.loads(payload("omnipython-audiodsp", "0.6.2"))
         full["pypi"] = "pending"
         self.report("0.6.2", json.dumps(full))
         row = self.report(
-            "0.6.2", partial_pypi_payload("pydevices-audiodsp", "0.6.2", "success")
-        )["pydevices-audiodsp"]
+            "0.6.2", partial_pypi_payload("omnipython-audiodsp", "0.6.2", "success")
+        )["omnipython-audiodsp"]
         self.assertEqual(row["pypi"], "success")
         # Everything the coordinator reported is still there.
         self.assertEqual(row["testpypi"], "success")
-        self.assertEqual(row["run_url"], "https://example.invalid/pydevices-audiodsp")
+        self.assertEqual(row["run_url"], "https://example.invalid/omnipython-audiodsp")
         self.assertNotIn("partial", row)
         page = (self.clone / "RELEASE_HEALTH.md").read_text(encoding="utf-8")
         self.assertIn("| 0.6.2 | OK | OK | OK | OK |", page)
@@ -230,15 +230,15 @@ class PartialPypiReportTests(unittest.TestCase):
     def test_a_partial_report_for_another_version_does_not_borrow_its_row(self):
         self.report("0.6.1")
         row = self.report(
-            "0.6.2", partial_pypi_payload("pydevices-audiodsp", "0.6.2", "failure")
-        )["pydevices-audiodsp"]
+            "0.6.2", partial_pypi_payload("omnipython-audiodsp", "0.6.2", "failure")
+        )["omnipython-audiodsp"]
         self.assertEqual(row["version"], "0.6.2")
         self.assertEqual(row["pypi"], "failure")
         self.assertNotIn("testpypi", row)
 
     def test_a_full_report_still_replaces_the_row(self):
-        self.report("0.6.1", partial_pypi_payload("pydevices-audiodsp", "0.6.1", "success"))
-        row = self.report("0.6.2")["pydevices-audiodsp"]
+        self.report("0.6.1", partial_pypi_payload("omnipython-audiodsp", "0.6.1", "success"))
+        row = self.report("0.6.2")["omnipython-audiodsp"]
         self.assertEqual(row["version"], "0.6.2")
         self.assertEqual(row["pypi"], "skipped")
 

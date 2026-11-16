@@ -5,7 +5,7 @@
 """Where the documentation site and its neighbours live.
 
 Every library's documentation is one site, built from the ``docs-site``
-folder beside this package (see `pydevices_docs.site`). A library's own
+folder beside this package (see `omnipython_docs.site`). A library's own
 build, run in its repository's CI, links back to that site from the top bar
 and resolves references through its inventory.
 """

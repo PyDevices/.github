@@ -136,8 +136,8 @@ class GithubLinkRule(Repo):
         self.assertIn("README.md:1:", out)
         self.assertIn("docs/guide.md:1:", out)
 
-    def test_other_pydevices_repos_pass(self):
-        self.write("README.md", "[pydevices](https://github.com/PyDevices/pydevices) and github.com/PyDevices/.github-x\n")
+    def test_other_omnipython_repos_pass(self):
+        self.write("README.md", "[omnipython](https://github.com/PyDevices/omnipython) and github.com/PyDevices/.github-x\n")
         self.assertEqual(self.check()[0], 0)
 
     def test_files_outside_readme_and_docs_are_not_pages(self):

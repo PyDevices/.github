@@ -3,22 +3,22 @@
 # conf.py that builds them alone; gather.py brings them into this tree.
 
 [[library]]
-slug = "pydevices"
-title = "pydevices"
-repo = "PyDevices/pydevices"
+slug = "omnipython"
+title = "omnipython"
+repo = "PyDevices/omnipython"
 summary = "The board contract, displaydev, audiodev, appdev, multimer and the drivers: what every program stands on."
 
 [[library]]
 slug = "palettes"
 title = "palettes"
-repo = "PyDevices/pydevices"
+repo = "PyDevices/omnipython"
 docs = "packages/palettes/docs"
 summary = "Color palettes: an HSV wheel, RGB cubes, Material Design swatches and RGB565 helpers."
 
 [[library]]
 slug = "pdwidgets"
 title = "pdwidgets"
-repo = "PyDevices/pydevices"
+repo = "PyDevices/omnipython"
 docs = "packages/pdwidgets/docs"
 summary = "Buttons, sliders, labels and screens for touch displays, in pure Python."
 
@@ -55,5 +55,5 @@ summary = "Effects and pedals built on audiodsp."
 [[library]]
 slug = "firmware"
 title = "Firmware and modules"
-repo = "PyDevices/micropython-pydevices"
+repo = "PyDevices/omnipython-builds"
 summary = "The firmware builds and the native modules they carry: displayif, usbif, cameraif and the rest."

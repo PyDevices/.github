@@ -59,7 +59,7 @@ Long-form notes and guides belong under `docs/`.
   includes MicroPython's `CODEOFCONDUCT.md`, SENML's `senml_*.md` pages, and
   vendored LVGL translations.
 - Put a document in the repository that owns its subject: product architecture,
-  package behavior, and driver contracts belong with `pydevices`; application
+  package behavior, and driver contracts belong with `omnipython`; application
   tutorials and gallery integration belong with `gallery`; package-
   specific API documentation belongs with that package.
 
@@ -87,21 +87,21 @@ Examples:
 |------|------|-----|
 | [omnipython-lvgl](https://github.com/PyDevices/omnipython-lvgl) | `requirements.txt` | Generator runtime (`pycparser`) |
 | [gallery](https://github.com/PyDevices/gallery) | `requirements-dev.txt` | Playwright, pytest, Jupyter, ruff, … — not product runtime |
-| [omnipython-lvgl](https://github.com/PyDevices/omnipython-lvgl) | `requirements-dev.txt` | Local editable build / wheel tooling; users install `pydevices-lvgl` |
+| [omnipython-lvgl](https://github.com/PyDevices/omnipython-lvgl) | `requirements-dev.txt` | Local editable build / wheel tooling; users install `omnipython-lvgl` |
 | [android-template](https://github.com/PyDevices/android-template) | `requirements-dev.txt` | Host buildozer/Cython for APK builds — not packaged into the APK |
 | [pyscript-template](https://github.com/PyDevices/pyscript-template) | none | Static app template; PyScript interpreter is vendored only for Pages deployment |
 
 ## Exceptions
 
 1. **[gallery](https://github.com/PyDevices/gallery)** — example applications and gallery utilities live under `lib/` (`lib/examples/`, `lib/utils/`). Shareable packages belong in their owning product repos, not here.
-2. **[pydevices](https://github.com/PyDevices/pydevices)** — canonical product repo: portable packages under `lib/`, board configs under `board_configs/`, hardware drivers under `drivers/`, and MIP manifests under `packages/`.
+2. **[omnipython](https://github.com/PyDevices/omnipython)** — canonical product repo: portable packages under `lib/`, board configs under `board_configs/`, hardware drivers under `drivers/`, and MIP manifests under `packages/`.
 3. **Application templates** — `android-template` and `pyscript-template` are replaceable host shells, not product package trees.
 
 ## Native (C) modules
 
 A native module is a folder that MicroPython's `USER_C_MODULES`, or a
 manifest's `c_module()`, can point at. It lives in its own repository or
-under `micropython-pydevices/modules/<name>/`. Either way it has:
+under `omnipython-builds/modules/<name>/`. Either way it has:
 
 - `manifest.py` containing `c_module(".")`, so a firmware manifest can
   `include()` it.
@@ -129,10 +129,10 @@ under `micropython-pydevices/modules/<name>/`. Either way it has:
   `tests/check_<module>_<reference>.py` beside it, run under CPython against
   that implementation.
 - A README. In its own repository the README follows the org's six-part
-  template. In `micropython-pydevices/modules/` it is the module's page: one
+  template. In `omnipython-builds/modules/` it is the module's page: one
   sentence, the `--modules` name, the simpletest and its output, and links.
 
-A module in `micropython-pydevices/modules/` shares that repository's
+A module in `omnipython-builds/modules/` shares that repository's
 LICENSE, CONTRIBUTING, CI and issue tracker. It needs its own `ROADMAP.md`
 only when it has planned work; otherwise its plans go in the root
 `ROADMAP.md`, which links every module roadmap. It needs its own `NOTICE`
@@ -187,8 +187,8 @@ repository is pinned by URL and version, in a section of its own.
   go in `tools/`.
 - Root build glue may stay at the repo root when discovery requires it
   (e.g. `micropython.mk`, `setup.py`, `apply_*.sh` entry points).
-- Meta / workspace repos (this `.github` org repo, `PyDevices.github.io`, `micropython-pydevices`, `mip`) are not package trees; they follow their own roles and need not mirror every directory above. The
-  modules under `micropython-pydevices/modules/` still follow
+- Meta / workspace repos (this `.github` org repo, `PyDevices.github.io`, `omnipython-builds`, `mip`) are not package trees; they follow their own roles and need not mirror every directory above. The
+  modules under `omnipython-builds/modules/` still follow
   [Native (C) modules](#native-c-modules).
 
 ## Preferred search paths (`MICROPYPATH` / `PYTHONPATH`)
@@ -218,8 +218,8 @@ MicroPython because `.frozen` resolves first.
 
 ## Optional by design
 
-The workflow helpers — [micropython-pydevices](https://github.com/PyDevices/micropython-pydevices)' presets,
-[mpftp](https://github.com/PyDevices/mpftp), and the custom
+The workflow helpers — [omnipython-builds](https://github.com/PyDevices/omnipython-builds)' presets,
+[mcuctl](https://github.com/PyDevices/mcuctl), and the custom
 [MIP index](https://github.com/PyDevices/mip) — are **all optional**. Stock
 `make USER_C_MODULES=...`, `mpremote`, `circup`, and any standalone IDE work
 unchanged.

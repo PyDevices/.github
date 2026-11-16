@@ -30,8 +30,8 @@ python3 scripts/generate_sites.py
 ```
 
 The generator writes into sibling repositories (the portal, the per-repository
-`.site/` trees, the organization profile and the `pydevices` ecosystem page),
-so clone the repositories it writes to (`PyDevices.github.io`, `pydevices`,
+`.site/` trees, the organization profile and the `omnipython` ecosystem page),
+so clone the repositories it writes to (`PyDevices.github.io`, `omnipython`,
 `gallery` and `mip`) side by side, and name this one `dotgithub` on disk, the
 folder name the generator looks for:
 

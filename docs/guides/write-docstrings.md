@@ -24,7 +24,7 @@ One-line summary of the module's role. Optionally link to narrative docs:
 """
 displaydev display drivers.
 
-See also: https://github.com/PyDevices/pydevices/blob/main/docs/how-it-works/displaydev-internals.md
+See also: https://github.com/PyDevices/omnipython/blob/main/docs/how-it-works/displaydev-internals.md
 """
 ```
 
@@ -47,7 +47,7 @@ See also: https://github.com/PyDevices/pydevices/blob/main/docs/how-it-works/dis
 ## Repository-specific notes
 
 - **`Area` returns:** Drawing helpers that return dirty regions use `pygraphics.Area` (`x`, `y`, `w`, `h`).
-- **App:** Document poll/subscribe patterns; link to [The app loop](https://github.com/PyDevices/pydevices/blob/main/docs/guides/the-app-loop.md).
+- **App:** Document poll/subscribe patterns; link to [The app loop](https://github.com/PyDevices/omnipython/blob/main/docs/guides/the-app-loop.md).
 - **Private API:** Names starting with `_` are excluded from the API pages; minimal or no docstrings are fine.
   Document public methods that live on private implementation bases when they surface via inheritance
   (set `:inherited-members:` on the page for that class).

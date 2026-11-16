@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-"""Synchronize a single-source PyDevices package into the MIP repository."""
+"""Synchronize a single-source OmniPython package into the MIP repository."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 
-from pydevices_package_metadata import PYDEVICES_DESCRIPTIONS
+from omnipython_package_metadata import OMNIPYTHON_DESCRIPTIONS
 
 
 @dataclass(frozen=True)
@@ -33,15 +33,15 @@ class Profile:
 PROFILES = {
     "palettes": Profile(
         package="palettes",
-        description="Color palette toolkit for PyDevices (wheel, cube, material_design)",
-        pypi_name="pydevices-palettes",
+        description="Color palette toolkit for OmniPython (wheel, cube, material_design)",
+        pypi_name="omnipython-palettes",
     ),
     "pdwidgets": Profile(
         package="pdwidgets",
-        description="Cross-platform widget toolkit for PyDevices",
-        pypi_name="pydevices-pdwidgets",
+        description="Cross-platform widget toolkit for OmniPython",
+        pypi_name="omnipython-pdwidgets",
         # No cross-repository requirements. micropython-lib resolves require()
-        # by inclusion at build time, so these three shipped all of pydevices,
+        # by inclusion at build time, so these three shipped all of omnipython,
         # pygraphics, and palettes inside the pdwidgets package -- 212 files
         # for a widget toolkit. Removed until build.py can emit real install
         # time deps.
@@ -58,7 +58,7 @@ PROFILES = {
         ),
         pypi_name=None,
     ),
-    # A folder package of pydevices, versioned by its own <name>-v... tags. The
+    # A folder package of omnipython, versioned by its own <name>-v... tags. The
     # library publishes it by lib-lock.json's folders; this is the MIP side.
     "iconkit": Profile(
         package="iconkit",
@@ -117,7 +117,7 @@ SEVERAL_PACKAGES = {
 SEVERAL_DESCRIPTIONS = {"applibs": "The libraries apps share; installs each of them"}
 # What each member imports from the index, so mip and omip bring it along. A
 # member that needs another and doesn't say so installs, then stops at an
-# ImportError on a board whose firmware doesn't freeze it. pydevices isn't
+# ImportError on a board whose firmware doesn't freeze it. omnipython isn't
 # here: every board config installs it, and the firmware freezes it.
 SEVERAL_REQUIRES = {
     "applibs": {
@@ -131,12 +131,12 @@ SEVERAL_REQUIRES = {
     },
 }
 
-# The source repository for each profile is pydevices-lock.json in the MIP
+# The source repository for each profile is omnipython-lock.json in the MIP
 # checkout, not a second map in this script. reusable-synchronize-mip-package.yml
 # already keeps that lockfile on the runner; a hardcoded PROFILE_REPOSITORIES
 # table disagreed with it after the audiodsp/audiocomponents split and blocked
 # every publication until a new publishing-tools tag (#35).
-LOCKFILE_NAME = "pydevices-lock.json"
+LOCKFILE_NAME = "omnipython-lock.json"
 
 # No internal dependency table: lib/ ships as a single MIP package, so the graph
 # between its components is imports rather than package requirements. It was
@@ -146,7 +146,7 @@ LOCKFILE_NAME = "pydevices-lock.json"
 # filters README.md, package.json, and __pycache__ out of the latter.
 # boarddev.py used to be listed here too, before it moved into lib/ and became
 # a package of its own.
-PYDEVICES_DESKTOP_DIR = "board_configs/desktop"
+OMNIPYTHON_DESKTOP_DIR = "board_configs/desktop"
 
 
 def lockfile_repository(mip_root: Path, profile: str) -> str:
@@ -259,16 +259,16 @@ def copy_component(source: Path, destination: Path) -> None:
         shutil.copy2(source, destination)
 
 
-# The only two PyDevices distributions on PyPI. Every lib/ component ships
-# inside "pydevices", so a leaf manifest must not claim a pypi_publish of its
-# own -- pydevices-appdev and friends stopped existing when pip collapsed to
+# The only two OmniPython distributions on PyPI. Every lib/ component ships
+# inside "omnipython", so a leaf manifest must not claim a pypi_publish of its
+# own -- omnipython-appdev and friends stopped existing when pip collapsed to
 # one distribution, and naming them here would advertise something unpublished.
-PYPI_DISTRIBUTIONS = {"pydevices", "pydevices-desktop"}
+PYPI_DISTRIBUTIONS = {"omnipython", "omnipython-desktop"}
 
 
-def render_pydevices_manifest(name: str, version: str, requirements: tuple[str, ...], payloads: tuple[str, ...] = ()) -> str:
+def render_omnipython_manifest(name: str, version: str, requirements: tuple[str, ...], payloads: tuple[str, ...] = ()) -> str:
     try:
-        description = PYDEVICES_DESCRIPTIONS[name]
+        description = OMNIPYTHON_DESCRIPTIONS[name]
     except KeyError:
         raise SystemExit(f"no shared description for {name!r}") from None
     lines = [
@@ -293,7 +293,7 @@ MIP_SPLIT_FILE = "mip-split.toml"
 
 
 #: Every key a mip-split.toml section may use. An unknown key fails the sync,
-#: so a misspelt `own-package` can't quietly ship a package inside pydevices.
+#: so a misspelt `own-package` can't quietly ship a package inside omnipython.
 MIP_SPLIT_KEYS = frozenset({"host-only", "own-package", "requires", "pypi-extras", "pypi-desktop", "top-level"})
 
 
@@ -316,8 +316,8 @@ def read_split(source_root: Path) -> dict[str, dict]:
 def read_own_packages(source_root: Path) -> dict[str, tuple[str, ...]]:
     """{package: requires} for each lib/ package that publishes to MIP on its own.
 
-    Such a package leaves the ``pydevices`` MIP package (it stays in the
-    ``pydevices`` wheel on PyPI). Its ``requires`` become ``require()`` lines,
+    Such a package leaves the ``omnipython`` MIP package (it stays in the
+    ``omnipython`` wheel on PyPI). Its ``requires`` become ``require()`` lines,
     which the index resolves by including them.
     """
     own: dict[str, tuple[str, ...]] = {}
@@ -328,12 +328,12 @@ def read_own_packages(source_root: Path) -> dict[str, tuple[str, ...]]:
             if "requires" in section:
                 raise SystemExit(
                     f"{MIP_SPLIT_FILE} [{package}] has requires but is not an own-package; "
-                    f"a package inside pydevices has no manifest of its own to put them in"
+                    f"a package inside omnipython has no manifest of its own to put them in"
                 )
             continue
         if not (source_root / "lib" / package).is_dir():
             raise SystemExit(f"{MIP_SPLIT_FILE} names package {package!r}, which is not in lib/")
-        if package not in PYDEVICES_DESCRIPTIONS:
+        if package not in OMNIPYTHON_DESCRIPTIONS:
             raise SystemExit(f"no shared description for own-package {package!r}")
         own[package] = tuple(section.get("requires", ()))
     return own
@@ -461,7 +461,7 @@ def stamp_version(manifest: str, package: str, version: str) -> str:
     """The manifest with its metadata version set to the release's.
 
     A top-level package keeps its own freeze manifest, whose version is the
-    package's own number. In the index every PyDevices package carries the
+    package's own number. In the index every OmniPython package carries the
     release version, which is what the lockfile and the package list compare.
     """
     stamped, count = _VERSION_LINE.subn(lambda m: f'{m.group(1)}"{version}"', manifest)
@@ -483,8 +483,8 @@ def synchronize_top_level(source_root: Path, destination_root: Path, package: st
             copy_component(path, destination / path.name)
 
 
-def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> None:
-    destination_root = mip_root / "micropython" / "pydevices"
+def synchronize_omnipython(source_root: Path, mip_root: Path, version: str) -> None:
+    destination_root = mip_root / "micropython" / "omnipython"
     if destination_root.parent != mip_root / "micropython":
         raise SystemExit(f"refusing unexpected MIP destination: {destination_root}")
     if destination_root.exists():
@@ -496,14 +496,14 @@ def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> No
     # resolves require() by inclusion at build time, not as a dependency edge,
     # so the index materialised every component's files into each package that
     # required it -- installing two of them wrote the shared files twice.
-    package = destination_root / "pydevices"
+    package = destination_root / "omnipython"
     package.mkdir()
     payloads: list[str] = []
     names: list[str] = []
     # What a microcontroller cannot run does not go on one. Declared in the
-    # source repository's mip-split.toml and shipped by pydevices-desktop
+    # source repository's mip-split.toml and shipped by omnipython-desktop
     # instead, which already require()s this package -- so a host installs one
-    # thing and gets what it always got (pydevices#30).
+    # thing and gets what it always got (omnipython#30).
     host_only = read_host_only(source_root)
     own_packages = read_own_packages(source_root)
     top_level = read_top_level_packages(source_root)
@@ -512,7 +512,7 @@ def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> No
         names.append(source.stem if source.is_file() else source.name)
         split = host_only.get(source.name, frozenset()) if source.is_dir() else frozenset()
         if source.name in own_packages and source.is_dir():
-            # Its own MIP package, beside pydevices rather than inside it
+            # Its own MIP package, beside omnipython rather than inside it
             # (bledev: a board without a radio shouldn't carry BLE).
             check_no_host_imports(source, split)
             own_root = destination_root / source.name
@@ -524,7 +524,7 @@ def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> No
                 shutil.copy2(source / name, destination / name)
             listed = ", ".join(f'"{name}"' for name in device_files)
             (own_root / "manifest.py").write_text(
-                render_pydevices_manifest(
+                render_omnipython_manifest(
                     source.name,
                     version,
                     own_packages[source.name],
@@ -556,18 +556,18 @@ def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> No
     if len(names) != len(set(names)):
         raise SystemExit("lib/ contains colliding module and package names")
 
-    # Top-level packages are published beside pydevices, not inside it, and
+    # Top-level packages are published beside omnipython, not inside it, and
     # under the directory's own name, which is the name mip.install() takes.
     for package_name in top_level:
-        if package_name in names or package_name in {"pydevices", "pydevices-desktop"}:
-            raise SystemExit(f"top-level package {package_name!r} collides with a lib/ module or a pydevices package")
+        if package_name in names or package_name in {"omnipython", "omnipython-desktop"}:
+            raise SystemExit(f"top-level package {package_name!r} collides with a lib/ module or an omnipython package")
         synchronize_top_level(source_root, destination_root, package_name, version)
 
     (package / "manifest.py").write_text(
-        render_pydevices_manifest("pydevices", version, (), tuple(payloads)), encoding="utf-8"
+        render_omnipython_manifest("omnipython", version, (), tuple(payloads)), encoding="utf-8"
     )
 
-    desktop = destination_root / "pydevices-desktop"
+    desktop = destination_root / "omnipython-desktop"
     desktop.mkdir()
     desktop_payloads: list[str] = []
     # The other half of the split: every backend the device package left out.
@@ -582,10 +582,10 @@ def synchronize_pydevices(source_root: Path, mip_root: Path, version: str) -> No
     for source in sorted(filter(publishable, (source_root / "utils").iterdir()), key=lambda path: path.name):
         copy_component(source, desktop / source.name)
         desktop_payloads.append(f'module("{source.name}")' if source.is_file() else f'package("{source.name}")')
-    for source in sorted(filter(publishable, (source_root / PYDEVICES_DESKTOP_DIR).iterdir()), key=lambda path: path.name):
+    for source in sorted(filter(publishable, (source_root / OMNIPYTHON_DESKTOP_DIR).iterdir()), key=lambda path: path.name):
         copy_component(source, desktop / source.name)
         desktop_payloads.append(f'module("{source.name}")' if source.is_file() else f'package("{source.name}")')
-    manifest = render_pydevices_manifest("pydevices-desktop", version, ("pydevices",))
+    manifest = render_omnipython_manifest("omnipython-desktop", version, ("omnipython",))
     manifest += "\n".join(desktop_payloads) + "\n"
     (desktop / "manifest.py").write_text(manifest, encoding="utf-8")
 
@@ -595,7 +595,7 @@ def main() -> None:
     parser.add_argument("--source-repository", required=True, type=Path)
     parser.add_argument("--source-repository-name", required=True)
     parser.add_argument("--mip-repository", required=True, type=Path)
-    parser.add_argument("--profile", required=True, choices=sorted((*PROFILES, *SEVERAL_PACKAGES, "pydevices")))
+    parser.add_argument("--profile", required=True, choices=sorted((*PROFILES, *SEVERAL_PACKAGES, "omnipython")))
     parser.add_argument("--version", required=True)
     args = parser.parse_args()
 
@@ -607,8 +607,8 @@ def main() -> None:
             f"profile {args.profile!r} requires {expected_repository}, "
             f"not {args.source_repository_name}"
         )
-    if args.profile == "pydevices":
-        synchronize_pydevices(source_repository, mip_root, args.version)
+    if args.profile == "omnipython":
+        synchronize_omnipython(source_repository, mip_root, args.version)
         return
     if args.profile in SEVERAL_PACKAGES:
         synchronize_several(source_repository, mip_root, args.profile, args.version)

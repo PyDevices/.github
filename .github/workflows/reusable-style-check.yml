@@ -31,7 +31,7 @@ jobs:
         with:
           repository: PyDevices/.github
           ref: ${{ inputs.publishing-tools-ref }}
-          path: .pydevices-publishing-tools
+          path: .omnipython-publishing-tools
 
       - uses: actions/setup-python@v7
         with:
@@ -46,4 +46,4 @@ jobs:
           if [[ "$EVENT_NAME" == "pull_request" ]]; then
             args+=(--base "origin/$BASE_REF")
           fi
-          python3 .pydevices-publishing-tools/scripts/style_check.py "${args[@]}"
+          python3 .omnipython-publishing-tools/scripts/style_check.py "${args[@]}"

@@ -43,9 +43,9 @@ class StackTests(unittest.TestCase):
         self.lib.mkdir(parents=True)
         (self.lib / "thing.py").write_text("")
         (self.lib / "skip.py").write_text("")
-        (self.root / "pydevices/drivers").mkdir(parents=True)
-        (self.root / "pydevices/board_configs/desktop").mkdir(parents=True)
-        (self.root / "pydevices/drivers/drivers.toml").write_text('[gt911]\nversion = "1"\n')
+        (self.root / "omnipython/drivers").mkdir(parents=True)
+        (self.root / "omnipython/board_configs/desktop").mkdir(parents=True)
+        (self.root / "omnipython/drivers/drivers.toml").write_text('[gt911]\nversion = "1"\n')
 
     def test_a_listed_tree_passes(self) -> None:
         self.assertEqual(stack.check_tree(_data(), str(self.root)), [])

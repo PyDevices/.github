@@ -5,14 +5,14 @@
   "repositoryDependencies": [
     "github.com/PyDevices/.github",
     "github.com/PyDevices/PyDevices.github.io",
-    "github.com/PyDevices/pydevices",
+    "github.com/PyDevices/omnipython",
     "github.com/PyDevices/gallery",
     "github.com/PyDevices/audiodsp",
     "github.com/PyDevices/pygraphics",
     "github.com/PyDevices/palettes",
     "github.com/PyDevices/pdwidgets",
     "github.com/PyDevices/omnipython-lvgl",
-    "github.com/PyDevices/mpftp",
+    "github.com/PyDevices/mcuctl",
     "github.com/PyDevices/mip",
     "github.com/PyDevices/workbench",
     "github.com/PyDevices/cmods",
@@ -20,6 +20,6 @@
     "github.com/PyDevices/android-runner",
     "github.com/PyDevices/pyscript-template",
     "github.com/PyDevices/mpvst",
-    "github.com/PyDevices/micropython-pydevices"
+    "github.com/PyDevices/omnipython-builds"
   ]
 }

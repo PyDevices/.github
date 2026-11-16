@@ -11,16 +11,16 @@ repository, beside a `conf.py` that builds them alone. Before the build,
 [gather.py](../../docs-site/gather.py) clones each repository's `main` and
 copies its docs folder in as a section, so the site has one search, one table
 of contents and one sidebar. The shared theme and configuration are the
-`pydevices-docs` package, [docs-config/](../../docs-config/).
+`omnipython-docs` package, [docs-config/](../../docs-config/).
 
 | Section | Source |
 |---|---|
 | The front pages | [docs-site/](../../docs-site/) here |
-| `/pydevices/`, `/palettes/`, `/pdwidgets/` | `docs/`, `packages/palettes/docs/`, `packages/pdwidgets/docs/` in [pydevices](https://github.com/PyDevices/pydevices) |
+| `/omnipython/`, `/palettes/`, `/pdwidgets/` | `docs/`, `packages/palettes/docs/`, `packages/pdwidgets/docs/` in [omnipython](https://github.com/PyDevices/omnipython) |
 | `/pygraphics/` | `docs/` in [pygraphics](https://github.com/PyDevices/pygraphics) |
 | `/lvgl/` | `docs/` in [omnipython-lvgl](https://github.com/PyDevices/omnipython-lvgl) |
 | `/audiodsp/`, `/audioinstruments/`, `/audioeffects/` | `docs/` in each repository |
-| `/firmware/` | `docs/` in [micropython-pydevices](https://github.com/PyDevices/micropython-pydevices) |
+| `/firmware/` | `docs/` in [omnipython-builds](https://github.com/PyDevices/omnipython-builds) |
 
 Docstring conventions for the generated API pages: [write docstrings](write-docstrings.md).
 
@@ -53,22 +53,22 @@ python3 -m venv .venv-docs
 .venv-docs/bin/sphinx-build -W --keep-going -b html docs docs/_build/html
 ```
 
-`requirements.txt` installs a tagged `pydevices-docs`. To work on the shared
+`requirements.txt` installs a tagged `omnipython-docs`. To work on the shared
 package, install your checkout instead:
 `.venv-docs/bin/pip install -e <path to this repository>/docs-config`. No
-network? Set `PYDEVICES_DOCS_OFFLINE=1`.
+network? Set `OMNIPYTHON_DOCS_OFFLINE=1`.
 
 ## How a library's conf.py is read
 
 The library's `conf.py` is the one description of how its pages are built,
 alone and on the site. The site runs it from the clone and keeps what it
-passes to `pydevices_docs.configure()` (import folders, API packages, mocks,
+passes to `omnipython_docs.configure()` (import folders, API packages, mocks,
 `__all__` or not), plus `master_doc`, `exclude_patterns`, `suppress_warnings`
 and `myst_heading_anchors`, and calls its `setup(app)` with the section's
 folder as `app.srcdir`. While Sphinx reads a page, the mocks and autodoc
 defaults are that page's library's, so libraries that mock each other's
 modules build as they do alone. The details are in
-[site.py](../../docs-config/src/pydevices_docs/site.py).
+[site.py](../../docs-config/src/omnipython_docs/site.py).
 
 A library whose `master_doc` is a navigation page (`contents.md`) starts at
 its `index` on the site, and the navigation's toctrees move onto that page.
@@ -122,7 +122,7 @@ skips the call; the site then catches up on the next build here.
 ### A new library
 
 1. Give it a `docs/` folder with a `conf.py` that calls
-   `pydevices_docs.configure()`, and build it alone with `-W`.
+   `omnipython_docs.configure()`, and build it alone with `-W`.
 2. Add it to [libraries.toml](../../docs-site/libraries.toml) and to
    [docs-site/.gitignore](../../docs-site/.gitignore).
 3. Copy the caller workflow from another library

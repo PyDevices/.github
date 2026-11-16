@@ -33,7 +33,7 @@ jobs:
         with:
           repository: PyDevices/.github
           ref: ${{ inputs.publishing-tools-ref }}
-          path: .pydevices-publishing-tools
+          path: .omnipython-publishing-tools
 
       - name: Verify generated TOML is current
         env:
@@ -48,7 +48,7 @@ jobs:
           while IFS= read -r mapping; do
             [[ -n "$mapping" ]] && args+=(--file "$mapping")
           done <<< "$FILE_MAPPINGS"
-          python .pydevices-publishing-tools/scripts/generate_pyscript_filesystem_toml.py \
+          python .omnipython-publishing-tools/scripts/generate_pyscript_filesystem_toml.py \
             --repository "$GITHUB_REPOSITORY" \
             --output "$CONFIG_PATH" \
             --check \

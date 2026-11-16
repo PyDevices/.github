@@ -64,7 +64,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install SDL2
-        # pydevices' SDL backends load libSDL2 when autodoc imports them.
+        # omnipython's SDL backends load libSDL2 when autodoc imports them.
         run: sudo apt-get update && sudo apt-get install -y libsdl2-2.0-0
 
       - name: Install the site's requirements

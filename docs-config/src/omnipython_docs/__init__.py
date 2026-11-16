@@ -2,14 +2,14 @@
 #
 # SPDX-License-Identifier: MIT
 
-"""Shared Sphinx configuration and theme for the PyDevices documentation projects.
+"""Shared Sphinx configuration and theme for the OmniPython documentation projects.
 
 A project's ``conf.py`` is five lines:
 
-    from pydevices_docs import configure
+    from omnipython_docs import configure
 
     globals().update(configure(
-        "palettes", __file__, repo="PyDevices/pydevices", edit_path="palettes/docs",
+        "palettes", __file__, repo="PyDevices/omnipython", edit_path="palettes/docs",
         source_dirs=["../lib"], api_packages=["palettes"],
     ))
 
@@ -42,7 +42,7 @@ def _keep_property_docstrings_plain():
     from sphinx.ext.napoleon.docstring import GoogleDocstring
 
     original = GoogleDocstring._parse_attribute_docstring
-    if getattr(original, "_pydevices_plain", False):
+    if getattr(original, "_omnipython_plain", False):
         return
 
     def _parse_attribute_docstring(self):
@@ -50,14 +50,14 @@ def _keep_property_docstrings_plain():
             return self._consume_to_end()
         return original(self)
 
-    _parse_attribute_docstring._pydevices_plain = True
+    _parse_attribute_docstring._omnipython_plain = True
     GoogleDocstring._parse_attribute_docstring = _parse_attribute_docstring
 
 
 def setup(app):
-    """Sphinx entry point: registers the `pydevices` theme."""
+    """Sphinx entry point: registers the `omnipython` theme."""
     _keep_property_docstrings_plain()
-    app.add_html_theme("pydevices", str(THEME_DIR))
+    app.add_html_theme("omnipython", str(THEME_DIR))
     return {"version": __version__, "parallel_read_safe": True, "parallel_write_safe": True}
 
 
@@ -77,9 +77,9 @@ def intersphinx_map(main: bool = False) -> dict:
     library built alone, the documentation site, whose inventory holds every
     library's names.
 
-    Set ``PYDEVICES_DOCS_OFFLINE=1`` for a build with no network.
+    Set ``OMNIPYTHON_DOCS_OFFLINE=1`` for a build with no network.
     """
-    if os.environ.get("PYDEVICES_DOCS_OFFLINE"):
+    if os.environ.get("OMNIPYTHON_DOCS_OFFLINE"):
         return {}
     mapping = {
         "python": ("https://docs.python.org/3", None),
@@ -116,14 +116,14 @@ def configure(
     copyright_from: int = 2024,
     extra_extensions: list[str] | tuple[str, ...] = (),
 ) -> dict:
-    """Return the Sphinx settings for one PyDevices project.
+    """Return the Sphinx settings for one OmniPython project.
 
     name          the project's name, as the bar and the title show it
     conf_file     the project's ``conf.py`` (pass ``__file__``)
     repo          "PyDevices/<repo>", for the Edit on GitHub link (default PyDevices/<name>)
     edit_path     the folder holding ``conf.py``, relative to the repo root ("palettes/docs")
     source_dirs   folders, relative to ``conf.py``, put on ``sys.path`` for autodoc
-    api_packages  packages to write API reference pages for (see ``pydevices_docs.apigen``)
+    api_packages  packages to write API reference pages for (see ``omnipython_docs.apigen``)
     api_skip      folder names inside those packages to leave out of the API pages ("icons")
     use_module_all document what a package lists in ``__all__``, re-exports included, instead
                   of only what the module defines (for a package whose API is private modules)
@@ -154,7 +154,7 @@ def configure(
         *extra_extensions,
     ]
     if api_packages:
-        extensions.append("pydevices_docs.apigen")
+        extensions.append("omnipython_docs.apigen")
 
     # A flag in autodoc_default_options is on whenever its key is present, even
     # with a False value, so add ignore-module-all only when it is wanted.
@@ -193,7 +193,7 @@ def configure(
         "intersphinx_mapping": intersphinx_map(main),
         "intersphinx_timeout": 10,
         # Theme
-        "html_theme": "pydevices",
+        "html_theme": "omnipython",
         "templates_path": [str(TEMPLATES_DIR)],
         "html_theme_options": {
             "navigation_depth": 3,

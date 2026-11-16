@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Idempotent PyDevices cloud workspace layout: ~/gh/pydevices symlinks into /agent/repos.
+# Idempotent PyDevices cloud workspace layout: ~/gh/omnipython symlinks into /agent/repos.
 # Safe to run on every cloud VM boot (environment.json install).
 #
 # Self-heals when Cursor did not materialize sibling checkouts under /agent/repos
@@ -8,19 +8,19 @@
 # shallow-cloned here so agents can start real work without a setup chat.
 set -euo pipefail
 
-GH="${PYDEVICES_GH_ROOT:-/home/ubuntu/gh}"
-PD="$GH/pydevices"
-REPOS="${PYDEVICES_REPOS_ROOT:-/agent/repos}"
-ORG="${PYDEVICES_GITHUB_ORG:-PyDevices}"
+GH="${OMNIPYTHON_GH_ROOT:-/home/ubuntu/gh}"
+PD="$GH/omnipython"
+REPOS="${OMNIPYTHON_REPOS_ROOT:-/agent/repos}"
+ORG="${OMNIPYTHON_GITHUB_ORG:-PyDevices}"
 
 # Sibling checkouts expected under $REPOS (names match GitHub repo names).
 SIBLINGS=(
-    micropython-pydevices
+    omnipython-builds
     audiodsp
     pygraphics
     omnipython-lvgl
-    pydevices
-    mpftp
+    omnipython
+    mcuctl
     palettes
     pdwidgets
     gallery
@@ -120,7 +120,7 @@ clone_missing_siblings() {
 
 # --- symlink helpers ----------------------------------------------------------
 
-link_pydevices() {
+link_omnipython() {
     local name=$1
     local target=$2
     local path="$PD/$name"
@@ -165,14 +165,14 @@ shallow_clone_if_missing() {
 
 verify_ready() {
     local name missing=0
-    for name in micropython-pydevices audiodsp pygraphics omnipython-lvgl pydevices gallery palettes pdwidgets; do
+    for name in omnipython-builds audiodsp pygraphics omnipython-lvgl omnipython gallery palettes pdwidgets; do
         if [[ ! -d "$REPOS/$name/.git" && ! -L "$REPOS/$name" ]]; then
             log "ERROR: required repo missing: $REPOS/$name"
             missing=1
         fi
     done
-    if [[ ! -e "$REPOS/micropython-pydevices/modules/displayif/docs/port-matrix.md" ]]; then
-        log "ERROR: displayif port matrix doc missing under $REPOS/micropython-pydevices/modules/displayif"
+    if [[ ! -e "$REPOS/omnipython-builds/modules/displayif/docs/port-matrix.md" ]]; then
+        log "ERROR: displayif port matrix doc missing under $REPOS/omnipython-builds/modules/displayif"
         missing=1
     fi
     if [[ ! -d "$PD/micropython/.git" ]]; then
@@ -192,31 +192,31 @@ ensure_repos_root
 ensure_dotgithub
 clone_missing_siblings || die "one or more sibling clones failed"
 
-link_pydevices dotgithub "$REPOS/.github"
-link_pydevices PyDevices.github.io "$REPOS/PyDevices.github.io"
-link_pydevices pydevices "$REPOS/pydevices"
-link_pydevices mpftp "$REPOS/mpftp"
-link_pydevices palettes "$REPOS/palettes"
-link_pydevices pdwidgets "$REPOS/pdwidgets"
-link_pydevices gallery "$REPOS/gallery"
-link_pydevices android-template "$REPOS/android-template"
+link_omnipython dotgithub "$REPOS/.github"
+link_omnipython PyDevices.github.io "$REPOS/PyDevices.github.io"
+link_omnipython omnipython "$REPOS/omnipython"
+link_omnipython mcuctl "$REPOS/mcuctl"
+link_omnipython palettes "$REPOS/palettes"
+link_omnipython pdwidgets "$REPOS/pdwidgets"
+link_omnipython gallery "$REPOS/gallery"
+link_omnipython android-template "$REPOS/android-template"
 
 # The C modules (displayif, audioif, cameraif, usbhost) live inside
-# micropython-pydevices under modules/, so they need no checkout of their own;
+# omnipython-builds under modules/, so they need no checkout of their own;
 # build_mp.py clones anything else it needs (ulab, say) at the commit
-# micropython-pydevices pins. The repositories below are siblings at the workspace root,
+# omnipython-builds pins. The repositories below are siblings at the workspace root,
 # the layout every build script in the org defaults to.
-for s in micropython-pydevices audiodsp pygraphics \
+for s in omnipython-builds audiodsp pygraphics \
     omnipython-lvgl; do
-    [[ -d "$REPOS/$s" || -L "$REPOS/$s" ]] && link_pydevices "$s" "$REPOS/$s"
+    [[ -d "$REPOS/$s" || -L "$REPOS/$s" ]] && link_omnipython "$s" "$REPOS/$s"
 done
 
 # The interpreter checkouts, beside the repositories. The MicroPython commit is
-# the one micropython-pydevices pins (in DEPENDENCIES.lock, or UPSTREAM in a
+# the one omnipython-builds pins (in DEPENDENCIES.lock, or UPSTREAM in a
 # checkout from before that file), and patches/apply_patches.py there
 # applies the patch series once (build_mp.py would also do it on first use).
 mp_pin() {
-    local mpp="$REPOS/micropython-pydevices"
+    local mpp="$REPOS/omnipython-builds"
     if [[ -f "$mpp/DEPENDENCIES.lock" ]]; then
         awk '$1 == "micropython" { print $3 }' "$mpp/DEPENDENCIES.lock"
     elif [[ -f "$mpp/UPSTREAM" ]]; then
@@ -228,16 +228,16 @@ mp_pin() {
 # The CircuitPython commit comes from the same file, so a cloud checkout builds
 # the interpreter the firmware and the parity tests use.
 cp_pin() {
-    local lock="$REPOS/micropython-pydevices/DEPENDENCIES.lock" pin=""
+    local lock="$REPOS/omnipython-builds/DEPENDENCIES.lock" pin=""
     [[ -f "$lock" ]] && pin=$(awk '$1 == "circuitpython" { print $3 }' "$lock")
     echo "${pin:-11.0.0-alpha.2}"
 }
-MP_TAG="${PYDEVICES_MP_TAG:-$(mp_pin)}"
-CP_TAG="${PYDEVICES_CP_TAG:-$(cp_pin)}"
+MP_TAG="${OMNIPYTHON_MP_TAG:-$(mp_pin)}"
+CP_TAG="${OMNIPYTHON_CP_TAG:-$(cp_pin)}"
 shallow_clone_if_missing micropython https://github.com/micropython/micropython.git "$MP_TAG"
 shallow_clone_if_missing circuitpython https://github.com/adafruit/circuitpython.git "$CP_TAG"
-if [[ -f "$REPOS/micropython-pydevices/patches/apply_patches.py" ]]; then
-    python3 "$REPOS/micropython-pydevices/patches/apply_patches.py" "$PD/micropython" \
+if [[ -f "$REPOS/omnipython-builds/patches/apply_patches.py" ]]; then
+    python3 "$REPOS/omnipython-builds/patches/apply_patches.py" "$PD/micropython" \
         || log "WARNING: apply_patches.py failed; the checkout is unpatched"
 fi
 

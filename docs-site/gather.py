@@ -67,7 +67,7 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument(
         "--local", action="append", default=[], metavar="NAME=PATH",
-        help="use the checkout at PATH for repository NAME (pydevices, pygraphics, ...)",
+        help="use the checkout at PATH for repository NAME (omnipython, pygraphics, ...)",
     )
     parser.add_argument("--ref", default="main", help="branch to clone (default: main)")
     args = parser.parse_args(argv)

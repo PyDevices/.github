@@ -7,20 +7,20 @@
 #   - ensure shell env (PATH, PYTHONPATH, MICROPYPATH) via gallery-env.sh + bashrc hook
 #
 # Run from gallery/lib/ after sourcing gallery-env.sh (or open a new shell).
-# See pydevices docs/install-workflows.md (CircuitPython-compatible mip, mpy=False).
+# See omnipython docs/install-workflows.md (CircuitPython-compatible mip, mpy=False).
 #
 # Safe to re-run. Intentionally does not `set -e` on optional TestPyPI steps.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPOS="${PYDEVICES_REPOS_ROOT:-/agent/repos}"
-EXAMPLES="${PYDEVICES_EXAMPLES_ROOT:-$REPOS/gallery}"
+REPOS="${OMNIPYTHON_REPOS_ROOT:-/agent/repos}"
+EXAMPLES="${OMNIPYTHON_EXAMPLES_ROOT:-$REPOS/gallery}"
 MIP_INDEX="https://lib.omnipython.org"
 MPY_LIB="${HOME}/.micropython"
 BASHRC="${HOME}/.bashrc"
 ENV_FILE="${SCRIPT_DIR}/gallery-env.sh"
-BASHRC_BEGIN="# >>> pydevices gallery dev env >>>"
-BASHRC_END="# <<< pydevices gallery dev env <<<"
+BASHRC_BEGIN="# >>> omnipython gallery dev env >>>"
+BASHRC_END="# <<< omnipython gallery dev env <<<"
 
 log() { printf 'cloud-gallery-dev-env: %s\n' "$*"; }
 
@@ -32,7 +32,7 @@ die() {
 # shellcheck source=gallery-env.sh
 source "${ENV_FILE}" || die "cannot source ${ENV_FILE}"
 
-ensure_pydevices_examples_venv() {
+ensure_omnipython_examples_venv() {
     if [[ ! -d "$EXAMPLES" ]]; then
         die "gallery not found at $EXAMPLES"
     fi
@@ -57,7 +57,7 @@ ensure_micropython_bin() {
     if command -v micropython >/dev/null 2>&1; then
         return 0
     fi
-    die "micropython not on PATH (expected ${PYDEVICES_EXAMPLES_ROOT}/bin/micropython)"
+    die "micropython not on PATH (expected ${OMNIPYTHON_EXAMPLES_ROOT}/bin/micropython)"
 }
 
 mip_install_micropython_lib() {
@@ -67,7 +67,7 @@ mip_install_micropython_lib() {
         cd "${MPY_LIB}" || exit 1
         INDEX="$MIP_INDEX"
         micropython -m mip install --no-mpy -t lib -i "$INDEX" \
-            github:PyDevices/pydevices/board_configs/desktop \
+            github:PyDevices/omnipython/board_configs/desktop \
             appdev \
             palettes \
             pdwidgets
@@ -107,7 +107,7 @@ ${BASHRC_END}
 EOF
 }
 
-ensure_pydevices_examples_venv
+ensure_omnipython_examples_venv
 ensure_micropython_bin
 mip_install_micropython_lib
 install_bashrc_hook

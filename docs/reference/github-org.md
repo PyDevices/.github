@@ -4,7 +4,7 @@ How the [PyDevices](https://github.com/PyDevices) organization is set up:
 where to ask, where bugs go, and which pieces live in this repository. The
 full list of repositories, grouped by tier, is generated from
 `data/repos_db.json` and published as the
-[ecosystem page](https://github.com/PyDevices/pydevices/blob/main/docs/how-it-works/ecosystem.md)
+[ecosystem page](https://github.com/PyDevices/omnipython/blob/main/docs/how-it-works/ecosystem.md)
 and on the [organization profile](https://github.com/PyDevices); this page
 doesn't repeat it.
 
@@ -12,19 +12,19 @@ doesn't repeat it.
 
 | I want to... | Go here |
 |---|---|
-| Ask a question, propose an idea, show something I built, or reach the maintainer | [pydevices Discussions](https://github.com/PyDevices/pydevices/discussions), the organization's one board |
-| Share a one-off example too narrow for the official examples | The *Recipes* category in [pydevices Discussions](https://github.com/PyDevices/pydevices/discussions) |
+| Ask a question, propose an idea, show something I built, or reach the maintainer | [omnipython Discussions](https://github.com/PyDevices/omnipython/discussions), the organization's one board |
+| Share a one-off example too narrow for the official examples | The *Recipes* category in [omnipython Discussions](https://github.com/PyDevices/omnipython/discussions) |
 | Report a bug or ask for something that doesn't work yet | Issues on the repository it affects; the Bug report and Feature request templates apply by default |
 | See what is planned | The `ROADMAP.md` at the root of each repository |
 | Read the shared contribution guidelines | [CONTRIBUTING.md](../../CONTRIBUTING.md) |
 | Read the organization's profile | [profile/README.md](../../profile/README.md), shown on [github.com/PyDevices](https://github.com/PyDevices) |
 | Read a library's manual | The library's page on the docs site, for example [docs.omnipython.org/en/latest/pygraphics/](https://docs.omnipython.org/en/latest/pygraphics/); the [documentation overview](https://docs.omnipython.org/en/latest/) links the rest |
 | Try the libraries without installing | The [PyScript gallery](https://gallery.omnipython.org/pyscript/) |
-| Find board and driver documentation | [pydevices `docs/`](https://github.com/PyDevices/pydevices/tree/main/docs) |
+| Find board and driver documentation | [omnipython `docs/`](https://github.com/PyDevices/omnipython/tree/main/docs) |
 
 ## Discussions and issues
 
-**Discussions** are on in one repository, `pydevices`: questions, ideas,
+**Discussions** are on in one repository, `omnipython`: questions, ideas,
 show-and-tell, and reaching the maintainer. Every other repository has them
 off, so there is one place to look; `SUPPORT.md`, `CONTRIBUTING.md` and the
 design docs all point there. Its *Recipes* category is a low-friction home for
@@ -36,7 +36,7 @@ becomes planned work moves there and its issue closes with a link. The default
 issue templates (`bug.yml`, `feature.yml`) live in this repository's
 [`.github/ISSUE_TEMPLATE`](../../.github/ISSUE_TEMPLATE) and apply to any
 repository that doesn't define its own. If you aren't sure where an issue
-belongs, open it on [pydevices](https://github.com/PyDevices/pydevices/issues)
+belongs, open it on [omnipython](https://github.com/PyDevices/omnipython/issues)
 and it will be routed.
 
 **GitHub Projects** are off, so public work tracking is Issues, Discussions and
