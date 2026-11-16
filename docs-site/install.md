@@ -21,7 +21,7 @@ omip.install("palettes")
 
 A board's `board_config` installs the same way and wires up the display and
 touch for that board. The board's page in the
-[device matrix](omnipython/boards/device-matrix.md)
+[board list](omnipython/boards/board-configs.md)
 names the package to ask for.
 :::
 
