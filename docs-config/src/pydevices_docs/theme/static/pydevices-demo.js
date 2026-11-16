@@ -7,7 +7,7 @@
  */
 (function () {
   if (!document.querySelector(".pydevices-live-demo")) return;
-  import("https://PyDevices.github.io/assets/chrome/docs-runtime.js").catch(function (error) {
+  import("https://omnipython.org/assets/chrome/docs-runtime.js").catch(function (error) {
     console.error("Unable to load the PyDevices documentation runtime:", error);
   });
 })();

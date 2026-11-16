@@ -13,5 +13,5 @@ and resolves references through its inventory.
 # The site's canonical address. The old Read the Docs addresses redirect here.
 ROOT = "https://docs.omnipython.org"
 SITE = ROOT + "/en/latest/"
-PORTAL = "https://pydevices.github.io"
+PORTAL = "https://omnipython.org"
 GITHUB = "https://github.com/PyDevices"

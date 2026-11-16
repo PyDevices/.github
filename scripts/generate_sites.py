@@ -405,7 +405,7 @@ def build_above_the_fold_html(repo_name, data):
         width = hero_canvas.get('width', 240)
         height = hero_canvas.get('height', 240)
         shape = hero_canvas.get('shape', 'round')
-        app_url = hero_canvas.get('app_url', f'https://PyDevices.github.io/assets/apps/{app_name}.py')
+        app_url = hero_canvas.get('app_url', f'https://omnipython.org/assets/apps/{app_name}.py')
         canvas_id = 'hero_canvas'
         container_class = 'hero-canvas-circle' if shape == 'round' else 'hero-canvas-square'
 

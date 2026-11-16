@@ -6,7 +6,7 @@ Welcome to **PyDevices** — a unified pure-Python hardware abstraction engine, 
 
 ## 🏛️ Ecosystem Structure
 
-- **Org Landing Portal**: [PyDevices.github.io](https://pydevices.github.io/)
+- **Org Landing Portal**: [omnipython.org](https://omnipython.org/)
 - **Package Index**: [lib.omnipython.org](https://lib.omnipython.org)
 - **Centralized Assets & Scripts**: [.github (*dotgithub*)](https://github.com/PyDevices/.github)
 
