@@ -92,10 +92,10 @@
   "distribution": "omnipython-lvgl",
   "mip": "skipped",
   "prerelease": false,
-  "pypi": "pending",
+  "pypi": "success",
   "repo": "omnipython-lvgl",
   "run_url": "https://github.com/PyDevices/omnipython-lvgl/actions/runs/44070110321",
-  "updated": "2026-11-17 11:16 UTC",
+  "updated": "2026-11-17 11:18 UTC",
   "version": "9.6.1"
  },
  "omnipython-palettes": {
