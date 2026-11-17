@@ -4,12 +4,11 @@
   "distribution": "mcuctl",
   "mip": "skipped",
   "prerelease": true,
-  "pypi": "skipped",
+  "pypi": "pending",
   "repo": "mcuctl",
-  "run_url": "https://github.com/PyDevices/mcuctl/actions/runs/43996558205",
-  "testpypi": "success",
-  "updated": "2026-11-17 01:35 UTC",
-  "version": "0.1.7.dev7"
+  "run_url": "https://github.com/PyDevices/mcuctl/actions/runs/44062841513",
+  "updated": "2026-11-17 10:24 UTC",
+  "version": "0.1.7.dev8"
  },
  "omnipython": {
   "assets": "success",
