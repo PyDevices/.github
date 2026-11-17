@@ -16,12 +16,12 @@
   "distribution": "omnipython",
   "mip": "success",
   "prerelease": true,
-  "pypi": "skipped",
+  "pypi": "pending",
   "repo": "omnipython",
-  "run_url": "https://github.com/PyDevices/omnipython/actions/runs/43997824343",
+  "run_url": "https://github.com/PyDevices/omnipython/actions/runs/44051373257",
   "testpypi": "success",
-  "updated": "2026-11-17 01:45 UTC",
-  "version": "0.8.0.dev24"
+  "updated": "2026-11-17 09:05 UTC",
+  "version": "0.8.0.dev25"
  },
  "omnipython-airwindows": {
   "assets": "success",
