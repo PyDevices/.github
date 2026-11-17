@@ -18,7 +18,6 @@
   "pypi": "success",
   "repo": "omnipython",
   "run_url": "https://github.com/PyDevices/omnipython/actions/runs/44051373257",
-  "testpypi": "success",
   "updated": "2026-11-17 09:05 UTC",
   "version": "0.8.0.dev25"
  },
@@ -30,7 +29,6 @@
   "pypi": "skipped",
   "repo": "airwindows",
   "run_url": "https://github.com/PyDevices/airwindows/actions/runs/43999587524",
-  "testpypi": "success",
   "updated": "2026-11-17 02:17 UTC",
   "version": "0.1.0.dev3"
  },
@@ -39,10 +37,10 @@
   "distribution": "omnipython-applibs",
   "mip": "success",
   "prerelease": true,
-  "pypi": "pending",
+  "pypi": "success",
   "repo": "apps",
   "run_url": "https://github.com/PyDevices/apps/actions/runs/44062854863",
-  "updated": "2026-11-17 10:24 UTC",
+  "updated": "2026-11-17 10:27 UTC",
   "version": "0.1.2.dev16"
  },
  "omnipython-audiodsp": {
@@ -53,7 +51,6 @@
   "pypi": "success",
   "repo": "audiodsp",
   "run_url": "https://github.com/PyDevices/audiodsp/actions/runs/44051983974",
-  "testpypi": "success",
   "updated": "2026-11-17 09:13 UTC",
   "version": "0.6.16.dev6"
  },
@@ -72,7 +69,6 @@
   "pypi": "skipped",
   "repo": "audioinstruments",
   "run_url": "https://github.com/PyDevices/audioinstruments/actions/runs/44006593680",
-  "testpypi": "success",
   "updated": "2026-11-17 03:14 UTC",
   "version": "0.5.2.dev6"
  },
@@ -84,7 +80,6 @@
   "pypi": "success",
   "repo": "omnipython",
   "run_url": "https://github.com/PyDevices/omnipython/actions/runs/44052119941",
-  "testpypi": "success",
   "updated": "2026-11-17 09:07 UTC",
   "version": "0.1.0.dev3"
  },
@@ -96,7 +91,6 @@
   "pypi": "success",
   "repo": "omnipython-lvgl",
   "run_url": "https://github.com/PyDevices/omnipython-lvgl/actions/runs/44052190381",
-  "testpypi": "success",
   "updated": "2026-11-17 09:22 UTC",
   "version": "9.6.1.dev1"
  },
@@ -108,7 +102,6 @@
   "pypi": "success",
   "repo": "omnipython",
   "run_url": "https://github.com/PyDevices/omnipython/actions/runs/44052129028",
-  "testpypi": "success",
   "updated": "2026-11-17 09:07 UTC",
   "version": "0.0.16.dev3"
  },
@@ -120,7 +113,6 @@
   "pypi": "success",
   "repo": "omnipython",
   "run_url": "https://github.com/PyDevices/omnipython/actions/runs/44052006650",
-  "testpypi": "success",
   "updated": "2026-11-17 09:06 UTC",
   "version": "0.0.26.dev3"
  },
@@ -132,7 +124,6 @@
   "pypi": "success",
   "repo": "pygraphics",
   "run_url": "https://github.com/PyDevices/pygraphics/actions/runs/44049175797",
-  "testpypi": "success",
   "updated": "2026-11-17 08:52 UTC",
   "version": "0.1.7.dev3"
  },
@@ -144,7 +135,6 @@
   "pypi": "skipped",
   "repo": "pydevices",
   "run_url": "https://github.com/PyDevices/pydevices/actions/runs/43800043072",
-  "testpypi": "success",
   "updated": "2026-11-16 03:46 UTC",
   "version": "0.8.0.dev21"
  }
