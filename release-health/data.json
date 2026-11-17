@@ -126,12 +126,12 @@
   "distribution": "omnipython-pygraphics",
   "mip": "success",
   "prerelease": true,
-  "pypi": "skipped",
+  "pypi": "pending",
   "repo": "pygraphics",
-  "run_url": "https://github.com/PyDevices/pygraphics/actions/runs/44000879573",
+  "run_url": "https://github.com/PyDevices/pygraphics/actions/runs/44049175797",
   "testpypi": "success",
-  "updated": "2026-11-17 02:12 UTC",
-  "version": "0.1.7.dev2"
+  "updated": "2026-11-17 08:51 UTC",
+  "version": "0.1.7.dev3"
  },
  "pydevices": {
   "assets": "success",
