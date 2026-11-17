@@ -129,7 +129,8 @@ def copy_bundle(package: Path, root: Path, destination: Path) -> None:
 
     A file of this repository is copied from the checkout. Any other file is
     fetched from its pinned URL (midiports pins Adafruit's adafruit_midi at a
-    tag), so pip users get exactly what mip installs.
+    tag), so pip users get exactly what mip installs. The package's own type
+    stubs and its ``py.typed`` marker go in too, for editors and type checkers.
     """
     urls = json.loads((package / "package.json").read_text(encoding="utf-8"))["urls"]
     for relative, source in urls:
@@ -142,6 +143,13 @@ def copy_bundle(package: Path, root: Path, destination: Path) -> None:
                 target.write_bytes(response.read())
         else:
             raise SystemExit(f"{package.name}/package.json: cannot bundle {source!r}")
+    # The stubs and the marker are for pip users, so package.json, the list mip
+    # installs from, doesn't name them. They sit beside the code in the package's folder.
+    for path in sorted(package.rglob("*")):
+        if path.is_file() and (path.suffix == ".pyi" or path.name == "py.typed"):
+            target = destination / path.relative_to(package)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(path, target)
 
 
 def project_text(

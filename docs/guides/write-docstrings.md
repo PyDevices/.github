@@ -59,9 +59,13 @@ See also: https://github.com/PyDevices/omnipython/blob/main/docs/how-it-works/di
 Type information goes in the **docstring**, not the signature. These packages
 run on MicroPython, where annotations cost bytecode and RAM.
 
-Type stubs for pip users who want real types are on the
-[roadmap](../../ROADMAP.md). Do not add `py.typed` to a package: it tells a type checker to trust inline
-annotations that deliberately are not there.
+Pip users get real types from `.pyi` stubs, which cost nothing on a device. Write a
+stub beside each module (see [repo layout](../reference/repo-layout.md)). A package
+that has stubs also carries an empty `py.typed` file, which tells a type checker to
+read the `.pyi` files beside the code rather than skip the package. A top-level
+module has no folder for the marker, so its stub ships as a `<module>-stubs` package,
+which needs none. Don't add `py.typed` to a package without stubs: it would tell a
+checker to trust annotations that deliberately are not there.
 
 ## Verification
 

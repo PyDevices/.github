@@ -122,7 +122,8 @@ under `omnipython-builds/modules/<name>/`. Either way it has:
   the only way to tell which source a board was built from.
 - A `.pyi` stub, `<module>.pyi` at the module's root, for every importable
   name the module adds. The stub costs nothing on a device, and the docs'
-  Reference section is generated from it.
+  Reference section is generated from it. A repository that publishes a wheel installs the stub in it as
+  a `<module>-stubs` package, where type checkers look for a compiled or single-file module.
 - `examples/<module>_simpletest.py`, about one screen long.
 - `tests/test_<module>.py`, run on the unix build by CI. When an independent
   implementation exists (Pillow, ffmpeg, zeroconf, the upstream C), add
