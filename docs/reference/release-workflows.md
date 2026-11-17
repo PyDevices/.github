@@ -5,7 +5,7 @@ The release chain's moving parts, as tables. How they fit together is in
 
 ## What each repository publishes
 
-| Source repository | TestPyPI | MIP index |
+| Source repository | PyPI | MIP index |
 |---|---|---|
 | `omnipython` | `omnipython` (all of `lib/`) and `omnipython-desktop` | `omnipython` |
 | `pygraphics` | `omnipython-pygraphics`: Linux, Windows, Android and WASM wheels | pure-Python `pygraphics` |
@@ -15,7 +15,7 @@ The release chain's moving parts, as tables. How they fit together is in
 | `mcuctl` | `mcuctl` wheel and sdist | nothing |
 
 The `palettes` and `pdwidgets` folders of `omnipython` publish separately, on
-`palettes-vX.Y.Z` and `pdwidgets-vX.Y.Z` tags, to TestPyPI and the library
+`palettes-vX.Y.Z` and `pdwidgets-vX.Y.Z` tags, to PyPI and the library
 index. The library index (`PyDevices/lib`) takes every release of every
 repository that asks it, pre-releases included.
 
@@ -29,7 +29,7 @@ outside this chain.
 | Input | Meaning |
 |---|---|
 | `build-kind` | `pure-python`, `native-and-wasm` or `omnipython-multi`; exactly one build runs |
-| `distribution-name` | The TestPyPI distribution name |
+| `distribution-name` | The PyPI distribution name |
 | `import-name` | `pure-python` only: the module the smoke test imports |
 | `wheel-filename-prefix` | `native-and-wasm` only, for example `omnipython_pygraphics` |
 | `expected-wheel-count` | `native-and-wasm` only; `0` accepts any non-empty wheel set |
@@ -39,7 +39,7 @@ outside this chain.
 | `mip-profile` | A synchronization profile, or a comma-separated list when a repository publishes several packages; empty skips MIP and the library index |
 | `release-ref` | An exact `vX.Y.Z` tag, for a `workflow_dispatch` retry; empty on a release event |
 | `working-directory` | `pure-python` only: the directory with `pyproject.toml` |
-| `pypi-publish` | Send every release, pre-releases included, to production PyPI; see [publish to production PyPI](../guides/publish-to-pypi.md) |
+| `pypi-publish` | Send every release, pre-releases included, to PyPI; see [publish to PyPI](../guides/publish-to-pypi.md) |
 
 A typical call:
 
@@ -61,13 +61,10 @@ jobs:
 | Secret | Where | Purpose |
 |---|---|---|
 | `PYDEVICES_APP_ID`, `PYDEVICES_APP_PRIVATE_KEY` | Every publishing repository and `PyDevices/mip` | Mint short-lived GitHub App tokens: to open release PRs, create tags and Releases (so `on: release` fires), dispatch the MIP queue and send the Release Health report |
-| `TESTPYPI_API_TOKEN` | Every repository that uploads to TestPyPI | API token for TestPyPI |
 | `VSCE_PAT`, `OVSX_PAT` | `mcuctl` only (`publish-vsix.yml`) | VS Marketplace and Open VSX; both optional, the steps skip when unset |
 
-TestPyPI uses token authentication (`user: __token__`, the token as the
-password, `repository-url: https://test.pypi.org/legacy/`,
-`skip-existing: true`), not Trusted Publishing. Production PyPI uses Trusted
-Publishing; see [publish to production PyPI](../guides/publish-to-pypi.md).
+PyPI needs no secret: it uses Trusted Publishing; see
+[publish to PyPI](../guides/publish-to-pypi.md).
 
 ## Tags
 
@@ -107,3 +104,5 @@ older tools ref overwrites what a publication wrote.
   **`publishing-v15`** added the library-index request. Every tag from
   `publishing-v1` still exists, so a release cut before a contract change can
   be retried against the contract it was built with.
+- **`publishing-v31`** stops uploading to TestPyPI: PyPI is the only package
+  index, and the Release Health page drops that column.

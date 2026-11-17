@@ -2,9 +2,9 @@
 
 You release a package by merging a pull request. Pick a repository that
 publishes (see [what each repository publishes](../reference/release-workflows.md#what-each-repository-publishes))
-and start with a development version. It reaches TestPyPI, the release's
-attached files, production PyPI for a repository that publishes there and,
-for a repository that requests it, the library index, but not the MIP index.
+and start with a development version. It reaches PyPI, the release's attached
+files and, for a repository that requests it, the library index, but not the
+MIP index.
 
 ```bash
 gh workflow run prepare-release.yml --repo PyDevices/<repository> -f version=X.Y.Z.dev1
@@ -16,7 +16,7 @@ on a `release/vX.Y.Z.dev1` branch. It changes `VERSION` and adds a section to
 then merge it.
 
 Merging tags `vX.Y.Z.dev1`, creates the GitHub Release, and starts the
-publish run. When the run finishes, the package is on TestPyPI and the
+publish run. When the run finishes, the package is on PyPI and the
 release's row in [`RELEASE_HEALTH.md`](../../RELEASE_HEALTH.md) shows each
 stage's outcome with a link to the run.
 

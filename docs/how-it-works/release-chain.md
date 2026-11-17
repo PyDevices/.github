@@ -1,7 +1,7 @@
 # The release chain
 
-This is how a package version gets from a merged pull request to TestPyPI,
-the MIP index, the library index and, for some packages, production PyPI. The
+This is how a package version gets from a merged pull request to PyPI, the
+MIP index and the library index. The
 organization-wide release machinery lives in this repository because it
 governs every publishing repository: the reusable workflows, the tag contract
 and the shared credentials. Each repository's own publishing notes cover only
@@ -36,11 +36,11 @@ that choice:
 `reusable-publish-release-packages.yml` is the whole per-repository chain, as
 jobs inside one reusable workflow. It resolves the tag, runs exactly one build
 (`build-pure-python`, `build-native-and-wasm` or `build-omnipython-multi`,
-chosen by `build-kind`), uploads to TestPyPI, attaches the built files to the
-Release, requests MIP and library-index publication, decides whether
-production PyPI should follow, and reports to the Release Health dashboard.
-It replaced five near-identical copies of the same three jobs. The production
-PyPI upload is the one step that has to live in the caller
+chosen by `build-kind`), attaches the built files to the Release, requests MIP
+and library-index publication, tells the caller to upload to PyPI, and reports
+to the Release Health dashboard.
+It replaced five near-identical copies of the same three jobs. The PyPI upload
+is the one step that has to live in the caller
 ([why](../guides/publish-to-pypi.md#why-the-upload-is-in-the-caller)).
 
 Each publishing repository has thin callers (`prepare-release.yml`,
@@ -206,8 +206,8 @@ records nothing.
 Every publish run, successful or not, ends with a `report-release-health` job.
 It's `continue-on-error`, so a reporting failure never fails the release. It
 sends a `repository_dispatch` of type `release-health` to this repository with
-the outcome of each stage: TestPyPI, assets, MIP and PyPI. A release headed for
-production PyPI reports `pypi` as `pending`, because that upload runs later in
+the outcome of each stage: assets, MIP and PyPI. A release headed for
+PyPI reports `pypi` as `pending`, because that upload runs later in
 the caller; the caller's `report-pypi` job then sends a partial report that
 fills in the outcome on the same row.
 

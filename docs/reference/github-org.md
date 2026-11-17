@@ -40,7 +40,7 @@ belongs, open it on [omnipython](https://github.com/PyDevices/omnipython/issues)
 and it will be routed.
 
 **GitHub Projects** are off, so public work tracking is Issues, Discussions and
-the roadmaps. **GitHub Packages** isn't used: installables go to TestPyPI and
+the roadmaps. **GitHub Packages** isn't used: installables go to
 PyPI for CPython, and to the `mip` and `lib` indexes for MicroPython.
 
 ## Read the Docs

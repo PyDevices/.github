@@ -47,6 +47,9 @@ jobs:
           # stage's outcome, sent after the coordinator's full report: the
           # caller-side PyPI upload. It updates that row in place, as long as
           # the row is for the same version; otherwise it stands alone.
+          # Callers on publishing-v30 and older still report a TestPyPI stage.
+          # Releases go to PyPI alone now, so that field is dropped on the way in.
+          p.pop("testpypi", None)
           old = data.get(key, {})
           if str(p.pop("partial", "")).lower() == "true" and old.get("version") == p.get("version"):
               p = {**old, **p}
@@ -59,15 +62,15 @@ jobs:
           for k in sorted(data):
               d = data[k]
               ver = d.get("version", "?") + (" (pre)" if str(d.get("prerelease")).lower() == "true" else "")
-              rows.append("| [{k}]({u}) | {v} | {t} | {a} | {m} | {y} | {up} |".format(
-                  k=k, u=d.get("run_url", ""), v=ver, t=mark(d.get("testpypi")),
+              rows.append("| [{k}]({u}) | {v} | {a} | {m} | {y} | {up} |".format(
+                  k=k, u=d.get("run_url", ""), v=ver,
                   a=mark(d.get("assets")), m=mark(d.get("mip")), y=mark(d.get("pypi")),
                   up=d.get("updated", "")))
           open("RELEASE_HEALTH.md", "w").write(
               "# Release health\n\nLatest publish run per distribution, reported by "
-              "publishing-v6's report-release-health job (link = the run).\n\n"
-              "| Distribution | Version | TestPyPI | Assets | MIP | PyPI | Updated |\n"
-              "|---|---|---|---|---|---|---|\n" + "\n".join(rows) + "\n")
+              "the publishing workflow's report-release-health job (link = the run).\n\n"
+              "| Distribution | Version | Assets | MIP | PyPI | Updated |\n"
+              "|---|---|---|---|---|---|\n" + "\n".join(rows) + "\n")
           PY
 
           git config user.name "pydevices-release-automation[bot]"

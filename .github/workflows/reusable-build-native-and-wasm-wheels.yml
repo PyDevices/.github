@@ -220,6 +220,6 @@ jobs:
       - name: Upload complete validated wheel set
         uses: actions/upload-artifact@v7
         with:
-          name: testpypi-${{ inputs.distribution-name }}-${{ inputs.version }}
+          name: dist-${{ inputs.distribution-name }}-${{ inputs.version }}
           path: dist/*.whl
           if-no-files-found: error
