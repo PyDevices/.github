@@ -41,8 +41,8 @@ silent gap the completeness standard condemns, with a friendlier label.
 
 ## Current postures
 
-**macOS.** audiodsp ships macOS wheels, and audiodsp and audiocomponents
-run their tests on macOS runners. omnipython has no macOS CI job, and
+**macOS.** audiodsp and airwindows ship macOS wheels, and audiodsp and
+audiocomponents run their tests on macOS runners. omnipython has no macOS CI job, and
 pygraphics and LVGL publish no macOS wheel. PyDevices claims nothing
 hardware-adjacent (USB enumeration, Bluetooth radios, audio devices)
 beyond what that CI proves. Those surfaces ship at the community-verified
