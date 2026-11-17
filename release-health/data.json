@@ -6,10 +6,10 @@
   "prerelease": true,
   "pypi": "skipped",
   "repo": "mcuctl",
-  "run_url": "https://github.com/PyDevices/mcuctl/actions/runs/43900786186",
+  "run_url": "https://github.com/PyDevices/mcuctl/actions/runs/43996558205",
   "testpypi": "success",
-  "updated": "2026-11-16 15:51 UTC",
-  "version": "0.1.7.dev6"
+  "updated": "2026-11-17 01:35 UTC",
+  "version": "0.1.7.dev7"
  },
  "omnipython": {
   "assets": "success",
