@@ -30,7 +30,7 @@ your machine or your board, [install](install.md) it.
 
 The [gallery](https://gallery.omnipython.org/) runs the same
 example programs that run on boards, in your browser. The first page of
-palettes, pdwidgets and pygraphics here carries a live demo you can edit and
+pygraphics, palettes and pdwidgets here carries a live demo you can edit and
 run.
 
 ```{toctree}

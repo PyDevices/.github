@@ -18,11 +18,15 @@ opens and your program draws into it, which is the quickest way to try an idea.
 
 ## 3. Learn the three layers
 
-Most programs use three libraries stacked on the display:
+Most programs use these libraries stacked on the display:
 
 - [pygraphics](pygraphics/index.md) draws: lines, shapes, text and images.
 - [palettes](palettes/index.md) supplies colors in the format the display wants.
-- [pdwidgets](pdwidgets/index.md) builds a user interface out of buttons, sliders and labels, and routes touch and keys to them.
+- [LVGL](lvgl/index.md) is the toolkit to reach for when you want buttons, sliders and labels, with touch and keys routed to them.
+
+[pdwidgets](pdwidgets/index.md) is a different kind of library: a whole widget
+toolkit written in Python on the OmniPython core, with no C. It's there to show
+that the core can carry a UI framework, and it isn't part of release firmware.
 
 Each library's section starts with its own install page and first program.
 

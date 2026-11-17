@@ -432,52 +432,6 @@
       "caption": "Huey draws"
     }
   },
-  "pdwidgets": {
-    "tier": 2,
-    "repo_url": "https://github.com/PyDevices/omnipython/tree/main/packages/pdwidgets",
-    "page": "portal-subdir",
-    "tier_name": "Python Framebuffers & GUI Toolkits",
-    "theme_color": "var(--tier-2-emerald)",
-    "eyebrow": "pdwidgets",
-    "headline": "pdwidgets — Pure-Python UI widget toolkit.",
-    "description": "Lightweight object-oriented UI widget framework including buttons, sliders, progress bars, labels, and event routing for OmniPython screens.",
-    "hero_canvas": {
-      "app": "sensor_deck",
-      "width": 240,
-      "height": 240,
-      "shape": "square",
-      "app_url": "https://omnipython.org/assets/apps/sensor_deck.py"
-    },
-    "buttons": [
-      {
-        "label": "GitHub Repo",
-        "href": "https://github.com/PyDevices/omnipython/tree/main/packages/pdwidgets",
-        "primary": true
-      },
-      {
-        "label": "Read the Docs",
-        "href": "https://docs.omnipython.org/en/latest/pdwidgets/",
-        "tier_color": true
-      },
-      {
-        "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/omnipython-pdwidgets/",
-        "tier_color": true
-      },
-      {
-        "label": "Package Index",
-        "href": "https://lib.omnipython.org",
-        "tier_color": true
-      }
-    ],
-    "hero_art": {
-      "src": "huey-screwdriver.svg",
-      "width": 560,
-      "height": 460,
-      "alt": "Huey, OmniPython's chameleon mascot, on a jumper wire, holding a screwdriver",
-      "caption": "Huey puts the parts together"
-    }
-  },
   "palettes": {
     "tier": 2,
     "repo_url": "https://github.com/PyDevices/omnipython/tree/main/packages/palettes",
@@ -548,6 +502,52 @@
       "height": 460,
       "alt": "Huey, OmniPython's chameleon mascot, on a jumper wire, holding a magnifying glass",
       "caption": "Huey looks closely at small things"
+    }
+  },
+  "pdwidgets": {
+    "tier": 2,
+    "repo_url": "https://github.com/PyDevices/omnipython/tree/main/packages/pdwidgets",
+    "page": "portal-subdir",
+    "tier_name": "Python Framebuffers & GUI Toolkits",
+    "theme_color": "var(--tier-2-emerald)",
+    "eyebrow": "pdwidgets",
+    "headline": "pdwidgets — a UI framework in Python, with no C.",
+    "description": "A complete UI widget framework in Python with no C: buttons, sliders, progress bars, labels and event routing on OmniPython screens. It demonstrates that the core can carry a UI framework; for an interface you ship, use LVGL. Not in release firmware: `mip install pdwidgets`.",
+    "hero_canvas": {
+      "app": "sensor_deck",
+      "width": 240,
+      "height": 240,
+      "shape": "square",
+      "app_url": "https://omnipython.org/assets/apps/sensor_deck.py"
+    },
+    "buttons": [
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/omnipython/tree/main/packages/pdwidgets",
+        "primary": true
+      },
+      {
+        "label": "Read the Docs",
+        "href": "https://docs.omnipython.org/en/latest/pdwidgets/",
+        "tier_color": true
+      },
+      {
+        "label": "TestPyPI",
+        "href": "https://test.pypi.org/project/omnipython-pdwidgets/",
+        "tier_color": true
+      },
+      {
+        "label": "Package Index",
+        "href": "https://lib.omnipython.org",
+        "tier_color": true
+      }
+    ],
+    "hero_art": {
+      "src": "huey-screwdriver.svg",
+      "width": 560,
+      "height": 460,
+      "alt": "Huey, OmniPython's chameleon mascot, on a jumper wire, holding a screwdriver",
+      "caption": "Huey puts the parts together"
     }
   },
   "omnipython-lvgl": {
