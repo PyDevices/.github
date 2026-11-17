@@ -1,0 +1,54 @@
+# Uploads the last release of each retired PyPI name: an empty package that
+# installs the name it moved to (scripts/build_pypi_pointers.py). It runs by
+# hand from main only. The upload job is the one PyPI's Trusted Publisher
+# names: this file and the pypi-pointers environment, which allows main and
+# nothing else, so no other workflow or branch here can upload to those names.
+name: Publish PyPI pointers
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - run: python3 -m pip install --disable-pip-version-check build twine
+
+      - name: Build the pointers
+        run: python3 scripts/build_pypi_pointers.py --out-dir dist
+
+      - name: Check their metadata
+        run: python3 -m twine check --strict dist/*
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pypi-pointers
+          path: dist/
+
+  pypi:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi-pointers
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: pypi-pointers
+          path: dist
+
+      - name: Publish to PyPI via Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # A rerun after a partial upload carries on past the files already there.
+          skip-existing: true
