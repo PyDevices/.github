@@ -33,9 +33,9 @@ Standard hardware driver engine and companion reference code.
 Pure Python on any Python 3 host; pygraphics adds native wheels for Linux x86_64, Windows, Android and Pyodide.
 
 - [`pygraphics`](https://github.com/PyDevices/pygraphics) — Native C and pure-Python 2D graphics library with drawing primitives, bitmap font rendering, paletted surface blitting, and area-dirtying pipelines.
-- [`pdwidgets`](https://github.com/PyDevices/omnipython/tree/main/packages/pdwidgets) — Lightweight object-oriented UI widget framework including buttons, sliders, progress bars, labels, and event routing for OmniPython screens.
 - [`palettes`](https://github.com/PyDevices/omnipython/tree/main/packages/palettes) — Color management library with RGB565 / RGB888 output, an HSV color wheel, RGB color cubes, Material Design swatches, and Win16 color names.
 - [`iconkit`](https://github.com/PyDevices/omnipython/tree/main/packages/iconkit) — Material Design icons as flash-resident alpha masks, drawn in LVGL or pygraphics.
+- [`pdwidgets`](https://github.com/PyDevices/omnipython/tree/main/packages/pdwidgets) — A complete UI widget framework in Python with no C: buttons, sliders, progress bars, labels and event routing on OmniPython screens. It demonstrates that the core can carry a UI framework; for an interface you ship, use LVGL. Not in release firmware: `mip install pdwidgets`.
 
 ### Tier 3: LVGL Native Extensions & Binding Generator
 
