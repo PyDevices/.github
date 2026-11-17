@@ -78,12 +78,12 @@
   "distribution": "omnipython-iconkit",
   "mip": "success",
   "prerelease": true,
-  "pypi": "skipped",
-  "repo": "pydevices",
-  "run_url": "https://github.com/PyDevices/pydevices/actions/runs/43740919578",
+  "pypi": "success",
+  "repo": "omnipython",
+  "run_url": "https://github.com/PyDevices/omnipython/actions/runs/44052119941",
   "testpypi": "success",
-  "updated": "2026-11-15 17:25 UTC",
-  "version": "0.1.0.dev2"
+  "updated": "2026-11-17 09:07 UTC",
+  "version": "0.1.0.dev3"
  },
  "omnipython-lvgl": {
   "assets": "success",
