@@ -1,0 +1,6 @@
+# Written by ../docs-site/gather.py --site tools-docs-site, and by the build.
+/_repos/
+/_build/
+/mcuctl/
+/mpvst/
+/workbench/

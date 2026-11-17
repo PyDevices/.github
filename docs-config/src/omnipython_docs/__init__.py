@@ -216,6 +216,8 @@ def configure(
             "pd_site": False,
             "pd_home": SITE,
             "pd_portal": PORTAL,
+            "pd_brand": "OmniPython",
+            "pd_logo": "logo.svg",
             "pd_github": GITHUB,
         },
     }

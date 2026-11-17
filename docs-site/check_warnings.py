@@ -25,7 +25,7 @@ import tomllib
 from collections import defaultdict
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
+HERE = Path(__file__).resolve().parent  # the site folder; --site changes it
 SITE = "PyDevices/.github"
 LINE = re.compile(r"^(?:(?P<loc>.+?): )?(?P<level>WARNING|ERROR|CRITICAL): (?P<msg>.*)$")
 PATH_LINE = re.compile(r"^(?P<path>/[^:]+?)(?::(?P<line>\d+))?(?::.*)?$")
@@ -87,10 +87,15 @@ def escape(text: str) -> str:
 
 
 def main(argv=None) -> int:
+    global HERE
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("log", type=Path, help="the file sphinx-build -w wrote")
     parser.add_argument("--repo", default=SITE, help="the repository whose warnings fail the check (PyDevices/<name>)")
+    parser.add_argument("--site", type=Path, default=None, metavar="DIR",
+                        help="the site folder holding libraries.toml (default: this script's folder)")
     args = parser.parse_args(argv)
+    if args.site is not None:
+        HERE = args.site.resolve()
 
     libs = libraries()
     warnings = read(args.log, libs)

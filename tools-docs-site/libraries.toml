@@ -1,0 +1,21 @@
+# The tools on docs.pydevices.com, in sidebar order. Each one's pages stay in
+# its own repository, in the `docs` folder beside the conf.py that builds them
+# alone; ../docs-site/gather.py --site tools-docs-site brings them into this tree.
+
+[[library]]
+slug = "mcuctl"
+title = "MCU Control"
+repo = "PyDevices/mcuctl"
+summary = "The board tool: files, the REPL, packages and firmware, from VS Code, a browser tab or a terminal."
+
+[[library]]
+slug = "mpvst"
+title = "mpvst"
+repo = "PyDevices/mpvst"
+summary = "A VST3 plug-in whose instruments and effects are MicroPython-compatible scripts."
+
+[[library]]
+slug = "workbench"
+title = "Workbench"
+repo = "PyDevices/workbench"
+summary = "A MicroPython IDE in your browser, with a device simulator and connections to real boards."

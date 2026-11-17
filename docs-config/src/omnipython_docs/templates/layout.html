@@ -11,10 +11,10 @@
 {%- block extrabody %}
   {{ super() }}
   {#- On the site, the brand is its front page; a library built alone links to the site. #}
-  <nav class="pd-bar" aria-label="OmniPython">
+  <nav class="pd-bar" aria-label="{{ pd_brand }}">
     <a class="pd-brand" href="{{ pathto(root_doc) if pd_site else pd_home }}">
-      <img src="{{ pathto('_static/logo.svg', 1) }}" alt="" width="30" height="30">
-      <span>OmniPython</span>
+      <img src="{{ pathto('_static/' ~ pd_logo, 1) }}" alt="" width="30" height="30">
+      <span>{{ pd_brand }}</span>
     </a>
     <span class="pd-bar-links">
       <a href="{{ pd_portal }}">Website</a>

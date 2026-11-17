@@ -18,6 +18,11 @@ a change you are making shows up in the site before it is pushed (run it
 again after you edit a page):
 
     python docs-site/gather.py --local pygraphics=../pygraphics
+
+``--site DIR`` gathers for another site that keeps its own ``libraries.toml``,
+such as the tools' site in ``tools-docs-site``:
+
+    python docs-site/gather.py --site tools-docs-site
 """
 
 from __future__ import annotations
@@ -30,11 +35,10 @@ import tomllib
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-REPOS = HERE / "_repos"
 
 
-def libraries():
-    with open(HERE / "libraries.toml", "rb") as f:
+def libraries(site: Path):
+    with open(site / "libraries.toml", "rb") as f:
         return tomllib.load(f)["library"]
 
 
@@ -70,6 +74,10 @@ def main(argv=None) -> int:
         help="use the checkout at PATH for repository NAME (omnipython, pygraphics, ...)",
     )
     parser.add_argument("--ref", default="main", help="branch to clone (default: main)")
+    parser.add_argument(
+        "--site", default=str(HERE), metavar="DIR",
+        help="the site folder holding libraries.toml (default: this script's folder)",
+    )
     args = parser.parse_args(argv)
 
     local = {}
@@ -79,11 +87,13 @@ def main(argv=None) -> int:
             parser.error(f"--local takes NAME=PATH, not {item!r}")
         local[name.split("/")[-1]] = Path(path).expanduser().resolve()
 
-    libs = libraries()
-    REPOS.mkdir(exist_ok=True)
+    site = Path(args.site).resolve()
+    libs = libraries(site)
+    repos = site / "_repos"
+    repos.mkdir(exist_ok=True)
     for repo in dict.fromkeys(lib["repo"] for lib in libs):
         name = repo.split("/", 1)[1]
-        dest = REPOS / name
+        dest = repos / name
         if name in local:
             if not (local[name] / ".git").exists():
                 raise SystemExit(f"--local {name}: {local[name]} is not a git checkout")
@@ -100,10 +110,10 @@ def main(argv=None) -> int:
         raise SystemExit(f"--local names a repository the site doesn't use: {', '.join(sorted(unknown))}")
 
     for lib in libs:
-        docs = REPOS / lib["repo"].split("/", 1)[1] / lib.get("docs", "docs")
+        docs = repos / lib["repo"].split("/", 1)[1] / lib.get("docs", "docs")
         if not (docs / "conf.py").is_file():
             raise SystemExit(f"{lib['repo']} has no {lib.get('docs', 'docs')}/conf.py")
-        copy_docs(HERE / lib["slug"], docs)
+        copy_docs(site / lib["slug"], docs)
     return 0
 
 
