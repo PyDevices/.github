@@ -812,19 +812,12 @@
   },
   "mcuctl": {
     "tier": 5,
-    "page": "portal-subdir",
+    "page": "none",
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "mcuctl",
     "headline": "mcuctl — board tools for the editor, CLI, and agents.",
     "description": "Connect MicroPython and CircuitPython boards from VS Code, Cursor, or the CLI, over USB or Wi-Fi: dual-pane file transfer, in-editor REPL, firmware builds and flashing, mip/circup, plus RPC and an optional browser PWA.",
-    "hero_canvas": {
-      "app": "ftp_scope",
-      "width": 240,
-      "height": 240,
-      "shape": "square",
-      "app_url": "https://omnipython.org/assets/apps/ftp_scope.py"
-    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -846,7 +839,8 @@
         "href": "https://github.com/PyDevices/mcuctl/releases/latest",
         "tier_color": true
       }
-    ]
+    ],
+    "card_href": "https://pydevices.com/mcuctl/"
   },
   "gallery": {
     "tier": 1,
@@ -1015,19 +1009,12 @@
   },
   "mpvst": {
     "tier": 5,
-    "page": "portal-subdir",
+    "page": "none",
     "tier_name": "Developer Tools & Infrastructure",
     "theme_color": "var(--tier-5-steel)",
     "eyebrow": "mpvst",
     "headline": "mpvst — audio effects and instruments as a VST3 plug-in.",
     "description": "Programmable VST3 instruments and effects: every audioinstruments instrument and audioeffects effect as a named plug-in, each instance running its Python in a sidecar process. Installers for Windows and Linux; nothing has to be built.",
-    "hero_canvas": {
-      "app": "ftp_scope",
-      "width": 240,
-      "height": 240,
-      "shape": "square",
-      "app_url": "https://omnipython.org/assets/apps/ftp_scope.py"
-    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -1049,6 +1036,7 @@
         "href": "https://omnipython.org/audioinstruments/",
         "tier_color": true
       }
-    ]
+    ],
+    "card_href": "https://pydevices.com/mpvst/"
   }
 }
