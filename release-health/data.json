@@ -138,10 +138,10 @@
   "prerelease": true,
   "pypi": "skipped",
   "repo": "pygraphics",
-  "run_url": "https://github.com/PyDevices/pygraphics/actions/runs/43997617955",
+  "run_url": "https://github.com/PyDevices/pygraphics/actions/runs/44000879573",
   "testpypi": "success",
-  "updated": "2026-11-17 01:46 UTC",
-  "version": "0.1.7.dev1"
+  "updated": "2026-11-17 02:12 UTC",
+  "version": "0.1.7.dev2"
  },
  "pydevices": {
   "assets": "success",
