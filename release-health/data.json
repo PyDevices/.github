@@ -16,7 +16,7 @@
   "distribution": "omnipython",
   "mip": "success",
   "prerelease": true,
-  "pypi": "pending",
+  "pypi": "success",
   "repo": "omnipython",
   "run_url": "https://github.com/PyDevices/omnipython/actions/runs/44051373257",
   "testpypi": "success",
