@@ -47,9 +47,12 @@ jobs:
           # stage's outcome, sent after the coordinator's full report: the
           # caller-side PyPI upload. It updates that row in place, as long as
           # the row is for the same version; otherwise it stands alone.
-          # Callers on publishing-v30 and older still report a TestPyPI stage.
-          # Releases go to PyPI alone now, so that field is dropped on the way in.
+          # Callers on publishing-v30 and older still report a TestPyPI stage,
+          # and older rows carry one. Releases go to PyPI alone now, so the
+          # field is dropped from the report and from every stored row.
           p.pop("testpypi", None)
+          for row in data.values():
+              row.pop("testpypi", None)
           old = data.get(key, {})
           if str(p.pop("partial", "")).lower() == "true" and old.get("version") == p.get("version"):
               p = {**old, **p}
