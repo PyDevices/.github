@@ -12,7 +12,7 @@ summary = "The board contract, displaydev, audiodev, appdev, multimer and the dr
 slug = "pygraphics"
 title = "pygraphics"
 repo = "PyDevices/pygraphics"
-summary = "2D drawing, bitmap fonts and blitting, in C and in Python."
+summary = "2D drawing, bitmap fonts and blitting, in C and in Python. Bit World is built on it."
 
 [[library]]
 slug = "palettes"
