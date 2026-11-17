@@ -5,7 +5,7 @@ Latest publish run per distribution, reported by publishing-v6's report-release-
 | Distribution | Version | TestPyPI | Assets | MIP | PyPI | Updated |
 |---|---|---|---|---|---|---|
 | [mcuctl](https://github.com/PyDevices/mcuctl/actions/runs/43996558205) | 0.1.7.dev7 (pre) | OK | OK | -- | -- | 2026-11-17 01:35 UTC |
-| [omnipython](https://github.com/PyDevices/omnipython/actions/runs/43968984154) | 0.8.0.dev23 (pre) | OK | OK | OK | -- | 2026-11-16 22:21 UTC |
+| [omnipython](https://github.com/PyDevices/omnipython/actions/runs/43997824343) | 0.8.0.dev24 (pre) | OK | OK | OK | -- | 2026-11-17 01:45 UTC |
 | [omnipython-airwindows](https://github.com/PyDevices/airwindows/actions/runs/43820934635) | 0.1.0.dev2 (pre) | OK | OK | -- | -- | 2026-11-16 07:24 UTC |
 | [omnipython-applibs](https://github.com/PyDevices/apps/actions/runs/43826931957) | 0.1.2.dev14 (pre) | OK | OK | OK | -- | 2026-11-16 07:54 UTC |
 | [omnipython-audiodsp](https://github.com/PyDevices/audiodsp/actions/runs/43996065048) | 0.6.16.dev4 (pre) | OK | OK | -- | -- | 2026-11-17 01:37 UTC |
