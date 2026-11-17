@@ -113,12 +113,12 @@
   "assets": "success",
   "distribution": "omnipython-pdwidgets",
   "mip": "success",
-  "prerelease": true,
+  "prerelease": false,
   "pypi": "success",
   "repo": "omnipython",
-  "run_url": "https://github.com/PyDevices/omnipython/actions/runs/44052006650",
-  "updated": "2026-11-17 09:06 UTC",
-  "version": "0.0.26.dev3"
+  "run_url": "https://github.com/PyDevices/omnipython/actions/runs/44077864949",
+  "updated": "2026-11-17 11:53 UTC",
+  "version": "0.0.26"
  },
  "omnipython-pygraphics": {
   "assets": "success",
