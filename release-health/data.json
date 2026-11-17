@@ -26,10 +26,10 @@
   "distribution": "omnipython-airwindows",
   "mip": "skipped",
   "prerelease": false,
-  "pypi": "failure",
+  "pypi": "success",
   "repo": "airwindows",
   "run_url": "https://github.com/PyDevices/airwindows/actions/runs/44074945049",
-  "updated": "2026-11-17 11:48 UTC",
+  "updated": "2026-11-17 11:55 UTC",
   "version": "0.1.0"
  },
  "omnipython-applibs": {
