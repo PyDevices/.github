@@ -103,6 +103,27 @@ annotations cost bytecode and RAM. See [write docstrings](write-docstrings.md).
 defines. For a package whose public names live in private modules (pygraphics),
 set `use_module_all=True` so the page follows `__all__`.
 
+## The tools' site
+
+The tools a person runs (MCU Control, mpvst and Workbench) have a second site,
+docs.pydevices.com, built the same way from [tools-docs-site/](../../tools-docs-site/):
+its own front page and [libraries.toml](../../tools-docs-site/libraries.toml),
+the same `gather.py` and theme, with the PyDevices name and mark in the bar.
+Pass `--site tools-docs-site` to each step:
+
+```bash
+.venv-docs/bin/pip install -r tools-docs-site/requirements.txt
+.venv-docs/bin/python docs-site/gather.py --site tools-docs-site
+.venv-docs/bin/sphinx-build -b html --keep-going -w warnings.log tools-docs-site tools-docs-site/_build/html
+.venv-docs/bin/python docs-site/check_warnings.py warnings.log --site tools-docs-site
+```
+
+It is its own Read the Docs project, whose **Path for .readthedocs.yaml** is
+[tools-docs-site/.readthedocs.yaml](../../tools-docs-site/.readthedocs.yaml).
+A tool's **Docs site** workflow passes `site: tools-docs-site` to the reusable
+workflow, with that project's webhook as `RTD_TOOLS_WEBHOOK_URL` and
+`RTD_TOOLS_WEBHOOK_TOKEN`.
+
 ## Publish to Read the Docs
 
 The site is the Read the Docs project `pydevices`, built from this repository

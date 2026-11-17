@@ -24,10 +24,19 @@ name: Reusable docs site
 #       uses: PyDevices/.github/.github/workflows/reusable-docs-site.yml@main
 #       secrets:
 #         RTD_WEBHOOK_TOKEN: ${{ secrets.RTD_WEBHOOK_TOKEN }}
+#
+# A tool on the PyDevices tools' site (docs.pydevices.com) passes
+# `site: tools-docs-site`, that project's webhook address as `webhook-url`
+# (vars.RTD_TOOLS_WEBHOOK_URL) and its token (secrets.RTD_TOOLS_WEBHOOK_TOKEN)
+# as RTD_WEBHOOK_TOKEN.
 
 on:
   workflow_call:
     inputs:
+      site:
+        description: The site folder in PyDevices/.github that lists this repository (docs-site or tools-docs-site)
+        default: docs-site
+        type: string
       site-ref:
         description: Branch or tag of PyDevices/.github to build the site from
         default: main
@@ -69,23 +78,29 @@ jobs:
 
       - name: Install the site's requirements
         working-directory: site
-        run: pip install --disable-pip-version-check -r docs-site/requirements.txt
+        env:
+          SITE: ${{ inputs.site }}
+        run: pip install --disable-pip-version-check -r "$SITE/requirements.txt"
 
       - name: Gather every library, this one from the checkout
         working-directory: site
         env:
           REPO: ${{ github.repository }}
-        run: python3 docs-site/gather.py --local "${REPO#*/}=$GITHUB_WORKSPACE/caller"
+          SITE: ${{ inputs.site }}
+        run: python3 docs-site/gather.py --site "$SITE" --local "${REPO#*/}=$GITHUB_WORKSPACE/caller"
 
       - name: Build the site
         working-directory: site
-        run: sphinx-build -b html --keep-going -w "$RUNNER_TEMP/warnings.log" docs-site docs-site/_build/html
+        env:
+          SITE: ${{ inputs.site }}
+        run: sphinx-build -b html --keep-going -w "$RUNNER_TEMP/warnings.log" "$SITE" "$SITE/_build/html"
 
       - name: Fail on this library's warnings
         working-directory: site
         env:
           REPO: ${{ github.repository }}
-        run: python3 docs-site/check_warnings.py "$RUNNER_TEMP/warnings.log" --repo "$REPO"
+          SITE: ${{ inputs.site }}
+        run: python3 docs-site/check_warnings.py "$RUNNER_TEMP/warnings.log" --repo "$REPO" --site "$SITE"
 
   rebuild:
     # Independent of the build above: Read the Docs builds with

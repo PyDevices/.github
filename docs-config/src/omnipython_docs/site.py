@@ -169,12 +169,24 @@ def _clone_conf(srcdir: Path, lib: Library) -> Path:
     return srcdir / "_repos" / lib.repo_name / lib.docs / "conf.py"
 
 
-def configure_site(conf_file: str, libraries: list, *, title: str = "OmniPython") -> dict:
+def configure_site(
+    conf_file: str,
+    libraries: list,
+    *,
+    title: str = "OmniPython",
+    logo: str = "logo.svg",
+    website: str | None = None,
+    sections: str = "Libraries",
+) -> dict:
     """Return the Sphinx settings for the combined site.
 
     conf_file  the site's ``conf.py`` (pass ``__file__``)
     libraries  the sections, from `read_libraries`; each must already be in
                place at ``<srcdir>/<slug>`` (``gather.py`` puts them there)
+    title      the name in the top bar and the page titles
+    logo       the top bar's mark, a file in the theme's ``static`` folder
+    website    where the bar's Website link goes (default: omnipython.org)
+    sections   the sidebar's caption over the sections
     """
     srcdir = Path(conf_file).resolve().parent
     missing = [lib.slug for lib in libraries
@@ -209,6 +221,10 @@ def configure_site(conf_file: str, libraries: list, *, title: str = "OmniPython"
         k: v for k, v in settings["intersphinx_mapping"].items() if k in ("python", "micropython")
     }
     settings["html_context"]["pd_site"] = True
+    settings["html_context"]["pd_brand"] = title
+    settings["html_context"]["pd_logo"] = logo
+    if website:
+        settings["html_context"]["pd_portal"] = website
     settings["html_theme_options"]["collapse_navigation"] = True
     settings["html_theme_options"]["navigation_depth"] = 4
     # Page titles only: a section's first page has headings of its own, and its
@@ -218,6 +234,7 @@ def configure_site(conf_file: str, libraries: list, *, title: str = "OmniPython"
     settings["extensions"] += ["omnipython_docs.apigen", "omnipython_docs.site"]
     settings["api_sections"] = [lib.api for lib in libraries if lib.api]
     settings["pd_libraries"] = libraries
+    settings["pd_sections_caption"] = sections
     return settings
 
 
@@ -238,8 +255,8 @@ def _library_cards(libraries) -> str:
     return "\n".join(cards)
 
 
-def _library_toctree(libraries) -> str:
-    lines = ["```{toctree}", ":hidden:", ":caption: Libraries", ""]
+def _library_toctree(libraries, caption: str = "Libraries") -> str:
+    lines = ["```{toctree}", ":hidden:", f":caption: {caption}", ""]
     lines += [f"{lib.title} <{lib.slug}/{lib.root}>" for lib in libraries]
     lines.append("```")
     return "\n".join(lines)
@@ -301,7 +318,7 @@ def _use_section_settings(app, docname, source):
     if docname == app.config.master_doc:
         source[0] = (source[0]
                      .replace("% pd-libraries: cards", _library_cards(app.config.pd_libraries))
-                     .replace("% pd-libraries: toctree", _library_toctree(app.config.pd_libraries)))
+                     .replace("% pd-libraries: toctree", _library_toctree(app.config.pd_libraries, app.config.pd_sections_caption)))
     lib = _library_for(app, docname)
     if lib is not None and "/" in docname:
         source[0] = _repo_links(app, lib, docname, source[0])
@@ -444,6 +461,7 @@ def _builder_inited(app):
 def setup(app):
     _prefer_own_package()
     app.add_config_value("pd_libraries", [], "env")
+    app.add_config_value("pd_sections_caption", "Libraries", "env")
     app.add_config_value("pd_site_autodoc_options", {}, "env")
     srcdir = Path(app.srcdir)
     for lib in app.config.pd_libraries:

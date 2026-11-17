@@ -1,0 +1,22 @@
+# Read the Docs builds the PyDevices tools' documentation site,
+# docs.pydevices.com, from this file (the project's Settings > "Path for
+# .readthedocs.yaml" is tools-docs-site/.readthedocs.yaml). gather.py clones
+# each tool listed in tools-docs-site/libraries.toml and copies its docs in;
+# the shared theme comes from docs-config/.
+version: 2
+
+build:
+  os: ubuntu-24.04
+  tools:
+    python: "3.13"
+  jobs:
+    pre_build:
+      - python docs-site/gather.py --site tools-docs-site
+
+sphinx:
+  configuration: tools-docs-site/conf.py
+  fail_on_warning: false
+
+python:
+  install:
+    - requirements: tools-docs-site/requirements.txt

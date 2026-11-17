@@ -181,3 +181,25 @@ jobs:
 
       - name: Fail on this repository's warnings
         run: python3 docs-site/check_warnings.py "$RUNNER_TEMP/warnings.log" --repo PyDevices/.github
+
+  tools-docs-site:
+    # The tools' documentation site (docs.pydevices.com), gathered from each
+    # tool's main and built the way Read the Docs builds it.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - run: pip install -r tools-docs-site/requirements.txt
+
+      - name: Gather every tool
+        run: python3 docs-site/gather.py --site tools-docs-site
+
+      - name: Build the site
+        run: sphinx-build -b html --keep-going -w "$RUNNER_TEMP/warnings.log" tools-docs-site tools-docs-site/_build/html
+
+      - name: Fail on this repository's warnings
+        run: python3 docs-site/check_warnings.py "$RUNNER_TEMP/warnings.log" --repo PyDevices/.github --site tools-docs-site
