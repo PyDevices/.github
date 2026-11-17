@@ -26,7 +26,7 @@ summary = "Buttons, sliders, labels and screens for touch displays, in pure Pyth
 slug = "pygraphics"
 title = "pygraphics"
 repo = "PyDevices/pygraphics"
-summary = "2D drawing, bitmap fonts and blitting, in C and in Python."
+summary = "2D drawing, bitmap fonts and blitting, in C and in Python. Bit World is built on it."
 
 [[library]]
 slug = "lvgl"
