@@ -102,12 +102,12 @@
   "distribution": "omnipython-palettes",
   "mip": "success",
   "prerelease": true,
-  "pypi": "skipped",
+  "pypi": "success",
   "repo": "omnipython",
-  "run_url": "https://github.com/PyDevices/omnipython/actions/runs/43823965165",
+  "run_url": "https://github.com/PyDevices/omnipython/actions/runs/44052129028",
   "testpypi": "success",
-  "updated": "2026-11-16 07:30 UTC",
-  "version": "0.0.16.dev2"
+  "updated": "2026-11-17 09:07 UTC",
+  "version": "0.0.16.dev3"
  },
  "omnipython-pdwidgets": {
   "assets": "success",
