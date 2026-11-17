@@ -1,11 +1,10 @@
-# Publish to production PyPI
+# Publish to PyPI
 
-Every release reaches TestPyPI. Production PyPI is a decision you make per
-package: set `pypi-publish: true` on the package's publish call, and every
-version of that package goes there too, pre-releases (`.devN`, `aN`, `bN`,
-`rcN`) included. pip installs a pre-release only when asked with `--pre` or an
-exact version, so a development release doesn't reach a plain `pip install`.
-Every repository that publishes sets it.
+PyPI is where every release goes. Set `pypi-publish: true` on the package's
+publish call, and every version of that package goes there, pre-releases
+(`.devN`, `aN`, `bN`, `rcN`) included. pip installs a pre-release only when
+asked with `--pre` or an exact version, so a development release doesn't reach
+a plain `pip install`. Every repository that publishes sets it.
 
 Three things turn it on for a package, and missing one makes the run fail at
 the PyPI end or skip the upload, never publish somewhere unintended:
@@ -30,8 +29,8 @@ there fails with `invalid-publisher` (see
 and [PyPI's note on reusable
 workflows](https://docs.pypi.org/trusted-publishers/troubleshooting/#reusable-workflows-on-github)).
 So the reusable's `pypi-gate` job only decides: it sets the `pypi-publish`
-output to `true` for a release whose build and TestPyPI upload succeeded,
-and the caller uploads.
+output to `true` for a release whose build succeeded, and the caller
+uploads.
 
 ## The two caller jobs
 
@@ -75,6 +74,3 @@ until it runs.
 Because the environment accepts only `v*` tags, a `workflow_dispatch` retry
 from `main` can't reach it. A retry that needs PyPI dispatches on the tag, and
 so runs the caller file as it was at that tag.
-
-TestPyPI is unaffected: it authenticates with the `TESTPYPI_API_TOKEN` secret,
-not Trusted Publishing, and its upload stays in the reusable workflow.

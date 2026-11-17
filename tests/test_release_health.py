@@ -48,7 +48,6 @@ def payload(distribution: str, version: str) -> str:
             "distribution": distribution,
             "version": version,
             "run_url": f"https://example.invalid/{distribution}",
-            "testpypi": "success",
             "assets": "success",
             "mip": "success",
             "pypi": "skipped",
@@ -221,11 +220,11 @@ class PartialPypiReportTests(unittest.TestCase):
         )["omnipython-audiodsp"]
         self.assertEqual(row["pypi"], "success")
         # Everything the coordinator reported is still there.
-        self.assertEqual(row["testpypi"], "success")
+        self.assertEqual(row["assets"], "success")
         self.assertEqual(row["run_url"], "https://example.invalid/omnipython-audiodsp")
         self.assertNotIn("partial", row)
         page = (self.clone / "RELEASE_HEALTH.md").read_text(encoding="utf-8")
-        self.assertIn("| 0.6.2 | OK | OK | OK | OK |", page)
+        self.assertIn("| 0.6.2 | OK | OK | OK |", page)
 
     def test_a_partial_report_for_another_version_does_not_borrow_its_row(self):
         self.report("0.6.1")
@@ -234,6 +233,12 @@ class PartialPypiReportTests(unittest.TestCase):
         )["omnipython-audiodsp"]
         self.assertEqual(row["version"], "0.6.2")
         self.assertEqual(row["pypi"], "failure")
+        self.assertNotIn("assets", row)
+
+    def test_a_retired_index_stage_is_dropped(self):
+        old = json.loads(payload("omnipython-audiodsp", "0.6.2"))
+        old["testpypi"] = "success"
+        row = self.report("0.6.2", json.dumps(old))["omnipython-audiodsp"]
         self.assertNotIn("testpypi", row)
 
     def test_a_full_report_still_replaces_the_row(self):

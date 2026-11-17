@@ -35,11 +35,10 @@ instead; each library's install page says which.
 One command installs the whole desktop stack:
 
 ```bash
-pip install -i https://test.pypi.org/simple/ \
-  --extra-index-url https://pypi.org/simple/ omnipython-desktop
+pip install --pre omnipython-desktop
 ```
 
-Current releases are on TestPyPI, which is why the command names it first.
+Current releases are pre-releases, which is why the command asks for them with `--pre`.
 :::
 
 :::{tab-item} In the browser

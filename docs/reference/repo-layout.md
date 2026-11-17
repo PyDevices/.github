@@ -76,7 +76,7 @@ developer / CI / host tooling.
 
 Do **not** put a root `requirements.txt` that only lists tooling — that reads as
 “install these to use the app,” which is misleading when the product ships via
-MIP / TestPyPI / wheels / source trees instead.
+MIP / PyPI / wheels / source trees instead.
 
 Documentation tooling (Sphinx and its extensions) stays under **`docs/requirements.txt`**, not at the repo
 root.

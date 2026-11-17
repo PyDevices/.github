@@ -12,7 +12,7 @@ Prepare release (workflow_dispatch, optional version)
   -> the workflow opens a release PR carrying VERSION + CHANGELOG.md
   -> you confirm or edit the version on that PR, then merge it
   -> Tag release creates the vX.Y.Z tag and GitHub Release
-  -> Publish release packages: build -> TestPyPI -> files attached to the Release
+  -> Publish release packages: build -> files attached to the Release -> PyPI
      -> MIP index (final releases only) and library index -> health report
 ```
 
@@ -65,12 +65,12 @@ to tag `VERSION` as it stands, or give a version or the merge's SHA. Set
 
 ## 4. Publish release packages runs on the Release
 
-The publish workflow resolves and checks the tag, builds, uploads to TestPyPI,
-attaches the built files to the Release, requests MIP and library-index
+The publish workflow resolves and checks the tag, builds, attaches the built
+files to the Release, uploads them to PyPI, requests MIP and library-index
 publication, and reports to the [Release Health
 dashboard](../how-it-works/release-chain.md#the-release-health-dashboard)
-whatever the outcome. A release can also go to production PyPI; see
-[publish to production PyPI](publish-to-pypi.md). Each job is described in
+whatever the outcome. How the PyPI upload is set up is in
+[publish to PyPI](publish-to-pypi.md). Each job is described in
 [the release chain](../how-it-works/release-chain.md).
 
 ## The manual fallback
@@ -110,9 +110,10 @@ gh workflow run publish-release-packages.yml \
   -f release-ref=vX.Y.Z
 ```
 
-The workflow checks out that tag and validates it again, and TestPyPI uploads
+The workflow checks out that tag and validates it again, and PyPI uploads
 use `skip-existing: true`, so a partial upload completes without replacing
-files TestPyPI already took.
+files PyPI already took. A retry that needs PyPI runs on the tag, not `main`
+([why](publish-to-pypi.md#the-two-caller-jobs)).
 
 If only the MIP run or its Pages deployment failed, rerun its failed jobs:
 
@@ -145,14 +146,14 @@ and the profile. A repository's own release is the normal way in.
 
 ## Correct a bad release
 
-Published TestPyPI files and released tags are immutable in practice. Deleting
+Published PyPI files and released tags are immutable in practice. Deleting
 a GitHub Release doesn't remove registry files, and moving a tag would make
 the release impossible to reproduce.
 
 1. Fix the source on `main`.
 2. Run "Prepare release" again for a new version.
 3. Repeat the flow above.
-4. Yank an unusable TestPyPI version only when you must, and say why. Don't
+4. Yank an unusable PyPI version only when you must, and say why. Don't
    upload replacement files under the same version.
 
 Publishing the corrected version replaces the package's `latest` entry in the

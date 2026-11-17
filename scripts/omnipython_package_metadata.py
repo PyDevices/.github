@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-"""Descriptions shared by TestPyPI and MIP publications of omnipython packages."""
+"""Descriptions shared by PyPI and MIP publications of omnipython packages."""
 
 OMNIPYTHON_DESCRIPTIONS = {
     "omnipython": "Portable display, audio, event, and timing foundations for OmniPython",

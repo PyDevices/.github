@@ -1,9 +1,10 @@
-# The whole release chain for one repository: resolve the tag, build, publish
-# to TestPyPI, and (optionally) request MIP publication.
+# The whole release chain for one repository: resolve the tag, build, attach
+# the files to the GitHub Release, hand production PyPI to the caller, and
+# (optionally) request MIP publication.
 #
-# Callers were five near-identical copies of this. The tag regex, the
-# workflow_dispatch retry contract, and the TestPyPI upload existed once per
-# repo; only the build kind and a few names actually differed.
+# Callers were five near-identical copies of this. The tag regex and the
+# workflow_dispatch retry contract existed once per repo; only the build kind
+# and a few names actually differed.
 #
 # The four sibling workflows below are pinned to THIS file's own tag, by full
 # path. A local `./` reference does not do what .github#26 hoped: when a
@@ -23,7 +24,7 @@ on:
         required: true
         type: string
       distribution-name:
-        description: TestPyPI distribution name, e.g. omnipython-palettes
+        description: PyPI distribution name, e.g. omnipython-palettes
         required: true
         type: string
       import-name:
@@ -81,7 +82,7 @@ on:
       pypi-publish:
         description: >-
           'true' when the caller should upload to production PyPI: pypi-publish
-          was set and the build and TestPyPI succeeded. Pre-releases count.
+          was set and the build succeeded. Pre-releases count.
           Empty otherwise.
         value: ${{ jobs.pypi-gate.outputs.publish }}
       dist-artifact:
@@ -101,7 +102,7 @@ jobs:
       release-ref: ${{ steps.release.outputs.release-ref }}
       version: ${{ steps.release.outputs.version }}
       prerelease: ${{ steps.release.outputs.prerelease }}
-      dist-artifact: testpypi-${{ inputs.distribution-name }}-${{ steps.release.outputs.version }}
+      dist-artifact: dist-${{ inputs.distribution-name }}-${{ steps.release.outputs.version }}
     steps:
       - name: Resolve and validate the release tag
         id: release
@@ -158,35 +159,6 @@ jobs:
       release-ref: ${{ needs.prepare-release.outputs.release-ref }}
       version: ${{ needs.prepare-release.outputs.version }}
 
-  publish-to-testpypi:
-    needs:
-      - prepare-release
-      - build-pure-python
-      - build-native-and-wasm
-      - build-omnipython-multi
-    # Exactly one build job runs; the other two are skipped. Without this the
-    # publish would be skipped too, because a skipped dependency is not success.
-    if: >-
-      always()
-      && needs.prepare-release.result == 'success'
-      && !contains(needs.*.result, 'failure')
-      && !contains(needs.*.result, 'cancelled')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download the validated distributions
-        uses: actions/download-artifact@v8
-        with:
-          name: testpypi-${{ inputs.distribution-name }}-${{ needs.prepare-release.outputs.version }}
-          path: dist
-
-      - name: Publish to TestPyPI with API token
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: __token__
-          password: ${{ secrets.TESTPYPI_API_TOKEN }}
-          repository-url: https://test.pypi.org/legacy/
-          skip-existing: true
-
   attach-release-assets:
     # Finding 6: releases shipped no assets. Attach exactly what was
     # published, to the release the tag already has.
@@ -207,7 +179,7 @@ jobs:
       - name: Download the validated distributions
         uses: actions/download-artifact@v8
         with:
-          name: testpypi-${{ inputs.distribution-name }}-${{ needs.prepare-release.outputs.version }}
+          name: dist-${{ inputs.distribution-name }}-${{ needs.prepare-release.outputs.version }}
           path: dist
       - name: Attach distributions to the GitHub Release
         env:
@@ -230,12 +202,10 @@ jobs:
       - build-pure-python
       - build-native-and-wasm
       - build-omnipython-multi
-      - publish-to-testpypi
     if: >-
       always()
       && inputs.pypi-publish
       && needs.prepare-release.result == 'success'
-      && needs.publish-to-testpypi.result == 'success'
       && !contains(needs.*.result, 'failure')
       && !contains(needs.*.result, 'cancelled')
     runs-on: ubuntu-latest
@@ -259,7 +229,6 @@ jobs:
       - build-pure-python
       - build-native-and-wasm
       - build-omnipython-multi
-      - publish-to-testpypi
       - attach-release-assets
       - request-mip-publication
       - pypi-gate
@@ -283,7 +252,6 @@ jobs:
             -F 'client_payload[distribution]=${{ inputs.distribution-name }}' \
             -F 'client_payload[version]=${{ needs.prepare-release.outputs.version }}' \
             -F 'client_payload[prerelease]=${{ needs.prepare-release.outputs.prerelease }}' \
-            -F 'client_payload[testpypi]=${{ needs.publish-to-testpypi.result }}' \
             -F 'client_payload[assets]=${{ needs.attach-release-assets.result }}' \
             -F 'client_payload[mip]=${{ needs.request-mip-publication.result }}' \
             -F 'client_payload[pypi]=${{ needs.pypi-gate.result == 'success' && 'pending' || needs.pypi-gate.result }}' \
