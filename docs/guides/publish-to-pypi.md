@@ -1,17 +1,23 @@
 # Publish to production PyPI
 
 Every release reaches TestPyPI. Production PyPI is a decision you make per
-package: set `pypi-publish: true` on the package's publish call. The only
-repository that sets it today is `audiodsp`.
+package: set `pypi-publish: true` on the package's publish call, and every
+version of that package goes there too, pre-releases (`.devN`, `aN`, `bN`,
+`rcN`) included. pip installs a pre-release only when asked with `--pre` or an
+exact version, so a development release doesn't reach a plain `pip install`.
+Every repository that publishes sets it.
 
 Three things turn it on for a package, and missing one makes the run fail at
 the PyPI end or skip the upload, never publish somewhere unintended:
 
 1. The `pypi-publish: true` input on the call to
    `reusable-publish-release-packages.yml`.
-2. Two jobs in the package's own `publish-release-packages.yml`, shown below.
+2. Two jobs in the package's own publish workflow, shown below.
 3. A matching Trusted Publisher on the PyPI project: owner `PyDevices`, the
-   repository, workflow `publish-release-packages.yml`, environment `pypi`.
+   repository, the workflow file that holds the `pypi` job (usually
+   `publish-release-packages.yml`), environment `pypi`. A repository that
+   builds several distributions in one run needs a publisher on each
+   project.
 
 ## Why the upload is in the caller
 
@@ -24,8 +30,8 @@ there fails with `invalid-publisher` (see
 and [PyPI's note on reusable
 workflows](https://docs.pypi.org/trusted-publishers/troubleshooting/#reusable-workflows-on-github)).
 So the reusable's `pypi-gate` job only decides: it sets the `pypi-publish`
-output to `true` for a final release whose build and TestPyPI upload
-succeeded, and the caller uploads.
+output to `true` for a release whose build and TestPyPI upload succeeded,
+and the caller uploads.
 
 ## The two caller jobs
 
@@ -59,8 +65,9 @@ succeeded, and the caller uploads.
     secrets: inherit
 ```
 
-The `pypi` job runs in the repository's `pypi` GitHub Environment, which
-needs a required reviewer and deployments limited to `v*` tags. Check it with
+The `pypi` job runs in the repository's `pypi` GitHub Environment, which has
+no required reviewer, so a release reaches PyPI as soon as its checks pass,
+and limits deployments to `v*` tags. Check it with
 `gh api repos/PyDevices/<repository>/environments/pypi`. `report-pypi` fills in
 the PyPI outcome on the release's Release Health row, which shows `pending`
 until it runs.

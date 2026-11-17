@@ -69,7 +69,7 @@ The publish workflow resolves and checks the tag, builds, uploads to TestPyPI,
 attaches the built files to the Release, requests MIP and library-index
 publication, and reports to the [Release Health
 dashboard](../how-it-works/release-chain.md#the-release-health-dashboard)
-whatever the outcome. A final release can also go to production PyPI; see
+whatever the outcome. A release can also go to production PyPI; see
 [publish to production PyPI](publish-to-pypi.md). Each job is described in
 [the release chain](../how-it-works/release-chain.md).
 
