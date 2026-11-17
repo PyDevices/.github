@@ -40,6 +40,112 @@
       "lvgl-micropython": "now [`ports/micropython`](https://github.com/PyDevices/omnipython-lvgl/tree/main/ports/micropython) in omnipython-lvgl. The old repository is archived.",
       "lvgl-python": "now [`ports/cpython`](https://github.com/PyDevices/omnipython-lvgl/tree/main/ports/cpython) in omnipython-lvgl. The old repository is archived.",
       "lvgl-circuitpython": "now [`ports/circuitpython`](https://github.com/PyDevices/omnipython-lvgl/tree/main/ports/circuitpython) in omnipython-lvgl. The old repository is archived."
+    },
+    "portal_cards": {
+      "_comment": "The front page below the hero: try_it is the two doors to try it now, then the cards, first to last, what a new visitor needs first at the top, then the line pointing to the PyDevices tools. A card with 'repo' takes its link and glyph from that repository's entry; one without names its own. Every repository whose portal_grid is not false must be a card.",
+      "try_it": {
+        "heading": "Try it now",
+        "hint": "Nothing to install, in this browser tab.",
+        "doors": [
+          {
+            "title": "Watch it run",
+            "glyph": "gallery",
+            "href": "https://gallery.omnipython.org/",
+            "text": "Apps written with OmniPython running in your tab, MicroPython compiled to WebAssembly, with the code that draws them.",
+            "action": "Open the gallery",
+            "where": "gallery.omnipython.org"
+          },
+          {
+            "title": "Write your own in PyDevices Workbench",
+            "glyph": "workbench",
+            "href": "https://workbench.pydevices.com/",
+            "text": "An editor and a simulated board in your browser: write a program, run it on the simulator, then send it to a real board.",
+            "action": "Open Workbench",
+            "where": "On workbench.pydevices.com"
+          }
+        ]
+      },
+      "heading": "The libraries, and where to read about them",
+      "hint": "The docs and the package library first, then what your program imports, most used first.",
+      "cards": [
+        {
+          "name": "docs.omnipython.org",
+          "href": "https://docs.omnipython.org/",
+          "glyph": "docs",
+          "hue": 1,
+          "tag": "Docs",
+          "text": "Install OmniPython on a board, a desktop or in the browser, then the guides and the reference for each library."
+        },
+        {
+          "name": "lib.omnipython.org",
+          "href": "https://lib.omnipython.org/",
+          "glyph": "packages",
+          "hue": 1,
+          "tag": "Packages",
+          "text": "The package library: every OmniPython package and board driver, installed on a MicroPython board with mip or omip."
+        },
+        {
+          "repo": "omnipython",
+          "tag": "Core",
+          "text": "The board contract: a small board_config per board, and display, touch, audio and event code that runs the same on all three Pythons."
+        },
+        {
+          "repo": "pygraphics",
+          "tag": "Graphics",
+          "text": "2D drawing, text and bitmaps: native C where it is built in, pure Python everywhere else."
+        },
+        {
+          "repo": "omnipython-lvgl",
+          "tag": "LVGL",
+          "text": "LVGL 9 for Python: a program imports lvgl the same way on MicroPython, CircuitPython and a desktop."
+        },
+        {
+          "repo": "audiodsp",
+          "tag": "Audio",
+          "text": "CircuitPython's audio system (audiocore, synthio, audiomixer, effects) on MicroPython and CPython as well."
+        },
+        {
+          "repo": "audioinstruments",
+          "tag": "Instruments",
+          "text": "Playable synthesizers, organs, electric pianos and drum machines, in pure Python on audiodsp."
+        },
+        {
+          "repo": "audioeffects",
+          "tag": "Effects",
+          "text": "Studio and guitar-pedal effects: compressors, EQs, reverbs, delays, drive and amps, in pure Python on audiodsp."
+        },
+        {
+          "repo": "palettes",
+          "tag": "Colour",
+          "text": "Colour wheels, colour cubes, Material Design swatches and RGB565 conversion."
+        },
+        {
+          "repo": "iconkit",
+          "tag": "Icons",
+          "text": "Material Design icons kept in flash, drawn in LVGL or pygraphics."
+        },
+        {
+          "repo": "omnipython-builds",
+          "tag": "Firmware",
+          "text": "Builds MicroPython and CircuitPython firmware with OmniPython inside, the desktop interpreters and the WebAssembly runtime."
+        },
+        {
+          "repo": "pyscript-template",
+          "tag": "Web app",
+          "text": "A starting point for an OmniPython web app that works offline, published on GitHub Pages."
+        },
+        {
+          "repo": "android-template",
+          "tag": "Android app",
+          "text": "Package an OmniPython app as an Android APK."
+        },
+        {
+          "repo": "pdwidgets",
+          "tag": "Demonstration",
+          "text": "A widget toolkit in pure Python, showing that the core can carry a UI framework. For an interface you ship, use LVGL."
+        }
+      ],
+      "tools_line": "Looking for the board tool or the audio plug-in? MCU Control and mpvst are made by PyDevices, like Workbench, at <a href=\"https://pydevices.com/\">pydevices.com</a>."
     }
   },
   "omnipython": {
@@ -91,7 +197,7 @@
     "tier": 1,
     "page": "portal-subdir",
     "portal_grid": false,
-    "title": "PyDevices - displayif (moved)",
+    "title": "displayif (moved) — OmniPython",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "displayif · moved",
@@ -169,7 +275,7 @@
     "tier": 1,
     "page": "portal-subdir",
     "portal_grid": false,
-    "title": "PyDevices - audioif (moved)",
+    "title": "audioif (moved) — OmniPython",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audioif · moved",
@@ -292,7 +398,7 @@
     "tier": 1,
     "page": "portal-subdir",
     "portal_grid": false,
-    "title": "PyDevices - audiocomponents (moved)",
+    "title": "audiocomponents (moved) — OmniPython",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audiocomponents · moved",
@@ -325,7 +431,7 @@
     "tier": 1,
     "page": "portal-subdir",
     "portal_grid": false,
-    "title": "PyDevices - usbif (moved)",
+    "title": "usbif (moved) — OmniPython",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "usbif · moved",
@@ -358,7 +464,7 @@
     "tier": 1,
     "page": "portal-subdir",
     "portal_grid": false,
-    "title": "PyDevices - cameraif (moved)",
+    "title": "cameraif (moved) — OmniPython",
     "tier_name": "Core Platform & Board Contract",
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "cameraif · moved",
@@ -599,7 +705,7 @@
     "tier": 3,
     "page": "portal-subdir",
     "portal_grid": false,
-    "title": "PyDevices - lvgl-bindings (moved)",
+    "title": "lvgl-bindings (moved) — OmniPython",
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-bindings · moved",
@@ -632,7 +738,7 @@
     "tier": 3,
     "page": "portal-subdir",
     "portal_grid": false,
-    "title": "PyDevices - lvgl-micropython (moved)",
+    "title": "lvgl-micropython (moved) — OmniPython",
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-micropython · moved",
@@ -665,7 +771,7 @@
     "tier": 3,
     "page": "portal-subdir",
     "portal_grid": false,
-    "title": "PyDevices - lvgl-python (moved)",
+    "title": "lvgl-python (moved) — OmniPython",
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-python · moved",
@@ -698,7 +804,7 @@
     "tier": 3,
     "page": "portal-subdir",
     "portal_grid": false,
-    "title": "PyDevices - lvgl-circuitpython (moved)",
+    "title": "lvgl-circuitpython (moved) — OmniPython",
     "tier_name": "LVGL Native Extensions & Binding Generator",
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-circuitpython · moved",
@@ -840,7 +946,9 @@
         "tier_color": true
       }
     ],
-    "card_href": "https://pydevices.com/mcuctl/"
+    "card_href": "https://pydevices.com/mcuctl/",
+    "portal_grid": false,
+    "ecosystem_map": true
   },
   "gallery": {
     "tier": 1,
@@ -872,7 +980,9 @@
         "tier_color": true
       }
     ],
-    "card_href": "https://gallery.omnipython.org/"
+    "card_href": "https://gallery.omnipython.org/",
+    "portal_grid": false,
+    "ecosystem_map": true
   },
   "gallery-pyscript": {
     "tier": 1,
@@ -894,9 +1004,9 @@
     "page": "portal-root",
     "tier_name": "Organization Portal",
     "theme_color": "var(--accent)",
-    "eyebrow": "PyDevices Portal",
-    "headline": "One display & hardware contract for MicroPython, CircuitPython, and CPython — from bare metal to the browser.",
-    "description": "The same driver, event, and display code runs unchanged on bare-metal MicroPython and CircuitPython boards, as native CPython wheels on desktop and Android, and directly in a browser tab, once the board or host has its board_config — no rewrites, no plugins.",
+    "eyebrow": "OmniPython",
+    "headline": "One Python program, on boards, desktops, browsers and phones.",
+    "description": "OmniPython is a set of Python libraries and C modules that run unchanged on MicroPython, CircuitPython and CPython. Give each board or host a small board_config, and the same program drives its display, input and audio.",
     "hero_canvas": {
       "app": "watch",
       "width": 240,
@@ -904,26 +1014,26 @@
       "shape": "round",
       "app_url": "https://omnipython.org/assets/apps/watch.py"
     },
-    "hero_note": "Get Started installs the Python packages, with pip on a desktop or mip on a board. To build MicroPython firmware with the modules compiled in, run <code>curl -fsSL https://omnipython.org/install.sh | sh</code> and follow the guide on the <a href=\"https://omnipython.org/omnipython-builds/\">omnipython-builds page</a>.",
+    "hero_note": "Install it with pip on a desktop or omip on a board: <a href=\"https://docs.omnipython.org/en/latest/install.html\">the install page</a> has the line for each. Or try it first, with nothing installed: the watch on this page is Python running in your browser, and every app in the <a href=\"https://gallery.omnipython.org/\">gallery</a> runs the same way.",
     "buttons": [
       {
-        "label": "GitHub Org",
-        "href": "https://github.com/PyDevices",
+        "label": "Get started",
+        "href": "https://docs.omnipython.org/",
         "primary": true
       },
       {
-        "label": "Get Started",
-        "href": "https://omnipython.org/omnipython/",
+        "label": "Try it now",
+        "href": "#try-it",
         "tier_color": true
       },
       {
-        "label": "Gallery",
-        "href": "https://gallery.omnipython.org/",
+        "label": "Packages",
+        "href": "https://lib.omnipython.org/",
         "tier_color": true
       },
       {
-        "label": "Package Index",
-        "href": "https://lib.omnipython.org",
+        "label": "GitHub",
+        "href": "https://github.com/PyDevices",
         "tier_color": true
       }
     ],
@@ -932,8 +1042,10 @@
       "width": 640,
       "height": 420,
       "alt": "Huey, a blue chameleon with lime spots, waving from a jumper wire",
-      "caption": "<a href=\"/omnipython/\">OmniPython</a>'s mascot"
-    }
+      "caption": "<a href=\"https://gallery.omnipython.org/perch/\">Huey</a>, OmniPython's mascot"
+    },
+    "title": "OmniPython: one Python program on boards, desktops, browsers and phones",
+    "og_url": "https://omnipython.org/"
   },
   "omnipython-builds": {
     "tier": 5,
@@ -1005,7 +1117,9 @@
         "tier_color": true
       }
     ],
-    "card_href": "https://workbench.pydevices.com/"
+    "card_href": "https://workbench.pydevices.com/",
+    "portal_grid": false,
+    "ecosystem_map": true
   },
   "mpvst": {
     "tier": 5,
@@ -1037,6 +1151,8 @@
         "tier_color": true
       }
     ],
-    "card_href": "https://pydevices.com/mpvst/"
+    "card_href": "https://pydevices.com/mpvst/",
+    "portal_grid": false,
+    "ecosystem_map": true
   }
 }

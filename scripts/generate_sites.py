@@ -75,6 +75,9 @@ def get_card_icon(repo_name):
         'pyscript-template': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/><path d="M8 9h8M8 13h5"/></svg>',
         'android-template': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 19h4"/></svg>',
         'mcuctl': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/><circle cx="15" cy="15" r="1"/><path d="M15 16v3M13 19h4"/></svg>',
+        # The docs and the package library are sites, not repositories.
+        'docs': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg>',
+        'packages': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg>',
         # Same glyph as gallery -- these are sub-pages of that repo.
         'gallery-gallery': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><circle cx="17" cy="15" r="1.5"/></svg>',
         'gallery-pyscript': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/><circle cx="17" cy="15" r="1.5"/></svg>',
@@ -212,6 +215,7 @@ def validate_db(db, only=None):
         problems.append(
             f'expected exactly one page=portal-root repo, found {roots or "none"}'
         )
+    problems += portal_card_problems(db)
 
     if problems:
         raise SystemExit('repos_db.json is invalid:\n  ' + '\n  '.join(problems))
@@ -221,6 +225,46 @@ def validate_db(db, only=None):
 def repos(db):
     """Repository entries only; keys beginning with '_' are metadata."""
     return {k: v for k, v in db.items() if not k.startswith('_')}
+
+
+def portal_card_problems(db):
+    """What is wrong with _meta.portal_cards, the landing page's card order.
+
+    Every repository that keeps a portal card must be in the list, so a new
+    one can't drop off the page unnoticed, and nothing may be listed twice.
+    """
+    portal = db['_meta'].get('portal_cards')
+    if not isinstance(portal, dict) or not isinstance(portal.get('cards'), list):
+        return ['_meta.portal_cards.cards is missing']
+    problems = []
+    for i, door in enumerate((portal.get('try_it') or {}).get('doors') or []):
+        for field in ('title', 'glyph', 'href', 'text', 'action', 'where'):
+            if not door.get(field):
+                problems.append(f'try-it door {i}: missing {field}')
+    if len((portal.get('try_it') or {}).get('doors') or []) != 2:
+        problems.append('_meta.portal_cards.try_it needs its two doors')
+    listed = []
+    for i, card in enumerate(portal['cards']):
+        for field in ('tag', 'text'):
+            if not card.get(field):
+                problems.append(f'portal card {i}: missing {field}')
+        name = card.get('repo')
+        if name is not None:
+            if name not in repos(db):
+                problems.append(f'portal card {i}: {name} is not in the database')
+            listed.append(name)
+            continue
+        for field in ('name', 'href', 'glyph', 'hue'):
+            if card.get(field) is None:
+                problems.append(f'portal card {i}: a card with no repo needs {field}')
+        listed.append(card.get('name'))
+    for name in sorted({n for n in listed if listed.count(n) > 1}):
+        problems.append(f'portal card {name} is listed more than once')
+    for name, data in repos(db).items():
+        if (name != PORTAL_REPO and data.get('portal_grid', True)
+                and name not in listed):
+            problems.append(f'{name}: portal_grid is on but it is not in _meta.portal_cards')
+    return problems
 
 
 def tier_meta(db):
@@ -335,11 +379,24 @@ def build_hero_art_html(data):
 
 
 def build_head_tags_html(repo_name, data):
-    title = data.get('title', f'PyDevices - {repo_name}')
+    title = data.get('title', f'{repo_name} — OmniPython')
+    description = data.get('description', '')
+    # The card a link unfurls into, on the pages that have an address of
+    # their own here.
+    og_html = ''
+    if data.get('og_url'):
+        og_html = (
+            f'  <meta property="og:title" content="{title}">\n'
+            f'  <meta property="og:description" content="{description}">\n'
+            f'  <meta property="og:type" content="website">\n'
+            f'  <meta property="og:url" content="{data["og_url"]}">\n'
+            f'  <meta property="og:image" content="{data["og_url"]}assets/img/omnipython-social.png">\n'
+        )
     return (
         f'  <!-- PYDEVICES-HEAD-TAGS: START -->\n'
         f'  <title>{title}</title>\n'
-        f'  <meta name="description" content="{data.get("description", "")}">\n'
+        f'  <meta name="description" content="{description}">\n'
+        f'{og_html}'
         f'  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">\n'
         f'  <link rel="alternate icon" href="/assets/img/favicon.ico" sizes="16x16 32x32 48x48">\n'
         f'  <link rel="stylesheet" href="{DISPLAY_FONT_URL}">\n'
@@ -352,13 +409,13 @@ def build_above_the_fold_html(repo_name, data):
     # has no entry for it, so it would otherwise fall through to the generic
     # default. The glyphs are stroke="currentColor", hence color on the badge.
     mark = (
-        '<img src="/assets/img/logo.svg" alt="PyDevices" width="112" height="112">'
+        '<img src="/assets/img/omnipython-mark.svg" alt="OmniPython" width="112" height="112">'
         if page_destination(data) == 'portal-root'
         else get_card_icon(repo_name)
     )
     theme_color = data.get('theme_color', 'var(--tier-5-steel)')
     dark_gradient = get_gradient_dark(theme_color)
-    # The org's own page shows the PyDevices mark free-standing on the ground.
+    # The front page shows the OmniPython mark free-standing on the ground.
     # Every product page keeps a tier-coloured tile: that badge is what carries
     # the repo's tier, so it stays even though the org mark no longer needs one.
     if page_destination(data) == 'portal-root':
@@ -387,9 +444,14 @@ def build_above_the_fold_html(repo_name, data):
     for btn in data.get('buttons', []):
         label, href = btn['label'], btn['href']
         if btn.get('primary', False):
+            # The GitHub mark only on a button that goes to GitHub.
+            github_svg = (
+                '        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5 4.6 4.6 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.6 1.7 5.5 2 5.5 2a4.6 4.6 0 0 0-.1 3.5A5 5 0 0 0 4 9c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg>\n'
+                if href.startswith('https://github.com/') else ''
+            )
             b_html = (
                 f'      <a class="btn primary" href="{href}">\n'
-                f'        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5 4.6 4.6 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.6 1.7 5.5 2 5.5 2a4.6 4.6 0 0 0-.1 3.5A5 5 0 0 0 4 9c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg>\n'
+                f'{github_svg}'
                 f'        {label}\n'
                 f'      </a>'
             )
@@ -496,50 +558,113 @@ def build_above_the_fold_html(repo_name, data):
         f'  <!-- PYDEVICES-ABOVE-THE-FOLD: END -->'
     )
 
+def card_hue(color_var):
+    """The palette slot (1 to 5) of a theme colour, so a card matches its page's badge."""
+    match = re.search(r'--tier-(\d)-', color_var or '')
+    return int(match.group(1)) if match else 1
+
+
+def portal_cards(db):
+    """The landing page's cards, first to last, each as a dict ready to draw."""
+    cards = []
+    for card in db['_meta']['portal_cards']['cards']:
+        name = card.get('repo')
+        if name is None:
+            cards.append({
+                'name': card['name'], 'href': card['href'], 'tag': card['tag'],
+                'text': card['text'], 'icon': get_card_icon(card['glyph']),
+                'hue': card['hue'],
+            })
+            continue
+        data = repos(db)[name]
+        href = data.get('card_href')
+        if href is None:
+            href = data.get('repo_url') if page_destination(data) == 'none' else f'/{name}/'
+        cards.append({
+            'name': name, 'href': href, 'tag': card['tag'], 'text': card['text'],
+            'icon': get_card_icon(name), 'hue': card_hue(data.get('theme_color')),
+        })
+    return cards
+
+
 def build_portal_grids_html(db):
-    meta = tier_meta(db)
+    """The front page's cards, in the order _meta.portal_cards gives, under one heading.
 
-    tier_repos = {1: [], 2: [], 3: [], 4: [], 5: []}
-    for repo_name, data in repos(db).items():
-        if repo_name != 'PyDevices.github.io' and data.get('portal_grid', True):
-            tier_repos[data.get('tier', 5)].append((repo_name, data))
-
-    sections_html = []
-    for tier in sorted(tier_repos.keys()):
-        name, hint = meta[tier]
-        title = f'<span class="tier-dot tier-dot-{tier}">{tier}</span>{name}'
-        cards_html = []
-        for repo_name, data in tier_repos[tier]:
-            cards_html.append(
-                f'      <a class="card card-tier-{tier}" href="{data.get("card_href", f"/{repo_name}/")}">\n'
-                f'        <div class="card-top">\n'
-                f'          <span class="icon">{get_card_icon(repo_name)}</span>\n'
-                f'          <span class="tag tag-tier-{tier}">{get_tag_label(repo_name)}</span>\n'
-                f'        </div>\n'
-                f'        <h3>{repo_name}</h3>\n'
-                f'        <p>{data.get("description", "")}</p>\n'
-                f'        <span class="go">Visit site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>\n'
-                f'      </a>'
-            )
-
-        cards_joined = '\n\n'.join(cards_html)
-        sec_style = ' style="margin-top: 40px;"' if tier > 1 else ''
-
-        sections_html.append(
-            f'    <!-- Tier {tier} Section -->\n'
-            f'    <div class="section-head"{sec_style}>\n'
-            f'      <h2>{title}</h2>\n'
-            f'      <span class="hint">{hint}</span>\n'
-            f'    </div>\n'
-            f'    <div class="grid">\n'
-            f'{cards_joined}\n'
-            f'    </div>'
+    The tiers stay in the database for the ecosystem map; the page doesn't
+    show them. A card takes its colour from its own page's badge.
+    """
+    portal = db['_meta']['portal_cards']
+    cards_html = []
+    for card in portal_cards(db):
+        hue = card['hue']
+        cards_html.append(
+            f'      <a class="card card-tier-{hue}" href="{card["href"]}">\n'
+            f'        <div class="card-top">\n'
+            f'          <span class="icon">{card["icon"]}</span>\n'
+            f'          <span class="tag tag-tier-{hue}">{card["tag"]}</span>\n'
+            f'        </div>\n'
+            f'        <h3>{card["name"]}</h3>\n'
+            f'        <p>{card["text"]}</p>\n'
+            f'        <span class="go">Open <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>\n'
+            f'      </a>'
         )
-
+    cards_joined = '\n\n'.join(cards_html)
     return (
         f'  <!-- PYDEVICES-PORTAL-GRIDS: START -->\n'
-        f'{"\n\n".join(sections_html)}\n'
+        f'    <div class="section-head">\n'
+        f'      <h2>{portal["heading"]}</h2>\n'
+        f'      <span class="hint">{portal["hint"]}</span>\n'
+        f'    </div>\n'
+        f'    <div class="grid">\n'
+        f'{cards_joined}\n'
+        f'    </div>\n'
         f'  <!-- PYDEVICES-PORTAL-GRIDS: END -->'
+    )
+
+
+def build_portal_try_html(db):
+    """The two doors under the hero: watch it run, or write your own.
+
+    They are actions, not catalogue entries, so they are drawn as wide
+    panels with a button each, never as cards. A door to another site says
+    which one, so the visitor knows they are leaving.
+    """
+    try_it = db['_meta']['portal_cards']['try_it']
+    doors = []
+    for door in try_it['doors']:
+        doors.append(
+            f'      <a class="door" href="{door["href"]}">\n'
+            f'        <span class="door-icon">{get_card_icon(door["glyph"])}</span>\n'
+            f'        <span class="door-body">\n'
+            f'          <span class="door-title">{door["title"]}</span>\n'
+            f'          <span class="door-text">{door["text"]}</span>\n'
+            f'          <span class="door-where">{door["where"]}</span>\n'
+            f'        </span>\n'
+            f'        <span class="door-action">{door["action"]} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>\n'
+            f'      </a>'
+        )
+    doors_joined = '\n'.join(doors)
+    return (
+        f'  <!-- PYDEVICES-PORTAL-TRY: START -->\n'
+        f'  <section class="try-it wrap" id="try-it" aria-labelledby="try-it-heading">\n'
+        f'    <div class="try-it-head">\n'
+        f'      <h2 id="try-it-heading">{try_it["heading"]}</h2>\n'
+        f'      <span class="hint">{try_it["hint"]}</span>\n'
+        f'    </div>\n'
+        f'    <div class="doors">\n'
+        f'{doors_joined}\n'
+        f'    </div>\n'
+        f'  </section>\n'
+        f'  <!-- PYDEVICES-PORTAL-TRY: END -->'
+    )
+
+
+def build_portal_tools_html(db):
+    """The one line on the front page that points at the PyDevices tools."""
+    return (
+        f'  <!-- PYDEVICES-PORTAL-TOOLS: START -->\n'
+        f'  <p class="portal-tools wrap">{db["_meta"]["portal_cards"]["tools_line"]}</p>\n'
+        f'  <!-- PYDEVICES-PORTAL-TOOLS: END -->'
     )
 
 
@@ -760,7 +885,7 @@ def parse_args(argv=None):
 
 def main(argv=None):
     args = parse_args(argv)
-    print("=== Pure Harmonized PyDevices Site Generator (.github) ===")
+    print("=== Site generator (.github) ===")
     
     with open(DB_PATH, 'r', encoding='utf-8') as f:
         db = json.load(f)
@@ -815,6 +940,8 @@ def main(argv=None):
 
         if repo_name == 'PyDevices.github.io':
             content = update_html_section(content, '<!-- PYDEVICES-PORTAL-GRIDS: START -->', '<!-- PYDEVICES-PORTAL-GRIDS: END -->', build_portal_grids_html(db))
+            content = update_html_section(content, '<!-- PYDEVICES-PORTAL-TRY: START -->', '<!-- PYDEVICES-PORTAL-TRY: END -->', build_portal_try_html(db))
+            content = update_html_section(content, '<!-- PYDEVICES-PORTAL-TOOLS: START -->', '<!-- PYDEVICES-PORTAL-TOOLS: END -->', build_portal_tools_html(db))
 
         # Remove a duplicate hero section left outside the marker block.
         marker = '<!-- PYDEVICES-ABOVE-THE-FOLD: END -->'
