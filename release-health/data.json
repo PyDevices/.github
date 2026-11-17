@@ -78,10 +78,10 @@
   "prerelease": true,
   "pypi": "skipped",
   "repo": "audioinstruments",
-  "run_url": "https://github.com/PyDevices/audioinstruments/actions/runs/43826519240",
+  "run_url": "https://github.com/PyDevices/audioinstruments/actions/runs/44006593680",
   "testpypi": "success",
-  "updated": "2026-11-16 08:07 UTC",
-  "version": "0.5.2.dev5"
+  "updated": "2026-11-17 03:14 UTC",
+  "version": "0.5.2.dev6"
  },
  "omnipython-iconkit": {
   "assets": "success",
