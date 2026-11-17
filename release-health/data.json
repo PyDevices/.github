@@ -26,7 +26,7 @@
   "distribution": "omnipython-airwindows",
   "mip": "skipped",
   "prerelease": false,
-  "pypi": "pending",
+  "pypi": "failure",
   "repo": "airwindows",
   "run_url": "https://github.com/PyDevices/airwindows/actions/runs/44074945049",
   "updated": "2026-11-17 11:48 UTC",
