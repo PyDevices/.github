@@ -3,7 +3,8 @@
 You release a package by merging a pull request. Pick a repository that
 publishes (see [what each repository publishes](../reference/release-workflows.md#what-each-repository-publishes))
 and start with a development version. It reaches TestPyPI, the release's
-attached files and, for a repository that requests it, the library index, but not the MIP index or production PyPI.
+attached files, production PyPI for a repository that publishes there and,
+for a repository that requests it, the library index, but not the MIP index.
 
 ```bash
 gh workflow run prepare-release.yml --repo PyDevices/<repository> -f version=X.Y.Z.dev1

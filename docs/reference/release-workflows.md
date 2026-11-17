@@ -39,7 +39,7 @@ outside this chain.
 | `mip-profile` | A synchronization profile, or a comma-separated list when a repository publishes several packages; empty skips MIP and the library index |
 | `release-ref` | An exact `vX.Y.Z` tag, for a `workflow_dispatch` retry; empty on a release event |
 | `working-directory` | `pure-python` only: the directory with `pyproject.toml` |
-| `pypi-publish` | Mark final releases for production PyPI; see [publish to production PyPI](../guides/publish-to-pypi.md) |
+| `pypi-publish` | Send every release, pre-releases included, to production PyPI; see [publish to production PyPI](../guides/publish-to-pypi.md) |
 
 A typical call:
 

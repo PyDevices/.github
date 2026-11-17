@@ -66,7 +66,8 @@ on:
         type: string
       pypi-publish:
         description: >-
-          Mark final releases for production PyPI. This workflow does not
+          Mark every release, pre-releases included, for production PyPI.
+          This workflow does not
           upload them: PyPI matches a Trusted Publisher against the workflow
           that runs the upload job, and here that would be this file, not the
           caller's publish-release-packages.yml. It sets the pypi-publish
@@ -80,7 +81,7 @@ on:
       pypi-publish:
         description: >-
           'true' when the caller should upload to production PyPI: pypi-publish
-          was set, the release is final, and the build and TestPyPI succeeded.
+          was set and the build and TestPyPI succeeded. Pre-releases count.
           Empty otherwise.
         value: ${{ jobs.pypi-gate.outputs.publish }}
       dist-artifact:
@@ -109,8 +110,9 @@ jobs:
           # needs nothing from the caller; release-ref is only for retries.
           RELEASE_TAG: ${{ github.event.release.tag_name || inputs.release-ref }}
         run: |
-          # v5: PEP 440 pre-releases (aN/bN/rcN/.devN) are accepted; they
-          # publish to TestPyPI only -- no MIP entry, no production PyPI.
+          # v5: PEP 440 pre-releases (aN/bN/rcN/.devN) are accepted. Since
+          # publishing-v29 they reach production PyPI like a final when the
+          # caller sets pypi-publish; pip skips them unless asked (--pre).
           if [[ ! "$RELEASE_TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+((a|b|rc)[0-9]+|\.dev[0-9]+)?)$ ]]; then
             echo "Release ref must be a vX.Y.Z[{a|b|rc}N|.devN] tag: $RELEASE_TAG" >&2
             exit 1
@@ -215,8 +217,8 @@ jobs:
             --clobber --repo "$GITHUB_REPOSITORY"
 
   pypi-gate:
-    # Production PyPI is opt-in per package (pypi-publish input) and final
-    # releases only. The upload itself is NOT here: PyPI's Trusted Publishing
+    # Production PyPI is opt-in per package (pypi-publish input), and since
+    # publishing-v29 it takes every version, pre-releases included. The upload itself is NOT here: PyPI's Trusted Publishing
     # matches the publisher against job_workflow_ref, the workflow that runs
     # the job, and in a called workflow that is this file at a publishing tag,
     # which no repository's PyPI publisher can name (audiodsp v0.6.1,
@@ -232,7 +234,6 @@ jobs:
     if: >-
       always()
       && inputs.pypi-publish
-      && needs.prepare-release.outputs.prerelease == 'false'
       && needs.prepare-release.result == 'success'
       && needs.publish-to-testpypi.result == 'success'
       && !contains(needs.*.result, 'failure')
