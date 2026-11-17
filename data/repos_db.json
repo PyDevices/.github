@@ -993,7 +993,7 @@
     "portal_grid": false,
     "title": "gallery — PyScript Gallery",
     "theme_color": "var(--tier-1-amber)",
-    "eyebrow": "PyDevices / gallery · PyScript Gallery",
+    "eyebrow": "OmniPython / gallery · PyScript Gallery",
     "headline": "PyScript Gallery",
     "description": "Pyodide / PyScript demos that run full CPython in the browser — the same OmniPython examples as MCUs and the direct WebAssembly gallery. Explore drawing, input, widgets, and LVGL without flashing a board first.",
     "hero_note": "Click a card to launch the app. The first load may take a few seconds while the interpreter downloads; featured demos stay pinned at the top.",
