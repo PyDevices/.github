@@ -58,12 +58,12 @@
   "assets": "success",
   "distribution": "omnipython-audioeffects",
   "mip": "success",
-  "prerelease": true,
-  "pypi": "success",
+  "prerelease": false,
+  "pypi": "pending",
   "repo": "audioeffects",
-  "run_url": "https://github.com/PyDevices/audioeffects/actions/runs/44064123889",
-  "updated": "2026-11-17 10:52 UTC",
-  "version": "0.5.2.dev5"
+  "run_url": "https://github.com/PyDevices/audioeffects/actions/runs/44073663200",
+  "updated": "2026-11-17 11:41 UTC",
+  "version": "0.5.2"
  },
  "omnipython-audioinstruments": {
   "assets": "success",
