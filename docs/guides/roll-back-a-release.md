@@ -3,12 +3,10 @@
 Pick the registry the bad version reached. In every case the rule is to fix
 forward with a new version number rather than rewrite history.
 
-**A bad version on TestPyPI.** Pre-releases are invisible to a default `pip
-install`. Yank a final release from the project page: yank, don't delete, so
-the history stays honest and installs stop.
-
-**A bad version on production PyPI.** Yank it the same way. The version number
-is gone for good: never reuse it.
+**A bad version on PyPI.** Pre-releases are invisible to a default `pip
+install`. Yank a bad version from the project page: yank, don't delete, so the
+history stays honest and installs stop. The version number is gone for good:
+never reuse it.
 
 **A bad publication on the MIP index.** Revert the lockfile commit
 (`omnipython-lock.json`) on the `PyDevices` branch of `PyDevices/mip`, then

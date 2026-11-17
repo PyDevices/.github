@@ -175,8 +175,8 @@
         "tier_color": true
       },
       {
-        "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/omnipython-desktop/",
+        "label": "PyPI",
+        "href": "https://pypi.org/project/omnipython-desktop/",
         "tier_color": true
       },
       {
@@ -311,7 +311,7 @@
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audioinstruments",
     "headline": "audioinstruments — 33 playable synthesizers, organs, electric pianos and drum machines, in pure Python.",
-    "description": "Playable synthesizers, organs, electric pianos and drum machines, each a patch of modules on a virtual rack, rendered a block at a time on audiodsp. Pure Python on CPython and MicroPython-compatible firmware. Install omnipython-audioinstruments from TestPyPI, or audioinstruments from the MIP index.",
+    "description": "Playable synthesizers, organs, electric pianos and drum machines, each a patch of modules on a virtual rack, rendered a block at a time on audiodsp. Pure Python on CPython and MicroPython-compatible firmware. Install omnipython-audioinstruments from PyPI, or audioinstruments from the MIP index.",
     "hero_canvas": {
       "app": "audio_scope",
       "width": 240,
@@ -336,8 +336,8 @@
         "tier_color": true
       },
       {
-        "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/omnipython-audioinstruments/",
+        "label": "PyPI",
+        "href": "https://pypi.org/project/omnipython-audioinstruments/",
         "tier_color": true
       }
     ],
@@ -356,7 +356,7 @@
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audioeffects",
     "headline": "audioeffects — 45 studio and guitar-pedal effects, in pure Python.",
-    "description": "Compressors, EQs, reverbs, delays, modulation, drive and amp simulation, pitch shifters and racks, pure Python on audiodsp's audio nodes, the same on MicroPython-compatible boards, CircuitPython-compatible boards and a desktop. Install omnipython-audioeffects from TestPyPI, or audioeffects from the MIP index.",
+    "description": "Compressors, EQs, reverbs, delays, modulation, drive and amp simulation, pitch shifters and racks, pure Python on audiodsp's audio nodes, the same on MicroPython-compatible boards, CircuitPython-compatible boards and a desktop. Install omnipython-audioeffects from PyPI, or audioeffects from the MIP index.",
     "hero_canvas": {
       "app": "signal_gen",
       "width": 240,
@@ -381,8 +381,8 @@
         "tier_color": true
       },
       {
-        "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/omnipython-audioeffects/",
+        "label": "PyPI",
+        "href": "https://pypi.org/project/omnipython-audioeffects/",
         "tier_color": true
       }
     ],
@@ -403,7 +403,7 @@
     "theme_color": "var(--tier-1-amber)",
     "eyebrow": "audiocomponents · moved",
     "headline": "audiocomponents has split into audioinstruments and audioeffects.",
-    "description": "Split into two repositories: audioinstruments, the playable synthesizers, organs, electric pianos and drum machines, and audioeffects, the studio and guitar-pedal effects. Both are 0.5.0 on TestPyPI and the MIP index, under the same names. Your code doesn't change. The old repository is archived.",
+    "description": "Split into two repositories: audioinstruments, the playable synthesizers, organs, electric pianos and drum machines, and audioeffects, the studio and guitar-pedal effects. Both are on PyPI and the MIP index, under the same names. Your code doesn't change. The old repository is archived.",
     "buttons": [
       {
         "label": "audioinstruments",
@@ -520,8 +520,8 @@
         "tier_color": true
       },
       {
-        "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/omnipython-pygraphics/",
+        "label": "PyPI",
+        "href": "https://pypi.org/project/omnipython-pygraphics/",
         "tier_color": true
       },
       {
@@ -566,8 +566,8 @@
         "tier_color": true
       },
       {
-        "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/omnipython-palettes/",
+        "label": "PyPI",
+        "href": "https://pypi.org/project/omnipython-palettes/",
         "tier_color": true
       },
       {
@@ -638,8 +638,8 @@
         "tier_color": true
       },
       {
-        "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/omnipython-pdwidgets/",
+        "label": "PyPI",
+        "href": "https://pypi.org/project/omnipython-pdwidgets/",
         "tier_color": true
       },
       {
@@ -683,8 +683,8 @@
         "tier_color": true
       },
       {
-        "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/omnipython-lvgl/",
+        "label": "PyPI",
+        "href": "https://pypi.org/project/omnipython-lvgl/",
         "tier_color": true
       },
       {
@@ -776,7 +776,7 @@
     "theme_color": "var(--tier-3-blue)",
     "eyebrow": "lvgl-python · moved",
     "headline": "lvgl-python has moved into omnipython-lvgl.",
-    "description": "Moved to omnipython-lvgl as its CPython port. The wheels are still omnipython-lvgl on TestPyPI. Your code doesn't change. The old repository is archived.",
+    "description": "Moved to omnipython-lvgl as its CPython port. The wheels are omnipython-lvgl on PyPI. Your code doesn't change. The old repository is archived.",
     "buttons": [
       {
         "label": "omnipython-lvgl",
@@ -789,8 +789,8 @@
         "tier_color": true
       },
       {
-        "label": "TestPyPI",
-        "href": "https://test.pypi.org/project/omnipython-lvgl/",
+        "label": "PyPI",
+        "href": "https://pypi.org/project/omnipython-lvgl/",
         "tier_color": true
       },
       {

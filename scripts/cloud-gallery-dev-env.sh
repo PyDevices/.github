@@ -2,14 +2,14 @@
 # Idempotent gallery desktop dev environment for the PyDevices cloud workspace.
 #
 # Complements cloud-workspace-install.sh and cloud-python-deps.sh:
-#   - pip install gallery requirements.txt (TestPyPI runtime stack for CPython)
+#   - pip install gallery requirements.txt (PyPI runtime stack for CPython)
 #   - mip install desktop board_config, appdev, palettes, pdwidgets into ~/.micropython/lib
 #   - ensure shell env (PATH, PYTHONPATH, MICROPYPATH) via gallery-env.sh + bashrc hook
 #
 # Run from gallery/lib/ after sourcing gallery-env.sh (or open a new shell).
 # See omnipython docs/install-workflows.md (CircuitPython-compatible mip, mpy=False).
 #
-# Safe to re-run. Intentionally does not `set -e` on optional TestPyPI steps.
+# Safe to re-run. Intentionally does not `set -e` on optional install steps.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

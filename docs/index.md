@@ -10,7 +10,7 @@ checks, then [cut your first release](get-started/first-release.md) of a
 package.
 
 **Guides.** [Release a package](guides/release-a-package.md),
-[publish to production PyPI](guides/publish-to-pypi.md),
+[publish to PyPI](guides/publish-to-pypi.md),
 [roll back a release](guides/roll-back-a-release.md),
 [fix a release that failed](guides/fix-a-failed-release.md),
 [build and publish documentation](guides/build-and-publish-docs.md),

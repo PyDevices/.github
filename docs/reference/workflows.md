@@ -12,7 +12,7 @@ Inputs, secrets and tags are in [release workflows](release-workflows.md).
 |---|---|
 | `reusable-prepare-release-pr.yml` | Open the release PR: compute a version suggestion, write `VERSION` and `CHANGELOG.md`, open or update the PR |
 | `reusable-tag-on-release-merge.yml` | On a merged `VERSION` change, create the `vX.Y.Z` tag and GitHub Release with the App token |
-| `reusable-publish-release-packages.yml` | The whole release chain: resolve the tag, build, publish to TestPyPI, attach assets, request MIP publication, tell the caller whether to publish to PyPI, report health |
+| `reusable-publish-release-packages.yml` | The whole release chain: resolve the tag, build, attach assets, request MIP publication, tell the caller to publish to PyPI, report health |
 | `reusable-report-pypi-result.yml` | Report a caller-side PyPI upload to Release Health ([why the upload is caller-side](../guides/publish-to-pypi.md)) |
 | `reusable-build-pure-python-distribution.yml` | sdist and wheel for a pure-Python package |
 | `reusable-build-native-and-wasm-wheels.yml` | cibuildwheel: Linux, Windows, Android and Pyodide wasm32 |
@@ -63,16 +63,15 @@ triggers only on `workflow_dispatch`, with an optional `version` input.
 (below).
 
 `audiodsp` runs a `parity` job (the `tests/parity/verify_*.py` gates and every
-DSP probe) and a `credentials` job (confirms `TESTPYPI_API_TOKEN` is visible)
-before its publish job. `audiocomponents` runs the same kind of gates and
-credentials check before its two.
+DSP probe) before its publish job. `audiocomponents` runs the same kind of
+gates before its two.
 
 Releases that don't use the trio:
 
 | Repository | Workflow | Role |
 |---|---|---|
 | `omnipython-lvgl` | `release.yml` | By hand: with `mode=dry-run`, run every gate and change nothing; with `mode=release`, also write the next version to `VERSION` on `main` and publish a GitHub Release, which starts `publish-release-packages.yml` |
-| `omnipython` | `tag-package-release.yml`, `publish-package-release.yml` | Release the `palettes` and `pdwidgets` folders on their own `palettes-vX.Y.Z` and `pdwidgets-vX.Y.Z` tags: build the distribution from the folder at the tag and upload it to TestPyPI, then ask the library index for it, and for `iconkit` finals the mip index too |
+| `omnipython` | `tag-package-release.yml`, `publish-package-release.yml` | Release the `palettes` and `pdwidgets` folders on their own `palettes-vX.Y.Z` and `pdwidgets-vX.Y.Z` tags: build the distribution from the folder at the tag and upload it to PyPI, then ask the library index for it, and for `iconkit` finals the mip index too |
 | `omnipython` | `publish-lib-boards.yml` | Ask the library index for board configurations and drivers when they merge |
 | `mcuctl` | `publish-vsix.yml` | Build the VS Code extension and publish it to VS Marketplace and Open VSX (`VSCE_PAT`, `OVSX_PAT`, both optional) |
 | `android-runner` | `release_apk.yml` | Build the APK that `omnipython/bin/android.py --install-apk` downloads |

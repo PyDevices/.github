@@ -39,7 +39,7 @@ action versions.
 ## Monthly, by hand
 
 - Merge the month's Dependabot pull requests. They arrive grouped.
-- Skim the TestPyPI project pages for anything you don't recognise.
+- Skim the PyPI project pages for anything you don't recognise.
 - Check upstream MicroPython releases. A new stable release is information,
   not an obligation: moving a pin (the MicroPython base, the LVGL submodule,
   PyScript, the CircuitPython oracle) is deliberate work with its own
