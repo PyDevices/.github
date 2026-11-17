@@ -59,7 +59,7 @@
   "distribution": "omnipython-audioeffects",
   "mip": "success",
   "prerelease": true,
-  "pypi": "pending",
+  "pypi": "success",
   "repo": "audioeffects",
   "run_url": "https://github.com/PyDevices/audioeffects/actions/runs/44064123889",
   "updated": "2026-11-17 10:52 UTC",
