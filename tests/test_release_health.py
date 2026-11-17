@@ -241,6 +241,14 @@ class PartialPypiReportTests(unittest.TestCase):
         row = self.report("0.6.2", json.dumps(old))["omnipython-audiodsp"]
         self.assertNotIn("testpypi", row)
 
+    def test_stored_rows_lose_the_retired_stage(self):
+        data = {"omnipython-pygraphics": {"version": "0.1.6", "testpypi": "success"}}
+        (self.clone / "release-health/data.json").write_text(json.dumps(data), encoding="utf-8")
+        git(self.clone, "commit", "-q", "-am", "old row")
+        git(self.clone, "push", "-q", "origin", "main")
+        rows = self.report("0.6.2")
+        self.assertNotIn("testpypi", rows["omnipython-pygraphics"])
+
     def test_a_full_report_still_replaces_the_row(self):
         self.report("0.6.1", partial_pypi_payload("omnipython-audiodsp", "0.6.1", "success"))
         row = self.report("0.6.2")["omnipython-audiodsp"]
