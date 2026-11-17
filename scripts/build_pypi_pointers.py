@@ -34,9 +34,11 @@ POINTERS = {
     ),
     "pydevices-audioif": (
         "0.0.5", "omnipython-audiodsp", "0.6.16",
-        "Your imports keep their names: `audiocore`, `audiomixer` and the rest. "
-        "The instruments and effects it also carried are now "
-        "`omnipython-audioinstruments` and `omnipython-audioeffects`: install those too.",
+        (
+            "Your imports keep their names: `audiocore`, `audiomixer` and the rest. "
+            "The instruments and effects it also carried are now "
+            "`omnipython-audioinstruments` and `omnipython-audioeffects`: install those too."
+        ),
     ),
     "pydevices-lvgl": (
         "9.5.38", "omnipython-lvgl", "9.6.1",
