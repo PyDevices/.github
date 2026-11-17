@@ -9,30 +9,30 @@ repo = "PyDevices/omnipython"
 summary = "The board contract, displaydev, audiodev, appdev, multimer and the drivers: what every program stands on."
 
 [[library]]
-slug = "palettes"
-title = "palettes"
-repo = "PyDevices/omnipython"
-docs = "packages/palettes/docs"
-summary = "Color palettes: an HSV wheel, RGB cubes, Material Design swatches and RGB565 helpers."
-
-[[library]]
-slug = "pdwidgets"
-title = "pdwidgets"
-repo = "PyDevices/omnipython"
-docs = "packages/pdwidgets/docs"
-summary = "Buttons, sliders, labels and screens for touch displays, in pure Python."
-
-[[library]]
 slug = "pygraphics"
 title = "pygraphics"
 repo = "PyDevices/pygraphics"
 summary = "2D drawing, bitmap fonts and blitting, in C and in Python."
 
 [[library]]
+slug = "palettes"
+title = "palettes"
+repo = "PyDevices/omnipython"
+docs = "packages/palettes/docs"
+summary = "Color palettes for drawing: an HSV wheel, RGB cubes, Material Design swatches and RGB565 helpers."
+
+[[library]]
 slug = "lvgl"
 title = "LVGL"
 repo = "PyDevices/omnipython-lvgl"
-summary = "The LVGL bindings, for MicroPython, CircuitPython and CPython."
+summary = "The LVGL bindings, for MicroPython, CircuitPython and CPython: the UI toolkit to reach for."
+
+[[library]]
+slug = "pdwidgets"
+title = "pdwidgets"
+repo = "PyDevices/omnipython"
+docs = "packages/pdwidgets/docs"
+summary = "A whole widget toolkit written in Python on the OmniPython core, with no C: a demonstration that the core can carry other UI frameworks."
 
 [[library]]
 slug = "audiodsp"
