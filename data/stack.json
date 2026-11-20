@@ -62,7 +62,7 @@
     "omnipython-builds:modules/pygraphics": "a firmware recipe for a repository listed on its own",
     "omnipython-builds:modules/ulab": "fetched when firmware is built; its row points upstream",
     "apps:apps/__init__.py": "package marker",
-    "audiodsp:src/circuitpython_spike": "build support, nothing to import",
+    "audiodsp:src/circuitpython": "build support, nothing to import",
     "audiodsp:src/cp_compat": "build support, nothing to import",
     "audiodsp:src/cpython": "build support, nothing to import",
     "audiodsp:src/mp_libc_shim.c": "build support, nothing to import",
