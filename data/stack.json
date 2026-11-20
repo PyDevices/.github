@@ -100,6 +100,7 @@
     {"name": "svgio", "group": "display", "does": "Draw an SVG at any size into RGB565 with alpha, for pygraphics or LVGL's `lv.image`.", "repo": "omnipython-builds", "path": "modules/svgio", "get": ["firmware"], "runs": "MP"},
     {"name": "svgio for CPython", "group": "display", "does": "Use the `svgio` API on a desktop, over resvg-py and Pillow, or in a Pyodide page, over the browser's canvas.", "repo": "omnipython", "path": "utils/svgio.py", "get": ["pip:omnipython-desktop"], "runs": "Desktop, Web"},
     {"name": "ppa", "group": "display", "does": "Scale, rotate, mirror, crop, convert, fill and blend pictures in memory, in hardware on an ESP32-P4.", "repo": "omnipython-builds", "path": "modules/ppa", "get": ["firmware"], "runs": "MP"},
+    {"name": "offheap", "group": "display", "does": "Keep big pixel buffers outside the garbage-collected heap, so they don't slow every collection.", "repo": "omnipython-builds", "path": "modules/offheap", "get": ["firmware"], "runs": "MP on ESP32, desktop, browser"},
     {"name": "frame_recorder", "group": "display", "does": "Record a desktop display to video.", "repo": "omnipython", "path": "utils/frame_recorder.py", "get": ["pip:omnipython-desktop"], "runs": "Desktop"},
 
     {"name": "appdev", "group": "app", "does": "Get a main loop that gathers input, runs timers and refreshes the display.", "repo": "omnipython", "path": "lib/appdev", "guide": "docs/guides/the-app-loop.md", "get": ["mip:omnipython", "pip:omnipython", "firmware"], "runs": "MP, CP, Desktop, Web, Android"},
