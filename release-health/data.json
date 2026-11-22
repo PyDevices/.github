@@ -4,7 +4,7 @@
   "distribution": "mcuctl",
   "mip": "skipped",
   "prerelease": true,
-  "pypi": "pending",
+  "pypi": "success",
   "repo": "mcuctl",
   "run_url": "https://github.com/PyDevices/mcuctl/actions/runs/45013961060",
   "updated": "2026-11-22 10:46 UTC",
