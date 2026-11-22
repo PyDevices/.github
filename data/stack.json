@@ -53,6 +53,7 @@
     "omnipython-builds:modules/audioeffects": "a firmware recipe for a repository listed on its own",
     "omnipython-builds:modules/audioinstruments": "a firmware recipe for a repository listed on its own",
     "omnipython-builds:modules/iconkit": "a firmware recipe for a package listed on its own",
+    "omnipython-builds:modules/icons": "a firmware recipe for a package listed on its own",
     "omnipython-builds:modules/library.py": "a firmware recipe",
     "omnipython-builds:modules/manifest.py": "a firmware recipe",
     "omnipython-builds:modules/micropython-lib": "a firmware recipe",
