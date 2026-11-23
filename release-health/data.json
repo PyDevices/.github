@@ -48,10 +48,10 @@
   "distribution": "omnipython-audiodsp",
   "mip": "skipped",
   "prerelease": true,
-  "pypi": "pending",
+  "pypi": "success",
   "repo": "audiodsp",
   "run_url": "https://github.com/PyDevices/audiodsp/actions/runs/45139050960",
-  "updated": "2026-11-23 08:36 UTC",
+  "updated": "2026-11-23 08:37 UTC",
   "version": "0.6.17.dev1"
  },
  "omnipython-audioeffects": {
