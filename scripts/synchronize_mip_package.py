@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import re
 import shutil
@@ -97,40 +98,66 @@ PROFILES = {
     ),
 }
 
-# A profile that publishes several of its repository's lib/ folders, each under
-# its own name, and one package named for the profile that requires them all.
-# The apps repository's are libraries a program imports directly, so they stay
-# top-level names. No pypi_publish: as above, not until a final is on PyPI.
-SEVERAL_PACKAGES = {
-    "applibs": {
-        "appkit": "Apps you can switch between, and a launcher to run them",
-        "chatclient": "Ask an OpenAI-compatible server for a chat reply, whole, streamed, or as JSON",
-        "controlkit": "LVGL controls: encoders, sliders, meters, lamp buttons, pad grids and a dot-matrix display",
-        "deskkit": "A clock and the weather on a screen that sits on a desk",
-        "programkit": "Reach a board's display, keys and touch from a program that runs without Home",
-        "sayso": "Lightweight Spotify Web API client for CPython, MicroPython and CircuitPython",
-        "songmodel": "The song a groovebox edits, and the link that carries it to a front panel",
-        "soundmodule": "A sound module that plays MIDI, headless from a port or through files",
-        "spectrum": "A spectrum analyzer in an app's area, sharing the panel with LVGL",
-        "touchkit": "What the apps on an ESP32-P4 touch board share",
-    },
-}
-SEVERAL_DESCRIPTIONS = {"applibs": "The libraries apps share; installs each of them"}
-# What each member imports from the index, so mip and omip bring it along. A
-# member that needs another and doesn't say so installs, then stops at an
-# ImportError on a board whose firmware doesn't freeze it. omnipython isn't
-# here: every board config installs it, and the firmware freezes it.
-SEVERAL_REQUIRES = {
-    "applibs": {
-        "appkit": ("iconkit",),
-        "deskkit": ("appkit",),
-        "programkit": ("pygraphics",),
-        "songmodel": ("hmilink",),
-        "soundmodule": ("audioinstruments", "audioeffects"),
-        "spectrum": ("pygraphics", "touchkit"),
-        "touchkit": ("appkit",),
-    },
-}
+# A profile that publishes every package in its repository's lib/ as one
+# package named for the profile. Each keeps its top-level import name, since the
+# apps repository's are libraries a program imports directly. No pypi_publish:
+# as above, not until a final is on PyPI.
+#
+# The members are read from the source itself (several_members), so a package
+# added to lib/ is published with no change here: every lib/ folder with an
+# __init__.py, and what its own manifest.py require()s from outside the
+# profile. This holds only the profile package's description.
+SEVERAL_DESCRIPTIONS = {"applibs": "The libraries apps share, all in one package"}
+
+
+@dataclass(frozen=True)
+class Member:
+    name: str
+    # What the member imports from the index, so mip and omip bring it along. A
+    # member that needs another and doesn't say so installs, then stops at an
+    # ImportError on a board whose firmware doesn't freeze it.
+    requires: tuple[str, ...]
+
+
+def member_requires(manifest: Path, name: str) -> tuple[str, ...]:
+    """Each require("...") in *manifest*, in order, read without running it."""
+    if not manifest.is_file():
+        return ()
+    try:
+        tree = ast.parse(manifest.read_text(encoding="utf-8"), filename=str(manifest))
+    except SyntaxError as exc:
+        raise SystemExit(f"{manifest} does not parse: {exc}") from exc
+    calls = sorted(
+        (node for node in ast.walk(tree)
+         if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "require"),
+        key=lambda node: (node.lineno, node.col_offset),
+    )
+    needs: list[str] = []
+    for call in calls:
+        if not call.args or not isinstance(call.args[0], ast.Constant) or not isinstance(call.args[0].value, str):
+            raise SystemExit(f"{manifest}:{call.lineno}: require() must name its package as a string literal")
+        need = call.args[0].value
+        if need == name:
+            raise SystemExit(f"{manifest}:{call.lineno}: {name} requires itself")
+        if need not in needs:
+            needs.append(need)
+    return tuple(needs)
+
+
+def several_members(source_repository: Path) -> list[Member]:
+    """Every package in *source_repository*'s lib/, in name order."""
+    lib = source_repository / "lib"
+    if not lib.is_dir():
+        raise SystemExit(f"package source does not exist: {lib}")
+    members = [
+        Member(name=folder.name, requires=member_requires(folder / "manifest.py", folder.name))
+        for folder in sorted(lib.iterdir(), key=lambda path: path.name)
+        if folder.is_dir() and not folder.name.startswith(".") and (folder / "__init__.py").is_file()
+    ]
+    if not members:
+        raise SystemExit(f"{lib} holds no package (a folder with an __init__.py)")
+    return members
+
 
 # The source repository for each profile is omnipython-lock.json in the MIP
 # checkout, not a second map in this script. reusable-synchronize-mip-package.yml
@@ -211,23 +238,15 @@ def ignore_member_extras(directory: str, names: list[str]) -> set[str]:
 
 
 def synchronize_several(source_repository: Path, mip_root: Path, profile: str, version: str) -> None:
-    members = SEVERAL_PACKAGES[profile]
-    micropython = mip_root / "micropython"
-    for name, description in members.items():
-        source = source_repository / "lib" / name
-        if not source.is_dir():
-            raise SystemExit(f"package source does not exist: {source}")
-        destination = micropython / name
-        if destination.exists():
-            shutil.rmtree(destination)
-        shutil.copytree(source, destination / name, ignore=ignore_member_extras)
-        manifest = render_manifest(Profile(package=name, description=description, pypi_name=None), version)
-        requires = "".join(f'require("{need}")\n' for need in SEVERAL_REQUIRES[profile].get(name, ()))
-        (destination / "manifest.py").write_text(manifest.replace("package(", requires + "package(", 1))
-    destination = micropython / profile
+    members = several_members(source_repository)
+    names = {member.name for member in members}
+    destination = mip_root / "micropython" / profile
     if destination.exists():
         shutil.rmtree(destination)
     destination.mkdir(parents=True)
+    for member in members:
+        shutil.copytree(source_repository / "lib" / member.name, destination / member.name, ignore=ignore_member_extras)
+    outside = sorted({need for member in members for need in member.requires if need not in names})
     lines = [
         "metadata(",
         f"    description={SEVERAL_DESCRIPTIONS[profile]!r},",
@@ -236,7 +255,8 @@ def synchronize_several(source_repository: Path, mip_root: Path, profile: str, v
         '    license="MIT",',
         ")",
     ]
-    lines.extend(f'require("{name}")' for name in members)
+    lines.extend(f'require("{need}")' for need in outside)
+    lines.extend(f'package("{member.name}")' for member in members)
     lines.append("")
     (destination / "manifest.py").write_text("\n".join(lines))
 
@@ -596,7 +616,7 @@ def main() -> None:
     parser.add_argument("--source-repository", required=True, type=Path)
     parser.add_argument("--source-repository-name", required=True)
     parser.add_argument("--mip-repository", required=True, type=Path)
-    parser.add_argument("--profile", required=True, choices=sorted((*PROFILES, *SEVERAL_PACKAGES, "omnipython")))
+    parser.add_argument("--profile", required=True, choices=sorted((*PROFILES, *SEVERAL_DESCRIPTIONS, "omnipython")))
     parser.add_argument("--version", required=True)
     args = parser.parse_args()
 
@@ -611,7 +631,7 @@ def main() -> None:
     if args.profile == "omnipython":
         synchronize_omnipython(source_repository, mip_root, args.version)
         return
-    if args.profile in SEVERAL_PACKAGES:
+    if args.profile in SEVERAL_DESCRIPTIONS:
         synchronize_several(source_repository, mip_root, args.profile, args.version)
         return
 

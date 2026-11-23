@@ -607,6 +607,17 @@ class TopLevelPackageTests(unittest.TestCase):
             )
 
 
+APPLIBS = ("appkit", "chatclient", "controlkit", "sayso", "touchkit")
+
+
+def write_member(source: Path, package: str, manifest: str | None = None) -> None:
+    pkg = source / "lib" / package
+    pkg.mkdir(parents=True)
+    (pkg / "__init__.py").write_text(f"# {package}\n", encoding="utf-8")
+    if manifest is not None:
+        (pkg / "manifest.py").write_text(manifest, encoding="utf-8")
+
+
 class SeveralPackagesTests(unittest.TestCase):
     def run_sync(self, source: Path, mip: Path) -> subprocess.CompletedProcess:
         write_lockfile(mip, {"applibs": "PyDevices/apps"})
@@ -617,54 +628,80 @@ class SeveralPackagesTests(unittest.TestCase):
             capture_output=True, text=True, check=False,
         )
 
-    def test_each_package_keeps_its_name_and_applibs_requires_them(self) -> None:
+    def test_one_package_holds_every_folder_with_an_init(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             source, mip = Path(tmp) / "src", Path(tmp) / "mip"
-            for name in sync.SEVERAL_PACKAGES["applibs"]:
-                write_lib_package(source, name)
+            for name in APPLIBS:
+                write_member(source, name)
             examples = source / "lib" / "controlkit" / "examples"
             examples.mkdir()
             (examples / "demo.py").write_text("", encoding="utf-8")
             (source / "lib" / "controlkit" / "manifest.py").write_text("", encoding="utf-8")
+            (source / "lib" / "notapackage").mkdir()
+            (source / "lib" / "notapackage" / "data.txt").write_text("", encoding="utf-8")
             result = self.run_sync(source, mip)
             self.assertEqual(result.returncode, 0, result.stderr)
-            controlkit = mip / "micropython" / "controlkit"
-            self.assertTrue((controlkit / "controlkit" / "__init__.py").is_file())
-            self.assertFalse((controlkit / "controlkit" / "examples").exists())
-            self.assertFalse((controlkit / "controlkit" / "manifest.py").exists())
-            self.assertIn('version="1.2.3"', (controlkit / "manifest.py").read_text(encoding="utf-8"))
-            applibs = (mip / "micropython" / "applibs" / "manifest.py").read_text(encoding="utf-8")
-            for name in sync.SEVERAL_PACKAGES["applibs"]:
-                self.assertIn(f'require("{name}")', applibs)
-            self.assertNotIn("package(", applibs)
+            self.assertEqual(sorted(p.name for p in (mip / "micropython").iterdir()), ["applibs"])
+            applibs = mip / "micropython" / "applibs"
+            self.assertTrue((applibs / "controlkit" / "__init__.py").is_file())
+            self.assertFalse((applibs / "controlkit" / "examples").exists())
+            self.assertFalse((applibs / "controlkit" / "manifest.py").exists())
+            self.assertFalse((applibs / "notapackage").exists())
+            manifest = (applibs / "manifest.py").read_text(encoding="utf-8")
+            self.assertIn('version="1.2.3"', manifest)
+            self.assertIn("all in one package", manifest)
+            for name in APPLIBS:
+                self.assertIn(f'package("{name}")', manifest)
+            self.assertNotIn("require(", manifest)
 
-    def test_each_package_requires_what_it_imports_from_the_index(self) -> None:
+    def test_a_new_folder_in_lib_is_published_with_no_other_change(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             source, mip = Path(tmp) / "src", Path(tmp) / "mip"
-            for name in sync.SEVERAL_PACKAGES["applibs"]:
-                write_lib_package(source, name)
+            for name in (*APPLIBS, "newkit"):
+                write_member(source, name)
             result = self.run_sync(source, mip)
             self.assertEqual(result.returncode, 0, result.stderr)
-            appkit = (mip / "micropython" / "appkit" / "manifest.py").read_text(encoding="utf-8")
-            self.assertIn('require("iconkit")\npackage("appkit")', appkit)
-            touchkit = (mip / "micropython" / "touchkit" / "manifest.py").read_text(encoding="utf-8")
-            self.assertIn('require("appkit")', touchkit)
-            sayso = (mip / "micropython" / "sayso" / "manifest.py").read_text(encoding="utf-8")
-            self.assertNotIn("require(", sayso)
+            manifest = (mip / "micropython" / "applibs" / "manifest.py").read_text(encoding="utf-8")
+            self.assertIn('package("newkit")', manifest)
 
-    def test_every_requirement_names_a_member_or_a_package_of_the_index(self) -> None:
-        for profile, requires in sync.SEVERAL_REQUIRES.items():
-            for name, needs in requires.items():
-                self.assertIn(name, sync.SEVERAL_PACKAGES[profile])
-                self.assertNotIn(name, needs)
-
-    def test_a_missing_folder_fails(self) -> None:
+    def test_it_requires_what_its_members_need_from_outside(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             source, mip = Path(tmp) / "src", Path(tmp) / "mip"
-            write_lib_package(source, "appkit")
+            write_member(source, "appkit", manifest='require("iconkit")\n')
+            write_member(
+                source, "deskkit",
+                manifest='options.defaults(requires=False)\nif options.requires:\n    require("appkit")\n'
+                '    require("requests", library="x")\n    require("iconkit")\npackage("deskkit", base_path="..")\n',
+            )
+            result = self.run_sync(source, mip)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            manifest = (mip / "micropython" / "applibs" / "manifest.py").read_text(encoding="utf-8")
+            self.assertIn('require("iconkit")\nrequire("requests")\npackage("appkit")\npackage("deskkit")', manifest)
+            self.assertNotIn('require("appkit")', manifest)
+
+    def test_a_require_that_names_no_string_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            source, mip = Path(tmp) / "src", Path(tmp) / "mip"
+            write_member(source, "appkit", manifest='name = "iconkit"\nrequire(name)\n')
             result = self.run_sync(source, mip)
             self.assertNotEqual(result.returncode, 0)
-            self.assertIn("package source does not exist", result.stderr)
+            self.assertIn("string literal", result.stderr)
+
+    def test_a_package_that_requires_itself_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            source, mip = Path(tmp) / "src", Path(tmp) / "mip"
+            write_member(source, "appkit", manifest='require("appkit")\n')
+            result = self.run_sync(source, mip)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("requires itself", result.stderr)
+
+    def test_an_empty_lib_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            source, mip = Path(tmp) / "src", Path(tmp) / "mip"
+            (source / "lib").mkdir(parents=True)
+            result = self.run_sync(source, mip)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("holds no package", result.stderr)
 
 
 class PypiExtrasTests(unittest.TestCase):
@@ -731,7 +768,7 @@ class TopLevelSourceTests(unittest.TestCase):
 class PublishedNamesTests(unittest.TestCase):
     def test_every_own_package_and_applib_the_stack_lists_has_a_description(self) -> None:
         self.assertIn("medialink", metadata.OMNIPYTHON_DESCRIPTIONS)
-        self.assertIn("sayso", sync.SEVERAL_PACKAGES["applibs"])
+        self.assertIn("applibs", sync.SEVERAL_DESCRIPTIONS)
 
 
 class DesktopBundleTests(unittest.TestCase):
