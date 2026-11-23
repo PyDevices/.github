@@ -104,6 +104,7 @@ PROFILES = {
 SEVERAL_PACKAGES = {
     "applibs": {
         "appkit": "Apps you can switch between, and a launcher to run them",
+        "chatclient": "Ask an OpenAI-compatible server for a chat reply, whole, streamed, or as JSON",
         "controlkit": "LVGL controls: encoders, sliders, meters, lamp buttons, pad grids and a dot-matrix display",
         "deskkit": "A clock and the weather on a screen that sits on a desk",
         "programkit": "Reach a board's display, keys and touch from a program that runs without Home",
