@@ -70,11 +70,11 @@
   "distribution": "omnipython-audioinstruments",
   "mip": "success",
   "prerelease": true,
-  "pypi": "success",
+  "pypi": "pending",
   "repo": "audioinstruments",
-  "run_url": "https://github.com/PyDevices/audioinstruments/actions/runs/45013465206",
-  "updated": "2026-11-22 10:45 UTC",
-  "version": "0.5.3.dev4"
+  "run_url": "https://github.com/PyDevices/audioinstruments/actions/runs/45139255705",
+  "updated": "2026-11-23 08:36 UTC",
+  "version": "0.5.3.dev5"
  },
  "omnipython-iconkit": {
   "assets": "success",
