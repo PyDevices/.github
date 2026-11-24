@@ -46,6 +46,7 @@ class StackTests(unittest.TestCase):
         (self.root / "omnipython/drivers").mkdir(parents=True)
         (self.root / "omnipython/board_configs/desktop").mkdir(parents=True)
         (self.root / "omnipython/drivers/drivers.toml").write_text('[gt911]\nversion = "1"\n')
+        (self.root / "omnipython/mip-split.toml").write_text('[bledev]\nown-package = true\n')
 
     def test_a_listed_tree_passes(self) -> None:
         self.assertEqual(stack.check_tree(_data(), str(self.root)), [])
@@ -92,6 +93,20 @@ class StackTests(unittest.TestCase):
         self.assertEqual(stack.check_index(_data(), str(self.root), index), [
             "thing: mip package is not in the index",
             "stray: in the mip index with no row in data/stack.json",
+        ])
+
+    def test_a_package_folded_into_omnipython_may_linger_until_the_next_publish(self) -> None:
+        data = _data()
+        data["entries"] += [
+            {"name": "usb_hid", "group": "a", "does": "Do it.", "repo": "omnipython",
+             "path": "lib/usb_hid.py", "get": ["mip:omnipython"], "runs": "MP"},
+            {"name": "bledev", "group": "a", "does": "Do it.", "repo": "omnipython",
+             "path": "lib/bledev", "get": ["mip:omnipython"], "runs": "MP"},
+        ]
+        index = {"packages": [{"name": "thing"}, {"name": "omnipython"},
+                              {"name": "usb-hid"}, {"name": "bledev"}]}
+        self.assertEqual(stack.check_index(data, str(self.root), index), [
+            "bledev: in the mip index with no row in data/stack.json",
         ])
 
     def test_a_new_public_repository_fails(self) -> None:
