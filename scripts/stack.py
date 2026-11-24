@@ -205,8 +205,19 @@ def check_index(stack, root, index):
     boards = set()
     for _, folders, _ in os.walk(os.path.join(omnipython, 'board_configs')):
         boards.update(folders)
+    with open(os.path.join(omnipython, 'mip-split.toml'), 'rb') as f:
+        built = set(tomllib.load(f))
+    # A package folded into omnipython stays in the index until the next
+    # publish: its row says mip:omnipython, and omnipython no longer builds it.
+    folded = {
+        entry['name'] for entry in stack['entries']
+        if entry['repo'] == 'omnipython' and 'mip:omnipython' in entry['get']
+    }
     for name in sorted(published - claimed - drivers - boards):
-        problems.append(f'{name}: in the mip index with no row in data/stack.json')
+        if name.replace('-', '_') in folded and name not in built:
+            print(f'{name}: folded into omnipython, still in the index until its next publish')
+        else:
+            problems.append(f'{name}: in the mip index with no row in data/stack.json')
     return problems
 
 

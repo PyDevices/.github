@@ -767,7 +767,7 @@ class TopLevelSourceTests(unittest.TestCase):
 
 class PublishedNamesTests(unittest.TestCase):
     def test_every_own_package_and_applib_the_stack_lists_has_a_description(self) -> None:
-        self.assertIn("medialink", metadata.OMNIPYTHON_DESCRIPTIONS)
+        self.assertIn("bledev", metadata.OMNIPYTHON_DESCRIPTIONS)
         self.assertIn("applibs", sync.SEVERAL_DESCRIPTIONS)
 
 
