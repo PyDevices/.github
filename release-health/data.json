@@ -37,11 +37,11 @@
   "distribution": "omnipython-applibs",
   "mip": "success",
   "prerelease": true,
-  "pypi": "success",
+  "pypi": "pending",
   "repo": "apps",
-  "run_url": "https://github.com/PyDevices/apps/actions/runs/45693616042",
-  "updated": "2026-11-25 20:19 UTC",
-  "version": "0.1.3rc3"
+  "run_url": "https://github.com/PyDevices/apps/actions/runs/45709694839",
+  "updated": "2026-11-25 22:03 UTC",
+  "version": "0.1.3rc4"
  },
  "omnipython-audiodsp": {
   "assets": "success",
