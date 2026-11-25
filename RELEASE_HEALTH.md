@@ -15,5 +15,5 @@ Latest publish run per distribution, reported by the publishing workflow's repor
 | [omnipython-lvgl](https://github.com/PyDevices/omnipython-lvgl/actions/runs/44070110321) | 9.6.1 | OK | -- | OK | 2026-11-17 11:18 UTC |
 | [omnipython-palettes](https://github.com/PyDevices/omnipython/actions/runs/44073547057) | 0.1.0 | OK | OK | OK | 2026-11-17 11:24 UTC |
 | [omnipython-pdwidgets](https://github.com/PyDevices/omnipython/actions/runs/44077864949) | 0.0.26 | OK | OK | OK | 2026-11-17 11:53 UTC |
-| [omnipython-pygraphics](https://github.com/PyDevices/pygraphics/actions/runs/45013022872) | 0.2.1.dev0 (pre) | OK | OK | OK | 2026-11-22 10:37 UTC |
+| [omnipython-pygraphics](https://github.com/PyDevices/pygraphics/actions/runs/45621542766) | 0.2.1rc1 (pre) | OK | OK | pending | 2026-11-25 13:20 UTC |
 | [pydevices](https://github.com/PyDevices/pydevices/actions/runs/43800043072) | 0.8.0.dev21 (pre) | OK | OK | -- | 2026-11-16 03:46 UTC |
