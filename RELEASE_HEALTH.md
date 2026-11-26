@@ -12,7 +12,7 @@ Latest publish run per distribution, reported by the publishing workflow's repor
 | [omnipython-audioeffects](https://github.com/PyDevices/audioeffects/actions/runs/44073663200) | 0.5.2 | OK | OK | OK | 2026-11-17 11:42 UTC |
 | [omnipython-audioinstruments](https://github.com/PyDevices/audioinstruments/actions/runs/45624505655) | 0.5.3rc1 (pre) | OK | OK | OK | 2026-11-25 13:44 UTC |
 | [omnipython-iconkit](https://github.com/PyDevices/omnipython/actions/runs/44073551934) | 0.1.0 | OK | OK | OK | 2026-11-17 11:24 UTC |
-| [omnipython-lvgl](https://github.com/PyDevices/omnipython-lvgl/actions/runs/45846465230) | 9.6.2 | OK | -- | pending | 2026-11-26 15:26 UTC |
+| [omnipython-lvgl](https://github.com/PyDevices/omnipython-lvgl/actions/runs/45846465230) | 9.6.2 | OK | -- | OK | 2026-11-26 15:27 UTC |
 | [omnipython-palettes](https://github.com/PyDevices/omnipython/actions/runs/44073547057) | 0.1.0 | OK | OK | OK | 2026-11-17 11:24 UTC |
 | [omnipython-pdwidgets](https://github.com/PyDevices/omnipython/actions/runs/44077864949) | 0.0.26 | OK | OK | OK | 2026-11-17 11:53 UTC |
 | [omnipython-pygraphics](https://github.com/PyDevices/pygraphics/actions/runs/45845784900) | 0.2.1 | OK | OK | OK | 2026-11-26 15:11 UTC |
