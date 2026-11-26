@@ -1008,11 +1008,11 @@
     "headline": "One Python program, on boards, desktops, browsers and phones.",
     "description": "OmniPython is a set of Python libraries and C modules that run unchanged on MicroPython, CircuitPython and CPython. Give each board or host a small board_config, and the same program drives its display, input and audio.",
     "hero_canvas": {
-      "app": "watch",
+      "home": "watch",
       "width": 240,
       "height": 240,
       "shape": "round",
-      "app_url": "https://omnipython.org/assets/apps/watch.py"
+      "apps": ["clock", "info", "perch", "weather"]
     },
     "hero_note": "Install it with pip on a desktop or omip on a board: <a href=\"https://docs.omnipython.org/en/latest/install.html\">the install page</a> has the line for each. Or try it first, with nothing installed: the watch on this page is Python running in your browser, and every app in the <a href=\"https://gallery.omnipython.org/\">gallery</a> runs the same way.",
     "buttons": [

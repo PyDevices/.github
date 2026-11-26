@@ -154,9 +154,13 @@ def validate_db(db, only=None):
             if not isinstance(hero_canvas, dict):
                 problems.append(f'{name}: hero_canvas must be an object')
             else:
-                for req in ('app', 'width', 'height'):
+                for req in ('width', 'height'):
                     if req not in hero_canvas:
                         problems.append(f'{name}: hero_canvas missing {req}')
+                # One app from assets/apps, or a home screen from the
+                # all-apps runtime, which has every app frozen in.
+                if ('app' in hero_canvas) == ('home' in hero_canvas):
+                    problems.append(f'{name}: hero_canvas names one of app or home')
                 app_name = hero_canvas.get('app')
                 app_path = os.path.join(ASSETS_DIR, 'apps', f'{app_name}.py')
                 if app_name and not os.path.exists(app_path):
@@ -463,16 +467,26 @@ def build_above_the_fold_html(repo_name, data):
 
     hero_canvas = data.get('hero_canvas')
     if hero_canvas:
-        app_name = hero_canvas.get('app', 'watch')
         width = hero_canvas.get('width', 240)
         height = hero_canvas.get('height', 240)
         shape = hero_canvas.get('shape', 'round')
-        app_url = hero_canvas.get('app_url', f'https://omnipython.org/assets/apps/{app_name}.py')
         canvas_id = 'hero_canvas'
         container_class = 'hero-canvas-circle' if shape == 'round' else 'hero-canvas-square'
+        home = hero_canvas.get('home')
+        if home:
+            # hero-runtime.js boots the launcher with this home screen.
+            what = f'data-hero-home="{home}"'
+            if shape == 'round':
+                what += ' data-hero-round="1"'
+            if hero_canvas.get('apps'):
+                what += f' data-hero-apps="{" ".join(hero_canvas["apps"])}"'
+        else:
+            app_name = hero_canvas['app']
+            app_url = hero_canvas.get('app_url', f'https://omnipython.org/assets/apps/{app_name}.py')
+            what = f'data-hero-app="{app_name}" data-hero-app-url="{app_url}"'
 
         canvas_html = (
-            f'    <div class="hero-canvas-wrap" data-hero-canvas="{canvas_id}" data-hero-app="{app_name}" data-hero-app-url="{app_url}">\n'
+            f'    <div class="hero-canvas-wrap" data-hero-canvas="{canvas_id}" {what}>\n'
             f'      <div class="{container_class}">\n'
             f'        <div class="hero-canvas-loader">\n'
             f'          <div class="hero-spinner"></div>\n'
