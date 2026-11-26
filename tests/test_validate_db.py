@@ -54,6 +54,25 @@ class HeroCanvasTests(unittest.TestCase):
             problems,
         )
 
+    def test_validator_wants_one_of_app_or_home(self) -> None:
+        db = copy.deepcopy(_db())
+        name = next(n for n, d in generate_sites.repos(db).items() if d.get("hero_canvas"))
+        db[name]["hero_canvas"].pop("app", None)
+        db[name]["hero_canvas"].pop("home", None)
+        self.assertIn(f"{name}: hero_canvas names one of app or home", self._problems(db))
+        db[name]["hero_canvas"].update(app="radar_scope", home="watch")
+        self.assertIn(f"{name}: hero_canvas names one of app or home", self._problems(db))
+
+
+class HomeHeroTests(unittest.TestCase):
+    def test_a_home_hero_boots_the_launcher_with_its_apps(self) -> None:
+        data = copy.deepcopy(_db()["PyDevices.github.io"])
+        data["hero_canvas"] = {"home": "watch", "width": 240, "height": 240,
+                               "shape": "round", "apps": ["clock", "info"]}
+        html = generate_sites.build_above_the_fold_html("PyDevices.github.io", data)
+        self.assertIn('data-hero-home="watch" data-hero-round="1" data-hero-apps="clock info"', html)
+        self.assertNotIn("data-hero-app=", html)
+
 
 if __name__ == "__main__":
     unittest.main()
