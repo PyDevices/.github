@@ -26,6 +26,7 @@ Standard hardware driver engine and companion reference code.
 - [`audiodsp`](https://github.com/PyDevices/audiodsp) — CircuitPython's audio system (audiocore, synthio, audiomixer, effects, audiomp3) ported to MicroPython and CPython, extending CircuitPython along the way: dynamics, routing, convolution, and offline rendering. On PyPI as omnipython-audiodsp; the instrument and effect libraries built on it are audioinstruments and audioeffects.
 - [`audioinstruments`](https://github.com/PyDevices/audioinstruments) — Playable synthesizers, organs, electric pianos and drum machines, each a patch of modules on a virtual rack, rendered a block at a time on audiodsp. Pure Python on CPython and MicroPython-compatible firmware. Install omnipython-audioinstruments from PyPI, or audioinstruments from the MIP index.
 - [`audioeffects`](https://github.com/PyDevices/audioeffects) — Compressors, EQs, reverbs, delays, modulation, drive and amp simulation, pitch shifters and racks, pure Python on audiodsp's audio nodes, the same on MicroPython-compatible boards, CircuitPython-compatible boards and a desktop. Install omnipython-audioeffects from PyPI, or audioeffects from the MIP index.
+- [`airwindows`](https://github.com/PyDevices/airwindows) — Chris Johnson's Airwindows effects, reverbs, dynamics, filters, saturation and tape among them, ported to audiodsp's audio graph, the same on MicroPython-compatible firmware and CPython. Install omnipython-airwindows from PyPI, or build audioairwindows into your firmware beside audiodsp.
 - [`gallery`](https://github.com/PyDevices/gallery) — Comprehensive example code, direct MicroPython WebAssembly demos, board configurations, and multi-interpreter showcase benchmarks.
 
 ### Tier 2: Python Framebuffers & GUI Toolkits
@@ -49,6 +50,7 @@ Deploy PyDevices apps directly to desktop browsers or mobile APKs.
 
 - [`pyscript-template`](https://github.com/PyDevices/pyscript-template) — Progressive Web App starter template repository for deploying offline-capable client-side OmniPython applications on GitHub Pages.
 - [`android-template`](https://github.com/PyDevices/android-template) — Pre-configured python-for-android build recipes and Buildozer project template for packaging OmniPython applications into native Android APKs.
+- [`apps`](https://github.com/PyDevices/apps) — Home and Watch, the home screens, and the apps they launch: music, MIDI and audio, cameras and calls, a clock and the weather, remotes and board tools. One omip line puts them all on a Wi-Fi board; pip puts them on a desktop.
 
 ### Tier 5: Developer Tools & Infrastructure
 

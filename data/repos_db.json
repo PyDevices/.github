@@ -115,6 +115,11 @@
           "text": "Studio and guitar-pedal effects: compressors, EQs, reverbs, delays, drive and amps, in pure Python on audiodsp."
         },
         {
+          "repo": "airwindows",
+          "tag": "Airwindows",
+          "text": "Chris Johnson's 528 Airwindows plug-ins as audio nodes on audiodsp, on MicroPython-compatible firmware and CPython."
+        },
+        {
           "repo": "palettes",
           "tag": "Colour",
           "text": "Colour wheels, colour cubes, Material Design swatches and RGB565 conversion."
@@ -145,7 +150,7 @@
           "text": "A widget toolkit in pure Python, showing that the core can carry a UI framework. For an interface you ship, use LVGL."
         }
       ],
-      "tools_line": "Looking for the board tool or the audio plug-in? MCU Control and mpvst are made by PyDevices, like Workbench, at <a href=\"https://pydevices.com/\">pydevices.com</a>."
+      "tools_line": "Looking for the board tool, the audio plug-in or the apps? MCU Control, mpvst and the apps are made by PyDevices, like Workbench, at <a href=\"https://pydevices.com/\">pydevices.com</a>."
     }
   },
   "omnipython": {
@@ -392,6 +397,51 @@
       "height": 460,
       "alt": "Huey, OmniPython's chameleon mascot, on a jumper wire, holding a wrench",
       "caption": "Huey tightens up the sound"
+    }
+  },
+  "airwindows": {
+    "tier": 1,
+    "page": "portal-subdir",
+    "tier_name": "Core Platform & Board Contract",
+    "theme_color": "var(--tier-1-amber)",
+    "eyebrow": "airwindows",
+    "headline": "airwindows — 528 Airwindows plug-ins as audio nodes.",
+    "description": "Chris Johnson's Airwindows effects, reverbs, dynamics, filters, saturation and tape among them, ported to audiodsp's audio graph, the same on MicroPython-compatible firmware and CPython. Install omnipython-airwindows from PyPI, or build audioairwindows into your firmware beside audiodsp.",
+    "hero_canvas": {
+      "app": "signal_gen",
+      "width": 240,
+      "height": 240,
+      "shape": "square",
+      "app_url": "https://omnipython.org/assets/apps/signal_gen.py"
+    },
+    "buttons": [
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/airwindows",
+        "primary": true
+      },
+      {
+        "label": "Docs",
+        "href": "https://github.com/PyDevices/airwindows/blob/main/docs/index.md",
+        "tier_color": true
+      },
+      {
+        "label": "Plug-ins",
+        "href": "https://github.com/PyDevices/airwindows/blob/main/docs/reference/plugins.md",
+        "tier_color": true
+      },
+      {
+        "label": "PyPI",
+        "href": "https://pypi.org/project/omnipython-airwindows/",
+        "tier_color": true
+      }
+    ],
+    "hero_art": {
+      "src": "huey-hanging.svg",
+      "width": 508,
+      "height": 440,
+      "alt": "Huey, OmniPython's chameleon mascot, hanging from a jumper wire",
+      "caption": "Huey lets the reverb tail ring"
     }
   },
   "audiocomponents": {
@@ -1042,7 +1092,7 @@
       "width": 640,
       "height": 420,
       "alt": "Huey, a blue chameleon with lime spots, waving from a jumper wire",
-      "caption": "<a href=\"https://gallery.omnipython.org/perch/\">Huey</a>, OmniPython's mascot"
+      "caption": "Huey, OmniPython's mascot"
     },
     "title": "OmniPython: one Python program on boards, desktops, browsers and phones",
     "og_url": "https://omnipython.org/"
@@ -1152,6 +1202,40 @@
       }
     ],
     "card_href": "https://pydevices.com/mpvst/",
+    "portal_grid": false,
+    "ecosystem_map": true
+  },
+  "apps": {
+    "tier": 4,
+    "page": "none",
+    "tier_name": "App Hosts & Mobile",
+    "theme_color": "var(--tier-4-purple)",
+    "eyebrow": "apps",
+    "headline": "apps — finished apps for boards and desktops.",
+    "description": "Home and Watch, the home screens, and the apps they launch: music, MIDI and audio, cameras and calls, a clock and the weather, remotes and board tools. One omip line puts them all on a Wi-Fi board; pip puts them on a desktop.",
+    "buttons": [
+      {
+        "label": "GitHub Repo",
+        "href": "https://github.com/PyDevices/apps",
+        "primary": true
+      },
+      {
+        "label": "The apps",
+        "href": "https://github.com/PyDevices/apps/blob/main/docs/reference/apps.md",
+        "tier_color": true
+      },
+      {
+        "label": "Install an app",
+        "href": "https://github.com/PyDevices/apps/blob/main/docs/guides/install-an-app.md",
+        "tier_color": true
+      },
+      {
+        "label": "Docs",
+        "href": "https://github.com/PyDevices/apps/blob/main/docs/index.md",
+        "tier_color": true
+      }
+    ],
+    "card_href": "https://pydevices.com/apps/",
     "portal_grid": false,
     "ecosystem_map": true
   }
