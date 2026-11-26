@@ -91,12 +91,12 @@
   "assets": "success",
   "distribution": "omnipython-lvgl",
   "mip": "skipped",
-  "prerelease": true,
-  "pypi": "success",
+  "prerelease": false,
+  "pypi": "pending",
   "repo": "omnipython-lvgl",
-  "run_url": "https://github.com/PyDevices/omnipython-lvgl/actions/runs/45622233234",
-  "updated": "2026-11-25 13:35 UTC",
-  "version": "9.6.2rc1"
+  "run_url": "https://github.com/PyDevices/omnipython-lvgl/actions/runs/45846465230",
+  "updated": "2026-11-26 15:26 UTC",
+  "version": "9.6.2"
  },
  "omnipython-palettes": {
   "assets": "success",
