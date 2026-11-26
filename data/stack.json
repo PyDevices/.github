@@ -78,7 +78,8 @@
   },
   "repos_not_listed": {
     "workspace": "private",
-    ".github": "our plumbing, so readers are never sent there"
+    ".github": "our plumbing, so readers are never sent there",
+    "apps.omnipython.org": "publishes the all-apps page; the apps it runs have their own rows"
   },
   "entries": [
     {"name": "OmniPython firmware", "group": "firmware", "does": "Build MicroPython-compatible and CircuitPython-compatible firmware with the C modules below compiled in, for boards, desktops and the browser.", "repo": "omnipython-builds", "path": "README.md", "get": ["clone"], "runs": "Boards, Desktop, Web"},
