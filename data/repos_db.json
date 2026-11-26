@@ -1219,11 +1219,10 @@
     "headline": "apps — Home, Watch and the apps they start.",
     "description": "Finished apps for a board with a screen, or a desktop: Home and Watch to start them from, and apps for music, MIDI and audio, cameras and calls, the clock and the weather, remotes and the board itself, with the libraries they share. One omip line puts them all on a Wi-Fi board; pip puts them on a desktop.",
     "hero_canvas": {
-      "app": "watch",
-      "width": 240,
-      "height": 240,
-      "shape": "round",
-      "app_url": "https://omnipython.org/assets/apps/watch.py"
+      "home": "home",
+      "width": 480,
+      "height": 480,
+      "shape": "square"
     },
     "buttons": [
       {
@@ -1232,8 +1231,8 @@
         "primary": true
       },
       {
-        "label": "The apps",
-        "href": "https://github.com/PyDevices/apps/blob/main/docs/reference/apps.md",
+        "label": "Open the apps",
+        "href": "https://apps.omnipython.org/",
         "tier_color": true
       },
       {
