@@ -50,7 +50,7 @@ Deploy PyDevices apps directly to desktop browsers or mobile APKs.
 
 - [`pyscript-template`](https://github.com/PyDevices/pyscript-template) — Progressive Web App starter template repository for deploying offline-capable client-side OmniPython applications on GitHub Pages.
 - [`android-template`](https://github.com/PyDevices/android-template) — Pre-configured python-for-android build recipes and Buildozer project template for packaging OmniPython applications into native Android APKs.
-- [`apps`](https://github.com/PyDevices/apps) — Home and Watch, the home screens, and the apps they launch: music, MIDI and audio, cameras and calls, a clock and the weather, remotes and board tools. One omip line puts them all on a Wi-Fi board; pip puts them on a desktop.
+- [`apps`](https://github.com/PyDevices/apps) — Finished apps for a board with a screen, or a desktop: Home and Watch to start them from, and apps for music, MIDI and audio, cameras and calls, the clock and the weather, remotes and the board itself, with the libraries they share. One omip line puts them all on a Wi-Fi board; pip puts them on a desktop.
 
 ### Tier 5: Developer Tools & Infrastructure
 

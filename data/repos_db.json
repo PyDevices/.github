@@ -145,12 +145,17 @@
           "text": "Package an OmniPython app as an Android APK."
         },
         {
+          "repo": "apps",
+          "tag": "Apps",
+          "text": "Home, Watch and finished apps for music, cameras, the desk and the board, installed on a board with one omip line, and the libraries they share."
+        },
+        {
           "repo": "pdwidgets",
           "tag": "Demonstration",
           "text": "A widget toolkit in pure Python, showing that the core can carry a UI framework. For an interface you ship, use LVGL."
         }
       ],
-      "tools_line": "Looking for the board tool, the audio plug-in or the apps? MCU Control, mpvst and the apps are made by PyDevices, like Workbench, at <a href=\"https://pydevices.com/\">pydevices.com</a>."
+      "tools_line": "Looking for the board tool or the audio plug-in? MCU Control and mpvst are made by PyDevices, like Workbench, at <a href=\"https://pydevices.com/\">pydevices.com</a>."
     }
   },
   "omnipython": {
@@ -1207,12 +1212,19 @@
   },
   "apps": {
     "tier": 4,
-    "page": "none",
+    "page": "portal-subdir",
     "tier_name": "App Hosts & Mobile",
     "theme_color": "var(--tier-4-purple)",
     "eyebrow": "apps",
-    "headline": "apps — finished apps for boards and desktops.",
-    "description": "Home and Watch, the home screens, and the apps they launch: music, MIDI and audio, cameras and calls, a clock and the weather, remotes and board tools. One omip line puts them all on a Wi-Fi board; pip puts them on a desktop.",
+    "headline": "apps — Home, Watch and the apps they start.",
+    "description": "Finished apps for a board with a screen, or a desktop: Home and Watch to start them from, and apps for music, MIDI and audio, cameras and calls, the clock and the weather, remotes and the board itself, with the libraries they share. One omip line puts them all on a Wi-Fi board; pip puts them on a desktop.",
+    "hero_canvas": {
+      "app": "watch",
+      "width": 240,
+      "height": 240,
+      "shape": "round",
+      "app_url": "https://omnipython.org/assets/apps/watch.py"
+    },
     "buttons": [
       {
         "label": "GitHub Repo",
@@ -1234,9 +1246,6 @@
         "href": "https://github.com/PyDevices/apps/blob/main/docs/index.md",
         "tier_color": true
       }
-    ],
-    "card_href": "https://pydevices.com/apps/",
-    "portal_grid": false,
-    "ecosystem_map": true
+    ]
   }
 }
